@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black: #0A0A0A;
+  --color-off-white: #F5F1E8;
+  --color-navy: #0F172A;
+  --color-steel: #2A2A2A;
+  --color-red: #A11212;
+  --color-saffron: #B8860B;
+
+  --font-hindi: var(--font-teko), sans-serif;
+  --font-english: var(--font-teko), sans-serif;
+}
+
+:root {
+  --background: var(--color-off-white);
+  --foreground: var(--color-black);
+}
+
+@layer base {
+  body {
+    @apply bg-off-white text-black font-english antialiased selection:bg-red selection:text-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-hindi tracking-wide;
+  }
+}
+
+/* Film grain effect */
+.film-grain {
+  position: relative;
+}
+
+.film-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  z-index: 50;
+  mix-blend-mode: overlay;
+}
+
+/* Base utility for smooth scroll */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

@@ -1,0 +1,197 @@
+{
+  "HomePage": {
+    "Hero": {
+      "headline": "काम दिखना चाहिए.",
+      "subheadline": "India does not only suffer from corruption. Daily life itself has collapsed.",
+      "ctaPrimary": "Join Movement",
+      "ctaSecondary": "Report an Issue"
+    },
+    "IndiaBreaking": {
+      "transition": "Roz ki zindagi toot gayi hai.",
+      "title": "System Fail Ho Chuka Hai",
+      "desc": "Tax liya gaya. Kaam nahi hua."
+    },
+    "WomenSafety": {
+      "transition": "Fear has become routine.",
+      "headline": "Suraksha poster se nahi aati.",
+      "desc": "Real safety requires street-level infrastructure, accountability, and political will."
+    },
+    "Healthcare": {
+      "transition": "Getting treated should not feel impossible.",
+      "headline": "Ilaaj luxury nahi hona chahiye.",
+      "desc": "Public hospitals shouldn't be a site of indignity. We demand ward-level healthcare accountability."
+    },
+    "SystemFailure": {
+      "transition": "An entire generation feels stuck.",
+      "headline": "System gayab hai.",
+      "desc": "Naukri ke bina future nahi banta. Youth frustration is a symptom of complete governance collapse."
+    },
+    "Mission": {
+      "headline": "Tax liya hai toh kaam bhi dikhao.",
+      "hospital": "1 Hospital per Vidhan Sabha",
+      "clinic": "1 Clinic per Ward",
+      "shelter": "1 Shelter per Vidhan Sabha",
+      "oldAge": "1 Old Age Home per Vidhan Sabha"
+    },
+    "NagrikReport": {
+      "transition": "If the system has failed around you, report it.",
+      "headline": "Kya toot gaya hai?",
+      "cta": "Report It"
+    },
+    "Join": {
+      "headline": "Yeh movement netaon ke liye nahi bana.",
+      "cta": "Become a Ward Captain"
+    },
+    "Slogan": {
+      "part1": "सरकार दिखनी चाहिए.",
+      "part2": "काम दिखना चाहिए."
+    }
+  },
+  "Navigation": {
+    "home": "HOME",
+    "mission": "MISSION",
+    "about": "ABOUT",
+    "report": "NAGRIK REPORT",
+    "join": "JOIN THE MOVEMENT",
+    "issues": "ISSUES",
+    "menuSubtext": "This country will not repair itself."
+  },
+  "MissionPage": {
+    "Hero": {
+      "headline": "India deserves functioning systems.",
+      "subheadline": "Nagrik Party exists because daily life governance has failed."
+    },
+    "Failure": {
+      "headline": "Daily Governance Failure",
+      "desc": "The collapse of daily life is not accidental. Broken roads, flooded streets, and overcrowded hospitals are political decisions born from systemic neglect."
+    },
+    "CitizenFirst": {
+      "headline": "Citizen First Governance",
+      "desc": "We believe in a system where public dignity is the baseline, not a luxury. Every policy, every infrastructure project must start from the citizen's lived reality."
+    },
+    "Dignity": {
+      "headline": "Dignity Infrastructure",
+      "desc": "Governance is visible. When infrastructure works, dignity is restored. Our mission is to rebuild the systems that touch daily lives: from clean water to safe commutes."
+    },
+    "Healthcare": {
+      "headline": "Healthcare Localization",
+      "desc": "Decentralizing care means ensuring no one travels hours for basic treatment. One fully equipped clinic per ward is a fundamental right."
+    },
+    "WomenSafety": {
+      "headline": "Women Safety",
+      "desc": "True safety requires illuminated streets, active community monitoring, and zero tolerance for systemic blind spots."
+    },
+    "Accountability": {
+      "headline": "Public Accountability",
+      "desc": "Tax liya hai toh kaam bhi dikhao. We demand transparent, public audits of every local project."
+    },
+    "Youth": {
+      "headline": "Youth Future",
+      "desc": "An entire generation cannot wait. We are fighting to create a localized economy that values skills and provides real opportunities."
+    }
+  },
+  "AboutPage": {
+    "Intro": {
+      "headline": "From the streets of Delhi, a civic awakening.",
+      "desc": "This is not a story of a destined messiah. This is the story of citizens who watched systems fail repeatedly and decided to organize."
+    },
+    "Journey": {
+      "headline": "The Independent Election Journey",
+      "desc": "Sheikh Arsalan Ullah Chishti stepped into the 2025 Delhi Elections not as a traditional politician, but as a frustrated citizen demanding visible governance. The 'Chimta' symbol became a representation of grassroots, household resilience."
+    },
+    "Grassroots": {
+      "headline": "Grassroots Issue Solving",
+      "desc": "Before the party existed, there was the work. Fixing streetlights, cleaning mohallas, demanding answers. The movement grew from the exhaustion of waiting for someone else to do it."
+    },
+    "Creation": {
+      "headline": "Why Nagrik Party Was Created",
+      "desc": "We realized that activism without political power hits a ceiling. To fix the systems, we had to become the system. A hyper-local governance operating system."
+    },
+    "Vision": {
+      "headline": "Civic Governance Vision",
+      "desc": "We are building an architecture of accountability. A party where local ward captains are the true leaders, and where every taxpayer knows exactly where their money goes."
+    },
+    "Outro": {
+      "headline": "Someone trying to build systems where systems failed.",
+      "desc": "This movement is for anyone who is tired of the struggle. It's time for visible governance."
+    }
+  },
+  "ReportPage": {
+    "Hero": {
+      "headline": "Nagrik Report",
+      "subheadline": "Identify the collapse. We will document it. We will fix it."
+    },
+    "Form": {
+      "title": "Report an Issue",
+      "desc": "Upload photos of broken infrastructure, missing streetlights, or governance failures in your ward.",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Enter 10-digit number",
+      "wardLabel": "Ward Number / Area",
+      "wardPlaceholder": "E.g., Ward 73, Jamia Nagar",
+      "issueLabel": "Describe the Failure",
+      "issuePlaceholder": "Be specific about what is broken...",
+      "photoLabel": "Upload Evidence (Photo)",
+      "submit": "Submit Report",
+      "success": "Report registered successfully. The system is watching."
+    }
+  },
+  "JoinPage": {
+    "Hero": {
+      "headline": "Join the Movement",
+      "subheadline": "Stop waiting for leaders. Become one."
+    },
+    "Form": {
+      "title": "Volunteer / Ward Captain Application",
+      "desc": "We are building a ground force. We need people who are willing to organize, audit, and lead their streets.",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "phoneLabel": "Phone Number",
+      "phonePlaceholder": "Enter 10-digit number",
+      "roleLabel": "I want to be a:",
+      "roleVolunteer": "General Volunteer",
+      "roleCaptain": "Ward Captain (Leader)",
+      "whyLabel": "Why do you want to join?",
+      "whyPlaceholder": "Tell us what you want to fix...",
+      "submit": "Submit Application",
+      "success": "Application received. We will contact you soon."
+    }
+  },
+  "Manifesto": {
+    "title": "The Nagrik Manifesto",
+    "content": "Our official public declarations and policy blueprints will be released here. We are building policies from the ground up, based on the actual failures of daily life."
+  },
+  "Transparency": {
+    "title": "Donation Transparency",
+    "content": "Every rupee given to this movement will be publicly logged. We believe that if you demand accountability from the government, you must first demand it from yourself."
+  },
+  "Constitution": {
+    "title": "Party Constitution",
+    "content": "The structural rules, bylaws, and internal democratic processes of the Nagrik Party. This document ensures no single leader can override the collective movement."
+  },
+  "Media": {
+    "title": "Media & Press",
+    "content": "Official press releases, assets, and media statements. For press inquiries, contact our media cell directly."
+  },
+  "Contact": {
+    "title": "Contact Headquarters",
+    "content": "Visit us at B-80, Street 8, Ghaffar Manzil, Jamia Nagar, Okhla, New Delhi – 110025. Or reach out to our digital coordination team."
+  },
+  "Donate": {
+    "title": "Fund the Movement",
+    "content": "We do not take corporate money. We run on the small contributions of frustrated citizens who want to see actual change. Your ₹100 is worth more than their millions."
+  },
+  "Privacy": {
+    "title": "Privacy Policy",
+    "content": "We protect the data of our operatives, volunteers, and reporters with extreme prejudice. Your data is used strictly for organizing local civic action."
+  },
+  "Terms": {
+    "title": "Terms & Conditions",
+    "content": "By participating in this platform, you agree to uphold the values of civic dignity and non-violent political organizing."
+  },
+  "Leadership": {
+    "title": "Ward Leadership",
+    "content": "We do not have a high command. We have Ward Captains. These are the citizens taking responsibility for their local neighborhoods."
+  }
+}
