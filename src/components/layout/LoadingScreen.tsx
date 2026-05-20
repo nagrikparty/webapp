@@ -10,6 +10,15 @@ export default function LoadingScreen() {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
+    // Check if user has already visited in this session to not annoy them
+    const hasVisited = sessionStorage.getItem("nagrik_visited");
+    if (hasVisited) {
+      setIsVisible(false);
+      return;
+    }
+    
+    sessionStorage.setItem("nagrik_visited", "true");
+
     const totalLines = 5;
     
     const interval = setInterval(() => {
@@ -34,6 +43,26 @@ export default function LoadingScreen() {
       clearTimeout(timeout);
     };
   }, []);
+
+  // Handle manual skip
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleSkip = (e: MouseEvent | KeyboardEvent) => {
+      // Don't skip if it's the very last screen and just about to transition out anyway
+      if (currentIndex < 4) {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("click", handleSkip);
+    window.addEventListener("keydown", handleSkip);
+
+    return () => {
+      window.removeEventListener("click", handleSkip);
+      window.removeEventListener("keydown", handleSkip);
+    };
+  }, [isVisible, currentIndex]);
 
   const renderContextualAnimation = (index: number) => {
     switch (index) {
@@ -146,11 +175,11 @@ export default function LoadingScreen() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] bg-off-white flex items-center justify-center pointer-events-none"
+          className="fixed inset-0 z-[100] bg-off-white flex items-center justify-center cursor-pointer"
         >
-          <div className="absolute inset-0 film-grain opacity-55 mix-blend-overlay"></div>
+          <div className="absolute inset-0 film-grain opacity-55 mix-blend-overlay pointer-events-none"></div>
           
-          <div className="relative z-10 px-4 text-center w-full max-w-lg mx-auto">
+          <div className="relative z-10 px-4 text-center w-full max-w-lg mx-auto pointer-events-none">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -163,6 +192,15 @@ export default function LoadingScreen() {
               </motion.div>
             </AnimatePresence>
           </div>
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.3em] text-black/50 pointer-events-none"
+          >
+            CLICK ANYWHERE TO SKIP
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

@@ -1,108 +1,228 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { useLenis } from "@/hooks/useLenis";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/effects/PageTransition";
-import CinematicButton from "@/components/ui/CinematicButton";
-import { CinematicInput, CinematicTextarea } from "@/components/ui/CinematicInput";
-import { Upload } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Upload, CheckCircle, Camera } from "lucide-react";
 
 export default function ReportPage() {
   useLenis();
   const t = useTranslations("ReportPage");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [selectedSeverity, setSelectedSeverity] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate submission
+    setIsSubmitting(true);
+    // Simulate network request
     setTimeout(() => {
-      setIsSubmitted(true);
-    }, 800);
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }, 1500);
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFileName(e.target.files[0].name);
+    }
+  };
+
+  const severityLevels = [
+    { id: "low", label: t("Form.severityLow") },
+    { id: "medium", label: t("Form.severityMedium") },
+    { id: "high", label: t("Form.severityHigh") },
+    { id: "critical", label: t("Form.severityCritical") },
+  ];
+
+  const categories = [
+    "roads", "water", "sewage", "streetlights", "garbage", "healthcare", "safety", "publicInfra", "other"
+  ];
 
   return (
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-off-white min-h-screen pt-32 pb-24">
+        <main className="bg-off-white min-h-screen pt-24 sm:pt-32 pb-24">
           
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Header */}
-            <div className="mb-16 text-center">
-              <h1 className="font-hindi text-[clamp(3.5rem,8vw,5.5rem)] leading-none text-black font-bold mb-4">
-                {t("Hero.headline")}
-              </h1>
-              <p className="font-english text-[clamp(1.125rem,2vw,1.5rem)] text-black/60">
-                {t("Hero.subheadline")}
-              </p>
-            </div>
-
-            {/* Form Container */}
-            <motion.div 
+          {/* Hero Section */}
+          <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="bg-white border border-black/10 p-6 sm:p-12 relative overflow-hidden shadow-sm"
+              className="max-w-4xl text-center mx-auto"
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-red"></div>
-              
-              {!isSubmitted ? (
-                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-                  <div className="mb-8">
-                    <h2 className="font-hindi text-3xl text-black font-semibold mb-2">{t("Form.title")}</h2>
-                    <p className="font-english text-black/50 text-sm">{t("Form.desc")}</p>
-                  </div>
+              <div className="flex items-center justify-center gap-2 mb-6 bg-red/10 text-red px-4 py-2 rounded-full font-mono text-xs uppercase tracking-widest font-semibold w-fit mx-auto">
+                <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>
+                LIVE CIVIC AUDIT
+              </div>
+              <h1 className="font-hindi text-[clamp(4rem,10vw,7rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight">
+                {t("Hero.headline")}
+              </h1>
+              <p className="font-body text-xl sm:text-2xl text-black/70 max-w-2xl mx-auto leading-relaxed">
+                {t("Hero.subheadline")}
+              </p>
+            </motion.div>
+          </section>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    <CinematicInput label={t("Form.nameLabel")} id="name" placeholder={t("Form.namePlaceholder")} required />
-                    <CinematicInput label={t("Form.phoneLabel")} id="phone" type="tel" placeholder={t("Form.phonePlaceholder")} required />
-                  </div>
+          {/* Form Section */}
+          <section className="px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="bg-white/60 backdrop-blur-md border border-black/10 rounded-2xl p-6 sm:p-10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden"
+            >
+              <AnimatePresence mode="wait">
+                {isSuccess ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex flex-col items-center justify-center py-20 text-center"
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", delay: 0.2 }}
+                      className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6"
+                    >
+                      <CheckCircle size={40} className="text-green-600" />
+                    </motion.div>
+                    <h3 className="font-hindi text-4xl text-black font-medium mb-3">
+                      {t("Form.success")}
+                    </h3>
+                    <p className="font-mono text-sm text-black/50 uppercase tracking-widest">
+                      REF ID: NGRK-{Math.floor(Math.random() * 90000) + 10000}
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={handleSubmit}
+                    className="space-y-8"
+                  >
+                    <div className="border-b border-black/10 pb-6 mb-8">
+                      <h2 className="font-body text-2xl font-bold tracking-tight mb-2">{t("Form.title")}</h2>
+                      <p className="text-black/60 font-body text-sm">{t("Form.desc")}</p>
+                    </div>
 
-                  <CinematicInput label={t("Form.wardLabel")} id="ward" placeholder={t("Form.wardPlaceholder")} required />
-                  
-                  <CinematicTextarea label={t("Form.issueLabel")} id="issue" rows={4} placeholder={t("Form.issuePlaceholder")} required />
-
-                  <div className="flex flex-col space-y-2">
-                    <label className="font-english text-sm font-medium text-black/70 tracking-wide uppercase">
-                      {t("Form.photoLabel")}
-                    </label>
-                    <label className="flex items-center justify-center w-full h-32 border-2 border-black/10 border-dashed hover:border-red/50 hover:bg-black/5 transition-all cursor-pointer group">
-                      <div className="flex flex-col items-center space-y-2 text-black/40 group-hover:text-black/75">
-                        <Upload size={24} />
-                        <span className="font-english text-sm uppercase tracking-wider">Select Image</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="civic-label">{t("Form.nameLabel")}</label>
+                        <input type="text" required className="civic-input" placeholder={t("Form.namePlaceholder")} />
                       </div>
-                      <input type="file" className="hidden" accept="image/*" />
-                    </label>
-                  </div>
+                      <div className="space-y-2">
+                        <label className="civic-label">{t("Form.phoneLabel")}</label>
+                        <input type="tel" pattern="[0-9]{10}" required className="civic-input" placeholder={t("Form.phonePlaceholder")} />
+                      </div>
+                    </div>
 
-                  <div className="pt-6">
-                    <button type="submit" className="w-full inline-flex items-center justify-center px-8 py-4 font-english font-medium tracking-widest uppercase text-sm transition-all duration-300 bg-red text-white hover:bg-red/90 shadow-md hover:shadow-lg border border-red/50">
-                      {t("Form.submit")}
+                    <div className="space-y-2">
+                      <label className="civic-label">{t("Form.wardLabel")}</label>
+                      <input type="text" required className="civic-input" placeholder={t("Form.wardPlaceholder")} />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="civic-label">{t("Form.categoryLabel")}</label>
+                        <select required className="civic-select w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-black/30 transition-colors">
+                          <option value="" disabled selected>{t("Form.categoryPlaceholder")}</option>
+                          {categories.map(cat => (
+                            <option key={cat} value={cat}>{t(`Form.categories.${cat}`)}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="civic-label">{t("Form.severityLabel")}</label>
+                        <div className="flex flex-wrap gap-2">
+                          {severityLevels.map(level => (
+                            <button
+                              key={level.id}
+                              type="button"
+                              onClick={() => setSelectedSeverity(level.id)}
+                              className={`px-3 py-2 rounded-lg font-mono text-[10px] uppercase tracking-widest font-semibold transition-all border
+                                ${selectedSeverity === level.id 
+                                  ? 'bg-red/10 border-red text-red shadow-sm' 
+                                  : 'bg-white border-black/10 text-black/60 hover:bg-black/5 hover:border-black/20'}`}
+                            >
+                              {level.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="civic-label">{t("Form.issueLabel")}</label>
+                      <textarea required className="civic-textarea min-h-[120px]" placeholder={t("Form.issuePlaceholder")}></textarea>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="civic-label">{t("Form.photoLabel")}</label>
+                      <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-black/10 border-dashed rounded-xl cursor-pointer bg-white/30 hover:bg-black/5 transition-colors group">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          {fileName ? (
+                            <>
+                              <Camera className="w-8 h-8 mb-3 text-red" />
+                              <p className="mb-2 text-sm text-black font-semibold">{fileName}</p>
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="w-8 h-8 mb-3 text-black/40 group-hover:text-black/60 transition-colors" />
+                              <p className="mb-2 text-sm text-black/60"><span className="font-semibold text-black">Click to upload</span> or drag and drop</p>
+                              <p className="text-xs text-black/40">SVG, PNG, JPG or GIF (MAX. 5MB)</p>
+                            </>
+                          )}
+                        </div>
+                        <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-red text-white font-body text-sm font-medium tracking-widest uppercase px-6 py-4 rounded-xl hover:bg-red/90 transition-all duration-300 shadow-lg shadow-red/20 flex justify-center items-center"
+                    >
+                      {isSubmitting ? (
+                        <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                      ) : (
+                        t("Form.submit")
+                      )}
                     </button>
-                  </div>
-                </form>
-              ) : (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="py-20 text-center flex flex-col items-center"
-                >
-                  <div className="w-20 h-20 rounded-full border border-red flex items-center justify-center mb-6">
-                    <svg className="w-10 h-10 text-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h3 className="font-hindi text-4xl text-black font-semibold mb-4">काम दिखना चाहिए</h3>
-                  <p className="font-english text-black/70">{t("Form.success")}</p>
-                </motion.div>
-              )}
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </motion.div>
 
-          </div>
+            {/* Empty State / Live Feed Placeholder */}
+            {!isSuccess && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="mt-12 text-center"
+              >
+                <div className="inline-flex flex-col items-center p-6 border border-black/5 border-dashed rounded-2xl bg-black/[0.02]">
+                  <Camera size={24} className="text-black/20 mb-3" />
+                  <p className="font-mono text-xs text-black/40 uppercase tracking-widest">
+                    {t("Form.emptyState")}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </section>
         </main>
       </PageTransition>
       <Footer />

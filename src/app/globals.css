@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* Core palette */
   --color-black: #0A0A0A;
   --color-off-white: #F5F1E8;
   --color-navy: #0F172A;
@@ -8,8 +9,19 @@
   --color-red: #A11212;
   --color-saffron: #B8860B;
 
+  /* Extended palette */
+  --color-deep-blue: #0B2553;
+  --color-rust: #8B4513;
+  --color-concrete: #6B6B6B;
+  --color-charcoal: #1A1A1A;
+  --color-smoke: #D4D0C8;
+  --color-emergency: #C21A1A;
+
+  /* Typography */
   --font-hindi: var(--font-teko), sans-serif;
-  --font-english: var(--font-teko), sans-serif;
+  --font-english: var(--font-inter), var(--font-teko), sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-hindi-body: var(--font-mukta), sans-serif;
 }
 
 :root {
@@ -19,31 +31,123 @@
 
 @layer base {
   body {
-    @apply bg-off-white text-black font-english antialiased selection:bg-red selection:text-white;
+    @apply bg-off-white text-black font-body antialiased selection:bg-red selection:text-white;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-hindi tracking-wide;
   }
+
+  p, span, label, input, textarea, select, li, td, th {
+    @apply font-body;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(10, 10, 10, 0.2);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(10, 10, 10, 0.4);
+  }
 }
 
-/* Film grain effect */
-.film-grain {
-  position: relative;
+
+
+/* ========================================
+   PULSE / LIVE INDICATORS
+   ======================================== */
+.pulse-red {
+  animation: pulse-indicator 2s ease-in-out infinite;
 }
 
-.film-grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.04;
-  z-index: 50;
-  mix-blend-mode: overlay;
+@keyframes pulse-indicator {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(161, 18, 18, 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(161, 18, 18, 0); }
 }
 
-/* Base utility for smooth scroll */
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-red);
+  animation: pulse-dot-anim 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot-anim {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.6; }
+}
+
+/* ========================================
+   URBAN GLOW (streetlight amber effect)
+   ======================================== */
+.urban-glow {
+  box-shadow: 
+    0 0 60px rgba(139, 69, 19, 0.05),
+    0 0 120px rgba(139, 69, 19, 0.03);
+}
+
+.urban-glow-text {
+  text-shadow: 0 0 40px rgba(139, 69, 19, 0.1);
+}
+
+/* ========================================
+   CIVIC FORM STYLES (municipal document aesthetic)
+   ======================================== */
+.civic-input {
+  @apply w-full bg-white/50 backdrop-blur-sm border border-black/10 rounded-xl px-4 py-3.5
+         font-body text-sm text-black placeholder:text-black/30
+         focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
+         transition-all duration-300;
+}
+
+.civic-textarea {
+  @apply w-full bg-white/50 backdrop-blur-sm border border-black/10 rounded-xl px-4 py-3.5
+         font-body text-sm text-black placeholder:text-black/30
+         focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
+         transition-all duration-300 resize-none;
+}
+
+.civic-select {
+  @apply w-full bg-white/50 backdrop-blur-sm border border-black/10 rounded-xl px-4 py-3.5
+         font-body text-sm text-black
+         focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
+         transition-all duration-300 appearance-none cursor-pointer;
+}
+
+.civic-label {
+  @apply block font-mono text-[10px] uppercase tracking-[0.2em] text-black/50 mb-2;
+}
+
+.civic-card {
+  @apply bg-white/40 backdrop-blur-md border border-black/8 rounded-2xl p-6
+         transition-all duration-500 hover:border-black/15 hover:shadow-lg;
+}
+
+/* ========================================
+   SECTION TRANSITIONS
+   ======================================== */
+.section-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.section-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   LENIS SMOOTH SCROLL
+   ======================================== */
 html.lenis {
   height: auto;
 }
@@ -63,3 +167,44 @@ html.lenis {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
+
+/* ========================================
+   MICRO-INTERACTIONS
+   ======================================== */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.text-reveal {
+  clip-path: inset(0 100% 0 0);
+  animation: text-reveal-anim 0.8s ease-out forwards;
+}
+
+@keyframes text-reveal-anim {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* ========================================
+   ISSUE CARD ANIMATIONS
+   ======================================== */
+.issue-card-pulse {
+  animation: issue-pulse 3s ease-in-out infinite;
+}
+
+@keyframes issue-pulse {
+  0%, 100% { border-color: rgba(10, 10, 10, 0.08); }
+  50% { border-color: rgba(161, 18, 18, 0.15); }
+}
+
+/* ========================================
+   AMBIENT TRANSITIONS
+   ======================================== */
+.ambient-fade {
+  transition: opacity 1.2s ease-in-out, transform 1.2s ease-out;
+}
+

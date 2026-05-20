@@ -20,7 +20,7 @@ export default function AboutPage() {
         <main className="bg-off-white min-h-screen">
           
           {/* Documentary Intro */}
-          <section className="relative h-[80vh] flex flex-col justify-end pb-24 px-4 sm:px-6 lg:px-8 border-b border-black/10">
+          <section className="relative h-[80vh] flex flex-col justify-end pb-24 px-4 sm:px-6 lg:px-8">
             <div className="absolute inset-0 film-grain opacity-30"></div>
             <div className="max-w-6xl mx-auto w-full relative z-10">
               <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-none text-black font-bold mb-6">
@@ -66,7 +66,7 @@ export default function AboutPage() {
           />
 
           {/* Outro */}
-          <section className="relative py-40 bg-off-white text-center px-4 sm:px-6 border-t border-black/10">
+          <section className="relative py-40 bg-off-white text-center px-4 sm:px-6">
             <h2 className="font-hindi text-[clamp(3rem,6vw,5rem)] text-black/90 font-bold mb-8 drop-shadow-sm max-w-4xl mx-auto leading-tight">
               {t("Outro.headline")}
             </h2>

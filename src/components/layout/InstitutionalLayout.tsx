@@ -27,7 +27,7 @@ export default function InstitutionalLayout({ title, content }: InstitutionalLay
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="font-hindi text-[clamp(3rem,6vw,4.5rem)] leading-none text-black font-bold mb-12 border-b border-black/10 pb-8">
+              <h1 className="font-hindi text-[clamp(3rem,6vw,4.5rem)] leading-none text-black font-bold mb-12 pb-2">
                 {title}
               </h1>
               

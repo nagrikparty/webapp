@@ -20,7 +20,7 @@ export default function ScrollTransition({ text }: ScrollTransitionProps) {
   return (
     <div 
       ref={containerRef}
-      className="relative h-[60svh] w-full bg-off-white flex items-center justify-center overflow-hidden border-y border-black/10"
+      className="relative h-[60svh] w-full bg-off-white flex items-center justify-center overflow-hidden"
     >
       <div className="absolute inset-0 film-grain opacity-30"></div>
       

@@ -1,30 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 export default function CockroachEasterEgg() {
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: -50, angle: 90 });
+  const [messageIndex, setMessageIndex] = useState(0);
+  const t = useTranslations("Cockroach");
+
+  // Read all messages into an array
+  const messages = [
+    t("messages.0"),
+    t("messages.1"),
+    t("messages.2"),
+    t("messages.3"),
+    t("messages.4")
+  ];
 
   useEffect(() => {
-    // 1 in 5 chance to appear
-    const shouldAppear = Math.random() < 0.2;
+    // 1 in 4 chance to appear
+    const shouldAppear = Math.random() < 0.25;
     if (!shouldAppear) return;
 
-    // Wait random time before appearing (5s to 20s)
+    // Wait random time before appearing (5s to 15s)
     const appearTimer = setTimeout(() => {
       // Pick random height percentage
       const randomTop = Math.random() * 80 + 10;
       setPosition(prev => ({ ...prev, top: randomTop }));
+      
+      // Select random message
+      setMessageIndex(Math.floor(Math.random() * messages.length));
       setIsVisible(true);
 
       // Start crawling animation across screen
       let currentLeft = -50;
       let wiggle = 0;
+      let isRunning = true;
 
-      const crawlInterval = setInterval(() => {
-        currentLeft += 2; // Speed
-        wiggle = Math.sin(currentLeft * 0.2) * 5; // Wiggle effect
+      const crawl = () => {
+        if (!isRunning) return;
+        
+        currentLeft += 1.5; // Speed
+        wiggle = Math.sin(currentLeft * 0.1) * 8; // Wiggle effect
         
         setPosition(prev => ({
           ...prev,
@@ -34,13 +52,19 @@ export default function CockroachEasterEgg() {
 
         // Remove if off screen
         if (currentLeft > window.innerWidth + 50) {
-          clearInterval(crawlInterval);
           setIsVisible(false);
+          isRunning = false;
+        } else {
+          requestAnimationFrame(crawl);
         }
-      }, 50);
+      };
+      
+      requestAnimationFrame(crawl);
 
-      return () => clearInterval(crawlInterval);
-    }, Math.random() * 15000 + 5000);
+      return () => {
+        isRunning = false;
+      };
+    }, Math.random() * 10000 + 5000);
 
     return () => clearTimeout(appearTimer);
   }, []);
@@ -49,7 +73,7 @@ export default function CockroachEasterEgg() {
 
   return (
     <div 
-      className="fixed z-50 pointer-events-none mix-blend-multiply opacity-40 transition-all duration-75"
+      className="fixed z-50 pointer-events-none mix-blend-multiply opacity-50"
       style={{ 
         top: `${position.top}vh`, 
         left: `${position.left}px`,
@@ -64,12 +88,13 @@ export default function CockroachEasterEgg() {
           <path d="M8 10 L4 8 M16 10 L20 8 M8 14 L4 16 M16 14 L20 16 M9 18 L6 22 M15 18 L18 22" stroke="#111" strokeWidth="0.8" fill="none" />
         </svg>
 
-        {/* The flag message, only occasionally visible */}
-        {Math.random() > 0.5 && (
-          <div className="absolute -top-6 -right-24 bg-black/10 backdrop-blur-sm px-2 py-0.5 text-[8px] font-english text-black/60 border border-black/10 whitespace-nowrap -rotate-90 origin-bottom-left">
-            "Tumko cockroach bola CJI ne"
-          </div>
-        )}
+        {/* The message */}
+        <div 
+          className="absolute -top-4 right-10 bg-black/10 backdrop-blur-sm px-2.5 py-1 text-[9px] font-hindi font-medium text-black/70 border border-black/10 rounded whitespace-nowrap"
+          style={{ transform: `rotate(${-position.angle}deg)` }}
+        >
+          {messages[messageIndex]}
+        </div>
       </div>
     </div>
   );
