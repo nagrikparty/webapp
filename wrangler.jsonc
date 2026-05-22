@@ -15,5 +15,11 @@
       "database_name": "nagrik",
       "database_id": "216c780f-c6c8-421d-b7c3-f8ba7ba2da72"
     }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "REPORTS_BUCKET",
+      "bucket_name": "nagrik"
+    }
   ]
 }
