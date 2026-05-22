@@ -11,6 +11,8 @@ export default function ManifestoPage() {
   useLenis();
   const t = useTranslations("Manifesto");
 
+  const policyKeys = ["healthcare", "infrastructure", "womenSafety"] as const;
+
   return (
     <>
       <Navbar />
@@ -25,7 +27,7 @@ export default function ManifestoPage() {
             >
               <div className="flex items-center gap-2 mb-6 font-mono text-xs text-red uppercase tracking-widest font-bold">
                 <span className="w-2 h-2 rounded-full bg-red"></span>
-                OFFICIAL DOCUMENT
+                {t("officialDoc")}
               </div>
               <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight">
                 {t("title")}
@@ -47,23 +49,17 @@ export default function ManifestoPage() {
 
               {/* Coming Soon Section for Detailed Policies */}
               <div className="mt-16 border-2 border-dashed border-black/20 rounded-2xl p-8 sm:p-12 text-center opacity-70">
-                <h3 className="font-hindi text-3xl mb-4 text-black">Policy Frameworks in Draft</h3>
+                <h3 className="font-hindi text-3xl mb-4 text-black">{t("policyTitle")}</h3>
                 <p className="font-mono text-sm text-black/50 uppercase tracking-widest mb-6">
-                  PUBLIC CONSULTATION PHASE
+                  {t("policyPhase")}
                 </p>
                 <div className="space-y-4 max-w-md mx-auto text-left">
-                  <div className="bg-black/5 p-4 rounded-xl flex justify-between items-center">
-                    <span className="font-body font-semibold">Ward-Level Healthcare Architecture</span>
-                    <span className="font-mono text-[10px] bg-black/10 px-2 py-1 rounded">DRAFTING</span>
-                  </div>
-                  <div className="bg-black/5 p-4 rounded-xl flex justify-between items-center">
-                    <span className="font-body font-semibold">Local Infrastructure Audit Process</span>
-                    <span className="font-mono text-[10px] bg-black/10 px-2 py-1 rounded">DRAFTING</span>
-                  </div>
-                  <div className="bg-black/5 p-4 rounded-xl flex justify-between items-center">
-                    <span className="font-body font-semibold">Women Safety Protocol & Urban Planning</span>
-                    <span className="font-mono text-[10px] bg-black/10 px-2 py-1 rounded">DRAFTING</span>
-                  </div>
+                  {policyKeys.map((key) => (
+                    <div key={key} className="bg-black/5 p-4 rounded-xl flex justify-between items-center">
+                      <span className="font-body font-semibold">{t(`policies.${key}.title`)}</span>
+                      <span className="font-mono text-[10px] bg-black/10 px-2 py-1 rounded">{t(`policies.${key}.status`)}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>

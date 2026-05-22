@@ -94,13 +94,13 @@ export default function InfrastructurePage() {
               className="mt-20 pt-16 border-t border-black/10 flex flex-col items-center text-center"
             >
               <h2 className="font-hindi text-4xl sm:text-5xl font-semibold mb-8">
-                Build it with us.
+                {t("ctaHeadline")}
               </h2>
               <Link 
                 href="/join"
                 className="group flex items-center justify-center gap-3 bg-red text-white font-body text-sm font-medium tracking-widest uppercase px-10 py-5 rounded-xl hover:bg-red/90 transition-all duration-300 hover:-translate-y-1 shadow-xl shadow-red/20 w-full sm:w-auto"
               >
-                Join Movement
+                {t("ctaButton")}
                 <ArrowRight size={18} strokeWidth={2} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>

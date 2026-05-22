@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing";
 import { Camera, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getReportCount } from "@/actions";
 
 interface Props {
   translations: {
@@ -16,6 +18,16 @@ interface Props {
 }
 
 export default function NagrikReportCTA({ translations }: Props) {
+  const [reportCount, setReportCount] = useState<string>(translations.statusReportsVal);
+
+  useEffect(() => {
+    getReportCount().then((count) => {
+      if (count > 0) {
+        setReportCount(new Intl.NumberFormat('en-IN').format(count));
+      }
+    });
+  }, []);
+
   return (
     <section className="w-full py-24 sm:py-32 bg-off-white relative overflow-hidden">
       {/* Abstract document texture */}
@@ -61,7 +73,7 @@ export default function NagrikReportCTA({ translations }: Props) {
               <div className="bg-off-white rounded-2xl border border-black/5 p-6 relative">
                 <div className="absolute top-0 right-8 -translate-y-1/2 bg-white px-4 py-1 border border-black/10 rounded-full flex flex-col items-center shadow-sm">
                   <span className="font-mono text-[9px] text-black/40 tracking-[0.2em]">{translations.statusReports}</span>
-                  <span className="font-mono text-lg text-black font-bold">{translations.statusReportsVal}</span>
+                  <span className="font-mono text-lg text-black font-bold">{reportCount}</span>
                 </div>
 
                 <div className="space-y-4 pt-4">

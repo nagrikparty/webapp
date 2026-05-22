@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, AlertTriangle, LightbulbOff, Droplets, Trash2, Waves, Building2 } from "lucide-react";
+import { MapPin, AlertTriangle, LightbulbOff, Droplets, Trash2, Waves, Building2, Heart, Shield, Zap } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { getLiveIssues } from "@/actions";
 
 interface LiveIssueCardsProps {
   translations: {
@@ -32,7 +34,7 @@ interface LiveIssueCardsProps {
 }
 
 export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
-  const issues = [
+  const issues = useMemo(() => [
     {
       id: 1,
       location: translations.issue1Location,
@@ -87,7 +89,60 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
       tag: translations.pending,
       isCritical: false,
     },
-  ];
+  ], [translations]);
+
+  const [displayIssues, setDisplayIssues] = useState(issues);
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const data = await getLiveIssues();
+        
+        if (data && data.length > 0) {
+          const mapCategoryToIcon = (category: string) => {
+            switch (category) {
+              case 'roads': return <Building2 size={20} className="text-charcoal" />;
+              case 'water': return <Droplets size={20} className="text-charcoal" />;
+              case 'sewage': return <Waves size={20} className="text-charcoal" />;
+              case 'streetlights': return <LightbulbOff size={20} className="text-charcoal" />;
+              case 'garbage': return <Trash2 size={20} className="text-charcoal" />;
+              case 'healthcare': return <Heart size={20} className="text-charcoal" />;
+              case 'safety': return <Shield size={20} className="text-charcoal" />;
+              case 'publicInfra': return <Zap size={20} className="text-charcoal" />;
+              default: return <AlertTriangle size={20} className="text-charcoal" />;
+            }
+          };
+
+          const getDaysAgo = (dateString: string) => {
+            const diffTime = Math.abs(new Date().getTime() - new Date(dateString).getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays.toString();
+          };
+
+          const formattedRealIssues = data.map((report: any) => ({
+            id: report.id,
+            location: report.ward,
+            title: report.category.charAt(0).toUpperCase() + report.category.slice(1) + " Issue",
+            days: getDaysAgo(report.created_at),
+            icon: mapCategoryToIcon(report.category),
+            tag: report.severity === 'critical' || report.severity === 'high' ? translations.critical : translations.pending,
+            isCritical: report.severity === 'critical' || report.severity === 'high',
+          }));
+
+          // Replace mock issues with real issues, if less than 6 fill with mocks to keep scroll smooth
+          const combined = [...formattedRealIssues];
+          if (combined.length < 6) {
+             const needed = 6 - combined.length;
+             combined.push(...issues.slice(0, needed));
+          }
+          setDisplayIssues(combined);
+        }
+      } catch (error) {
+        console.error("Failed to fetch live issues:", error);
+      }
+    };
+    fetchIssues();
+  }, [translations, issues]);
 
   return (
     <section className="py-12 sm:py-16 bg-off-white overflow-hidden border-b border-black/5">
@@ -116,7 +171,7 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
           className="flex gap-4 sm:gap-6 px-4 w-max"
         >
           {/* Double the items for seamless infinite scroll */}
-          {[...issues, ...issues].map((issue, i) => (
+          {[...displayIssues, ...displayIssues].map((issue, i) => (
             <div
               key={`${issue.id}-${i}`}
               className={`w-72 sm:w-80 shrink-0 civic-card bg-white/70 hover:bg-white transition-colors duration-300 ${

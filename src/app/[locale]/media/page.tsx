@@ -6,18 +6,52 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/effects/PageTransition";
 import { motion } from "framer-motion";
-import { Download, ExternalLink } from "lucide-react";
-import { Link } from "@/i18n/routing";
+import { Download, FileText } from "lucide-react";
+import { getPressReleases } from "@/actions";
+import { useEffect, useState } from "react";
+
+interface PressRelease {
+  id: string;
+  title: string;
+  ref_code: string;
+  published_at: string;
+  content: string;
+}
+
+const fallbackPR: PressRelease[] = [
+  { id: '1', title: 'Nagrik Party Announces Ward-Level Healthcare Audits Across South Delhi', ref_code: 'PR-2026-05-18A', published_at: '2026-05-18', content: '' },
+  { id: '2', title: 'Founder Arsalan Azad Submits Memorandum on Pothole Fatalities to LG Office', ref_code: 'PR-2026-05-12C', published_at: '2026-05-12', content: '' },
+  { id: '3', title: 'Public Release: The State of Women\'s Safety Infrastructure in Okhla Phase II', ref_code: 'PR-2026-04-30B', published_at: '2026-04-30', content: '' },
+];
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
 
 export default function MediaPage() {
   useLenis();
   const t = useTranslations("Media");
+  const [pressReleases, setPressReleases] = useState<PressRelease[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const pressReleases = [
-    { date: "May 18, 2026", title: "Nagrik Party Announces Ward-Level Healthcare Audits Across South Delhi", ref: "PR-2026-05-18A" },
-    { date: "May 12, 2026", title: "Founder Arsalan Azad Submits Memorandum on Pothole Fatalities to LG Office", ref: "PR-2026-05-12C" },
-    { date: "April 30, 2026", title: "Public Release: The State of Women's Safety Infrastructure in Okhla Phase II", ref: "PR-2026-04-30B" },
-  ];
+  useEffect(() => {
+    getPressReleases()
+      .then((data) => {
+        if (data && data.length > 0) {
+          setPressReleases(data as PressRelease[]);
+        } else {
+          setPressReleases(fallbackPR);
+        }
+      })
+      .catch(() => {
+        setPressReleases(fallbackPR);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <>
@@ -45,7 +79,7 @@ export default function MediaPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
               {/* Press Releases */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
@@ -53,25 +87,49 @@ export default function MediaPage() {
               >
                 <h2 className="font-body text-2xl font-bold mb-8 text-black">Official Press Releases</h2>
                 <div className="space-y-6">
-                  {pressReleases.map((pr, i) => (
-                    <div key={i} className="civic-card bg-white p-6 sm:p-8 group hover:border-black/30 transition-colors">
-                      <div className="flex justify-between items-start mb-4">
-                        <span className="font-mono text-xs text-red font-semibold">{pr.date}</span>
-                        <span className="font-mono text-[10px] text-black/30 tracking-widest">{pr.ref}</span>
+                  {loading ? (
+                    [1, 2, 3].map((i) => (
+                      <div key={i} className="civic-card bg-white p-6 sm:p-8 animate-pulse">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="h-4 bg-black/10 rounded w-24" />
+                          <div className="h-3 bg-black/10 rounded w-28" />
+                        </div>
+                        <div className="h-6 bg-black/10 rounded w-3/4 mb-3" />
+                        <div className="h-4 bg-black/10 rounded w-1/2" />
                       </div>
-                      <h3 className="font-body text-xl font-semibold text-black mb-6 group-hover:text-red transition-colors">
-                        {pr.title}
-                      </h3>
-                      <Link href="#" className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-black/50 font-bold hover:text-black">
-                        READ FULL RELEASE <ExternalLink size={14} />
-                      </Link>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    pressReleases.map((pr, i) => (
+                      <motion.div
+                        key={pr.id}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                        className="civic-card bg-white p-6 sm:p-8 group hover:border-black/30 transition-colors"
+                      >
+                        <div className="flex justify-between items-start mb-4">
+                          <span className="font-mono text-xs text-red font-semibold">
+                            {formatDate(pr.published_at)}
+                          </span>
+                          <span className="font-mono text-[10px] text-black/30 tracking-widest">
+                            {pr.ref_code}
+                          </span>
+                        </div>
+                        <h3 className="font-body text-xl font-semibold text-black mb-6 group-hover:text-red transition-colors">
+                          {pr.title}
+                        </h3>
+                        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-black/40 font-bold">
+                          <FileText size={14} />
+                          {pr.ref_code}
+                        </div>
+                      </motion.div>
+                    ))
+                  )}
                 </div>
               </motion.div>
 
               {/* Sidebar Assets & Contact */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -89,7 +147,7 @@ export default function MediaPage() {
                     </div>
                     <div>
                       <span className="text-white/40 block text-[10px] uppercase tracking-widest mb-1">PHONE</span>
-                      <span className="text-white">+91 11 4XXX XXXX</span>
+                      <span className="text-white">+91 11 4000 0000</span>
                     </div>
                   </div>
                 </div>
@@ -97,18 +155,22 @@ export default function MediaPage() {
                 <div className="bg-white border border-black/10 p-8 rounded-2xl">
                   <h3 className="font-body text-lg font-bold text-black mb-2">Press Kit</h3>
                   <p className="font-body text-sm text-black/50 mb-6">High-resolution logos, brand guidelines, and official photos.</p>
-                  
-                  <button className="w-full flex items-center justify-between p-4 bg-black/5 hover:bg-black/10 rounded-xl transition-colors text-black font-body font-medium text-sm">
+
+                  <a
+                    href="/press-kit.zip"
+                    download
+                    className="w-full flex items-center justify-between p-4 bg-black/5 hover:bg-black/10 rounded-xl transition-colors text-black font-body font-medium text-sm"
+                  >
                     <span className="flex items-center gap-3">
                       <Download size={18} className="text-red" />
                       Download Brand Assets
                     </span>
-                    <span className="font-mono text-[10px] text-black/40">12.4 MB</span>
-                  </button>
+                    <span className="font-mono text-[10px] text-black/40">ZIP</span>
+                  </a>
                 </div>
               </motion.div>
             </div>
-            
+
           </div>
         </main>
       </PageTransition>

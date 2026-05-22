@@ -60,7 +60,7 @@ export default function PrivacyPage() {
               ))}
               
               <div className="mt-20 pt-8 border-t border-black/10 font-mono text-xs text-black/50 uppercase tracking-widest">
-                LAST UPDATED: MAY 2026
+                {t("lastUpdated")}
               </div>
             </motion.div>
           </div>

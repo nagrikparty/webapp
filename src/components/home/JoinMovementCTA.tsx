@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/i18n/routing";
 import { Users, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { getVolunteerCount } from "@/actions";
 
 interface Props {
   translations: {
@@ -21,7 +22,16 @@ interface Props {
 }
 
 export default function JoinMovementCTA({ translations }: Props) {
+  const [leaderCount, setLeaderCount] = useState<string>(translations.leadersVal);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getVolunteerCount().then((count) => {
+      if (count > 0) {
+        setLeaderCount(count.toString());
+      }
+    });
+  }, []);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
@@ -83,7 +93,7 @@ export default function JoinMovementCTA({ translations }: Props) {
             </div>
             <div className="flex flex-col gap-1 items-center">
               <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.leaders}</span>
-              <span className="font-mono text-lg text-white font-bold">{translations.leadersVal}</span>
+              <span className="font-mono text-lg text-white font-bold">{leaderCount}</span>
             </div>
             <div className="flex flex-col gap-1 items-center">
               <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.meetDay}</span>

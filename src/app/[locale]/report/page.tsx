@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/effects/PageTransition";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, CheckCircle, Camera } from "lucide-react";
+import { submitReport } from "@/actions";
 
 export default function ReportPage() {
   useLenis();
@@ -15,20 +16,60 @@ export default function ReportPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [selectedSeverity, setSelectedSeverity] = useState("");
+  const [formData, setFormData] = useState({ name: "", phone: "", ward: "", category: "", description: "" });
+  const [refId, setRefId] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedSeverity) {
+      alert("Please select a severity level.");
+      return;
+    }
+    
     setIsSubmitting(true);
-    // Simulate network request
-    setTimeout(() => {
-      setIsSubmitting(false);
+    
+    try {
+      const fd = new FormData();
+      fd.append("name", formData.name);
+      fd.append("phone", formData.phone);
+      fd.append("ward", formData.ward);
+      fd.append("category", formData.category);
+      fd.append("severity", selectedSeverity);
+      fd.append("description", formData.description);
+      
+      if (file) {
+        fd.append("file", file);
+      }
+      
+      const response = await submitReport(fd);
+        
+      if (!response.success) {
+        throw new Error(response.error || "Submission failed");
+      }
+      
+      if (response.id) {
+        // Just take the first 8 chars of the UUID for a short ref ID
+        setRefId("NGRK-" + response.id.substring(0, 8).toUpperCase());
+      }
+      
       setIsSuccess(true);
-    }, 1500);
+      setFormData({ name: "", phone: "", ward: "", category: "", description: "" });
+      setSelectedSeverity("");
+      setFile(null);
+      setFileName("");
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      alert("Failed to submit report. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
       setFileName(e.target.files[0].name);
     }
   };
@@ -100,7 +141,7 @@ export default function ReportPage() {
                       {t("Form.success")}
                     </h3>
                     <p className="font-mono text-sm text-black/50 uppercase tracking-widest">
-                      REF ID: NGRK-{Math.floor(Math.random() * 90000) + 10000}
+                      REF ID: {refId || `NGRK-${Math.floor(Math.random() * 90000) + 10000}`}
                     </p>
                   </motion.div>
                 ) : (
@@ -120,24 +161,24 @@ export default function ReportPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="civic-label">{t("Form.nameLabel")}</label>
-                        <input type="text" required className="civic-input" placeholder={t("Form.namePlaceholder")} />
+                        <input type="text" required className="civic-input" placeholder={t("Form.namePlaceholder")} value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
                       </div>
                       <div className="space-y-2">
                         <label className="civic-label">{t("Form.phoneLabel")}</label>
-                        <input type="tel" pattern="[0-9]{10}" required className="civic-input" placeholder={t("Form.phonePlaceholder")} />
+                        <input type="tel" pattern="[0-9]{10}" required className="civic-input" placeholder={t("Form.phonePlaceholder")} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <label className="civic-label">{t("Form.wardLabel")}</label>
-                      <input type="text" required className="civic-input" placeholder={t("Form.wardPlaceholder")} />
+                      <input type="text" required className="civic-input" placeholder={t("Form.wardPlaceholder")} value={formData.ward} onChange={e => setFormData({...formData, ward: e.target.value})} />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="civic-label">{t("Form.categoryLabel")}</label>
-                        <select required className="civic-select w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-black/30 transition-colors">
-                          <option value="" disabled selected>{t("Form.categoryPlaceholder")}</option>
+                        <select required className="civic-select w-full bg-white/50 border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-black/30 transition-colors" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})}>
+                          <option value="" disabled>{t("Form.categoryPlaceholder")}</option>
                           {categories.map(cat => (
                             <option key={cat} value={cat}>{t(`Form.categories.${cat}`)}</option>
                           ))}
@@ -166,7 +207,7 @@ export default function ReportPage() {
 
                     <div className="space-y-2">
                       <label className="civic-label">{t("Form.issueLabel")}</label>
-                      <textarea required className="civic-textarea min-h-[120px]" placeholder={t("Form.issuePlaceholder")}></textarea>
+                      <textarea required className="civic-textarea min-h-[120px]" placeholder={t("Form.issuePlaceholder")} value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}></textarea>
                     </div>
 
                     <div className="space-y-2">

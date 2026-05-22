@@ -48,6 +48,7 @@ export default function Footer() {
             <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/30 mb-2">
               {t("legal")}
             </span>
+            <FooterLink href="/candidates" text={t("candidates")} />
             <FooterLink href="/contact" text={t("contact")} />
             <FooterLink href="/privacy" text={t("privacy")} />
             <FooterLink href="/terms" text={t("terms")} />

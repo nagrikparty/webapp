@@ -20,7 +20,9 @@ const primaryLinks = [
 
 const secondaryLinks = [
   { href: "/manifesto", labelKey: "manifesto" },
+  { href: "/constitution", labelKey: "constitution" },
   { href: "/transparency", labelKey: "transparency" },
+  { href: "/candidates", labelKey: "candidates" },
   { href: "/media", labelKey: "media" },
   { href: "/contact", labelKey: "contact" },
 ] as const;
