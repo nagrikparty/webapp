@@ -2,7 +2,6 @@ import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-export const runtime = 'experimental-edge';
 
 const intlMiddleware = createIntlMiddleware({
   // A list of all locales that are supported

@@ -1,5 +1,6 @@
 // open-next.config.ts
 var config = {
+  buildCommand: "npm run next-build",
   default: {
     override: {
       wrapper: "cloudflare-node",

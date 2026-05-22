@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && opennextjs-cloudflare build",
+    "build": "opennextjs-cloudflare build",
+    "next-build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -14,6 +15,7 @@
     "@fontsource/teko": "^5.2.7",
     "@opennextjs/cloudflare": "^1.19.11",
     "@types/bcryptjs": "^2.4.6",
+    "babel-plugin-react-compiler": "^1.0.0",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "framer-motion": "^12.39.0",
