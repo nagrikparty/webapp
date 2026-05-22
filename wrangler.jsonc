@@ -1,18 +1,19 @@
 {
   "name": "nagrik-party-webapp",
-  "compatibility_date": "2024-04-05",
-  "pages_build_output_dir": ".open-next/worker",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": ".open-next/worker.js",
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "nagrik_db",
-      "database_id": "REPLACE_WITH_YOUR_D1_ID"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "REPORTS_BUCKET",
-      "bucket_name": "nagrik-reports"
+      "database_name": "nagrik",
+      "database_id": "216c780f-c6c8-421d-b7c3-f8ba7ba2da72"
     }
   ]
 }
