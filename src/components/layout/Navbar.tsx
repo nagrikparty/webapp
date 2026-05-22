@@ -44,7 +44,7 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+        className={`sticky top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled || menuOpen
             ? "bg-off-white/90 backdrop-blur-xl border-b border-black/8 shadow-sm"
             : "bg-transparent"

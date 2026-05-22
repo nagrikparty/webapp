@@ -5,6 +5,8 @@ import { useLenis } from "@/hooks/useLenis";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/effects/PageTransition";
+import { useState, useEffect } from "react";
+import { getDashboardStats } from "@/actions";
 
 // Home Sections
 import HeroSection from "@/components/home/HeroSection";
@@ -22,6 +24,16 @@ import FinalSloganSection from "@/components/home/FinalSloganSection";
 export default function HomePage() {
   useLenis(); // Initialize smooth scrolling
   const t = useTranslations("HomePage");
+
+  const [stats, setStats] = useState({ reportCount: 0, volunteerCount: 0, donationCount: 0 });
+
+  useEffect(() => {
+    getDashboardStats().then((res) => {
+      if (res) {
+        setStats(res);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -71,7 +83,7 @@ export default function HomePage() {
             title: t("IndiaBreaking.title"),
             desc: t("IndiaBreaking.desc"),
             potholes: t("IndiaBreaking.potholes"),
-            potholesVal: t("IndiaBreaking.potholesVal"),
+            potholesVal: stats.reportCount > 0 ? stats.reportCount.toLocaleString() : t("IndiaBreaking.potholesVal"),
             budget: t("IndiaBreaking.budget"),
             budgetVal: t("IndiaBreaking.budgetVal"),
             status: t("IndiaBreaking.status"),
@@ -113,7 +125,7 @@ export default function HomePage() {
             unemployment: t("SystemFailure.unemployment"),
             unemploymentVal: t("SystemFailure.unemploymentVal"),
             stat: t("SystemFailure.stat"),
-            statVal: t("SystemFailure.statVal")
+            statVal: stats.reportCount > 0 ? `${stats.reportCount.toLocaleString()} issues reported` : t("SystemFailure.statVal")
           }} />
 
           {/* ACT 3 — PARTICIPATION */}
@@ -137,7 +149,7 @@ export default function HomePage() {
             cta: t("NagrikReport.cta"),
             statusActive: t("NagrikReport.statusActive"),
             statusReports: t("NagrikReport.statusReports"),
-            statusReportsVal: t("NagrikReport.statusReportsVal")
+            statusReportsVal: stats.reportCount > 0 ? stats.reportCount.toLocaleString() : t("NagrikReport.statusReportsVal")
           }} />
 
           {/* ACT 4 — MOVEMENT */}
@@ -146,7 +158,7 @@ export default function HomePage() {
             desc: t("Join.desc"),
             cta: t("Join.cta"),
             groundOps: t("Join.groundOps"),
-            groundOpsVal: t("Join.groundOpsVal"),
+            groundOpsVal: stats.volunteerCount > 0 ? stats.volunteerCount.toLocaleString() : t("Join.groundOpsVal"),
             leaders: t("Join.leaders"),
             leadersVal: t("Join.leadersVal"),
             meetDay: t("Join.meetDay"),

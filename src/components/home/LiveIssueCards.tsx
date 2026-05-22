@@ -129,11 +129,14 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
             isCritical: report.severity === 'critical' || report.severity === 'high',
           }));
 
-          // Replace mock issues with real issues, if less than 6 fill with mocks to keep scroll smooth
-          const combined = [...formattedRealIssues];
-          if (combined.length < 6) {
-             const needed = 6 - combined.length;
-             combined.push(...issues.slice(0, needed));
+          // Only use real issues without padding with mocks
+          // If we have very few issues, we can duplicate them to maintain the infinite scroll effect
+          let combined = [...formattedRealIssues];
+          if (combined.length > 0 && combined.length < 6) {
+            while (combined.length < 6) {
+              combined = [...combined, ...formattedRealIssues];
+            }
+            combined = combined.slice(0, 6);
           }
           setDisplayIssues(combined);
         }
