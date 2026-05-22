@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS nagrik_members (
   epic_photo_key TEXT,
   password_hash TEXT,
   declaration_agreed INTEGER DEFAULT 0,
+  didit_session_id TEXT,
+  is_verified INTEGER DEFAULT 0,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -76,4 +78,11 @@ CREATE TABLE IF NOT EXISTS nagrik_leaders (
   area TEXT NOT NULL,
   status TEXT DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE')),
   joined_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS nagrik_verifications (
+  id TEXT PRIMARY KEY,
+  member_id TEXT NOT NULL,
+  session_id TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

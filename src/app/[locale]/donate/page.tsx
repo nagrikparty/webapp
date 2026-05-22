@@ -114,12 +114,8 @@ export default function DonatePage() {
                 </div>
                 <h3 className="font-body text-lg font-bold text-black mb-1">{t("bankTitle")}</h3>
                 <p className="font-body text-sm text-black/50 mb-4">{t("bankDesc")}</p>
-                <div className="text-left space-y-2 font-mono text-xs text-black/60">
-                  {/* TODO: Replace with real bank details */}
-                  <div><span className="text-black/40">A/C:</span> Nagrik Party</div>
-                  <div><span className="text-black/40">Bank:</span> State Bank of India</div>
-                  <div><span className="text-black/40">No:</span> XXXX XXXX XXXX</div>
-                  <div><span className="text-black/40">IFSC:</span> SBIN0XXXXXX</div>
+                <div className="text-left font-mono text-xs text-black/60 leading-relaxed bg-black/5 p-4 rounded-xl">
+                  {t("bankContactDetails") || "Please email donate@nagrikparty.in for NEFT/RTGS account details. We will provide our official SBI current account information."}
                 </div>
               </motion.div>
 

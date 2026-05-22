@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, AlertTriangle, LightbulbOff, Droplets, Trash2, Waves, Building2, Heart, Shield, Zap } from "lucide-react";
-import { useEffect, useState, useMemo } from "react";
+import { MapPin, AlertTriangle, LightbulbOff, Droplets, Trash2, Waves, Building2, Heart, Shield, Zap, Inbox } from "lucide-react";
+import { useEffect, useState } from "react";
 import { getLiveIssues } from "@/actions";
 
 interface LiveIssueCardsProps {
@@ -12,6 +12,8 @@ interface LiveIssueCardsProps {
     safetyConcern: string;
     critical: string;
     pending: string;
+    // We no longer need all the dummy translation strings here, but we'll leave them in the type 
+    // to avoid breaking the parent component layout until we refactor the dictionary.
     issue1Location: string;
     issue1Title: string;
     issue1Days: string;
@@ -34,64 +36,8 @@ interface LiveIssueCardsProps {
 }
 
 export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
-  const issues = useMemo(() => [
-    {
-      id: 1,
-      location: translations.issue1Location,
-      title: translations.issue1Title,
-      days: translations.issue1Days,
-      icon: <Building2 size={20} className="text-charcoal" />,
-      tag: translations.critical,
-      isCritical: true,
-    },
-    {
-      id: 2,
-      location: translations.issue2Location,
-      title: translations.issue2Title,
-      days: translations.issue2Days,
-      icon: <LightbulbOff size={20} className="text-charcoal" />,
-      tag: translations.safetyConcern,
-      isCritical: true,
-    },
-    {
-      id: 3,
-      location: translations.issue3Location,
-      title: translations.issue3Title,
-      days: translations.issue3Days,
-      icon: <Droplets size={20} className="text-charcoal" />,
-      tag: translations.pending,
-      isCritical: false,
-    },
-    {
-      id: 4,
-      location: translations.issue4Location,
-      title: translations.issue4Title,
-      days: translations.issue4Days,
-      icon: <Trash2 size={20} className="text-charcoal" />,
-      tag: translations.pending,
-      isCritical: false,
-    },
-    {
-      id: 5,
-      location: translations.issue5Location,
-      title: translations.issue5Title,
-      days: translations.issue5Days,
-      icon: <Waves size={20} className="text-charcoal" />,
-      tag: translations.critical,
-      isCritical: true,
-    },
-    {
-      id: 6,
-      location: translations.issue6Location,
-      title: translations.issue6Title,
-      days: translations.issue6Days,
-      icon: <AlertTriangle size={20} className="text-charcoal" />,
-      tag: translations.pending,
-      isCritical: false,
-    },
-  ], [translations]);
-
-  const [displayIssues, setDisplayIssues] = useState(issues);
+  const [displayIssues, setDisplayIssues] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchIssues = async () => {
@@ -129,23 +75,28 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
             isCritical: report.severity === 'critical' || report.severity === 'high',
           }));
 
-          // Only use real issues without padding with mocks
-          // If we have very few issues, we can duplicate them to maintain the infinite scroll effect
-          let combined = [...formattedRealIssues];
-          if (combined.length > 0 && combined.length < 6) {
-            while (combined.length < 6) {
-              combined = [...combined, ...formattedRealIssues];
-            }
-            combined = combined.slice(0, 6);
-          }
-          setDisplayIssues(combined);
+          setDisplayIssues(formattedRealIssues);
+        } else {
+          setDisplayIssues([]);
         }
       } catch (error) {
         console.error("Failed to fetch live issues:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchIssues();
-  }, [translations, issues]);
+  }, [translations]);
+
+  if (loading) {
+    return (
+      <section className="py-12 sm:py-16 bg-off-white overflow-hidden border-b border-black/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8 flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-black/20 border-t-red rounded-full animate-spin"></div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-12 sm:py-16 bg-off-white overflow-hidden border-b border-black/5">
@@ -164,63 +115,71 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
         {/* Right fade */}
         <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-off-white to-transparent z-10 pointer-events-none"></div>
 
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            repeat: Infinity,
-            ease: "linear",
-            duration: 30,
-          }}
-          className="flex gap-4 sm:gap-6 px-4 w-max"
-        >
-          {/* Double the items for seamless infinite scroll */}
-          {[...displayIssues, ...displayIssues].map((issue, i) => (
-            <div
-              key={`${issue.id}-${i}`}
-              className={`w-72 sm:w-80 shrink-0 civic-card bg-white/70 hover:bg-white transition-colors duration-300 ${
-                issue.isCritical ? "issue-card-pulse" : ""
-              }`}
-            >
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center gap-1.5 text-black/50">
-                  <MapPin size={14} strokeWidth={2.5} />
-                  <span className="font-mono text-[10px] uppercase tracking-wider font-semibold">
-                    {issue.location}
-                  </span>
+        {displayIssues.length > 0 ? (
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              repeat: Infinity,
+              ease: "linear",
+              duration: displayIssues.length > 3 ? 30 : 60, // Slower if fewer items
+            }}
+            className="flex gap-4 sm:gap-6 px-4 w-max"
+          >
+            {/* Duplicate array just to make the marquee loop cleanly */}
+            {[...displayIssues, ...displayIssues, ...displayIssues, ...displayIssues].map((issue, i) => (
+              <div
+                key={`${issue.id}-${i}`}
+                className={`w-72 sm:w-80 shrink-0 civic-card bg-white/70 hover:bg-white transition-colors duration-300 ${
+                  issue.isCritical ? "issue-card-pulse" : ""
+                }`}
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex items-center gap-1.5 text-black/50">
+                    <MapPin size={14} strokeWidth={2.5} />
+                    <span className="font-mono text-[10px] uppercase tracking-wider font-semibold">
+                      {issue.location}
+                    </span>
+                  </div>
+                  {issue.isCritical ? (
+                    <span className="bg-red/10 text-red px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-wider font-bold">
+                      {issue.tag}
+                    </span>
+                  ) : (
+                    <span className="bg-black/5 text-black/60 px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-wider font-semibold">
+                      {issue.tag}
+                    </span>
+                  )}
                 </div>
-                {issue.isCritical ? (
-                  <span className="bg-red/10 text-red px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-wider font-bold">
-                    {issue.tag}
-                  </span>
-                ) : (
-                  <span className="bg-black/5 text-black/60 px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-wider font-semibold">
-                    {issue.tag}
-                  </span>
-                )}
-              </div>
 
-              <div className="flex items-start gap-3 mb-4">
-                <div className="p-2 bg-black/5 rounded-lg shrink-0">
-                  {issue.icon}
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="p-2 bg-black/5 rounded-lg shrink-0">
+                    {issue.icon}
+                  </div>
+                  <h3 className="font-body text-sm font-semibold text-black leading-snug">
+                    {issue.title}
+                  </h3>
                 </div>
-                <h3 className="font-body text-sm font-semibold text-black leading-snug">
-                  {issue.title}
-                </h3>
-              </div>
 
-              <div className="pt-3 border-t border-black/5 flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xl font-hindi font-semibold text-red">
-                    {issue.days}
-                  </span>
-                  <span className="font-body text-[11px] text-black/50 uppercase tracking-wide">
-                    {translations.unresolved}
-                  </span>
+                <div className="pt-3 border-t border-black/5 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xl font-hindi font-semibold text-red">
+                      {issue.days}
+                    </span>
+                    <span className="font-body text-[11px] text-black/50 uppercase tracking-wide">
+                      {translations.unresolved}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-8 text-black/40">
+            <Inbox size={48} className="mb-4 opacity-50" />
+            <p className="font-body text-lg font-medium">No active issues reported</p>
+            <p className="font-mono text-xs uppercase tracking-widest mt-2">All clear in your ward</p>
+          </div>
+        )}
       </div>
     </section>
   );

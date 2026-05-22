@@ -1,21 +1,26 @@
-import { getSession } from "@/lib/auth";
 import { getMemberData } from "@/actions";
 import { redirect } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ShieldCheck, User } from "lucide-react";
+import VerifyIdentityCTA from "@/components/dashboard/VerifyIdentityCTA";
+import { createClient } from "@/lib/supabase/server";
 
-export default async function DashboardPage({ params: { locale } }: { params: { locale: string } }) {
-  const session = await getSession();
+export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
   
-  if (!session?.memberId) {
+  if (!user || !user.id) {
     redirect({ href: "/login", locale });
+    return null;
   }
 
-  const member = await getMemberData(session.memberId);
+  const member = await getMemberData(user.id);
   if (!member) {
     redirect({ href: "/login", locale });
+    return null;
   }
 
   const t = await getTranslations({ locale, namespace: "Dashboard" });
@@ -61,13 +66,18 @@ export default async function DashboardPage({ params: { locale } }: { params: { 
                 <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 mb-2">{t("epic")}</p>
                 <p className="font-mono text-lg uppercase tracking-widest text-black font-semibold">{member.epic_number}</p>
               </div>
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 mb-2">{t("status")}</p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg">
-                  <ShieldCheck size={18} />
-                  <span className="font-mono text-xs uppercase tracking-widest font-bold">{t("verified")}</span>
-                </div>
-              </div>
+              <VerifyIdentityCTA 
+                isVerified={!!member.is_verified} 
+                hasSession={!!member.didit_session_id}
+                translations={{
+                  verified: t("verified"),
+                  verifyIdentity: "Verify ID with Didit",
+                  verifying: "Verifying...",
+                  verificationFailed: "Verification failed. Please try again.",
+                  tryAgain: "Try Again",
+                  pendingStatus: "Verification Pending"
+                }}
+              />
             </div>
           </div>
         </div>

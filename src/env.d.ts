@@ -4,5 +4,7 @@ declare global {
   interface CloudflareEnv {
     DB: D1Database;
     REPORTS_BUCKET: R2Bucket;
+    DIDIT_API_KEY?: string;
+    DIDIT_WORKFLOW_ID?: string;
   }
 }

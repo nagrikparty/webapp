@@ -7,8 +7,6 @@ import { locales } from '@/i18n/request';
 import { inter, mukta, teko } from '@/lib/fonts';
 import '@/app/globals.css';
 
-export const runtime = 'edge';
-
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: string }>;

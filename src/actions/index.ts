@@ -1,8 +1,7 @@
 "use server";
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { setAuthCookie } from "@/lib/auth";
-import bcrypt from "bcryptjs";
+import { createClient } from "@/lib/supabase/server";
 
 // ─── CONTACT ────────────────────────────────────────────────────────────────────
 
@@ -75,7 +74,6 @@ export async function submitMember(formData: FormData) {
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
-    const id = crypto.randomUUID();
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
@@ -101,9 +99,23 @@ export async function submitMember(formData: FormData) {
     const password = formData.get("password") as string;
     const declaration_agreed = formData.get("declaration_agreed") === 'true' ? 1 : 0;
     
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const password_hash = await bcrypt.hash(password || "defaultPassword123", salt);
+    const supabase = await createClient();
+    
+    // Create Supabase Auth User
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: email,
+      password: password || "defaultPassword123",
+      options: {
+        data: { name, phone }
+      }
+    });
+
+    if (authError || !authData.user) {
+      console.error("Supabase Auth Error:", authError);
+      return { success: false, error: authError?.message || "Authentication failed during signup" };
+    }
+
+    const id = authData.user.id;
 
     const profileFile = formData.get("profile_photo") as File | null;
     const epicFile = formData.get("epic_photo") as File | null;
@@ -138,17 +150,19 @@ export async function submitMember(formData: FormData) {
         id, name, email, phone, dob, gender, guardian_name, address, state, vidhan_sabha,
         ward, pincode, is_registered_voter, is_indian_citizen, has_criminal_record, criminal_record_details, 
         is_other_party_member, other_party_name, epic_number, skills, social_media, referral_source, 
-        referral_code, profile_photo_key, epic_photo_key, password_hash, declaration_agreed
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        referral_code, profile_photo_key, epic_photo_key, declaration_agreed
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).bind(
       id, name, email, phone, dob, gender, guardian_name, address, state, vidhan_sabha,
       ward, pincode, is_registered_voter, is_indian_citizen, has_criminal_record, criminal_record_details,
       is_other_party_member, other_party_name, epic_number, skills, social_media, referral_source, 
-      referral_code, profile_photo_key, epic_photo_key, password_hash, declaration_agreed
+      referral_code, profile_photo_key, epic_photo_key, declaration_agreed
     ).run();
 
-    if (result.success) {
-      await setAuthCookie(id, phone, name);
+    if (!result.success) {
+      // If DB fails, we should ideally rollback Supabase user, but for now we'll just log it.
+      console.error("D1 Insert Error during signup");
+      return { success: false, error: "Failed to store profile data" };
     }
 
     return { success: result.success, id };
@@ -345,19 +359,22 @@ export async function loginMember(formData: FormData) {
     if (!env.DB) return { success: false, error: "Database not configured" };
 
     const user = await env.DB.prepare(
-      `SELECT id, name, password_hash FROM nagrik_members WHERE phone = ?`
+      `SELECT email FROM nagrik_members WHERE phone = ?`
     ).bind(phone).first();
 
-    if (!user) {
+    if (!user || !user.email) {
       return { success: false, error: "Invalid phone or password" };
     }
 
-    const isValid = await bcrypt.compare(password, user.password_hash as string);
-    if (!isValid) {
+    const supabase = await createClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user.email as string,
+      password: password
+    });
+
+    if (signInError) {
       return { success: false, error: "Invalid phone or password" };
     }
-
-    await setAuthCookie(user.id as string, phone, user.name as string);
 
     return { success: true };
   } catch (error) {
@@ -372,7 +389,7 @@ export async function getMemberData(id: string) {
     if (!env.DB) return null;
 
     return await env.DB.prepare(
-      `SELECT id, name, phone, email, epic_number, is_indian_citizen, has_criminal_record, created_at, profile_photo_key 
+      `SELECT id, name, phone, email, epic_number, is_indian_citizen, has_criminal_record, created_at, profile_photo_key, is_verified, didit_session_id 
        FROM nagrik_members WHERE id = ?`
     ).bind(id).first();
   } catch (error) {
