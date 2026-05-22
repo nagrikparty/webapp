@@ -1,4 +1,8 @@
 {
+  "/_not-found/page": "/_not-found",
+  "/_global-error/page": "/_global-error",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
   "/[locale]/about/page": "/[locale]/about",
   "/[locale]/candidates/page": "/[locale]/candidates",
   "/[locale]/constitution/page": "/[locale]/constitution",
@@ -17,9 +21,5 @@
   "/[locale]/privacy/page": "/[locale]/privacy",
   "/[locale]/report/page": "/[locale]/report",
   "/[locale]/terms/page": "/[locale]/terms",
-  "/[locale]/transparency/page": "/[locale]/transparency",
-  "/_global-error/page": "/_global-error",
-  "/_not-found/page": "/_not-found",
-  "/favicon.ico/route": "/favicon.ico",
-  "/page": "/"
+  "/[locale]/transparency/page": "/[locale]/transparency"
 }
