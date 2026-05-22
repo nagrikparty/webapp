@@ -1,19 +1,20 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const secretKey = process.env.JWT_SECRET || "nagrik_party_edge_secret_key_12345!@#";
-const key = new TextEncoder().encode(secretKey);
-
+function getKey() {
+  const secretKey = (typeof process !== 'undefined' && process.env.JWT_SECRET) || "nagrik_party_edge_secret_key_12345!@#";
+  return new TextEncoder().encode(secretKey);
+}
 export async function encrypt(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
-    .sign(key);
+    .sign(getKey());
 }
 
 export async function decrypt(input: string): Promise<any> {
-  const { payload } = await jwtVerify(input, key, {
+  const { payload } = await jwtVerify(input, getKey(), {
     algorithms: ["HS256"],
   });
   return payload;
@@ -27,7 +28,7 @@ export async function setAuthCookie(memberId: string, phone: string, name: strin
   cookieStore.set("session", session, {
     expires,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: (typeof process !== 'undefined' && process.env.NODE_ENV === "production"),
     sameSite: "lax",
     path: "/",
   });

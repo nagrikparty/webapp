@@ -12,8 +12,11 @@ const intlMiddleware = createIntlMiddleware({
   localePrefix: 'always'
 });
 
-const secretKey = process.env.JWT_SECRET || "nagrik_party_edge_secret_key_12345!@#";
-const key = new TextEncoder().encode(secretKey);
+function getKey() {
+  // Use optional chaining or typeof to safely access process
+  const secretKey = (typeof process !== 'undefined' && process.env.JWT_SECRET) || "nagrik_party_edge_secret_key_12345!@#";
+  return new TextEncoder().encode(secretKey);
+}
 
 export default async function middleware(req: NextRequest) {
   // Check if it's a dashboard route (ignoring locale prefix)
@@ -25,7 +28,7 @@ export default async function middleware(req: NextRequest) {
     
     if (sessionCookie) {
       try {
-        await jwtVerify(sessionCookie, key, { algorithms: ["HS256"] });
+        await jwtVerify(sessionCookie, getKey(), { algorithms: ["HS256"] });
         isAuthenticated = true;
       } catch (e) {
         // invalid token

@@ -5,11 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  reactCompiler: true,
-  experimental: {
-    optimizePackageImports: ["lucide-react", "framer-motion"],
-  },
-  productionBrowserSourceMaps: false,
+  /* config options here */
 };
 
 export default withNextIntl(nextConfig);
