@@ -57,8 +57,8 @@ export default function MediaPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-off-white min-h-screen pt-32 pb-24">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="bg-black min-h-screen pt-24 pb-24">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -69,10 +69,10 @@ export default function MediaPage() {
                 <span className="w-2 h-2 rounded-full bg-red"></span>
                 PRESS ROOM
               </div>
-              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight">
+              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-white font-bold mb-6 tracking-tight uppercase">
                 {t("title")}
               </h1>
-              <p className="font-body text-xl sm:text-2xl text-black/60 max-w-2xl border-l-4 border-red pl-6 py-1">
+              <p className="font-body text-xl sm:text-2xl text-white/60 max-w-2xl border-l-4 border-red pl-6 py-1">
                 {t("subtitle")}
               </p>
             </motion.div>
@@ -85,17 +85,17 @@ export default function MediaPage() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="lg:col-span-8"
               >
-                <h2 className="font-body text-2xl font-bold mb-8 text-black">Official Press Releases</h2>
+                <h2 className="font-body text-2xl font-bold mb-8 text-white">Official Press Releases</h2>
                 <div className="space-y-6">
                   {loading ? (
                     [1, 2, 3].map((i) => (
-                      <div key={i} className="civic-card bg-white p-6 sm:p-8 animate-pulse">
+                      <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 animate-pulse">
                         <div className="flex justify-between items-start mb-4">
-                          <div className="h-4 bg-black/10 rounded w-24" />
-                          <div className="h-3 bg-black/10 rounded w-28" />
+                          <div className="h-4 bg-white/10 rounded w-24" />
+                          <div className="h-3 bg-white/10 rounded w-28" />
                         </div>
-                        <div className="h-6 bg-black/10 rounded w-3/4 mb-3" />
-                        <div className="h-4 bg-black/10 rounded w-1/2" />
+                        <div className="h-6 bg-white/10 rounded w-3/4 mb-3" />
+                        <div className="h-4 bg-white/10 rounded w-1/2" />
                       </div>
                     ))
                   ) : (
@@ -105,20 +105,20 @@ export default function MediaPage() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className="civic-card bg-white p-6 sm:p-8 group hover:border-black/30 transition-colors"
+                        className="bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 group hover:border-white/20 transition-all duration-300"
                       >
                         <div className="flex justify-between items-start mb-4">
                           <span className="font-mono text-xs text-red font-semibold">
                             {formatDate(pr.published_at)}
                           </span>
-                          <span className="font-mono text-[10px] text-black/30 tracking-widest">
+                          <span className="font-mono text-[10px] text-white/30 tracking-widest">
                             {pr.ref_code}
                           </span>
                         </div>
-                        <h3 className="font-body text-xl font-semibold text-black mb-6 group-hover:text-red transition-colors">
+                        <h3 className="font-body text-xl font-semibold text-white mb-6 group-hover:text-red transition-colors">
                           {pr.title}
                         </h3>
-                        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-black/40 font-bold">
+                        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-white/40 font-bold">
                           <FileText size={14} />
                           {pr.ref_code}
                         </div>
@@ -135,8 +135,8 @@ export default function MediaPage() {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="lg:col-span-4 space-y-8"
               >
-                <div className="bg-black p-8 rounded-2xl text-white">
-                  <h3 className="font-body text-lg font-bold mb-4">Media Contact</h3>
+                <div className="bg-white/5 border border-white/10 p-8 rounded-2xl">
+                  <h3 className="font-body text-lg font-bold mb-4 text-white">Media Contact</h3>
                   <p className="font-body text-white/60 mb-6 text-sm leading-relaxed">
                     {t("content")}
                   </p>
@@ -152,20 +152,20 @@ export default function MediaPage() {
                   </div>
                 </div>
 
-                <div className="bg-white border border-black/10 p-8 rounded-2xl">
-                  <h3 className="font-body text-lg font-bold text-black mb-2">Press Kit</h3>
-                  <p className="font-body text-sm text-black/50 mb-6">High-resolution logos, brand guidelines, and official photos.</p>
+                <div className="bg-white/5 border border-white/10 p-8 rounded-2xl">
+                  <h3 className="font-body text-lg font-bold text-white mb-2">Press Kit</h3>
+                  <p className="font-body text-sm text-white/50 mb-6">High-resolution logos, brand guidelines, and official photos.</p>
 
                   <a
                     href="/press-kit.zip"
                     download
-                    className="w-full flex items-center justify-between p-4 bg-black/5 hover:bg-black/10 rounded-xl transition-colors text-black font-body font-medium text-sm"
+                    className="w-full flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-colors text-white font-body font-medium text-sm"
                   >
                     <span className="flex items-center gap-3">
                       <Download size={18} className="text-red" />
                       Download Brand Assets
                     </span>
-                    <span className="font-mono text-[10px] text-black/40">ZIP</span>
+                    <span className="font-mono text-[10px] text-white/40">ZIP</span>
                   </a>
                 </div>
               </motion.div>

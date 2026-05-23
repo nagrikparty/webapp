@@ -3,6 +3,7 @@
 import { motion, Variants } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { Megaphone } from "lucide-react";
 
 interface FullscreenMenuProps {
   onClose: () => void;
@@ -10,21 +11,19 @@ interface FullscreenMenuProps {
 
 const primaryLinks = [
   { href: "/", labelKey: "home" },
-  { href: "/mission", labelKey: "mission" },
-  { href: "/about", labelKey: "about" },
+  { href: "/manifesto", labelKey: "manifesto" },
+  { href: "/cadre", label: "CADRE" },
   { href: "/report", labelKey: "report" },
   { href: "/join", labelKey: "join" },
   { href: "/issues", labelKey: "issues" },
-  { href: "/infrastructure", labelKey: "infrastructure" },
 ] as const;
 
 const secondaryLinks = [
-  { href: "/manifesto", labelKey: "manifesto" },
-  { href: "/constitution", labelKey: "constitution" },
+  { href: "/about", labelKey: "about" },
   { href: "/transparency", labelKey: "transparency" },
-  { href: "/candidates", labelKey: "candidates" },
-  { href: "/media", labelKey: "media" },
+  { href: "/donate", labelKey: "donate" },
   { href: "/contact", labelKey: "contact" },
+  { href: "/login", labelKey: "login" },
 ] as const;
 
 export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
@@ -82,7 +81,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="fixed inset-0 z-30 bg-off-white/[0.97] backdrop-blur-2xl flex flex-col justify-center overflow-hidden"
+      className="fixed inset-0 z-30 bg-black/[0.97] backdrop-blur-2xl flex flex-col justify-center overflow-hidden"
     >
       <div className="relative z-10 px-6 sm:px-12 lg:px-20 max-w-5xl mx-auto w-full">
         {/* Primary Navigation */}
@@ -94,8 +93,8 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
                 onClick={onClose}
                 className="group flex items-baseline gap-4 py-1"
               >
-                <span className="font-hindi text-4xl sm:text-5xl lg:text-6xl font-medium tracking-wide text-black group-hover:text-red transition-colors duration-300 leading-tight">
-                  {t(item.labelKey)}
+                <span className={`font-hindi text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase group-hover:text-red transition-colors duration-300 leading-tight ${'label' in item ? 'text-red' : 'text-white'}`}>
+                  {'labelKey' in item ? t(item.labelKey) : item.label}
                 </span>
                 <span className="hidden sm:block w-0 group-hover:w-16 h-px bg-red transition-all duration-500"></span>
               </Link>
@@ -106,7 +105,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
         {/* Divider */}
         <motion.div
           variants={secondaryVariants}
-          className="w-full h-px bg-black/10 mb-8"
+          className="w-full h-px bg-white/10 mb-8"
         ></motion.div>
 
         {/* Secondary Navigation */}
@@ -119,11 +118,23 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className="text-sm font-body tracking-widest text-black/50 hover:text-red transition-colors duration-300 uppercase"
+              className="text-sm font-mono tracking-widest text-white/40 hover:text-red transition-colors duration-300 uppercase font-bold"
             >
               {t(item.labelKey)}
             </Link>
           ))}
+        </motion.div>
+
+        {/* Report Now Mobile CTA */}
+        <motion.div variants={secondaryVariants}>
+          <Link 
+            href="/report" 
+            onClick={onClose}
+            className="md:hidden inline-flex items-center gap-2 bg-red text-white px-6 py-4 rounded-full font-mono text-xs uppercase tracking-widest font-bold shadow-[0_0_20px_rgba(255,43,43,0.3)] mb-8"
+          >
+            <Megaphone size={16} />
+            REPORT NOW
+          </Link>
         </motion.div>
 
         {/* Bottom slogan */}
@@ -131,10 +142,10 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
           variants={secondaryVariants}
           className="flex flex-col gap-2"
         >
-          <p className="font-body text-xs tracking-[0.25em] uppercase text-black/40">
+          <p className="font-mono text-xs tracking-[0.25em] uppercase text-white/30">
             {t("menuSubtext")}
           </p>
-          <h2 className="font-hindi text-3xl sm:text-4xl text-red font-semibold tracking-wide">
+          <h2 className="font-hindi text-3xl sm:text-4xl text-red font-black tracking-tighter uppercase">
             काम दिखना चाहिए.
           </h2>
         </motion.div>
@@ -142,3 +153,4 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
     </motion.div>
   );
 }
+

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Megaphone } from "lucide-react";
 import FullscreenMenu from "./FullscreenMenu";
 import Logo from "@/components/ui/Logo";
 import ThemeToggle from "@/components/ui/ThemeToggle";
@@ -45,85 +45,106 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-        className={`sticky top-0 left-0 right-0 z-40 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled || menuOpen
-            ? "bg-off-white/90 backdrop-blur-xl border-b border-black/8 shadow-sm"
-            : "bg-transparent"
+            ? "bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-sm py-2"
+            : "bg-transparent py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            {/* Left: Logo & Language */}
-            <div className="flex items-center gap-4 sm:gap-6">
-              <Link href="/" aria-label="Home page" className="flex items-center gap-2.5 group" onClick={() => setMenuOpen(false)}>
-                <Logo size={32} className="text-black group-hover:text-red transition-colors duration-300" />
+          <div className="flex items-center justify-between h-14 sm:h-16">
+            {/* Left: Logo */}
+            <div className="flex items-center gap-6">
+              <Link href="/" aria-label="Home page" className="flex items-center gap-2 group z-50" onClick={() => setMenuOpen(false)}>
+                <Logo size={28} className="text-red transition-transform duration-300 group-hover:scale-110" />
                 <div className="flex flex-col notranslate" translate="no">
-                  <span className="font-hindi text-xl sm:text-2xl leading-none tracking-wide font-medium text-black">
+                  <span className="font-hindi text-2xl leading-none tracking-tighter font-bold text-black dark:text-white uppercase">
                     नागरिक पार्टी
-                  </span>
-                  <span className="text-[9px] sm:text-[10px] tracking-[0.2em] font-medium uppercase text-black/60">
-                    NAGRIK PARTY
                   </span>
                 </div>
               </Link>
-
-              <div className="h-5 w-px bg-black/15"></div>
-
-              <div className="flex items-center gap-4">
-                <ThemeToggle />
-                
-                <Link
-                  href={pathname}
-                  locale={toggleLocale as "en" | "hi"}
-                  aria-label={`Switch to ${toggleLocale === 'hi' ? 'Hindi' : 'English'}`}
-                  className="text-xs sm:text-sm font-medium text-black/70 dark:text-white/70 hover:text-red dark:hover:text-red transition-colors duration-300 tracking-wider"
-                >
-                  {toggleText}
-                </Link>
-              </div>
             </div>
 
-            {/* Right: Hamburger Menu */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="relative text-black hover:text-red transition-colors p-2 z-50"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {menuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <X size={26} strokeWidth={1.5} />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Menu size={26} strokeWidth={1.5} />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </button>
+            {/* Middle: Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+              <NavLink href="/manifesto" text={t("manifesto") || "Manifesto"} />
+              <NavLink href="/issues" text={t("issues") || "Live Issues"} />
+              <NavLink href="/cadre" text="CADRE" highlight />
+              <NavLink href="/transparency" text={t("transparency") || "Transparency"} />
+            </div>
+
+            {/* Right: Actions */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <ThemeToggle />
+              
+              <Link
+                href={pathname}
+                locale={toggleLocale as "en" | "hi"}
+                aria-label={`Switch to ${toggleLocale === 'hi' ? 'Hindi' : 'English'}`}
+                className="hidden sm:flex text-xs font-mono font-bold text-black/70 dark:text-white/70 hover:text-red dark:hover:text-red transition-colors duration-300 tracking-widest uppercase bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full"
+              >
+                {toggleText}
+              </Link>
+
+              {/* High Impact Primary CTA */}
+              <Link 
+                href="/report" 
+                className="hidden md:flex items-center gap-2 bg-red text-white px-5 py-2.5 rounded-full font-mono text-xs uppercase tracking-widest font-bold hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(255,43,43,0.3)]"
+              >
+                <Megaphone size={14} />
+                <span>Report Now</span>
+              </Link>
+
+              {/* Mobile Hamburger */}
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="lg:hidden relative text-black dark:text-white hover:text-red transition-colors p-2 z-50 bg-black/5 dark:bg-white/5 rounded-full"
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {menuOpen ? (
+                    <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <X size={20} strokeWidth={2} />
+                    </motion.div>
+                  ) : (
+                    <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <Menu size={20} strokeWidth={2} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>
 
       <AnimatePresence>
         {menuOpen && (
-          <FullscreenMenu
-            onClose={() => setMenuOpen(false)}
-          />
+          <FullscreenMenu onClose={() => setMenuOpen(false)} />
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function NavLink({ href, text, highlight = false }: { href: string; text: string; highlight?: boolean }) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
+  return (
+    <Link
+      href={href}
+      className={`relative font-mono text-xs tracking-widest uppercase font-bold transition-colors duration-300 ${
+        isActive ? "text-red" : highlight ? "text-red animate-pulse" : "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
+      }`}
+    >
+      {text}
+      {isActive && (
+        <motion.div
+          layoutId="navbar-indicator"
+          className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-red rounded-full"
+        />
+      )}
+    </Link>
   );
 }

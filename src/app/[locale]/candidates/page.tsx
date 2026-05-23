@@ -15,18 +15,18 @@ export default function CandidatesPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-charcoal min-h-screen pt-32 pb-20">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="bg-black min-h-screen pt-24 pb-20">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="mb-12 border-b border-white/10 pb-8"
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-red/20 rounded-xl">
+                <div className="p-3 bg-red/20 rounded-xl border border-red/30">
                   <AlertTriangle size={32} className="text-red" />
                 </div>
-                <h1 className="font-hindi text-4xl md:text-5xl font-bold text-white uppercase tracking-tight">
+                <h1 className="font-hindi text-4xl md:text-6xl font-bold text-white uppercase tracking-tight">
                   {t("title")}
                 </h1>
               </div>
@@ -41,12 +41,12 @@ export default function CandidatesPage() {
             </motion.div>
 
             <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-              <div className="p-4 border-b border-white/10 flex items-center bg-black/40">
+              <div className="p-4 border-b border-white/10 flex items-center bg-white/[0.02]">
                 <Search size={18} className="text-white/40 mr-3" />
                 <input 
                   type="text" 
                   placeholder="Search constituency or candidate..." 
-                  className="bg-transparent border-none focus:outline-none text-white font-mono text-sm w-full"
+                  className="bg-transparent border-none focus:outline-none text-white font-mono text-sm w-full placeholder:text-white/30"
                   disabled
                 />
               </div>

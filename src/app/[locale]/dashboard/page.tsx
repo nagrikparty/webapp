@@ -29,33 +29,33 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   return (
     <>
       <Navbar />
-      <main className="bg-off-white min-h-screen pt-32 pb-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="bg-black min-h-screen pt-24 pb-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <div className="mb-12">
-            <h1 className="font-hindi text-4xl md:text-5xl font-bold text-black uppercase tracking-tight mb-2">
+            <h1 className="font-hindi text-4xl md:text-5xl font-bold text-white uppercase tracking-tight mb-2">
               {t("title")}
             </h1>
-            <p className="font-mono text-black/60 tracking-widest uppercase text-xs">
+            <p className="font-mono text-white/60 tracking-widest uppercase text-xs">
               {t("subtitle")}
             </p>
           </div>
 
-          <div className="civic-card bg-white overflow-hidden relative">
+          <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden relative">
             <div className="absolute top-0 left-0 w-2 h-full bg-red"></div>
             
-            <div className="p-8 sm:p-10 border-b border-black/10 flex flex-col md:flex-row gap-8 items-start md:items-center">
-              <div className="w-24 h-24 rounded-full bg-black/5 flex items-center justify-center border border-black/10 shrink-0">
-                <User size={40} className="text-black/40" />
+            <div className="p-8 sm:p-10 border-b border-white/10 flex flex-col md:flex-row gap-8 items-start md:items-center">
+              <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+                <User size={40} className="text-white/40" />
               </div>
               <div className="flex-1">
                 <p className="font-mono text-xs text-red font-bold tracking-widest uppercase mb-1">{t("idCard")}</p>
-                <h2 className="font-hindi text-3xl font-bold text-black mb-1">{member.name}</h2>
-                <p className="font-mono text-black/60 tracking-widest uppercase text-xs mb-4">{t("memberId")}: {member.id}</p>
+                <h2 className="font-hindi text-3xl font-bold text-white mb-1">{member.name}</h2>
+                <p className="font-mono text-white/60 tracking-widest uppercase text-xs mb-4">{t("memberId")}: {member.id}</p>
                 <div className="flex flex-wrap gap-4 mb-6">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/5 border border-black/10 rounded-full font-mono text-[10px] uppercase tracking-widest">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full font-mono text-[10px] uppercase tracking-widest text-white/60">
                     {member.phone}
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/5 border border-black/10 rounded-full font-mono text-[10px] uppercase tracking-widest">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full font-mono text-[10px] uppercase tracking-widest text-white/60">
                     {member.email}
                   </span>
                 </div>
@@ -75,10 +75,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
               </div>
             </div>
 
-            <div className="p-8 sm:p-10 bg-black/5 grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div className="p-8 sm:p-10 bg-white/5 grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-black/40 mb-2">{t("epic")}</p>
-                <p className="font-mono text-lg uppercase tracking-widest text-black font-semibold">{member.epic_number}</p>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-2">{t("epic")}</p>
+                <p className="font-mono text-lg uppercase tracking-widest text-white font-semibold">{member.epic_number}</p>
               </div>
               <VerifyIdentityCTA 
                 isVerified={!!member.is_verified} 

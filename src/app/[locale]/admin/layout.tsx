@@ -23,7 +23,7 @@ export default async function AdminLayout({ children, params }: { children: Reac
   }
 
   return (
-    <div className="min-h-screen bg-off-white dark:bg-charcoal text-black dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-black text-white transition-colors duration-300">
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
         <aside className="w-64 bg-white dark:bg-black/20 border-r border-black/10 dark:border-white/10 hidden md:flex flex-col">

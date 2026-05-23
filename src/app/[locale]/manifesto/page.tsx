@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/effects/PageTransition";
 import { motion } from "framer-motion";
+import { HeartPulse, Construction, ShieldCheck } from "lucide-react";
 
 export default function ManifestoPage() {
   useLenis();
@@ -13,26 +14,32 @@ export default function ManifestoPage() {
 
   const policyKeys = ["healthcare", "infrastructure", "womenSafety"] as const;
 
+  const policyIcons: Record<string, React.ReactNode> = {
+    healthcare: <HeartPulse size={28} className="text-red" />,
+    infrastructure: <Construction size={28} className="text-red" />,
+    womenSafety: <ShieldCheck size={28} className="text-red" />,
+  };
+
   return (
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-off-white min-h-screen pt-32 pb-24">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="bg-black min-h-screen pt-24 pb-24">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="border-b-2 border-black pb-12 mb-12"
+              className="border-b border-white/10 pb-12 mb-12"
             >
               <div className="flex items-center gap-2 mb-6 font-mono text-xs text-red uppercase tracking-widest font-bold">
-                <span className="w-2 h-2 rounded-full bg-red"></span>
+                <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>
                 {t("officialDoc")}
               </div>
-              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight">
+              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-white font-semibold mb-6 tracking-tight uppercase">
                 {t("title")}
               </h1>
-              <p className="font-body text-xl sm:text-2xl text-black/60 leading-relaxed border-l-4 border-red pl-6">
+              <p className="font-body text-xl sm:text-2xl text-white/60 leading-relaxed border-l-4 border-red pl-6">
                 {t("subtitle")}
               </p>
             </motion.div>
@@ -41,26 +48,41 @@ export default function ManifestoPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="prose prose-lg max-w-none prose-p:font-body prose-headings:font-hindi prose-headings:font-semibold"
             >
-              <p className="text-xl leading-relaxed text-black/80 font-medium mb-12">
+              <p className="text-xl leading-relaxed text-white/80 font-medium mb-16 font-body">
                 {t("content")}
               </p>
 
-              {/* Coming Soon Section for Detailed Policies */}
-              <div className="mt-16 border-2 border-dashed border-black/20 rounded-2xl p-8 sm:p-12 text-center opacity-70">
-                <h3 className="font-hindi text-3xl mb-4 text-black">{t("policyTitle")}</h3>
-                <p className="font-mono text-sm text-black/50 uppercase tracking-widest mb-6">
+              {/* Policy Cards */}
+              <div className="mb-8">
+                <h3 className="font-hindi text-3xl sm:text-4xl text-white font-semibold mb-2 uppercase tracking-tight">
+                  {t("policyTitle")}
+                </h3>
+                <p className="font-mono text-xs text-white/40 uppercase tracking-widest mb-8">
                   {t("policyPhase")}
                 </p>
-                <div className="space-y-4 max-w-md mx-auto text-left">
-                  {policyKeys.map((key) => (
-                    <div key={key} className="bg-black/5 p-4 rounded-xl flex justify-between items-center">
-                      <span className="font-body font-semibold">{t(`policies.${key}.title`)}</span>
-                      <span className="font-mono text-[10px] bg-black/10 px-2 py-1 rounded">{t(`policies.${key}.status`)}</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {policyKeys.map((key, i) => (
+                  <motion.div
+                    key={key}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+                    className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-red/30 transition-all duration-300 group"
+                  >
+                    <div className="w-12 h-12 bg-red/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red/20 transition-colors">
+                      {policyIcons[key]}
                     </div>
-                  ))}
-                </div>
+                    <h4 className="font-body text-lg font-bold text-white mb-2">
+                      {t(`policies.${key}.title`)}
+                    </h4>
+                    <span className="inline-block font-mono text-[10px] bg-red/10 text-red px-3 py-1 rounded-full uppercase tracking-widest font-bold">
+                      {t(`policies.${key}.status`)}
+                    </span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>

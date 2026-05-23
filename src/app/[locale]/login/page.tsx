@@ -50,7 +50,7 @@ export default function LoginPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-charcoal min-h-screen pt-32 pb-20 flex items-center justify-center">
+        <main className="bg-black min-h-screen pt-24 pb-20 flex items-center justify-center">
           <div className="w-full max-w-md px-4 sm:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -105,7 +105,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading || !turnstileToken}
-                  className="w-full bg-red text-white py-4 rounded-xl font-body font-bold hover:bg-red/90 transition-colors uppercase tracking-widest text-sm shadow-lg shadow-red/20 disabled:opacity-50"
+                  className="w-full bg-red text-white py-4 rounded-full font-mono font-bold hover:bg-red/90 transition-colors uppercase tracking-widest text-sm shadow-lg shadow-red/20 disabled:opacity-50"
                 >
                   {loading ? "Authenticating..." : t("submit")}
                 </button>

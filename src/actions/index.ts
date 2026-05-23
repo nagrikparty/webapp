@@ -114,7 +114,7 @@ export async function submitMember(formData: FormData) {
 
     const parsed = submitMemberSchema.safeParse(validationData);
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0].message };
+      return { success: false, error: parsed.error.issues[0].message };
     }
 
     const d = parsed.data;
@@ -225,7 +225,7 @@ export async function submitReport(formData: FormData) {
 
     const parsed = submitReportSchema.safeParse(validationData);
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0].message };
+      return { success: false, error: parsed.error.issues[0].message };
     }
     const d = parsed.data;
 
@@ -293,7 +293,7 @@ export async function submitDonation(data: { donor_name: string; amount: number;
 
     const parsed = submitDonationSchema.safeParse(data);
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0].message };
+      return { success: false, error: parsed.error.issues[0].message };
     }
     const d = parsed.data;
 
@@ -392,7 +392,7 @@ export async function loginMember(formData: FormData) {
 
     const parsed = loginMemberSchema.safeParse(validationData);
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0].message };
+      return { success: false, error: parsed.error.issues[0].message };
     }
     const d = parsed.data;
 
@@ -455,7 +455,7 @@ export async function updateProfile(formData: FormData) {
 
     const parsed = updateProfileSchema.safeParse(validationData);
     if (!parsed.success) {
-      return { success: false, error: parsed.error.errors[0].message };
+      return { success: false, error: parsed.error.issues[0].message };
     }
     const d = parsed.data;
 

@@ -17,7 +17,7 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-off-white dark:bg-charcoal flex flex-col items-center justify-center p-6 transition-colors duration-300">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 transition-colors duration-300">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -15,24 +15,24 @@ export default function ConstitutionPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-off-white min-h-screen pt-32 pb-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="bg-black min-h-screen pt-24 pb-20">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-16 border-b border-black/10 pb-10"
+              className="text-center mb-16 border-b border-white/10 pb-10"
             >
-              <div className="inline-flex items-center justify-center p-4 bg-black/5 rounded-full mb-6">
-                <FileText size={40} className="text-black" />
+              <div className="inline-flex items-center justify-center p-4 bg-white/5 border border-white/10 rounded-full mb-6">
+                <FileText size={40} className="text-white" />
               </div>
-              <h1 className="font-hindi text-5xl md:text-7xl font-bold text-black tracking-tight mb-4 uppercase">
+              <h1 className="font-hindi text-5xl md:text-7xl font-bold text-white tracking-tight mb-4 uppercase">
                 {t("title")}
               </h1>
-              <p className="font-mono text-black/60 tracking-widest uppercase text-sm mb-8">
+              <p className="font-mono text-white/60 tracking-widest uppercase text-sm mb-8">
                 {t("subtitle")}
               </p>
               
-              <button className="inline-flex items-center gap-2 bg-red text-white px-8 py-4 rounded-xl font-body font-bold hover:bg-red/90 transition-colors shadow-lg shadow-red/20 uppercase tracking-widest text-sm">
+              <button className="inline-flex items-center gap-2 bg-red text-white px-8 py-4 rounded-full font-mono font-bold hover:bg-red/90 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-red/20 uppercase tracking-widest text-sm">
                 <Download size={18} />
                 {t("downloadPdf")}
               </button>
@@ -42,24 +42,24 @@ export default function ConstitutionPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="civic-card space-y-12 bg-white"
+              className="bg-white/5 border border-white/10 rounded-2xl p-8 sm:p-12 space-y-12"
             >
               <div className="space-y-4">
-                <h2 className="font-hindi text-2xl font-bold border-l-4 border-red pl-4">{t("article1")}</h2>
-                <p className="font-body text-black/80 leading-relaxed text-lg">{t("article1Text")}</p>
+                <h2 className="font-hindi text-2xl font-bold text-white border-l-4 border-red pl-4">{t("article1")}</h2>
+                <p className="font-body text-white/60 leading-relaxed text-lg">{t("article1Text")}</p>
               </div>
 
               <div className="space-y-4">
-                <h2 className="font-hindi text-2xl font-bold border-l-4 border-red pl-4">{t("article2")}</h2>
-                <p className="font-body text-black/80 leading-relaxed text-lg">{t("article2Text")}</p>
+                <h2 className="font-hindi text-2xl font-bold text-white border-l-4 border-red pl-4">{t("article2")}</h2>
+                <p className="font-body text-white/60 leading-relaxed text-lg">{t("article2Text")}</p>
               </div>
 
               <div className="space-y-4">
-                <h2 className="font-hindi text-2xl font-bold border-l-4 border-red pl-4">{t("article3")}</h2>
-                <p className="font-body text-black/80 leading-relaxed text-lg">{t("article3Text")}</p>
+                <h2 className="font-hindi text-2xl font-bold text-white border-l-4 border-red pl-4">{t("article3")}</h2>
+                <p className="font-body text-white/60 leading-relaxed text-lg">{t("article3Text")}</p>
               </div>
               
-              <div className="pt-8 border-t border-black/10 flex items-center justify-center gap-2 text-black/40">
+              <div className="pt-8 border-t border-white/10 flex items-center justify-center gap-2 text-white/40">
                 <CheckCircle size={16} />
                 <span className="font-mono text-xs uppercase tracking-widest">ECI Compliant Document</span>
               </div>

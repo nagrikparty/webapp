@@ -17,16 +17,16 @@ export default function AboutPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-off-white min-h-screen">
+        <main className="bg-black min-h-screen">
           
           {/* Documentary Intro */}
-          <section className="relative h-[80vh] flex flex-col justify-end pb-24 px-4 sm:px-6 lg:px-8">
-            <div className="absolute inset-0 film-grain opacity-30"></div>
-            <div className="max-w-6xl mx-auto w-full relative z-10">
-              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-none text-black font-bold mb-6">
+          <section className="relative h-[80vh] flex flex-col justify-end pb-24 px-4 sm:px-6 lg:px-8 pt-24">
+            <div className="absolute inset-0 film-grain opacity-20"></div>
+            <div className="max-w-5xl mx-auto w-full relative z-10">
+              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-none text-white font-bold mb-6 uppercase tracking-tight">
                 {t("Intro.headline")}
               </h1>
-              <p className="font-english text-[clamp(1.25rem,3vw,1.75rem)] text-black/70 max-w-2xl border-l-4 border-red pl-6">
+              <p className="font-english text-[clamp(1.25rem,3vw,1.75rem)] text-white/60 max-w-2xl border-l-4 border-red pl-6">
                 {t("Intro.desc")}
               </p>
             </div>
@@ -66,11 +66,11 @@ export default function AboutPage() {
           />
 
           {/* Outro */}
-          <section className="relative py-40 bg-off-white text-center px-4 sm:px-6">
-            <h2 className="font-hindi text-[clamp(3rem,6vw,5rem)] text-black/90 font-bold mb-8 drop-shadow-sm max-w-4xl mx-auto leading-tight">
+          <section className="relative py-40 bg-black text-center px-4 sm:px-6 border-t border-white/10">
+            <h2 className="font-hindi text-[clamp(3rem,6vw,5rem)] text-white font-bold mb-8 drop-shadow-sm max-w-4xl mx-auto leading-tight uppercase">
               {t("Outro.headline")}
             </h2>
-            <p className="font-english text-xl text-red font-semibold tracking-wide">
+            <p className="font-mono text-xl text-red font-semibold tracking-widest uppercase">
               {t("Outro.desc")}
             </p>
           </section>

@@ -20,16 +20,16 @@ export default function ScrollTransition({ text }: ScrollTransitionProps) {
   return (
     <div 
       ref={containerRef}
-      className="relative h-[60svh] w-full bg-off-white flex items-center justify-center overflow-hidden"
+      className="relative h-[60svh] w-full bg-black flex items-center justify-center overflow-hidden"
     >
-      <div className="absolute inset-0 film-grain opacity-30"></div>
+      <div className="absolute inset-0 film-grain opacity-20"></div>
       
       <motion.div 
         style={{ y, opacity }}
         className="max-w-4xl mx-auto px-6 text-center"
       >
-        <h2 className="font-english text-[clamp(1.5rem,4vw,3rem)] font-light italic text-black/85 tracking-wide">
-          "{text}"
+        <h2 className="font-english text-[clamp(1.5rem,4vw,3rem)] font-light italic text-white/70 tracking-wide">
+          &ldquo;{text}&rdquo;
         </h2>
       </motion.div>
     </div>

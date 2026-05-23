@@ -1,12 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import CinematicButton from "../ui/CinematicButton";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Flame } from "lucide-react";
 
 interface HeroProps {
   translations: {
@@ -21,125 +20,108 @@ interface HeroProps {
 
 export default function HeroSection({ translations }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [issueText, setIssueText] = useState("");
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const opacityBg = useTransform(scrollYProgress, [0, 0.8], [0.7, 0]);
-  const scaleBg = useTransform(scrollYProgress, [0, 1], [1.02, 1.12]);
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacityBg = useTransform(scrollYProgress, [0, 0.8], [0.8, 0]);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[100svh] w-full flex flex-col justify-end pb-6 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden bg-off-white"
+      className="relative min-h-[90svh] w-full flex flex-col justify-center px-4 sm:px-6 lg:px-8 overflow-hidden bg-black pt-20"
     >
-      {/* Background Image with Parallax & Fade */}
+      {/* Dynamic Background */}
       <motion.div
-        style={{ y: yBg, opacity: opacityBg, scale: scaleBg }}
+        style={{ y: yBg, opacity: opacityBg }}
         className="absolute inset-0 z-0 pointer-events-none"
       >
         <Image
-          src="/images/hero.png"
-          alt="Rainy Delhi street"
+          src="/images/hero.png" // User can swap this with AI generated gritty art
+          alt="Movement Background"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center filter grayscale brightness-90 contrast-[1.08]"
+          className="object-cover object-center filter grayscale contrast-125 opacity-40 mix-blend-luminosity"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-off-white via-off-white/50 to-transparent"></div>
-        <div className="absolute inset-0 bg-white/5 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black"></div>
+        {/* Grain Overlay */}
+        <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-20 mix-blend-overlay pointer-events-none"></div>
       </motion.div>
 
-
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full">
+      <div className="relative z-10 max-w-7xl mx-auto w-full text-center flex flex-col items-center">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 1.4,
-            delay: 0.3,
-            ease: [0.16, 1, 0.3, 1] as const,
-          }}
-          className="max-w-4xl"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+          className="w-full"
         >
-          {/* Main headline */}
-          <h1 className="font-hindi text-[clamp(3.5rem,14vw,9rem)] leading-[0.82] text-black font-semibold mb-4 sm:mb-6 tracking-wide drop-shadow-sm">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red/10 border border-red/20 text-red mb-8">
+            <Flame size={16} className="animate-pulse" />
+            <span className="font-mono text-[10px] sm:text-xs tracking-widest uppercase font-bold">The Revolution is Online</span>
+          </div>
+
+          {/* Main headline - Massive and Brutalist */}
+          <h1 className="font-hindi text-[clamp(4rem,15vw,11rem)] leading-[0.8] text-white font-black mb-6 tracking-tighter uppercase drop-shadow-2xl">
             {translations.headline}
           </h1>
 
           {/* Subheadline */}
-          <p className="font-body text-[clamp(0.95rem,2.5vw,1.3rem)] text-black/75 max-w-xl leading-relaxed mb-6 sm:mb-8 border-l-2 border-red pl-4 sm:pl-5">
+          <p className="font-mono text-[clamp(1rem,3vw,1.5rem)] text-white/70 max-w-2xl mx-auto leading-snug tracking-widest uppercase font-bold mb-12">
             {translations.subheadline}
           </p>
 
-          {/* Issue participation input — CRITICAL: Users participate immediately */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-            className="mb-6 sm:mb-8"
-          >
-            <div className="flex flex-col sm:flex-row gap-3 max-w-xl">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  value={issueText}
-                  onChange={(e) => setIssueText(e.target.value)}
-                  placeholder={translations.inputPlaceholder}
-                  className="w-full bg-white/50 backdrop-blur-md border border-black/10 rounded-xl px-4 py-3.5 
-                    font-body text-sm text-black placeholder:text-black/30
-                    focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
-                    transition-all duration-300 shadow-sm"
-                />
-              </div>
-              <Link
-                href="/report"
-                className="flex items-center justify-center gap-2 bg-red text-white font-body text-sm font-medium 
-                  tracking-widest uppercase px-6 py-3.5 rounded-xl
-                  hover:bg-red/90 transition-all duration-300 hover:-translate-y-0.5
-                  shadow-lg shadow-red/20 whitespace-nowrap"
-              >
-                {translations.reportIt}
-                <ArrowRight size={16} strokeWidth={2} />
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <CinematicButton
+          {/* Primary High-Impact CTAs - The Bento Layout Foundation */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-3xl mx-auto">
+            <Link
               href="/join"
-              text={translations.ctaPrimary}
-              variant="primary"
-              className="w-full sm:w-auto"
-            />
-            <CinematicButton
-              href="/report"
-              text={translations.ctaSecondary}
-              variant="secondary"
-              className="w-full sm:w-auto"
-            />
+              className="w-full sm:w-auto group relative flex items-center justify-center gap-3 bg-white text-black px-8 py-5 rounded-2xl font-mono text-sm sm:text-base uppercase tracking-widest font-black overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95"
+            >
+              <div className="absolute inset-0 bg-red translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+              <span className="relative z-10 group-hover:text-white transition-colors duration-300">Join Party</span>
+              <ArrowRight className="relative z-10 group-hover:text-white transition-colors duration-300" size={20} />
+            </Link>
+
+            <Link
+              href="/cadre"
+              className="w-full sm:w-auto group flex items-center justify-center gap-3 bg-black border-2 border-white/20 text-white px-8 py-5 rounded-2xl font-mono text-sm sm:text-base uppercase tracking-widest font-black hover:border-white transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <span>Volunteer</span>
+            </Link>
+            
+            <Link
+              href="/manifesto"
+              className="w-full sm:w-auto group flex items-center justify-center gap-3 bg-transparent text-white/60 px-6 py-5 font-mono text-sm sm:text-base uppercase tracking-widest font-bold hover:text-white transition-colors duration-300 underline underline-offset-8 decoration-white/20 hover:decoration-white"
+            >
+              <span>Mission</span>
+            </Link>
           </div>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ delay: 2.5, duration: 1.2 }}
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none select-none"
-      >
+      {/* Decorative Ticker */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden bg-red text-white py-2 z-20 flex whitespace-nowrap border-y border-black">
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="w-px h-6 bg-black/30"
-        ></motion.div>
-      </motion.div>
+          animate={{ x: [0, -1035] }}
+          transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+          className="flex items-center gap-8 font-mono text-xs font-black uppercase tracking-widest"
+        >
+          {Array.from({ length: 10 }).map((_, i) => (
+            <span key={i} className="flex items-center gap-8">
+              <span>REPORT NOW</span>
+              <span>•</span>
+              <span>NO MORE EMPTY PROMISES</span>
+              <span>•</span>
+              <span>DIGITAL CADRE</span>
+              <span>•</span>
+            </span>
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 }

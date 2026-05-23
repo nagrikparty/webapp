@@ -6,7 +6,7 @@
   --color-off-white: #F5F1E8;
   --color-navy: #0F172A;
   --color-steel: #2A2A2A;
-  --color-red: #A11212;
+  --color-red: #FF2B2B;
   --color-saffron: #B8860B;
 
   /* Extended palette */
@@ -25,13 +25,13 @@
 }
 
 :root {
-  --background: var(--color-off-white);
-  --foreground: var(--color-black);
+  --background: var(--color-black);
+  --foreground: #FFFFFF;
 }
 
 @layer base {
   body {
-    @apply bg-off-white text-black font-body antialiased selection:bg-red selection:text-white;
+    @apply bg-black text-white font-body antialiased selection:bg-red selection:text-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -50,11 +50,11 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(10, 10, 10, 0.2);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(10, 10, 10, 0.4);
+    background: rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -102,33 +102,33 @@
    CIVIC FORM STYLES (municipal document aesthetic)
    ======================================== */
 .civic-input {
-  @apply w-full bg-white/50 backdrop-blur-sm border border-black/10 rounded-xl px-4 py-3.5
-         font-body text-sm text-black placeholder:text-black/30
+  @apply w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3.5
+         font-body text-sm text-white placeholder:text-white/30
          focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
          transition-all duration-300;
 }
 
 .civic-textarea {
-  @apply w-full bg-white/50 backdrop-blur-sm border border-black/10 rounded-xl px-4 py-3.5
-         font-body text-sm text-black placeholder:text-black/30
+  @apply w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3.5
+         font-body text-sm text-white placeholder:text-white/30
          focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
          transition-all duration-300 resize-none;
 }
 
 .civic-select {
-  @apply w-full bg-white/50 backdrop-blur-sm border border-black/10 rounded-xl px-4 py-3.5
-         font-body text-sm text-black
+  @apply w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-3.5
+         font-body text-sm text-white
          focus:outline-none focus:border-red/40 focus:ring-1 focus:ring-red/20
          transition-all duration-300 appearance-none cursor-pointer;
 }
 
 .civic-label {
-  @apply block font-mono text-[10px] uppercase tracking-[0.2em] text-black/50 mb-2;
+  @apply block font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 mb-2;
 }
 
 .civic-card {
-  @apply bg-white/40 backdrop-blur-md border border-black/8 rounded-2xl p-6
-         transition-all duration-500 hover:border-black/15 hover:shadow-lg;
+  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6
+         transition-all duration-500 hover:border-white/20 hover:shadow-lg;
 }
 
 /* ========================================
