@@ -31,13 +31,13 @@ export default function Footer() {
         {/* Socials & Legal */}
         <div className="w-full flex flex-col md:flex-row justify-between items-center gap-8 border-t border-white/10 pt-8">
           <div className="flex items-center gap-6">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
+            <a href="https://instagram.com/nagrikparty" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors" aria-label="Instagram">
               <Globe size={20} />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
+            <a href="https://x.com/nagrikparty" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors" aria-label="X (Twitter)">
               <MessageCircle size={20} />
             </a>
-            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors">
+            <a href="https://youtube.com/@nagrikparty" target="_blank" rel="noreferrer" className="text-white/40 hover:text-white transition-colors" aria-label="YouTube">
               <Play size={20} />
             </a>
           </div>
