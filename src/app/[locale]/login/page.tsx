@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import { loginMember } from "@/actions";
 import { useRouter } from "@/i18n/routing";
 import { Link } from "@/i18n/routing";
+import { toast } from "sonner";
+import TurnstileWidget from "@/components/ui/TurnstileWidget";
 
 export default function LoginPage() {
   useLenis();
@@ -17,24 +19,29 @@ export default function LoginPage() {
 
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      toast.error("Please complete the CAPTCHA");
+      return;
+    }
     setLoading(true);
-    setError("");
 
     const fd = new FormData();
     fd.append("phone", phone);
     fd.append("password", password);
+    fd.append("cf-turnstile-response", turnstileToken);
 
     const result = await loginMember(fd);
 
     if (result.success) {
+      toast.success("Successfully logged in.");
       router.push("/dashboard");
     } else {
-      setError(result.error || "Authentication failed");
+      toast.error(result.error || "Authentication failed");
       setLoading(false);
     }
   };
@@ -60,11 +67,6 @@ export default function LoginPage() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {error && (
-                  <div className="bg-red/10 border border-red/30 text-red text-sm p-3 rounded-lg text-center font-body">
-                    {error}
-                  </div>
-                )}
                 
                 <div className="space-y-2">
                   <label className="font-mono text-[10px] uppercase tracking-widest text-white/60">
@@ -92,9 +94,17 @@ export default function LoginPage() {
                   />
                 </div>
 
+                <TurnstileWidget 
+                  onSuccess={(token) => setTurnstileToken(token)} 
+                  onError={() => {
+                    toast.error("CAPTCHA verification failed. Please try again.");
+                    setTurnstileToken("");
+                  }} 
+                />
+
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !turnstileToken}
                   className="w-full bg-red text-white py-4 rounded-xl font-body font-bold hover:bg-red/90 transition-colors uppercase tracking-widest text-sm shadow-lg shadow-red/20 disabled:opacity-50"
                 >
                   {loading ? "Authenticating..." : t("submit")}

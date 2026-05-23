@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ShieldCheck, User } from "lucide-react";
 import VerifyIdentityCTA from "@/components/dashboard/VerifyIdentityCTA";
+import ProfileForm from "@/components/dashboard/ProfileForm";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -50,7 +51,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                 <p className="font-mono text-xs text-red font-bold tracking-widest uppercase mb-1">{t("idCard")}</p>
                 <h2 className="font-hindi text-3xl font-bold text-black mb-1">{member.name}</h2>
                 <p className="font-mono text-black/60 tracking-widest uppercase text-xs mb-4">{t("memberId")}: {member.id}</p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4 mb-6">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/5 border border-black/10 rounded-full font-mono text-[10px] uppercase tracking-widest">
                     {member.phone}
                   </span>
@@ -58,6 +59,19 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
                     {member.email}
                   </span>
                 </div>
+                
+                <ProfileForm 
+                  member={member} 
+                  translations={{
+                    editProfile: t("editProfile") || "Edit Profile",
+                    saveChanges: t("saveChanges") || "Save Changes",
+                    cancel: t("cancel") || "Cancel",
+                    name: t("name") || "Full Name",
+                    phone: t("phone") || "Phone Number",
+                    email: t("email") || "Email Address",
+                    successMessage: t("successMessage") || "Profile updated successfully!",
+                  }}
+                />
               </div>
             </div>
 

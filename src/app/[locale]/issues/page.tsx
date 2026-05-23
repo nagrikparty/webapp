@@ -20,6 +20,7 @@ import {
   Zap,
   ArrowRight
 } from "lucide-react";
+import LiveReportsFeed from "@/components/issues/LiveReportsFeed";
 
 export default function IssuesPage() {
   useLenis();
@@ -111,6 +112,11 @@ export default function IssuesPage() {
                 );
               })}
             </div>
+          </section>
+
+          {/* Live Reports Feed */}
+          <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mt-24">
+            <LiveReportsFeed />
           </section>
         </main>
       </PageTransition>

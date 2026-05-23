@@ -9,6 +9,7 @@ import PageTransition from "@/components/effects/PageTransition";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, CheckCircle, Camera } from "lucide-react";
 import { submitReport } from "@/actions";
+import { toast } from "sonner";
 
 export default function ReportPage() {
   useLenis();
@@ -24,7 +25,7 @@ export default function ReportPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedSeverity) {
-      alert("Please select a severity level.");
+      toast.warning("Please select a severity level.");
       return;
     }
     
@@ -59,9 +60,9 @@ export default function ReportPage() {
       setSelectedSeverity("");
       setFile(null);
       setFileName("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting report:", error);
-      alert("Failed to submit report. Please try again.");
+      toast.error(error.message || "Failed to submit report. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

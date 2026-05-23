@@ -9,6 +9,7 @@ import PageTransition from "@/components/effects/PageTransition";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, Users, Camera, Upload, ChevronRight, ChevronLeft } from "lucide-react";
 import { submitMember, getStates, getVidhanSabhas, getWards } from "@/actions";
+import { toast } from "sonner";
 
 export default function JoinPage() {
   useLenis();
@@ -112,12 +113,12 @@ export default function JoinPage() {
     // Validate current step
     if (step === 1) {
       if (!formData.name || !formData.phone || !formData.dob || !formData.gender || !formData.guardian_name) {
-        alert("Please fill all required personal details.");
+        toast.warning("Please fill all required personal details.");
         return;
       }
     } else if (step === 2) {
       if (!formData.address || !formData.state || !formData.vidhan_sabha || !formData.pincode) {
-        alert("Please fill all required location details.");
+        toast.warning("Please fill all required location details.");
         return;
       }
     }
@@ -133,7 +134,7 @@ export default function JoinPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.declaration_agreed) {
-      alert("Please agree to the declaration.");
+      toast.warning("Please agree to the declaration.");
       return;
     }
     
@@ -163,9 +164,9 @@ export default function JoinPage() {
       if (!response.success) throw new Error(response.error || "Submission failed");
       
       setIsSuccess(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting member form:", error);
-      alert("Failed to submit. Please try again.");
+      toast.error(error.message || "Failed to submit. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

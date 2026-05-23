@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import FullscreenMenu from "./FullscreenMenu";
 import Logo from "@/components/ui/Logo";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Navbar() {
   const t = useTranslations("Navigation");
@@ -54,7 +55,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Left: Logo & Language */}
             <div className="flex items-center gap-4 sm:gap-6">
-              <Link href="/" className="flex items-center gap-2.5 group" onClick={() => setMenuOpen(false)}>
+              <Link href="/" aria-label="Home page" className="flex items-center gap-2.5 group" onClick={() => setMenuOpen(false)}>
                 <Logo size={32} className="text-black group-hover:text-red transition-colors duration-300" />
                 <div className="flex flex-col notranslate" translate="no">
                   <span className="font-hindi text-xl sm:text-2xl leading-none tracking-wide font-medium text-black">
@@ -68,13 +69,18 @@ export default function Navbar() {
 
               <div className="h-5 w-px bg-black/15"></div>
 
-              <Link
-                href={pathname}
-                locale={toggleLocale as "en" | "hi"}
-                className="text-xs sm:text-sm font-medium text-black/70 hover:text-red transition-colors duration-300 tracking-wider"
-              >
-                {toggleText}
-              </Link>
+              <div className="flex items-center gap-4">
+                <ThemeToggle />
+                
+                <Link
+                  href={pathname}
+                  locale={toggleLocale as "en" | "hi"}
+                  aria-label={`Switch to ${toggleLocale === 'hi' ? 'Hindi' : 'English'}`}
+                  className="text-xs sm:text-sm font-medium text-black/70 dark:text-white/70 hover:text-red dark:hover:text-red transition-colors duration-300 tracking-wider"
+                >
+                  {toggleText}
+                </Link>
+              </div>
             </div>
 
             {/* Right: Hamburger Menu */}

@@ -10,6 +10,7 @@ import { Link } from "@/i18n/routing";
 import { submitDonation } from "@/actions";
 import { useState } from "react";
 import { Smartphone, Building2, MapPin, ArrowRight, Check, Copy } from "lucide-react";
+import { toast } from "sonner";
 
 export default function DonatePage() {
   useLenis();
@@ -17,7 +18,6 @@ export default function DonatePage() {
 
   const [form, setForm] = useState({ donor_name: "", amount: "", purpose: "General Fund", transaction_ref: "" });
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,11 +32,13 @@ export default function DonatePage() {
         transaction_ref: form.transaction_ref,
       });
       if (result.success) {
-        setSuccess(true);
+        toast.success(t("success") || "Donation submitted successfully!");
         setForm({ donor_name: "", amount: "", purpose: "General Fund", transaction_ref: "" });
+      } else {
+        toast.error("Failed to submit donation.");
       }
     } catch {
-      // silent
+      toast.error("An unexpected error occurred.");
     } finally {
       setSubmitting(false);
     }
@@ -147,85 +149,69 @@ export default function DonatePage() {
             >
               <h2 className="font-body text-2xl font-bold text-black mb-8">{t("formTitle")}</h2>
 
-              {success ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-12"
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="civic-label">{t("donorLabel")}</label>
+                    <input
+                      type="text"
+                      className="civic-input"
+                      placeholder={t("donorPlaceholder")}
+                      value={form.donor_name}
+                      onChange={(e) => setForm({ ...form, donor_name: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="civic-label">{t("amountLabel")}</label>
+                    <input
+                      type="number"
+                      className="civic-input"
+                      placeholder={t("amountPlaceholder")}
+                      value={form.amount}
+                      onChange={(e) => setForm({ ...form, amount: e.target.value })}
+                      min="1"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="civic-label">{t("purposeLabel")}</label>
+                    <select
+                      className="civic-select"
+                      value={form.purpose}
+                      onChange={(e) => setForm({ ...form, purpose: e.target.value })}
+                    >
+                      {purposeKeys.map((key) => (
+                        <option key={key} value={t(`purposes.${key}`)}>
+                          {t(`purposes.${key}`)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="civic-label">{t("refLabel")}</label>
+                    <input
+                      type="text"
+                      className="civic-input"
+                      placeholder={t("refPlaceholder")}
+                      value={form.transaction_ref}
+                      onChange={(e) => setForm({ ...form, transaction_ref: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-red text-white font-body text-sm font-medium tracking-widest uppercase py-4 rounded-xl hover:bg-red/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red/10"
                 >
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Check size={32} className="text-green-600" />
-                  </div>
-                  <p className="font-body text-xl text-black font-semibold mb-2">{t("success")}</p>
-                  <button onClick={() => setSuccess(false)} className="font-mono text-sm text-red underline mt-4">
-                    {t("submit")}
-                  </button>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="civic-label">{t("donorLabel")}</label>
-                      <input
-                        type="text"
-                        className="civic-input"
-                        placeholder={t("donorPlaceholder")}
-                        value={form.donor_name}
-                        onChange={(e) => setForm({ ...form, donor_name: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="civic-label">{t("amountLabel")}</label>
-                      <input
-                        type="number"
-                        className="civic-input"
-                        placeholder={t("amountPlaceholder")}
-                        value={form.amount}
-                        onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                        min="1"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="civic-label">{t("purposeLabel")}</label>
-                      <select
-                        className="civic-select"
-                        value={form.purpose}
-                        onChange={(e) => setForm({ ...form, purpose: e.target.value })}
-                      >
-                        {purposeKeys.map((key) => (
-                          <option key={key} value={t(`purposes.${key}`)}>
-                            {t(`purposes.${key}`)}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="civic-label">{t("refLabel")}</label>
-                      <input
-                        type="text"
-                        className="civic-input"
-                        placeholder={t("refPlaceholder")}
-                        value={form.transaction_ref}
-                        onChange={(e) => setForm({ ...form, transaction_ref: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full bg-red text-white font-body text-sm font-medium tracking-widest uppercase py-4 rounded-xl hover:bg-red/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red/10"
-                  >
-                    {submitting ? "..." : t("submit")}
-                  </button>
-                </form>
-              )}
+                  {submitting ? "..." : t("submit")}
+                </button>
+              </form>
             </motion.div>
 
             {/* View Ledger CTA */}

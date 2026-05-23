@@ -2,11 +2,22 @@
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { createClient } from "@/lib/supabase/server";
+import { submitDonationSchema, submitReportSchema, submitMemberSchema, loginMemberSchema, updateProfileSchema } from "@/lib/validations";
+import { logger } from "@/lib/logger";
+import { checkRateLimit } from "@/lib/ratelimit";
+import { headers } from "next/headers";
 
 // ─── CONTACT ────────────────────────────────────────────────────────────────────
 
 export async function submitContact(data: { name: string; email: string; message: string }) {
   try {
+    const headersList = await headers();
+    const ip = headersList.get("x-forwarded-for") || "unknown";
+
+    if (!checkRateLimit(`contact_${ip}`, 5, 60000)) {
+      return { success: false, error: "Too many requests, please try again later" };
+    }
+
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
@@ -17,7 +28,7 @@ export async function submitContact(data: { name: string; email: string; message
 
     return { success: result.success };
   } catch (error) {
-    console.error("Error in submitContact:", error);
+    logger.error({ err: error }, "Error in submitContact");
     return { success: false, error: "Internal Server Error" };
   }
 }
@@ -32,7 +43,7 @@ export async function getStates() {
     const result = await env.DB.prepare("SELECT id, name, name_hi, serial_no FROM states ORDER BY serial_no ASC").all();
     return result.results || [];
   } catch (error) {
-    console.error("Error fetching states:", error);
+    logger.error({ err: error }, "Error fetching states");
     return [];
   }
 }
@@ -47,7 +58,7 @@ export async function getVidhanSabhas(stateId: string) {
     ).bind(stateId).all();
     return result.results || [];
   } catch (error) {
-    console.error("Error fetching vidhan sabhas:", error);
+    logger.error({ err: error }, "Error fetching vidhan sabhas");
     return [];
   }
 }
@@ -62,7 +73,7 @@ export async function getWards(vidhanSabhaId: string) {
     ).bind(vidhanSabhaId).all();
     return result.results || [];
   } catch (error) {
-    console.error("Error fetching wards:", error);
+    logger.error({ err: error }, "Error fetching wards");
     return [];
   }
 }
@@ -74,44 +85,56 @@ export async function submitMember(formData: FormData) {
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const phone = formData.get("phone") as string;
-    const dob = formData.get("dob") as string;
-    const gender = formData.get("gender") as string;
-    const guardian_name = formData.get("guardian_name") as string;
-    const address = formData.get("address") as string;
-    const state = formData.get("state") as string;
-    const vidhan_sabha = formData.get("vidhan_sabha") as string;
-    const ward = formData.get("ward") as string;
-    const pincode = formData.get("pincode") as string;
-    const is_registered_voter = formData.get("is_registered_voter") as string;
-    const is_indian_citizen = formData.get("is_indian_citizen") === 'yes' ? 1 : 0;
-    const has_criminal_record = formData.get("has_criminal_record") === 'yes' ? 1 : 0;
-    const criminal_record_details = formData.get("criminal_record_details") as string;
-    const is_other_party_member = formData.get("is_other_party_member") as string;
-    const other_party_name = formData.get("other_party_name") as string;
-    const epic_number = formData.get("epic_number") as string;
-    const skills = formData.get("skills") as string;
-    const social_media = formData.get("social_media") as string;
-    const referral_source = formData.get("referral_source") as string;
-    const referral_code = formData.get("referral_code") as string;
-    const password = formData.get("password") as string;
-    const declaration_agreed = formData.get("declaration_agreed") === 'true' ? 1 : 0;
+    const validationData = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      dob: formData.get("dob") as string,
+      gender: formData.get("gender") as string,
+      guardian_name: formData.get("guardian_name") as string,
+      address: formData.get("address") as string,
+      state: formData.get("state") as string,
+      vidhan_sabha: formData.get("vidhan_sabha") as string,
+      ward: formData.get("ward") as string,
+      pincode: formData.get("pincode") as string,
+      is_registered_voter: formData.get("is_registered_voter") as string,
+      is_indian_citizen: formData.get("is_indian_citizen") as string,
+      has_criminal_record: formData.get("has_criminal_record") as string,
+      criminal_record_details: formData.get("criminal_record_details") as string,
+      is_other_party_member: formData.get("is_other_party_member") as string,
+      other_party_name: formData.get("other_party_name") as string,
+      epic_number: formData.get("epic_number") as string,
+      skills: formData.get("skills") as string,
+      social_media: formData.get("social_media") as string,
+      referral_source: formData.get("referral_source") as string,
+      referral_code: formData.get("referral_code") as string,
+      password: formData.get("password") as string,
+      declaration_agreed: formData.get("declaration_agreed") as string,
+    };
+
+    const parsed = submitMemberSchema.safeParse(validationData);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.errors[0].message };
+    }
+
+    const d = parsed.data;
+    const is_indian_citizen = d.is_indian_citizen === 'yes' ? 1 : 0;
+    const has_criminal_record = d.has_criminal_record === 'yes' ? 1 : 0;
+    const declaration_agreed = d.declaration_agreed === 'true' ? 1 : 0;
     
     const supabase = await createClient();
     
     // Create Supabase Auth User
     const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: email,
-      password: password || "defaultPassword123",
+      email: d.email || `${d.phone}@nagrikparty.in`, // fallback if no email
+      password: d.password,
       options: {
-        data: { name, phone }
+        data: { name: d.name, phone: d.phone }
       }
     });
 
     if (authError || !authData.user) {
-      console.error("Supabase Auth Error:", authError);
+      logger.error({ err: authError }, "Supabase Auth Error");
       return { success: false, error: authError?.message || "Authentication failed during signup" };
     }
 
@@ -153,21 +176,20 @@ export async function submitMember(formData: FormData) {
         referral_code, profile_photo_key, epic_photo_key, declaration_agreed
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).bind(
-      id, name, email, phone, dob, gender, guardian_name, address, state, vidhan_sabha,
-      ward, pincode, is_registered_voter, is_indian_citizen, has_criminal_record, criminal_record_details,
-      is_other_party_member, other_party_name, epic_number, skills, social_media, referral_source, 
-      referral_code, profile_photo_key, epic_photo_key, declaration_agreed
+      id, d.name, d.email, d.phone, d.dob, d.gender, d.guardian_name, d.address, d.state, d.vidhan_sabha,
+      d.ward, d.pincode, d.is_registered_voter, is_indian_citizen, has_criminal_record, d.criminal_record_details,
+      d.is_other_party_member, d.other_party_name, d.epic_number, d.skills, d.social_media, d.referral_source, 
+      d.referral_code, profile_photo_key, epic_photo_key, declaration_agreed
     ).run();
 
     if (!result.success) {
-      // If DB fails, we should ideally rollback Supabase user, but for now we'll just log it.
-      console.error("D1 Insert Error during signup");
+      logger.error("D1 Insert Error during signup");
       return { success: false, error: "Failed to store profile data" };
     }
 
     return { success: result.success, id };
   } catch (error) {
-    console.error("Error in submitMember:", error);
+    logger.error({ err: error }, "Error in submitMember");
     return { success: false, error: "Internal Server Error" };
   }
 }
@@ -192,12 +214,21 @@ export async function submitReport(formData: FormData) {
     if (!env.DB) return { success: false, error: "Database not configured" };
 
     const id = crypto.randomUUID();
-    const name = formData.get("name") as string;
-    const phone = formData.get("phone") as string;
-    const ward = formData.get("ward") as string;
-    const category = formData.get("category") as string;
-    const severity = formData.get("severity") as string;
-    const description = formData.get("description") as string;
+    const validationData = {
+      name: formData.get("name") as string,
+      phone: formData.get("phone") as string,
+      ward: formData.get("ward") as string,
+      category: formData.get("category") as string,
+      severity: formData.get("severity") as string,
+      description: formData.get("description") as string,
+    };
+
+    const parsed = submitReportSchema.safeParse(validationData);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.errors[0].message };
+    }
+    const d = parsed.data;
+
     const file = formData.get("file") as File | null;
 
     let photo_url = null;
@@ -217,23 +248,23 @@ export async function submitReport(formData: FormData) {
 
     const result = await env.DB.prepare(
       "INSERT INTO nagrik_reports (id, name, phone, ward, category, severity, description, photo_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    ).bind(id, name, phone, ward, category, severity, description, photo_url).run();
+    ).bind(id, d.name, d.phone, d.ward, d.category, d.severity, d.description, photo_url).run();
 
     return { success: result.success, id };
   } catch (error) {
-    console.error("Error in submitReport:", error);
+    logger.error({ err: error }, "Error in submitReport");
     return { success: false, error: "Internal Server Error" };
   }
 }
 
-export async function getLiveIssues() {
+export async function getLiveIssues(limit: number = 10, offset: number = 0) {
   try {
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return [];
 
     const { results } = await env.DB.prepare(
-      "SELECT * FROM nagrik_reports ORDER BY created_at DESC LIMIT 10"
-    ).all();
+      "SELECT * FROM nagrik_reports ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    ).bind(limit, offset).all();
 
     return results;
   } catch {
@@ -260,14 +291,20 @@ export async function submitDonation(data: { donor_name: string; amount: number;
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
+    const parsed = submitDonationSchema.safeParse(data);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.errors[0].message };
+    }
+    const d = parsed.data;
+
     const id = crypto.randomUUID();
     const result = await env.DB.prepare(
       "INSERT INTO nagrik_donations (id, donor_name, amount, purpose, transaction_ref) VALUES (?, ?, ?, ?, ?)"
-    ).bind(id, data.donor_name, data.amount, data.purpose, data.transaction_ref).run();
+    ).bind(id, d.donor_name, d.amount, d.purpose, d.transaction_ref).run();
 
     return { success: result.success, id };
   } catch (error) {
-    console.error("Error in submitDonation:", error);
+    logger.error({ err: error }, "Error in submitDonation");
     return { success: false, error: "Internal Server Error" };
   }
 }
@@ -348,19 +385,23 @@ export async function getDashboardStats() {
 
 export async function loginMember(formData: FormData) {
   try {
-    const phone = formData.get("phone") as string;
-    const password = formData.get("password") as string;
+    const validationData = {
+      phone: formData.get("phone") as string,
+      password: formData.get("password") as string,
+    };
 
-    if (!phone || !password) {
-      return { success: false, error: "Phone and password are required" };
+    const parsed = loginMemberSchema.safeParse(validationData);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.errors[0].message };
     }
+    const d = parsed.data;
 
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
     const user = await env.DB.prepare(
       `SELECT email FROM nagrik_members WHERE phone = ?`
-    ).bind(phone).first();
+    ).bind(d.phone).first();
 
     if (!user || !user.email) {
       return { success: false, error: "Invalid phone or password" };
@@ -369,7 +410,7 @@ export async function loginMember(formData: FormData) {
     const supabase = await createClient();
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: user.email as string,
-      password: password
+      password: d.password
     });
 
     if (signInError) {
@@ -378,7 +419,7 @@ export async function loginMember(formData: FormData) {
 
     return { success: true };
   } catch (error) {
-    console.error("Error in loginMember:", error);
+    logger.error({ err: error }, "Error in loginMember");
     return { success: false, error: "Authentication failed" };
   }
 }
@@ -394,5 +435,66 @@ export async function getMemberData(id: string) {
     ).bind(id).first();
   } catch (error) {
     return null;
+  }
+}
+
+export async function updateProfile(formData: FormData) {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user || !user.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const validationData = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+    };
+
+    const parsed = updateProfileSchema.safeParse(validationData);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.errors[0].message };
+    }
+    const d = parsed.data;
+
+    const { env } = await getCloudflareContext({ async: true });
+    if (!env.DB) return { success: false, error: "Database not configured" };
+
+    // Build dynamic update query based on provided fields
+    const updates = [];
+    const values = [];
+    
+    if (d.name) {
+      updates.push("name = ?");
+      values.push(d.name);
+    }
+    if (d.email !== undefined) { // allow empty string for email removal
+      updates.push("email = ?");
+      values.push(d.email);
+    }
+    if (d.phone) {
+      updates.push("phone = ?");
+      values.push(d.phone);
+    }
+
+    if (updates.length === 0) {
+      return { success: true }; // nothing to update
+    }
+
+    values.push(user.id);
+    const query = `UPDATE nagrik_members SET ${updates.join(", ")} WHERE id = ?`;
+
+    const result = await env.DB.prepare(query).bind(...values).run();
+
+    if (!result.success) {
+      return { success: false, error: "Failed to update profile" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    logger.error({ err: error }, "Error in updateProfile");
+    return { success: false, error: "Internal Server Error" };
   }
 }

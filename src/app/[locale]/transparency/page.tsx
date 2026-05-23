@@ -5,13 +5,31 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/effects/PageTransition";
 import { motion } from "framer-motion";
-import { FileBarChart, DownloadCloud } from "lucide-react";
-import { useState } from "react";
+import { FileBarChart, DownloadCloud, Activity } from "lucide-react";
+import { useState, useEffect } from "react";
+import { getDonations } from "@/actions";
+import dynamic from 'next/dynamic';
+
+const DonationsChart = dynamic(() => import('@/components/ui/DonationsChart'), {
+  loading: () => <div className="h-64 flex items-center justify-center border-2 border-dashed border-black/10 rounded-xl"><div className="w-6 h-6 border-2 border-black/20 border-t-red rounded-full animate-spin"></div></div>,
+  ssr: false
+});
 
 export default function TransparencyPage() {
   useLenis();
   const t = useTranslations("Transparency");
   const [activeTab, setActiveTab] = useState("audits");
+  const [donations, setDonations] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      if (activeTab === "contributions") {
+        const data = await getDonations();
+        setDonations(data);
+      }
+    }
+    load();
+  }, [activeTab]);
 
   return (
     <>
@@ -48,15 +66,27 @@ export default function TransparencyPage() {
               key={activeTab}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="civic-card bg-white"
+              className="civic-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10"
             >
-              <div className="flex flex-col items-center justify-center py-20 text-center text-black/40 border-2 border-dashed border-black/10 rounded-xl">
-                <FileBarChart size={48} className="mb-4 opacity-50" />
-                <p className="font-mono text-sm uppercase tracking-widest">{t("noReports")}</p>
-                <button className="mt-6 flex items-center gap-2 text-red font-mono text-xs tracking-widest uppercase hover:underline opacity-50 cursor-not-allowed">
-                  <DownloadCloud size={16} /> {t("downloadReport")}
-                </button>
-              </div>
+              {activeTab === "contributions" ? (
+                <div className="py-8 px-4 sm:px-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Activity className="text-red" size={24} />
+                    <h2 className="font-body text-xl font-bold text-black dark:text-white uppercase tracking-widest">
+                      Live Contributions
+                    </h2>
+                  </div>
+                  <DonationsChart data={donations} />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-20 text-center text-black/40 dark:text-white/40 border-2 border-dashed border-black/10 dark:border-white/10 rounded-xl m-4">
+                  <FileBarChart size={48} className="mb-4 opacity-50" />
+                  <p className="font-mono text-sm uppercase tracking-widest">{t("noReports")}</p>
+                  <button className="mt-6 flex items-center gap-2 text-red font-mono text-xs tracking-widest uppercase hover:underline opacity-50 cursor-not-allowed">
+                    <DownloadCloud size={16} /> {t("downloadReport")}
+                  </button>
+                </div>
+              )}
             </motion.div>
           </div>
         </main>
