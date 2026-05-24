@@ -1,126 +1,101 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
+import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing";
-import { ArrowRight, Flame } from "lucide-react";
+import { Megaphone, ArrowRight } from "lucide-react";
 
-interface HeroProps {
-  translations: {
-    headline: string;
-    subheadline: string;
-    ctaPrimary: string;
-    ctaSecondary: string;
-    inputPlaceholder: string;
-    reportIt: string;
-  };
-}
-
-export default function HeroSection({ translations }: HeroProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacityBg = useTransform(scrollYProgress, [0, 0.8], [0.8, 0]);
+export default function HeroSection() {
+  const tickerItems = [
+    "Drainage blocked in Ward 42",
+    "Hospital complaint unresolved - 11 days",
+    "Water tanker delay in South Extension",
+    "Streetlights inactive in Okhla Phase 2",
+    "Public toilet maintenance required in Lajpat Nagar",
+    "Pothole reported on Ring Road",
+  ];
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-[90svh] w-full flex flex-col justify-center px-4 sm:px-6 lg:px-8 overflow-hidden bg-black pt-20"
-    >
-      {/* Dynamic Background */}
-      <motion.div
-        style={{ y: yBg, opacity: opacityBg }}
-        className="absolute inset-0 z-0 pointer-events-none"
-      >
-        <Image
-          src="/images/hero.png" // User can swap this with AI generated gritty art
-          alt="Movement Background"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center filter grayscale contrast-125 opacity-40 mix-blend-luminosity"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black"></div>
-        {/* Grain Overlay */}
-        <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-20 mix-blend-overlay pointer-events-none"></div>
-      </motion.div>
+    <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden bg-off-white pt-20">
+      {/* Background Images */}
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none mix-blend-multiply"
+        style={{ backgroundImage: 'url(/images/concrete_light.png)', backgroundSize: 'cover' }}
+      ></div>
+      <div 
+        className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none object-cover mix-blend-multiply bg-center bg-no-repeat bg-cover"
+        style={{ backgroundImage: 'url(/images/delhi_streets_faded.png)' }}
+      ></div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full text-center flex flex-col items-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-          className="w-full"
-        >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red/10 border border-red/20 text-red mb-8">
-            <Flame size={16} className="animate-pulse" />
-            <span className="font-mono text-[10px] sm:text-xs tracking-widest uppercase font-bold">The Revolution is Online</span>
-          </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow flex flex-col justify-center py-20">
+        <div className="max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <h1 className="font-hindi text-[5rem] sm:text-[7rem] lg:text-[9rem] leading-[0.85] font-black text-black tracking-tighter uppercase mb-6 drop-shadow-sm">
+              काम दिखना <br/> 
+              <span className="text-red">चाहिए।</span>
+            </h1>
+          </motion.div>
 
-          {/* Main headline - Massive and Brutalist */}
-          <h1 className="font-hindi text-[clamp(4rem,15vw,11rem)] leading-[0.8] text-white font-black mb-6 tracking-tighter uppercase drop-shadow-2xl">
-            {translations.headline}
-          </h1>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          >
+            <p className="font-body text-xl sm:text-2xl text-black/70 max-w-2xl font-medium tracking-tight mb-10 leading-snug">
+              Politics is not speeches. <br className="hidden sm:block" />
+              Governance should be visible in daily life.
+            </p>
+          </motion.div>
 
-          {/* Subheadline */}
-          <p className="font-mono text-[clamp(1rem,3vw,1.5rem)] text-white/70 max-w-2xl mx-auto leading-snug tracking-widest uppercase font-bold mb-12">
-            {translations.subheadline}
-          </p>
-
-          {/* Primary High-Impact CTAs - The Bento Layout Foundation */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-3xl mx-auto">
-            <Link
-              href="/join"
-              className="w-full sm:w-auto group relative flex items-center justify-center gap-3 bg-white text-black px-8 py-5 rounded-2xl font-mono text-sm sm:text-base uppercase tracking-widest font-black overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-4"
+          >
+            <Link 
+              href="/join" 
+              className="group flex items-center justify-center gap-3 bg-black text-white px-8 py-4 font-mono uppercase tracking-widest font-bold text-sm transition-all hover:bg-black/80 hover:shadow-lg rounded-none"
             >
-              <div className="absolute inset-0 bg-red translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-              <span className="relative z-10 group-hover:text-white transition-colors duration-300">Join Party</span>
-              <ArrowRight className="relative z-10 group-hover:text-white transition-colors duration-300" size={20} />
-            </Link>
-
-            <Link
-              href="/cadre"
-              className="w-full sm:w-auto group flex items-center justify-center gap-3 bg-black border-2 border-white/20 text-white px-8 py-5 rounded-2xl font-mono text-sm sm:text-base uppercase tracking-widest font-black hover:border-white transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              <span>Volunteer</span>
+              Join Movement
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             
-            <Link
-              href="/manifesto"
-              className="w-full sm:w-auto group flex items-center justify-center gap-3 bg-transparent text-white/60 px-6 py-5 font-mono text-sm sm:text-base uppercase tracking-widest font-bold hover:text-white transition-colors duration-300 underline underline-offset-8 decoration-white/20 hover:decoration-white"
+            <Link 
+              href="/report" 
+              className="flex items-center justify-center gap-3 bg-red text-white px-8 py-4 font-mono uppercase tracking-widest font-bold text-sm transition-all hover:bg-red/90 hover:shadow-[0_4px_14px_rgba(255,43,43,0.3)] rounded-none"
             >
-              <span>Mission</span>
+              <Megaphone size={16} />
+              Report Local Issue
             </Link>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Decorative Ticker */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden bg-red text-white py-2 z-20 flex whitespace-nowrap border-y border-black">
-        <motion.div
-          animate={{ x: [0, -1035] }}
-          transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-          className="flex items-center gap-8 font-mono text-xs font-black uppercase tracking-widest"
-        >
-          {Array.from({ length: 10 }).map((_, i) => (
-            <span key={i} className="flex items-center gap-8">
-              <span>REPORT NOW</span>
-              <span>•</span>
-              <span>NO MORE EMPTY PROMISES</span>
-              <span>•</span>
-              <span>DIGITAL CADRE</span>
-              <span>•</span>
-            </span>
+      {/* Scrolling Civic Ticker */}
+      <div className="absolute bottom-0 left-0 right-0 bg-black text-white py-3 border-t border-black/10 overflow-hidden flex z-20">
+        <div className="font-mono text-xs tracking-widest uppercase font-bold whitespace-nowrap flex animate-marquee">
+          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
+            <div key={index} className="flex items-center">
+              <span className="mx-6 text-red">•</span>
+              <span>{item}</span>
+            </div>
           ))}
-        </motion.div>
+        </div>
+        
+        {/* We need CSS for animate-marquee. We can add it via tailwind config or inline styles. Let's rely on globals.css or inline keyframes. */}
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-33.33%); }
+          }
+          .animate-marquee {
+            animation: marquee 20s linear infinite;
+          }
+        `}} />
       </div>
     </section>
   );

@@ -383,44 +383,75 @@ export async function getDashboardStats() {
 
 // ─── AUTHENTICATION ─────────────────────────────────────────────────────────────
 
-export async function loginMember(formData: FormData) {
+export async function sendLoginOtp(formData: FormData) {
   try {
-    const validationData = {
-      phone: formData.get("phone") as string,
-      password: formData.get("password") as string,
-    };
-
-    const parsed = loginMemberSchema.safeParse(validationData);
-    if (!parsed.success) {
-      return { success: false, error: parsed.error.issues[0].message };
+    const phone = formData.get("phone") as string;
+    
+    if (!phone || phone.length < 10) {
+      return { success: false, error: "Invalid phone number" };
     }
-    const d = parsed.data;
 
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
     const user = await env.DB.prepare(
-      `SELECT email FROM nagrik_members WHERE phone = ?`
-    ).bind(d.phone).first();
+      `SELECT phone FROM nagrik_members WHERE phone = ?`
+    ).bind(phone).first();
 
-    if (!user || !user.email) {
-      return { success: false, error: "Invalid phone or password" };
+    if (!user) {
+      return { success: false, error: "Phone number not registered" };
     }
 
     const supabase = await createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: user.email as string,
-      password: d.password
+    
+    // We add +91 prefix if not present, assuming India phone numbers based on context,
+    // or just let Supabase format it if user types it. We'll ensure it has a plus sign.
+    const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
+
+    const { error: otpError } = await supabase.auth.signInWithOtp({
+      phone: formattedPhone
     });
 
-    if (signInError) {
-      return { success: false, error: "Invalid phone or password" };
+    if (otpError) {
+      logger.error({ err: otpError }, "Supabase OTP Error");
+      return { success: false, error: "Failed to send OTP" };
     }
 
     return { success: true };
   } catch (error) {
-    logger.error({ err: error }, "Error in loginMember");
+    logger.error({ err: error }, "Error in sendLoginOtp");
     return { success: false, error: "Authentication failed" };
+  }
+}
+
+export async function verifyLoginOtp(formData: FormData) {
+  try {
+    const phone = formData.get("phone") as string;
+    const token = formData.get("token") as string;
+
+    if (!phone || !token) {
+      return { success: false, error: "Phone and OTP are required" };
+    }
+
+    const supabase = await createClient();
+    
+    const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
+
+    const { error: verifyError } = await supabase.auth.verifyOtp({
+      phone: formattedPhone,
+      token,
+      type: "sms"
+    });
+
+    if (verifyError) {
+      logger.error({ err: verifyError }, "Supabase Verify OTP Error");
+      return { success: false, error: "Invalid or expired OTP" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    logger.error({ err: error }, "Error in verifyLoginOtp");
+    return { success: false, error: "Verification failed" };
   }
 }
 

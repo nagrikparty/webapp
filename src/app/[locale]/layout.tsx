@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#0A0A0A',
+  themeColor: '#F7F7F5',
 };
 
 import { constructMetadata } from '@/lib/seo';
@@ -44,7 +44,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={`${inter.variable} ${mukta.variable} ${teko.variable}`} suppressHydrationWarning>
-      <body className="bg-black text-white font-body antialiased selection:bg-red selection:text-white min-h-screen flex flex-col transition-colors duration-300">
+      <body className="bg-off-white text-black font-body antialiased selection:bg-red selection:text-white min-h-screen flex flex-col transition-colors duration-300">
         <NextIntlClientProvider messages={messages}>
           <PostHogProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

@@ -47,7 +47,7 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled || menuOpen
-            ? "bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-sm py-2"
+            ? "bg-off-white/90 backdrop-blur-xl border-b border-black/10 shadow-sm py-2"
             : "bg-transparent py-4"
         }`}
       >
@@ -58,7 +58,7 @@ export default function Navbar() {
               <Link href="/" aria-label="Home page" className="flex items-center gap-2 group z-50" onClick={() => setMenuOpen(false)}>
                 <Logo size={28} className="text-red transition-transform duration-300 group-hover:scale-110" />
                 <div className="flex flex-col notranslate" translate="no">
-                  <span className="font-hindi text-2xl leading-none tracking-tighter font-bold text-black dark:text-white uppercase">
+                  <span className="font-hindi text-2xl leading-none tracking-tighter font-bold text-black uppercase">
                     नागरिक पार्टी
                   </span>
                 </div>
@@ -75,13 +75,12 @@ export default function Navbar() {
 
             {/* Right: Actions */}
             <div className="flex items-center gap-3 sm:gap-4">
-              <ThemeToggle />
               
               <Link
                 href={pathname}
                 locale={toggleLocale as "en" | "hi"}
                 aria-label={`Switch to ${toggleLocale === 'hi' ? 'Hindi' : 'English'}`}
-                className="hidden sm:flex text-xs font-mono font-bold text-black/70 dark:text-white/70 hover:text-red dark:hover:text-red transition-colors duration-300 tracking-widest uppercase bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-full"
+                className="hidden sm:flex text-xs font-mono font-bold text-black/70 hover:text-red transition-colors duration-300 tracking-widest uppercase bg-black/5 px-3 py-1.5 rounded-full"
               >
                 {toggleText}
               </Link>
@@ -89,16 +88,16 @@ export default function Navbar() {
               {/* High Impact Primary CTA */}
               <Link 
                 href="/report" 
-                className="hidden md:flex items-center gap-2 bg-red text-white px-5 py-2.5 rounded-full font-mono text-xs uppercase tracking-widest font-bold hover:bg-black dark:hover:bg-white dark:hover:text-black transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(255,43,43,0.3)]"
+                className="hidden md:flex items-center gap-2 bg-red text-white px-5 py-2.5 rounded-none font-mono text-xs uppercase tracking-widest font-bold hover:bg-black transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-[0_4px_14px_rgba(255,43,43,0.3)]"
               >
                 <Megaphone size={14} />
-                <span>Report Now</span>
+                <span>Report Issue</span>
               </Link>
 
               {/* Mobile Hamburger */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="lg:hidden relative text-black dark:text-white hover:text-red transition-colors p-2 z-50 bg-black/5 dark:bg-white/5 rounded-full"
+                className="lg:hidden relative text-black hover:text-red transition-colors p-2 z-50 bg-black/5 rounded-full"
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
               >
                 <AnimatePresence mode="wait" initial={false}>
@@ -135,14 +134,14 @@ function NavLink({ href, text, highlight = false }: { href: string; text: string
     <Link
       href={href}
       className={`relative font-mono text-xs tracking-widest uppercase font-bold transition-colors duration-300 ${
-        isActive ? "text-red" : highlight ? "text-red animate-pulse" : "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
+        isActive ? "text-red" : highlight ? "text-red animate-pulse" : "text-black/60 hover:text-black"
       }`}
     >
       {text}
       {isActive && (
         <motion.div
           layoutId="navbar-indicator"
-          className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-red rounded-full"
+          className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-red rounded-none"
         />
       )}
     </Link>
