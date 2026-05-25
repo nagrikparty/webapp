@@ -45,9 +45,8 @@ export default function NagrikReportCTA({ translations }: Props) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
             
             <div className="flex flex-col items-start relative z-10">
-              <div className="flex items-center gap-2 mb-6 bg-red/10 text-red px-3 py-1.5 rounded-full font-mono text-xs uppercase tracking-widest font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-red animate-pulse"></span>
-                {translations.statusActive}
+              <div className="flex items-center gap-2 mb-6 bg-black text-white px-4 py-2 font-mono text-xs uppercase tracking-widest font-bold">
+                Official Submission
               </div>
               
               <h2 className="font-hindi text-[clamp(3rem,6vw,5rem)] leading-[0.9] text-black font-semibold mb-6">
@@ -68,39 +67,12 @@ export default function NagrikReportCTA({ translations }: Props) {
               </Link>
             </div>
 
-            {/* Simulated Live Feed UI */}
-            <div className="relative z-10 hidden sm:block">
-              <div className="bg-off-white rounded-2xl border border-black/5 p-6 relative">
-                <div className="absolute top-0 right-8 -translate-y-1/2 bg-white px-4 py-1 border border-black/10 rounded-full flex flex-col items-center shadow-sm">
-                  <span className="font-mono text-[9px] text-black/40 tracking-[0.2em]">{translations.statusReports}</span>
-                  <span className="font-mono text-lg text-black font-bold">{reportCount}</span>
-                </div>
-
-                <div className="space-y-4 pt-4">
-                  {[1, 2, 3].map((i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15, duration: 0.5 }}
-                      className="bg-white p-4 rounded-xl border border-black/5 flex items-start gap-4"
-                    >
-                      <div className="w-12 h-12 bg-black/5 rounded-lg shrink-0 flex items-center justify-center">
-                        <Camera size={16} className="text-black/30" />
-                      </div>
-                      <div className="flex-1 space-y-2 py-1">
-                        <div className="h-2 bg-black/10 rounded-full w-1/3"></div>
-                        <div className="h-2 bg-black/5 rounded-full w-3/4"></div>
-                        <div className="h-2 bg-black/5 rounded-full w-1/2"></div>
-                      </div>
-                      <span className="font-mono text-[9px] text-black/30 mt-1">
-                        {i * 12}M AGO
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+            {/* Civic Action Statement */}
+            <div className="relative z-10 hidden lg:block border-l-4 border-black pl-8">
+              <span className="font-mono text-[10px] text-black/60 tracking-[0.2em] uppercase block mb-4">Accountability Mechanism</span>
+              <p className="font-body text-xl font-bold leading-relaxed">
+                By submitting a documented failure, you mandate an official response from local authorities. This platform serves as a public ledger, preventing issues from being hidden or ignored by bureaucracy.
+              </p>
             </div>
 
           </div>

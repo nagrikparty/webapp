@@ -5,15 +5,6 @@ import { Link } from "@/i18n/routing";
 import { Megaphone, ArrowRight } from "lucide-react";
 
 export default function HeroSection() {
-  const tickerItems = [
-    "Drainage blocked in Ward 42",
-    "Hospital complaint unresolved - 11 days",
-    "Water tanker delay in South Extension",
-    "Streetlights inactive in Okhla Phase 2",
-    "Public toilet maintenance required in Lajpat Nagar",
-    "Pothole reported on Ring Road",
-  ];
-
   return (
     <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden bg-off-white pt-20">
       {/* Background Images */}
@@ -75,28 +66,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scrolling Civic Ticker */}
-      <div className="absolute bottom-0 left-0 right-0 bg-black text-white py-3 border-t border-black/10 overflow-hidden flex z-20">
-        <div className="font-mono text-xs tracking-widest uppercase font-bold whitespace-nowrap flex animate-marquee">
-          {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
-            <div key={index} className="flex items-center">
-              <span className="mx-6 text-red">•</span>
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-        
-        {/* We need CSS for animate-marquee. We can add it via tailwind config or inline styles. Let's rely on globals.css or inline keyframes. */}
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-33.33%); }
-          }
-          .animate-marquee {
-            animation: marquee 20s linear infinite;
-          }
-        `}} />
-      </div>
     </section>
   );
 }

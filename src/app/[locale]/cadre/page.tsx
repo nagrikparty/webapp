@@ -28,7 +28,7 @@ export default function CadreDashboard() {
     <>
       <Navbar />
       
-      <main className="min-h-screen bg-black pt-24 pb-20 px-4 sm:px-6 lg:px-8 text-white">
+      <main className="min-h-screen bg-off-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 text-black">
         <div className="max-w-5xl mx-auto">
           
           <motion.div 
@@ -37,7 +37,7 @@ export default function CadreDashboard() {
             className="flex flex-col md:flex-row gap-8 items-start mb-12"
           >
             {/* Player Profile / Stats */}
-            <div className="w-full md:w-1/3 bg-white/5 border border-white/10 rounded-3xl p-6 relative overflow-hidden group">
+            <div className="w-full md:w-1/3 bg-white border border-black/10 rounded-3xl p-6 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-red/20 blur-3xl -mr-10 -mt-10 rounded-full"></div>
               
               <div className="flex items-center gap-4 mb-6 relative z-10">
@@ -46,23 +46,23 @@ export default function CadreDashboard() {
                 </div>
                 <div>
                   <h2 className="font-hindi text-2xl font-bold tracking-widest uppercase">Cadre 001</h2>
-                  <p className="font-mono text-[10px] text-white/50 tracking-[0.2em] uppercase">{rank}</p>
+                  <p className="font-mono text-[10px] text-black/50 tracking-[0.2em] uppercase">{rank}</p>
                 </div>
               </div>
 
-              <div className="bg-black/50 rounded-2xl p-4 mb-4 border border-white/5">
-                <p className="font-mono text-xs text-white/40 uppercase tracking-widest mb-1">Total Impact (XP)</p>
+              <div className="bg-off-white/50 rounded-2xl p-4 mb-4 border border-white/5">
+                <p className="font-mono text-xs text-black/40 uppercase tracking-widest mb-1">Total Impact (XP)</p>
                 <div className="flex items-center gap-2">
                   <Zap size={24} className="text-yellow-500 fill-yellow-500/20" />
                   <span className="font-hindi text-4xl font-black">{points}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center text-xs font-mono text-white/40 tracking-widest uppercase">
+              <div className="flex justify-between items-center text-xs font-mono text-black/40 tracking-widest uppercase">
                 <span>Next Rank: Commander</span>
                 <span>2500 XP</span>
               </div>
-              <div className="w-full h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
+              <div className="w-full h-1.5 bg-black/10 rounded-full mt-2 overflow-hidden">
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: `${(points / 2500) * 100}%` }}
@@ -87,16 +87,16 @@ export default function CadreDashboard() {
                     transition={{ delay: i * 0.1 }}
                     className={`flex items-center justify-between p-5 rounded-2xl border transition-all ${
                       task.completed 
-                        ? 'bg-white/5 border-white/5 opacity-50' 
-                        : 'bg-white/5 border-white/10 hover:border-red/50 hover:bg-white/10'
+                        ? 'bg-white border-white/5 opacity-50' 
+                        : 'bg-white border-black/10 hover:border-red/50 hover:bg-black/10'
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-xl ${task.completed ? 'bg-white/5 text-white/40' : 'bg-red/10 text-red'}`}>
+                      <div className={`p-3 rounded-xl ${task.completed ? 'bg-white text-black/40' : 'bg-red/10 text-red'}`}>
                         {task.icon}
                       </div>
                       <div>
-                        <h4 className={`font-body font-bold ${task.completed ? 'line-through text-white/40' : 'text-white'}`}>
+                        <h4 className={`font-body font-bold ${task.completed ? 'line-through text-black/40' : 'text-black'}`}>
                           {task.title}
                         </h4>
                         <p className="font-mono text-[10px] uppercase tracking-widest text-yellow-500">+{task.points} XP</p>
@@ -120,20 +120,20 @@ export default function CadreDashboard() {
           </motion.div>
 
           {/* Badges Section */}
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+          <div className="bg-white border border-black/10 rounded-3xl p-8">
             <h3 className="font-hindi text-2xl font-bold tracking-widest uppercase mb-6 flex items-center gap-3">
               <Award className="text-yellow-500" /> Earned Badges
             </h3>
             <div className="flex flex-wrap gap-4">
-              <div className="flex flex-col items-center justify-center p-4 bg-black/50 border border-white/5 rounded-2xl w-32 h-32 grayscale hover:grayscale-0 transition-all">
+              <div className="flex flex-col items-center justify-center p-4 bg-off-white/50 border border-white/5 rounded-2xl w-32 h-32 grayscale hover:grayscale-0 transition-all">
                 <Shield size={40} className="text-blue-500 mb-2" />
                 <span className="font-mono text-[9px] uppercase tracking-widest text-center">Early Adopter</span>
               </div>
-              <div className="flex flex-col items-center justify-center p-4 bg-black/50 border border-white/5 rounded-2xl w-32 h-32 grayscale hover:grayscale-0 transition-all">
+              <div className="flex flex-col items-center justify-center p-4 bg-off-white/50 border border-white/5 rounded-2xl w-32 h-32 grayscale hover:grayscale-0 transition-all">
                 <Megaphone size={40} className="text-orange-500 mb-2" />
                 <span className="font-mono text-[9px] uppercase tracking-widest text-center">Loudspeaker</span>
               </div>
-              <div className="flex flex-col items-center justify-center p-4 bg-black/50 border border-white/5 rounded-2xl w-32 h-32 opacity-20 border-dashed">
+              <div className="flex flex-col items-center justify-center p-4 bg-off-white/50 border border-white/5 rounded-2xl w-32 h-32 opacity-20 border-dashed">
                 <Target size={40} className="mb-2" />
                 <span className="font-mono text-[9px] uppercase tracking-widest text-center">Locked</span>
               </div>

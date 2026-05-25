@@ -78,23 +78,10 @@ export default function IndiaBreakingSection({ translations }: Props) {
                 </motion.p>
               </div>
 
-              {/* Civic Telemetry Micro-grid */}
-              <div className="md:col-span-4 hidden sm:grid grid-cols-2 gap-x-4 gap-y-6 bg-black/40 backdrop-blur-md p-6 rounded-xl border border-white/10">
-                <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.potholes}</span>
-                  <span className="font-mono text-xl text-white font-medium">{translations.potholesVal}</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.budget}</span>
-                  <span className="font-mono text-xl text-white font-medium">{translations.budgetVal}</span>
-                </div>
-                <div className="flex flex-col gap-1 col-span-2">
-                  <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.status}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>
-                    <span className="font-mono text-sm text-red tracking-widest">{translations.statusVal}</span>
-                  </div>
-                </div>
+              {/* Civic Action Statement */}
+              <div className="md:col-span-4 hidden sm:flex flex-col justify-end bg-black/40 backdrop-blur-md p-6 rounded-xl border border-white/10">
+                <span className="font-mono text-[9px] text-white/60 tracking-[0.2em] mb-2">INFRASTRUCTURE FAILURE</span>
+                <span className="font-mono text-lg text-white leading-tight uppercase">Ward committees must authorize emergency civic repairs immediately.</span>
               </div>
 
             </div>

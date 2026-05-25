@@ -181,7 +181,7 @@ export default function JoinPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-black min-h-screen">
+        <main className="bg-off-white min-h-screen">
           
           {/* Hero Section */}
           <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -191,10 +191,10 @@ export default function JoinPage() {
               transition={{ duration: 0.8 }}
               className="max-w-4xl text-center mx-auto relative z-10"
             >
-              <h1 className="font-hindi text-[clamp(4rem,10vw,7rem)] leading-[0.9] text-white font-semibold mb-6 tracking-tight drop-shadow-lg">
+              <h1 className="font-hindi text-[clamp(4rem,10vw,7rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight drop-shadow-lg">
                 {t("Hero.headline")}
               </h1>
-              <p className="font-body text-xl sm:text-2xl text-white/70 max-w-2xl mx-auto leading-relaxed border-l-4 border-red/50 pl-6 py-1 text-left sm:text-center sm:border-l-0 sm:pl-0">
+              <p className="font-body text-xl sm:text-2xl text-black/70 max-w-2xl mx-auto leading-relaxed border-l-4 border-red/50 pl-6 py-1 text-left sm:text-center sm:border-l-0 sm:pl-0">
                 {t("Hero.subheadline")}
               </p>
             </motion.div>
@@ -206,7 +206,7 @@ export default function JoinPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-white/5 rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-white/10"
+              className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-black/10"
             >
               <AnimatePresence mode="wait">
                 {isSuccess ? (
@@ -225,10 +225,10 @@ export default function JoinPage() {
                     >
                       <CheckCircle size={40} className="text-green-600" />
                     </motion.div>
-                    <h3 className="font-hindi text-4xl text-white font-medium mb-3">
+                    <h3 className="font-hindi text-4xl text-black font-medium mb-3">
                       {t("Form.success")}
                     </h3>
-                    <p className="font-mono text-sm text-white/50 uppercase tracking-widest">
+                    <p className="font-mono text-sm text-black/50 uppercase tracking-widest">
                       SYSTEM ACTIVATED
                     </p>
                   </motion.div>
@@ -241,8 +241,8 @@ export default function JoinPage() {
                   >
                     <div className="border-b border-black/10 pb-6 mb-8 text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between">
                       <div>
-                        <h2 className="font-body text-2xl font-bold tracking-tight mb-2 text-white">{t("Form.title")}</h2>
-                        <p className="text-white/60 font-body text-sm max-w-xl">{t("Form.desc")}</p>
+                        <h2 className="font-body text-2xl font-bold tracking-tight mb-2 text-black">{t("Form.title")}</h2>
+                        <p className="text-black/60 font-body text-sm max-w-xl">{t("Form.desc")}</p>
                       </div>
                       <div className="mt-4 sm:mt-0 font-mono text-xs font-bold text-red tracking-widest">
                         STEP {step} / {totalSteps}
@@ -250,7 +250,7 @@ export default function JoinPage() {
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="w-full bg-white/5 h-1.5 rounded-full mb-10 overflow-hidden">
+                    <div className="w-full bg-white h-1.5 rounded-full mb-10 overflow-hidden">
                       <div 
                         className="bg-red h-full transition-all duration-500 ease-out"
                         style={{ width: `${(step / totalSteps) * 100}%` }}
@@ -288,7 +288,7 @@ export default function JoinPage() {
                                 {['Male', 'Female', 'Other'].map(g => (
                                   <label key={g} className="flex items-center gap-2 cursor-pointer">
                                     <input type="radio" name="gender" value={g} checked={formData.gender === g} onChange={e => setFormData({...formData, gender: e.target.value})} className="accent-red" />
-                                    <span className="font-body text-sm text-white/80">{t(`Form.gender${g}`)}</span>
+                                    <span className="font-body text-sm text-black/80">{t(`Form.gender${g}`)}</span>
                                   </label>
                                 ))}
                               </div>
@@ -299,11 +299,11 @@ export default function JoinPage() {
                               <div className="flex gap-4">
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input type="radio" name="citizenship" value="yes" checked={formData.is_indian_citizen === "yes"} onChange={e => setFormData({...formData, is_indian_citizen: e.target.value})} className="accent-red" />
-                                  <span className="font-body text-sm text-white/80">{t("Form.yes")}</span>
+                                  <span className="font-body text-sm text-black/80">{t("Form.yes")}</span>
                                 </label>
                                 <label className="flex items-center gap-2 cursor-pointer">
                                   <input type="radio" name="citizenship" value="no" checked={formData.is_indian_citizen === "no"} onChange={e => setFormData({...formData, is_indian_citizen: e.target.value})} className="accent-red" />
-                                  <span className="font-body text-sm text-white/80">{t("Form.no")}</span>
+                                  <span className="font-body text-sm text-black/80">{t("Form.no")}</span>
                                 </label>
                               </div>
                             </div>
@@ -327,7 +327,7 @@ export default function JoinPage() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                               <label className="civic-label">{t("Form.stateLabel")}</label>
-                              <select required className="civic-select w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors" value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})}>
+                              <select required className="civic-select w-full bg-white border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors" value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})}>
                                 <option value="" disabled>{isLoadingGeo ? "Loading states..." : t("Form.statePlaceholder")}</option>
                                 {dbStates.map(s => (
                                   <option key={s.id} value={s.id}>{s.name} {s.name_hi ? `(${s.name_hi})` : ""}</option>
@@ -337,7 +337,7 @@ export default function JoinPage() {
                             
                             <div className="space-y-2">
                               <label className="civic-label">{t("Form.vidhanSabhaLabel")}</label>
-                              <select required disabled={!formData.state || vidhanSabhas.length === 0} className="civic-select w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors disabled:opacity-50" value={formData.vidhan_sabha} onChange={e => setFormData({...formData, vidhan_sabha: e.target.value})}>
+                              <select required disabled={!formData.state || vidhanSabhas.length === 0} className="civic-select w-full bg-white border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors disabled:opacity-50" value={formData.vidhan_sabha} onChange={e => setFormData({...formData, vidhan_sabha: e.target.value})}>
                                 <option value="" disabled>{t("Form.vidhanSabhaPlaceholder")}</option>
                                 {vidhanSabhas.map(vs => (
                                   <option key={vs.id} value={vs.name}>{vs.name}</option>
@@ -348,7 +348,7 @@ export default function JoinPage() {
                             <div className="space-y-2">
                               <label className="civic-label">{t("Form.wardLabel")}</label>
                               {wards.length > 0 ? (
-                                <select required className="civic-select w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors" value={formData.ward} onChange={e => setFormData({...formData, ward: e.target.value})}>
+                                <select required className="civic-select w-full bg-white border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors" value={formData.ward} onChange={e => setFormData({...formData, ward: e.target.value})}>
                                   <option value="" disabled>Select Ward</option>
                                   {wards.map(w => (
                                     <option key={w.id} value={w.name}>{w.name}</option>
@@ -454,12 +454,12 @@ export default function JoinPage() {
                             <label className="civic-label">{t("Form.skillsLabel")}</label>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {skillsList.map(skill => (
-                                <label key={skill} className={`flex items-center p-3 border rounded-xl cursor-pointer transition-colors ${selectedSkills.includes(skill) ? 'border-red/50 bg-red/10' : 'border-white/10 bg-white/5 hover:border-white/20'}`}>
+                                <label key={skill} className={`flex items-center p-3 border rounded-xl cursor-pointer transition-colors ${selectedSkills.includes(skill) ? 'border-red/50 bg-red/10' : 'border-black/10 bg-white hover:border-white/20'}`}>
                                   <input type="checkbox" className="hidden" checked={selectedSkills.includes(skill)} onChange={() => toggleSkill(skill)} />
                                   <div className={`w-4 h-4 rounded border flex items-center justify-center mr-3 transition-colors ${selectedSkills.includes(skill) ? 'bg-red border-red' : 'border-white/20'}`}>
-                                    {selectedSkills.includes(skill) && <CheckCircle size={12} className="text-white" />}
+                                    {selectedSkills.includes(skill) && <CheckCircle size={12} className="text-black" />}
                                   </div>
-                                  <span className={`font-body text-sm ${selectedSkills.includes(skill) ? 'font-medium text-red' : 'text-white/80'}`}>
+                                  <span className={`font-body text-sm ${selectedSkills.includes(skill) ? 'font-medium text-red' : 'text-black/80'}`}>
                                     {t(`Form.skills.${skill}`)}
                                   </span>
                                 </label>
@@ -470,17 +470,17 @@ export default function JoinPage() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                               <label className="civic-label">{t("Form.photoLabel")}</label>
-                              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-white/10 border-dashed rounded-xl cursor-pointer bg-white/5 hover:bg-white/10 transition-colors group">
+                              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-black/10 border-dashed rounded-xl cursor-pointer bg-white hover:bg-black/10 transition-colors group">
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                   {profileFileName ? (
                                     <>
                                       <Camera className="w-8 h-8 mb-2 text-red" />
-                                      <p className="mb-1 text-sm text-white font-semibold text-center px-4 truncate w-full">{profileFileName}</p>
+                                      <p className="mb-1 text-sm text-black font-semibold text-center px-4 truncate w-full">{profileFileName}</p>
                                     </>
                                   ) : (
                                     <>
-                                      <Upload className="w-6 h-6 mb-2 text-white/40 group-hover:text-white/60 transition-colors" />
-                                      <p className="mb-1 text-sm text-white/60 font-body text-center"><span className="font-semibold text-white">Click to upload</span><br/>{t("Form.photoDesc")}</p>
+                                      <Upload className="w-6 h-6 mb-2 text-black/40 group-hover:text-black/60 transition-colors" />
+                                      <p className="mb-1 text-sm text-black/60 font-body text-center"><span className="font-semibold text-black">Click to upload</span><br/>{t("Form.photoDesc")}</p>
                                     </>
                                   )}
                                 </div>
@@ -490,17 +490,17 @@ export default function JoinPage() {
 
                             <div className="space-y-2">
                               <label className="civic-label">{t("Form.epicPhotoLabel")}</label>
-                              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-white/10 border-dashed rounded-xl cursor-pointer bg-white/5 hover:bg-white/10 transition-colors group">
+                              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-black/10 border-dashed rounded-xl cursor-pointer bg-white hover:bg-black/10 transition-colors group">
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                   {epicFileName ? (
                                     <>
                                       <Camera className="w-8 h-8 mb-2 text-red" />
-                                      <p className="mb-1 text-sm text-white font-semibold text-center px-4 truncate w-full">{epicFileName}</p>
+                                      <p className="mb-1 text-sm text-black font-semibold text-center px-4 truncate w-full">{epicFileName}</p>
                                     </>
                                   ) : (
                                     <>
-                                      <Upload className="w-6 h-6 mb-2 text-white/40 group-hover:text-white/60 transition-colors" />
-                                      <p className="mb-1 text-sm text-white/60 font-body text-center"><span className="font-semibold text-white">Click to upload</span><br/>{t("Form.epicPhotoDesc")}</p>
+                                      <Upload className="w-6 h-6 mb-2 text-black/40 group-hover:text-black/60 transition-colors" />
+                                      <p className="mb-1 text-sm text-black/60 font-body text-center"><span className="font-semibold text-black">Click to upload</span><br/>{t("Form.epicPhotoDesc")}</p>
                                     </>
                                   )}
                                 </div>
@@ -512,7 +512,7 @@ export default function JoinPage() {
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div className="space-y-2">
                               <label className="civic-label">{t("Form.referralSourceLabel")}</label>
-                              <select className="civic-select w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors" value={formData.referral_source} onChange={e => setFormData({...formData, referral_source: e.target.value})}>
+                              <select className="civic-select w-full bg-white border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm focus:outline-none focus:border-white/30 transition-colors" value={formData.referral_source} onChange={e => setFormData({...formData, referral_source: e.target.value})}>
                                 <option value="" disabled>{t("Form.referralSourcePlaceholder")}</option>
                                 <option value="socialMedia">{t("Form.referralSources.socialMedia")}</option>
                                 <option value="friend">{t("Form.referralSources.friend")}</option>
@@ -539,8 +539,8 @@ export default function JoinPage() {
                                 />
                               </div>
                               <div>
-                                <span className="font-body text-sm text-white/80 block leading-relaxed">
-                                  <strong className="text-white mb-1 block uppercase tracking-widest text-xs font-mono">{t("Form.declarationLabel")}</strong>
+                                <span className="font-body text-sm text-black/80 block leading-relaxed">
+                                  <strong className="text-black mb-1 block uppercase tracking-widest text-xs font-mono">{t("Form.declarationLabel")}</strong>
                                   {t("Form.declarationText")}
                                 </span>
                               </div>
@@ -551,12 +551,12 @@ export default function JoinPage() {
                       )}
 
                       {/* Navigation Buttons */}
-                      <div className="flex justify-between items-center pt-8 border-t border-white/10 mt-8">
+                      <div className="flex justify-between items-center pt-8 border-t border-black/10 mt-8">
                         {step > 1 ? (
                           <button
                             type="button"
                             onClick={prevStep}
-                            className="flex items-center gap-2 px-6 py-3 font-body text-sm font-semibold text-white/60 hover:text-white transition-colors"
+                            className="flex items-center gap-2 px-6 py-3 font-body text-sm font-semibold text-black/60 hover:text-black transition-colors"
                           >
                             <ChevronLeft size={16} />
                             BACK
@@ -567,7 +567,7 @@ export default function JoinPage() {
                           <button
                             type="button"
                             onClick={nextStep}
-                            className="flex items-center gap-2 bg-charcoal text-white font-body text-sm font-medium tracking-widest uppercase px-8 py-3.5 rounded-xl hover:bg-black transition-all duration-300 shadow-xl shadow-black/20"
+                            className="flex items-center gap-2 bg-charcoal text-black font-body text-sm font-medium tracking-widest uppercase px-8 py-3.5 rounded-xl hover:bg-black transition-all duration-300 shadow-xl shadow-black/20"
                           >
                             NEXT
                             <ChevronRight size={16} />
@@ -576,7 +576,7 @@ export default function JoinPage() {
                           <button
                             type="submit"
                             disabled={isSubmitting || !formData.declaration_agreed}
-                            className="flex items-center justify-center gap-2 bg-red text-white font-body text-sm font-medium tracking-widest uppercase px-10 py-4 rounded-xl hover:bg-red/90 transition-all duration-300 shadow-lg shadow-red/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center justify-center gap-2 bg-red text-black font-body text-sm font-medium tracking-widest uppercase px-10 py-4 rounded-xl hover:bg-red/90 transition-all duration-300 shadow-lg shadow-red/20 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {isSubmitting ? (
                               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -600,9 +600,9 @@ export default function JoinPage() {
                 transition={{ delay: 0.6 }}
                 className="mt-12 flex justify-center"
               >
-                <div className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-                  <Users size={16} className="text-white/40" />
-                  <span className="font-mono text-xs text-white/60 tracking-widest uppercase">
+                <div className="flex items-center gap-3 px-6 py-3 rounded-full border border-black/10 bg-white backdrop-blur-md">
+                  <Users size={16} className="text-black/40" />
+                  <span className="font-mono text-xs text-black/60 tracking-widest uppercase">
                     THE SYSTEM IS WATCHING
                   </span>
                   <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>

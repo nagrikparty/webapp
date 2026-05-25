@@ -45,8 +45,7 @@ export default function BentoGrid({ translations }: BentoProps) {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>
+          <div className="flex items-center gap-2 mb-4 border-b border-red/20 pb-2 w-max">
             <span className="font-mono text-xs text-red uppercase tracking-widest font-bold">OUR MISSION</span>
           </div>
           <h2 className="font-hindi text-[clamp(2.5rem,6vw,5rem)] leading-[0.85] text-white font-black tracking-tighter uppercase mb-4">

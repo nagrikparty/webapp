@@ -24,22 +24,22 @@ export default function ManifestoPage() {
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-black min-h-screen pt-24 pb-24">
+        <main className="bg-off-white min-h-screen text-black pt-24 pb-24">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="border-b border-white/10 pb-12 mb-12"
+              className="border-b border-black/10 pb-12 mb-12"
             >
               <div className="flex items-center gap-2 mb-6 font-mono text-xs text-red uppercase tracking-widest font-bold">
                 <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>
                 {t("officialDoc")}
               </div>
-              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-white font-semibold mb-6 tracking-tight uppercase">
+              <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight uppercase">
                 {t("title")}
               </h1>
-              <p className="font-body text-xl sm:text-2xl text-white/60 leading-relaxed border-l-4 border-red pl-6">
+              <p className="font-body text-xl sm:text-2xl text-black/60 leading-relaxed border-l-4 border-red pl-6">
                 {t("subtitle")}
               </p>
             </motion.div>
@@ -49,16 +49,16 @@ export default function ManifestoPage() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <p className="text-xl leading-relaxed text-white/80 font-medium mb-16 font-body">
+              <p className="text-xl leading-relaxed text-black/80 font-medium mb-16 font-body">
                 {t("content")}
               </p>
 
               {/* Policy Cards */}
               <div className="mb-8">
-                <h3 className="font-hindi text-3xl sm:text-4xl text-white font-semibold mb-2 uppercase tracking-tight">
+                <h3 className="font-hindi text-3xl sm:text-4xl text-black font-semibold mb-2 uppercase tracking-tight">
                   {t("policyTitle")}
                 </h3>
-                <p className="font-mono text-xs text-white/40 uppercase tracking-widest mb-8">
+                <p className="font-mono text-xs text-black/40 uppercase tracking-widest mb-8">
                   {t("policyPhase")}
                 </p>
               </div>
@@ -70,12 +70,12 @@ export default function ManifestoPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                    className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-red/30 transition-all duration-300 group"
+                    className="bg-white border border-black/10 rounded-2xl p-6 hover:bg-black/10 hover:border-red/30 transition-all duration-300 group"
                   >
                     <div className="w-12 h-12 bg-red/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red/20 transition-colors">
                       {policyIcons[key]}
                     </div>
-                    <h4 className="font-body text-lg font-bold text-white mb-2">
+                    <h4 className="font-body text-lg font-bold text-black mb-2">
                       {t(`policies.${key}.title`)}
                     </h4>
                     <span className="inline-block font-mono text-[10px] bg-red/10 text-red px-3 py-1 rounded-full uppercase tracking-widest font-bold">

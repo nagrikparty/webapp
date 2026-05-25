@@ -76,20 +76,10 @@ export default function HealthcareSection({ translations }: Props) {
                 </motion.p>
               </div>
 
-              {/* Civic Telemetry Micro-grid */}
-              <div className="md:col-span-4 hidden sm:grid grid-cols-2 gap-x-4 gap-y-6 bg-black/40 backdrop-blur-md p-6 rounded-xl border border-white/10">
-                <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.bedRatio}</span>
-                  <span className="font-mono text-xl text-white font-medium">{translations.bedRatioVal}</span>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.wait}</span>
-                  <span className="font-mono text-xl text-white font-medium">{translations.waitVal}</span>
-                </div>
-                <div className="flex flex-col gap-1 col-span-2">
-                  <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.staff}</span>
-                  <span className="font-mono text-xl text-red font-medium">{translations.staffVal}</span>
-                </div>
+              {/* Action Statement */}
+              <div className="md:col-span-4 hidden sm:flex flex-col justify-end bg-black/40 backdrop-blur-md p-6 rounded-xl border border-white/10">
+                <span className="font-mono text-[9px] text-white/60 tracking-[0.2em] mb-2">PUBLIC HEALTH CRISIS</span>
+                <span className="font-mono text-lg text-white leading-tight uppercase">Local medical infrastructure requires immediate structural audit.</span>
               </div>
 
             </div>

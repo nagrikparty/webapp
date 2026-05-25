@@ -3649,7 +3649,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-      "bytes": 215486,
+      "bytes": 267324,
       "imports": [
         {
           "path": "path",
@@ -4114,19 +4114,18 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/172.js": {
-      "bytes": 241773,
-      "imports": [
-        {
-          "path": "@emotion/is-prop-valid",
-          "kind": "require-call",
-          "external": true
-        }
-      ],
-      "format": "cjs"
-    },
     ".open-next/server-functions/default/.next/server/chunks/20.js": {
       "bytes": 47820,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/222.js": {
+      "bytes": 15538,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/257.js": {
+      "bytes": 15510,
       "imports": [],
       "format": "cjs"
     },
@@ -4135,30 +4134,654 @@
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/445.js": {
-      "bytes": 153399,
+    ".open-next/server-functions/default/.next/server/chunks/348.js": {
+      "bytes": 11066,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/511.js": {
-      "bytes": 269731,
+    ".open-next/server-functions/default/.next/server/chunks/445.js": {
+      "bytes": 166387,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/version.js": {
+      "bytes": 311,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/semver.js": {
+      "bytes": 4686,
       "imports": [
         {
-          "path": "@opentelemetry/api",
-          "kind": "dynamic-import",
-          "external": true
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/version.js",
+          "kind": "require-call",
+          "original": "../version"
         }
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/611.js": {
-      "bytes": 22322,
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js": {
+      "bytes": 2492,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/version.js",
+          "kind": "require-call",
+          "original": "../version"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/semver.js",
+          "kind": "require-call",
+          "original": "./semver"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/ComponentLogger.js": {
+      "bytes": 1539,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js",
+          "kind": "require-call",
+          "original": "../internal/global-utils"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/types.js": {
+      "bytes": 1481,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/619.js": {
-      "bytes": 10335,
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/internal/logLevelLogger.js": {
+      "bytes": 1270,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/types.js",
+          "kind": "require-call",
+          "original": "../types"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js": {
+      "bytes": 3633,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/ComponentLogger.js",
+          "kind": "require-call",
+          "original": "../diag/ComponentLogger"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/internal/logLevelLogger.js",
+          "kind": "require-call",
+          "original": "../diag/internal/logLevelLogger"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/types.js",
+          "kind": "require-call",
+          "original": "../diag/types"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js",
+          "kind": "require-call",
+          "original": "../internal/global-utils"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/internal/baggage-impl.js": {
+      "bytes": 1225,
       "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/internal/symbol.js": {
+      "bytes": 377,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/utils.js": {
+      "bytes": 1344,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js",
+          "kind": "require-call",
+          "original": "../api/diag"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/internal/baggage-impl.js",
+          "kind": "require-call",
+          "original": "./internal/baggage-impl"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/internal/symbol.js",
+          "kind": "require-call",
+          "original": "./internal/symbol"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/context.js": {
+      "bytes": 1830,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/consoleLogger.js": {
+      "bytes": 2748,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeter.js": {
+      "bytes": 4276,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/Metric.js": {
+      "bytes": 510,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/TextMapPropagator.js": {
+      "bytes": 785,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/NoopContextManager.js": {
+      "bytes": 657,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/context.js",
+          "kind": "require-call",
+          "original": "./context"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/context.js": {
+      "bytes": 2530,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/NoopContextManager.js",
+          "kind": "require-call",
+          "original": "../context/NoopContextManager"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js",
+          "kind": "require-call",
+          "original": "../internal/global-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js",
+          "kind": "require-call",
+          "original": "./diag"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/trace_flags.js": {
+      "bytes": 569,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/invalid-span-constants.js": {
+      "bytes": 686,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/trace_flags.js",
+          "kind": "require-call",
+          "original": "./trace_flags"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NonRecordingSpan.js": {
+      "bytes": 1551,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/invalid-span-constants.js",
+          "kind": "require-call",
+          "original": "./invalid-span-constants"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/context-utils.js": {
+      "bytes": 2067,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/context.js",
+          "kind": "require-call",
+          "original": "../context/context"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NonRecordingSpan.js",
+          "kind": "require-call",
+          "original": "./NonRecordingSpan"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/context.js",
+          "kind": "require-call",
+          "original": "../api/context"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/spancontext-utils.js": {
+      "bytes": 2446,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/invalid-span-constants.js",
+          "kind": "require-call",
+          "original": "./invalid-span-constants"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NonRecordingSpan.js",
+          "kind": "require-call",
+          "original": "./NonRecordingSpan"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracer.js": {
+      "bytes": 2444,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/context.js",
+          "kind": "require-call",
+          "original": "../api/context"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/context-utils.js",
+          "kind": "require-call",
+          "original": "../trace/context-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NonRecordingSpan.js",
+          "kind": "require-call",
+          "original": "./NonRecordingSpan"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/spancontext-utils.js",
+          "kind": "require-call",
+          "original": "./spancontext-utils"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracer.js": {
+      "bytes": 1413,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracer.js",
+          "kind": "require-call",
+          "original": "./NoopTracer"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracerProvider.js": {
+      "bytes": 621,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracer.js",
+          "kind": "require-call",
+          "original": "./NoopTracer"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracerProvider.js": {
+      "bytes": 1655,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracer.js",
+          "kind": "require-call",
+          "original": "./ProxyTracer"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracerProvider.js",
+          "kind": "require-call",
+          "original": "./NoopTracerProvider"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/SamplingResult.js": {
+      "bytes": 1169,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/span_kind.js": {
+      "bytes": 1375,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/status.js": {
+      "bytes": 823,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/tracestate-validators.js": {
+      "bytes": 1506,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/tracestate-impl.js": {
+      "bytes": 3627,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/tracestate-validators.js",
+          "kind": "require-call",
+          "original": "./tracestate-validators"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/utils.js": {
+      "bytes": 464,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/tracestate-impl.js",
+          "kind": "require-call",
+          "original": "./tracestate-impl"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context-api.js": {
+      "bytes": 488,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/context.js",
+          "kind": "require-call",
+          "original": "./api/context"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag-api.js": {
+      "bytes": 678,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js",
+          "kind": "require-call",
+          "original": "./api/diag"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeterProvider.js": {
+      "bytes": 655,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeter.js",
+          "kind": "require-call",
+          "original": "./NoopMeter"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/metrics.js": {
+      "bytes": 1710,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeterProvider.js",
+          "kind": "require-call",
+          "original": "../metrics/NoopMeterProvider"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js",
+          "kind": "require-call",
+          "original": "../internal/global-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js",
+          "kind": "require-call",
+          "original": "./diag"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics-api.js": {
+      "bytes": 491,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/metrics.js",
+          "kind": "require-call",
+          "original": "./api/metrics"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/NoopTextMapPropagator.js": {
+      "bytes": 660,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/context-helpers.js": {
+      "bytes": 1628,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/context.js",
+          "kind": "require-call",
+          "original": "../api/context"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/context.js",
+          "kind": "require-call",
+          "original": "../context/context"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/propagation.js": {
+      "bytes": 3099,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js",
+          "kind": "require-call",
+          "original": "../internal/global-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/NoopTextMapPropagator.js",
+          "kind": "require-call",
+          "original": "../propagation/NoopTextMapPropagator"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/TextMapPropagator.js",
+          "kind": "require-call",
+          "original": "../propagation/TextMapPropagator"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/context-helpers.js",
+          "kind": "require-call",
+          "original": "../baggage/context-helpers"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/utils.js",
+          "kind": "require-call",
+          "original": "../baggage/utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js",
+          "kind": "require-call",
+          "original": "./diag"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation-api.js": {
+      "bytes": 523,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/propagation.js",
+          "kind": "require-call",
+          "original": "./api/propagation"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/trace.js": {
+      "bytes": 2612,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js",
+          "kind": "require-call",
+          "original": "../internal/global-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracerProvider.js",
+          "kind": "require-call",
+          "original": "../trace/ProxyTracerProvider"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/spancontext-utils.js",
+          "kind": "require-call",
+          "original": "../trace/spancontext-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/context-utils.js",
+          "kind": "require-call",
+          "original": "../trace/context-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js",
+          "kind": "require-call",
+          "original": "./diag"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace-api.js": {
+      "bytes": 475,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/trace.js",
+          "kind": "require-call",
+          "original": "./api/trace"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/index.js": {
+      "bytes": 5989,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/utils.js",
+          "kind": "require-call",
+          "original": "./baggage/utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/context.js",
+          "kind": "require-call",
+          "original": "./context/context"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/consoleLogger.js",
+          "kind": "require-call",
+          "original": "./diag/consoleLogger"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/types.js",
+          "kind": "require-call",
+          "original": "./diag/types"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeter.js",
+          "kind": "require-call",
+          "original": "./metrics/NoopMeter"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/Metric.js",
+          "kind": "require-call",
+          "original": "./metrics/Metric"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/TextMapPropagator.js",
+          "kind": "require-call",
+          "original": "./propagation/TextMapPropagator"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracer.js",
+          "kind": "require-call",
+          "original": "./trace/ProxyTracer"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracerProvider.js",
+          "kind": "require-call",
+          "original": "./trace/ProxyTracerProvider"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/SamplingResult.js",
+          "kind": "require-call",
+          "original": "./trace/SamplingResult"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/span_kind.js",
+          "kind": "require-call",
+          "original": "./trace/span_kind"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/status.js",
+          "kind": "require-call",
+          "original": "./trace/status"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/trace_flags.js",
+          "kind": "require-call",
+          "original": "./trace/trace_flags"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/utils.js",
+          "kind": "require-call",
+          "original": "./trace/internal/utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/spancontext-utils.js",
+          "kind": "require-call",
+          "original": "./trace/spancontext-utils"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/invalid-span-constants.js",
+          "kind": "require-call",
+          "original": "./trace/invalid-span-constants"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context-api.js",
+          "kind": "require-call",
+          "original": "./context-api"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag-api.js",
+          "kind": "require-call",
+          "original": "./diag-api"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics-api.js",
+          "kind": "require-call",
+          "original": "./metrics-api"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation-api.js",
+          "kind": "require-call",
+          "original": "./propagation-api"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace-api.js",
+          "kind": "require-call",
+          "original": "./trace-api"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/511.js": {
+      "bytes": 273352,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/index.js",
+          "kind": "dynamic-import",
+          "original": "@opentelemetry/api"
+        }
+      ],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/644.js": {
@@ -4171,13 +4794,45 @@
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/874.js": {
-      "bytes": 14501,
+    ".open-next/server-functions/default/.next/server/chunks/698.js": {
+      "bytes": 466949,
+      "imports": [
+        {
+          "path": "@emotion/is-prop-valid",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/742.js": {
+      "bytes": 287104,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/index.js",
+          "kind": "dynamic-import",
+          "original": "@opentelemetry/api"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/757.js": {
+      "bytes": 10622,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/873.js": {
+      "bytes": 63950,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/876.js": {
       "bytes": 47822,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/882.js": {
+      "bytes": 5807,
       "imports": [],
       "format": "cjs"
     },
@@ -4192,22 +4847,32 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/webpack-runtime.js": {
-      "bytes": 2235,
+      "bytes": 2455,
       "imports": [
-        {
-          "path": ".open-next/server-functions/default/.next/server/chunks/172.js",
-          "kind": "require-call",
-          "original": "./chunks/172.js"
-        },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/20.js",
           "kind": "require-call",
           "original": "./chunks/20.js"
         },
         {
+          "path": ".open-next/server-functions/default/.next/server/chunks/222.js",
+          "kind": "require-call",
+          "original": "./chunks/222.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/257.js",
+          "kind": "require-call",
+          "original": "./chunks/257.js"
+        },
+        {
           "path": ".open-next/server-functions/default/.next/server/chunks/319.js",
           "kind": "require-call",
           "original": "./chunks/319.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/348.js",
+          "kind": "require-call",
+          "original": "./chunks/348.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/445.js",
@@ -4220,16 +4885,6 @@
           "original": "./chunks/511.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/chunks/611.js",
-          "kind": "require-call",
-          "original": "./chunks/611.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/chunks/619.js",
-          "kind": "require-call",
-          "original": "./chunks/619.js"
-        },
-        {
           "path": ".open-next/server-functions/default/.next/server/chunks/644.js",
           "kind": "require-call",
           "original": "./chunks/644.js"
@@ -4240,14 +4895,34 @@
           "original": "./chunks/688.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/chunks/874.js",
+          "path": ".open-next/server-functions/default/.next/server/chunks/698.js",
           "kind": "require-call",
-          "original": "./chunks/874.js"
+          "original": "./chunks/698.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/742.js",
+          "kind": "require-call",
+          "original": "./chunks/742.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/757.js",
+          "kind": "require-call",
+          "original": "./chunks/757.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/873.js",
+          "kind": "require-call",
+          "original": "./chunks/873.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/876.js",
           "kind": "require-call",
           "original": "./chunks/876.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/882.js",
+          "kind": "require-call",
+          "original": "./chunks/882.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/918.js",
@@ -4263,7 +4938,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/infrastructure/page.js": {
-      "bytes": 29454,
+      "bytes": 29705,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4349,7 +5024,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/constitution/page.js": {
-      "bytes": 27994,
+      "bytes": 45387,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4434,8 +5109,494 @@
       ],
       "format": "cjs"
     },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-helpers.js": {
+      "bytes": 2594,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-proto.js": {
+      "bytes": 796,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err.js": {
+      "bytes": 1254,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-helpers.js",
+          "kind": "require-call",
+          "original": "./err-helpers"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-proto.js",
+          "kind": "require-call",
+          "original": "./err-proto"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-with-cause.js": {
+      "bytes": 1272,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-helpers.js",
+          "kind": "require-call",
+          "original": "./err-helpers"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-proto.js",
+          "kind": "require-call",
+          "original": "./err-proto"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/req.js": {
+      "bytes": 1963,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/res.js": {
+      "bytes": 860,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino-std-serializers/index.js": {
+      "bytes": 1288,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err.js",
+          "kind": "require-call",
+          "original": "./lib/err"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-with-cause.js",
+          "kind": "require-call",
+          "original": "./lib/err-with-cause"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/req.js",
+          "kind": "require-call",
+          "original": "./lib/req"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/res.js",
+          "kind": "require-call",
+          "original": "./lib/res"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/caller.js": {
+      "bytes": 551,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/@pinojs/redact/index.js": {
+      "bytes": 15129,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/symbols.js": {
+      "bytes": 2095,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/redaction.js": {
+      "bytes": 3172,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/@pinojs/redact/index.js",
+          "kind": "require-call",
+          "original": "@pinojs/redact"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/symbols.js",
+          "kind": "require-call",
+          "original": "./symbols"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/time.js": {
+      "bytes": 1387,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/quick-format-unescaped/index.js": {
+      "bytes": 2661,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/atomic-sleep/index.js": {
+      "bytes": 1211,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/sonic-boom/index.js": {
+      "bytes": 17239,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/atomic-sleep/index.js",
+          "kind": "require-call",
+          "original": "atomic-sleep"
+        },
+        {
+          "path": "assert",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/on-exit-leak-free/index.js": {
+      "bytes": 1964,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/thread-stream/package.json": {
+      "bytes": 1397,
+      "imports": []
+    },
+    ".open-next/server-functions/default/node_modules/thread-stream/lib/wait.js": {
+      "bytes": 2060,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/thread-stream/lib/indexes.js": {
+      "bytes": 140,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/thread-stream/index.js": {
+      "bytes": 15231,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/thread-stream/package.json",
+          "kind": "require-call",
+          "original": "./package.json"
+        },
+        {
+          "path": "events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "worker_threads",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/thread-stream/lib/wait.js",
+          "kind": "require-call",
+          "original": "./lib/wait"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/thread-stream/lib/indexes.js",
+          "kind": "require-call",
+          "original": "./lib/indexes"
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "assert",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/transport.js": {
+      "bytes": 7249,
+      "imports": [
+        {
+          "path": "module",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/caller.js",
+          "kind": "require-call",
+          "original": "./caller"
+        },
+        {
+          "path": "node:path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:url",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/atomic-sleep/index.js",
+          "kind": "require-call",
+          "original": "atomic-sleep"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/on-exit-leak-free/index.js",
+          "kind": "require-call",
+          "original": "on-exit-leak-free"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/thread-stream/index.js",
+          "kind": "require-call",
+          "original": "thread-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/tools.js": {
+      "bytes": 12936,
+      "imports": [
+        {
+          "path": "node:diagnostics_channel",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/quick-format-unescaped/index.js",
+          "kind": "require-call",
+          "original": "quick-format-unescaped"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/index.js",
+          "kind": "require-call",
+          "original": "pino-std-serializers"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/sonic-boom/index.js",
+          "kind": "require-call",
+          "original": "sonic-boom"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/on-exit-leak-free/index.js",
+          "kind": "require-call",
+          "original": "on-exit-leak-free"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/symbols.js",
+          "kind": "require-call",
+          "original": "./symbols"
+        },
+        {
+          "path": "worker_threads",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/transport.js",
+          "kind": "require-call",
+          "original": "./transport"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/constants.js": {
+      "bytes": 375,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/levels.js": {
+      "bytes": 6707,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/symbols.js",
+          "kind": "require-call",
+          "original": "./symbols"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/tools.js",
+          "kind": "require-call",
+          "original": "./tools"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/constants.js",
+          "kind": "require-call",
+          "original": "./constants"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/meta.js": {
+      "bytes": 53,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/proto.js": {
+      "bytes": 7340,
+      "imports": [
+        {
+          "path": "node:events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/symbols.js",
+          "kind": "require-call",
+          "original": "./symbols"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/levels.js",
+          "kind": "require-call",
+          "original": "./levels"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/tools.js",
+          "kind": "require-call",
+          "original": "./tools"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/meta.js",
+          "kind": "require-call",
+          "original": "./meta"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/redaction.js",
+          "kind": "require-call",
+          "original": "./redaction"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/safe-stable-stringify/index.js": {
+      "bytes": 19873,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/lib/multistream.js": {
+      "bytes": 4746,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/constants.js",
+          "kind": "require-call",
+          "original": "./constants"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/node_modules/pino/pino.js": {
+      "bytes": 6319,
+      "imports": [
+        {
+          "path": "node:os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino-std-serializers/index.js",
+          "kind": "require-call",
+          "original": "pino-std-serializers"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/caller.js",
+          "kind": "require-call",
+          "original": "./lib/caller"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/redaction.js",
+          "kind": "require-call",
+          "original": "./lib/redaction"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/time.js",
+          "kind": "require-call",
+          "original": "./lib/time"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/proto.js",
+          "kind": "require-call",
+          "original": "./lib/proto"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/symbols.js",
+          "kind": "require-call",
+          "original": "./lib/symbols"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/safe-stable-stringify/index.js",
+          "kind": "require-call",
+          "original": "safe-stable-stringify"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/levels.js",
+          "kind": "require-call",
+          "original": "./lib/levels"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/constants.js",
+          "kind": "require-call",
+          "original": "./lib/constants"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/tools.js",
+          "kind": "require-call",
+          "original": "./lib/tools"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/meta.js",
+          "kind": "require-call",
+          "original": "./lib/meta"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/transport.js",
+          "kind": "require-call",
+          "original": "./lib/transport"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/lib/multistream.js",
+          "kind": "require-call",
+          "original": "./lib/multistream"
+        }
+      ],
+      "format": "cjs"
+    },
     ".open-next/server-functions/default/.next/server/app/[locale]/transparency/page.js": {
-      "bytes": 27656,
+      "bytes": 31433,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4501,6 +5662,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -4521,7 +5687,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/candidates/page.js": {
-      "bytes": 27435,
+      "bytes": 27489,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4607,7 +5773,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/leadership/page.js": {
-      "bytes": 26441,
+      "bytes": 27264,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4693,7 +5859,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/dashboard/page.js": {
-      "bytes": 269943,
+      "bytes": 41098,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4751,11 +5917,6 @@
           "original": "next/dist/shared/lib/router/utils/interception-routes"
         },
         {
-          "path": "@opentelemetry/api",
-          "kind": "dynamic-import",
-          "external": true
-        },
-        {
           "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
           "kind": "require-call",
           "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
@@ -4764,6 +5925,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -4784,7 +5950,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/manifesto/page.js": {
-      "bytes": 26878,
+      "bytes": 28716,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4870,7 +6036,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/contact/page.js": {
-      "bytes": 27716,
+      "bytes": 28253,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4956,7 +6122,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/mission/page.js": {
-      "bytes": 27417,
+      "bytes": 28769,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5042,7 +6208,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/privacy/page.js": {
-      "bytes": 26705,
+      "bytes": 26980,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5128,7 +6294,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/donate/page.js": {
-      "bytes": 33032,
+      "bytes": 33498,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5194,6 +6360,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -5214,7 +6385,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/issues/page.js": {
-      "bytes": 30424,
+      "bytes": 33835,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5280,6 +6451,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -5300,7 +6476,98 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/report/page.js": {
-      "bytes": 33490,
+      "bytes": 33951,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/app-paths"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+          "kind": "require-call",
+          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/get-segment-param"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/action-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/is-bot"
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-async-storage.external.js"
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/interception-routes.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/interception-routes"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/size-limit"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/no-fallback-error.external"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
+          "kind": "require-call",
+          "original": "../../../webpack-runtime.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/app/[locale]/about/page.js": {
+      "bytes": 52767,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5385,8 +6652,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/[locale]/about/page.js": {
-      "bytes": 30388,
+    ".open-next/server-functions/default/.next/server/app/[locale]/cadre/page.js": {
+      "bytes": 31621,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5472,7 +6739,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/login/page.js": {
-      "bytes": 27280,
+      "bytes": 36699,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5538,6 +6805,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -5558,7 +6830,98 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/media/page.js": {
-      "bytes": 29489,
+      "bytes": 29927,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/app-paths"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+          "kind": "require-call",
+          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/get-segment-param.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/get-segment-param"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/action-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/is-bot"
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-async-storage.external.js"
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/interception-routes.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/interception-routes"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/size-limit"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/no-fallback-error.external"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
+          "kind": "require-call",
+          "original": "../../../webpack-runtime.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/app/[locale]/terms/page.js": {
+      "bytes": 26908,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5643,8 +7006,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/[locale]/terms/page.js": {
-      "bytes": 26635,
+    ".open-next/server-functions/default/.next/server/app/[locale]/admin/page.js": {
+      "bytes": 27652,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5710,6 +7073,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -5816,7 +7184,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/join/page.js": {
-      "bytes": 48375,
+      "bytes": 48725,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5882,6 +7250,11 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
           "kind": "require-call",
           "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/pino/pino.js",
+          "kind": "require-call",
+          "original": "pino"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
@@ -6155,7 +7528,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/[locale]/page.js": {
-      "bytes": 60501,
+      "bytes": 40618,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6327,7 +7700,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/require.js": {
-      "bytes": 9774,
+      "bytes": 10258,
       "imports": [
         {
           "path": "path",
@@ -6445,6 +7818,11 @@
           "original": "C:\\Users\\hudav\\Documents\\GitHub\\webapp\\.open-next\\server-functions\\default\\.next\\server\\app\\[locale]\\about\\page.js"
         },
         {
+          "path": ".open-next/server-functions/default/.next/server/app/[locale]/cadre/page.js",
+          "kind": "require-call",
+          "original": "C:\\Users\\hudav\\Documents\\GitHub\\webapp\\.open-next\\server-functions\\default\\.next\\server\\app\\[locale]\\cadre\\page.js"
+        },
+        {
           "path": ".open-next/server-functions/default/.next/server/app/[locale]/login/page.js",
           "kind": "require-call",
           "original": "C:\\Users\\hudav\\Documents\\GitHub\\webapp\\.open-next\\server-functions\\default\\.next\\server\\app\\[locale]\\login\\page.js"
@@ -6458,6 +7836,11 @@
           "path": ".open-next/server-functions/default/.next/server/app/[locale]/terms/page.js",
           "kind": "require-call",
           "original": "C:\\Users\\hudav\\Documents\\GitHub\\webapp\\.open-next\\server-functions\\default\\.next\\server\\app\\[locale]\\terms\\page.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/app/[locale]/admin/page.js",
+          "kind": "require-call",
+          "original": "C:\\Users\\hudav\\Documents\\GitHub\\webapp\\.open-next\\server-functions\\default\\.next\\server\\app\\[locale]\\admin\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/_global-error/page.js",
@@ -7652,7 +9035,7 @@
       "format": "esm"
     },
     ".open-next/server-functions/default/index.mjs": {
-      "bytes": 89153,
+      "bytes": 89690,
       "imports": [
         {
           "path": "node:module",
@@ -7942,8 +9325,118 @@
           "external": true
         },
         {
-          "path": "@opentelemetry/api",
-          "kind": "dynamic-import",
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "assert",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "worker_threads",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "assert",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:url",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:diagnostics_channel",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "worker_threads",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node:os",
+          "kind": "require-call",
           "external": true
         },
         {
@@ -8004,11 +9497,6 @@
         {
           "path": "path",
           "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": "@opentelemetry/api",
-          "kind": "dynamic-import",
           "external": true
         },
         {
@@ -9065,7 +10553,7 @@
           "bytesInOutput": 586
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-          "bytesInOutput": 191428
+          "bytesInOutput": 238922
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage-instance.js": {
           "bytesInOutput": 501
@@ -9133,26 +10621,158 @@
         ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js": {
           "bytesInOutput": 516
         },
-        ".open-next/server-functions/default/.next/server/chunks/172.js": {
-          "bytesInOutput": 258893
-        },
         ".open-next/server-functions/default/.next/server/chunks/20.js": {
-          "bytesInOutput": 85001
+          "bytesInOutput": 85000
+        },
+        ".open-next/server-functions/default/.next/server/chunks/222.js": {
+          "bytesInOutput": 15902
+        },
+        ".open-next/server-functions/default/.next/server/chunks/257.js": {
+          "bytesInOutput": 15870
         },
         ".open-next/server-functions/default/.next/server/chunks/319.js": {
           "bytesInOutput": 383216
         },
+        ".open-next/server-functions/default/.next/server/chunks/348.js": {
+          "bytesInOutput": 11384
+        },
         ".open-next/server-functions/default/.next/server/chunks/445.js": {
-          "bytesInOutput": 158832
+          "bytesInOutput": 172408
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/version.js": {
+          "bytesInOutput": 250
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/semver.js": {
+          "bytesInOutput": 1740
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/internal/global-utils.js": {
+          "bytesInOutput": 1919
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/ComponentLogger.js": {
+          "bytesInOutput": 901
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/types.js": {
+          "bytesInOutput": 656
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/internal/logLevelLogger.js": {
+          "bytesInOutput": 1003
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/diag.js": {
+          "bytesInOutput": 2026
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/internal/baggage-impl.js": {
+          "bytesInOutput": 946
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/internal/symbol.js": {
+          "bytesInOutput": 326
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/utils.js": {
+          "bytesInOutput": 841
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/context.js": {
+          "bytesInOutput": 875
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag/consoleLogger.js": {
+          "bytesInOutput": 1170
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeter.js": {
+          "bytesInOutput": 3154
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/Metric.js": {
+          "bytesInOutput": 401
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/TextMapPropagator.js": {
+          "bytesInOutput": 537
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context/NoopContextManager.js": {
+          "bytesInOutput": 557
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/context.js": {
+          "bytesInOutput": 1162
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/trace_flags.js": {
+          "bytesInOutput": 423
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/invalid-span-constants.js": {
+          "bytesInOutput": 597
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NonRecordingSpan.js": {
+          "bytesInOutput": 835
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/context-utils.js": {
+          "bytesInOutput": 1242
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/spancontext-utils.js": {
+          "bytesInOutput": 1531
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracer.js": {
+          "bytesInOutput": 1578
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracer.js": {
+          "bytesInOutput": 922
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/NoopTracerProvider.js": {
+          "bytesInOutput": 446
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/ProxyTracerProvider.js": {
+          "bytesInOutput": 946
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/SamplingResult.js": {
+          "bytesInOutput": 578
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/span_kind.js": {
+          "bytesInOutput": 530
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/status.js": {
+          "bytesInOutput": 494
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/tracestate-validators.js": {
+          "bytesInOutput": 873
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/tracestate-impl.js": {
+          "bytesInOutput": 1901
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace/internal/utils.js": {
+          "bytesInOutput": 437
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/context-api.js": {
+          "bytesInOutput": 318
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/diag-api.js": {
+          "bytesInOutput": 290
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics/NoopMeterProvider.js": {
+          "bytesInOutput": 512
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/metrics.js": {
+          "bytesInOutput": 930
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/metrics-api.js": {
+          "bytesInOutput": 317
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation/NoopTextMapPropagator.js": {
+          "bytesInOutput": 452
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/baggage/context-helpers.js": {
+          "bytesInOutput": 910
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/propagation.js": {
+          "bytesInOutput": 1632
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/propagation-api.js": {
+          "bytesInOutput": 349
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/api/trace.js": {
+          "bytesInOutput": 1605
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/trace-api.js": {
+          "bytesInOutput": 301
+        },
+        ".open-next/server-functions/default/node_modules/@opentelemetry/api/build/src/index.js": {
+          "bytesInOutput": 4984
         },
         ".open-next/server-functions/default/.next/server/chunks/511.js": {
-          "bytesInOutput": 284267
-        },
-        ".open-next/server-functions/default/.next/server/chunks/611.js": {
-          "bytesInOutput": 23678
-        },
-        ".open-next/server-functions/default/.next/server/chunks/619.js": {
-          "bytesInOutput": 10588
+          "bytesInOutput": 287967
         },
         ".open-next/server-functions/default/.next/server/chunks/644.js": {
           "bytesInOutput": 18275
@@ -9160,11 +10780,23 @@
         ".open-next/server-functions/default/.next/server/chunks/688.js": {
           "bytesInOutput": 24253
         },
-        ".open-next/server-functions/default/.next/server/chunks/874.js": {
-          "bytesInOutput": 15652
+        ".open-next/server-functions/default/.next/server/chunks/698.js": {
+          "bytesInOutput": 500570
+        },
+        ".open-next/server-functions/default/.next/server/chunks/742.js": {
+          "bytesInOutput": 307942
+        },
+        ".open-next/server-functions/default/.next/server/chunks/757.js": {
+          "bytesInOutput": 11305
+        },
+        ".open-next/server-functions/default/.next/server/chunks/873.js": {
+          "bytesInOutput": 71549
         },
         ".open-next/server-functions/default/.next/server/chunks/876.js": {
           "bytesInOutput": 85005
+        },
+        ".open-next/server-functions/default/.next/server/chunks/882.js": {
+          "bytesInOutput": 6196
         },
         ".open-next/server-functions/default/.next/server/chunks/918.js": {
           "bytesInOutput": 33312
@@ -9173,64 +10805,157 @@
           "bytesInOutput": 24254
         },
         ".open-next/server-functions/default/.next/server/webpack-runtime.js": {
-          "bytesInOutput": 2143
+          "bytesInOutput": 2271
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/infrastructure/page.js": {
-          "bytesInOutput": 29503
+          "bytesInOutput": 29745
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/constitution/page.js": {
-          "bytesInOutput": 28011
+          "bytesInOutput": 45540
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-helpers.js": {
+          "bytesInOutput": 1243
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-proto.js": {
+          "bytesInOutput": 691
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err.js": {
+          "bytesInOutput": 944
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/err-with-cause.js": {
+          "bytesInOutput": 1056
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/req.js": {
+          "bytesInOutput": 1427
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/lib/res.js": {
+          "bytesInOutput": 785
+        },
+        ".open-next/server-functions/default/node_modules/pino-std-serializers/index.js": {
+          "bytesInOutput": 1082
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/caller.js": {
+          "bytesInOutput": 528
+        },
+        ".open-next/server-functions/default/node_modules/@pinojs/redact/index.js": {
+          "bytesInOutput": 8632
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/symbols.js": {
+          "bytesInOutput": 1801
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/redaction.js": {
+          "bytesInOutput": 1669
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/time.js": {
+          "bytesInOutput": 1202
+        },
+        ".open-next/server-functions/default/node_modules/quick-format-unescaped/index.js": {
+          "bytesInOutput": 1630
+        },
+        ".open-next/server-functions/default/node_modules/atomic-sleep/index.js": {
+          "bytesInOutput": 822
+        },
+        ".open-next/server-functions/default/node_modules/sonic-boom/index.js": {
+          "bytesInOutput": 11167
+        },
+        ".open-next/server-functions/default/node_modules/on-exit-leak-free/index.js": {
+          "bytesInOutput": 1530
+        },
+        ".open-next/server-functions/default/node_modules/thread-stream/package.json": {
+          "bytesInOutput": 1243
+        },
+        ".open-next/server-functions/default/node_modules/thread-stream/lib/wait.js": {
+          "bytesInOutput": 1083
+        },
+        ".open-next/server-functions/default/node_modules/thread-stream/lib/indexes.js": {
+          "bytesInOutput": 200
+        },
+        ".open-next/server-functions/default/node_modules/thread-stream/index.js": {
+          "bytesInOutput": 10443
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/transport.js": {
+          "bytesInOutput": 4638
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/tools.js": {
+          "bytesInOutput": 7557
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/constants.js": {
+          "bytesInOutput": 284
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/levels.js": {
+          "bytesInOutput": 4400
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/meta.js": {
+          "bytesInOutput": 163
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/proto.js": {
+          "bytesInOutput": 5123
+        },
+        ".open-next/server-functions/default/node_modules/safe-stable-stringify/index.js": {
+          "bytesInOutput": 13120
+        },
+        ".open-next/server-functions/default/node_modules/pino/lib/multistream.js": {
+          "bytesInOutput": 3022
+        },
+        ".open-next/server-functions/default/node_modules/pino/pino.js": {
+          "bytesInOutput": 5046
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/transparency/page.js": {
-          "bytesInOutput": 27661
+          "bytesInOutput": 31562
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/candidates/page.js": {
-          "bytesInOutput": 27436
+          "bytesInOutput": 27488
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/leadership/page.js": {
-          "bytesInOutput": 26435
+          "bytesInOutput": 27269
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/dashboard/page.js": {
-          "bytesInOutput": 283617
+          "bytesInOutput": 41375
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/manifesto/page.js": {
-          "bytesInOutput": 26874
+          "bytesInOutput": 28742
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/contact/page.js": {
-          "bytesInOutput": 27714
+          "bytesInOutput": 28256
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/mission/page.js": {
-          "bytesInOutput": 27431
+          "bytesInOutput": 28796
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/privacy/page.js": {
-          "bytesInOutput": 26700
+          "bytesInOutput": 26979
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/donate/page.js": {
-          "bytesInOutput": 33091
+          "bytesInOutput": 33569
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/issues/page.js": {
-          "bytesInOutput": 30469
+          "bytesInOutput": 33894
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/report/page.js": {
-          "bytesInOutput": 33554
+          "bytesInOutput": 34023
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/about/page.js": {
-          "bytesInOutput": 30443
+          "bytesInOutput": 54218
+        },
+        ".open-next/server-functions/default/.next/server/app/[locale]/cadre/page.js": {
+          "bytesInOutput": 31633
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/login/page.js": {
-          "bytesInOutput": 27275
+          "bytesInOutput": 37049
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/media/page.js": {
-          "bytesInOutput": 29486
+          "bytesInOutput": 29929
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/terms/page.js": {
-          "bytesInOutput": 26628
+          "bytesInOutput": 26905
+        },
+        ".open-next/server-functions/default/.next/server/app/[locale]/admin/page.js": {
+          "bytesInOutput": 27631
         },
         ".open-next/server-functions/default/.next/server/app/_global-error/page.js": {
           "bytesInOutput": 28397
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/join/page.js": {
-          "bytesInOutput": 48580
+          "bytesInOutput": 48937
         },
         ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js": {
           "bytesInOutput": 181194
@@ -9242,22 +10967,22 @@
           "bytesInOutput": 24033
         },
         ".open-next/server-functions/default/.next/server/app/[locale]/page.js": {
-          "bytesInOutput": 60870
+          "bytesInOutput": 40737
         },
         ".open-next/server-functions/default/.next/server/app/page.js": {
           "bytesInOutput": 31183
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/require.js": {
-          "bytesInOutput": 5003
+          "bytesInOutput": 5195
         },
         ".open-next/server-functions/default/node_modules/next/dist/lib/wait.js": {
-          "bytesInOutput": 341
+          "bytesInOutput": 342
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/app-render/manifests-singleton.js": {
           "bytesInOutput": 5517
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/load-components.js": {
-          "bytesInOutput": 4580
+          "bytesInOutput": 4581
         },
         ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/middleware-route-matcher.js": {
           "bytesInOutput": 696
@@ -9395,10 +11120,10 @@
           "bytesInOutput": 667
         },
         ".open-next/server-functions/default/index.mjs": {
-          "bytesInOutput": 62405
+          "bytesInOutput": 62873
         }
       },
-      "bytes": 4736570
+      "bytes": 5433463
     }
   }
 }

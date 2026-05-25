@@ -4,6 +4,7 @@
   "/favicon.ico/route": "/favicon.ico",
   "/page": "/",
   "/[locale]/about/page": "/[locale]/about",
+  "/[locale]/cadre/page": "/[locale]/cadre",
   "/[locale]/candidates/page": "/[locale]/candidates",
   "/[locale]/constitution/page": "/[locale]/constitution",
   "/[locale]/contact/page": "/[locale]/contact",
@@ -21,5 +22,6 @@
   "/[locale]/privacy/page": "/[locale]/privacy",
   "/[locale]/report/page": "/[locale]/report",
   "/[locale]/terms/page": "/[locale]/terms",
-  "/[locale]/transparency/page": "/[locale]/transparency"
+  "/[locale]/transparency/page": "/[locale]/transparency",
+  "/[locale]/admin/page": "/[locale]/admin"
 }

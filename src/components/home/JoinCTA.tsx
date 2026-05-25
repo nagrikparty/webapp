@@ -45,19 +45,11 @@ export default function JoinCTA({ translations }: JoinCTAProps) {
             {translations.desc}
           </p>
 
-          {/* Stats Row */}
-          <div className="flex flex-wrap justify-center gap-8 sm:gap-16 mb-12">
-            <div className="text-center">
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mb-1">{translations.groundOps}</p>
-              <p className="font-mono text-sm text-white/80 font-bold">{translations.groundOpsVal}</p>
-            </div>
-            <div className="text-center">
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mb-1">{translations.leaders}</p>
-              <p className="font-mono text-sm text-white/80 font-bold">{translations.leadersVal}</p>
-            </div>
-            <div className="text-center">
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30 mb-1">{translations.meetDay}</p>
-              <p className="font-mono text-sm text-white/80 font-bold">{translations.meetDayVal}</p>
+          {/* Action Statement */}
+          <div className="flex justify-center mb-12">
+            <div className="border border-white/20 px-8 py-4 bg-white/5 backdrop-blur-sm max-w-lg">
+              <span className="font-mono text-[10px] text-white/50 tracking-[0.2em] uppercase block mb-2">CIVIC MANDATE</span>
+              <p className="font-body text-white font-medium">Join local neighborhood units to enforce transparency and execute ground-level actions.</p>
             </div>
           </div>
 

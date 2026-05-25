@@ -57,15 +57,9 @@ export default function SystemFailureSection({ translations }: Props) {
             {translations.desc}
           </p>
 
-          <div className="grid grid-cols-2 gap-8 sm:gap-16 pt-8 border-t border-black/10">
-            <div className="flex flex-col gap-2">
-              <span className="font-mono text-[10px] text-black/40 tracking-[0.2em]">{translations.unemployment}</span>
-              <span className="font-mono text-3xl sm:text-5xl text-black font-medium">{translations.unemploymentVal}</span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className="font-mono text-[10px] text-black/40 tracking-[0.2em]">{translations.stat}</span>
-              <span className="font-mono text-3xl sm:text-5xl text-red font-medium">{translations.statVal}</span>
-            </div>
+          <div className="pt-8 border-t border-black/10 text-center w-full max-w-md mx-auto">
+            <span className="font-mono text-[10px] text-black/60 tracking-[0.2em] uppercase block mb-3">Structural Notice</span>
+            <span className="font-mono text-xl sm:text-2xl text-black font-medium uppercase leading-tight">The current governance model has collapsed. Action is required.</span>
           </div>
         </motion.div>
 

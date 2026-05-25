@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { MapPin, AlertTriangle, LightbulbOff, Droplets, Trash2, Waves, Building2, Heart, Shield, Zap, Inbox } from "lucide-react";
+import { MapPin, LightbulbOff, Droplets, Trash2, Waves, Building2, Heart, Shield, Zap, Inbox } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getLiveIssues } from "@/actions";
 
@@ -12,26 +11,7 @@ interface LiveIssueCardsProps {
     safetyConcern: string;
     critical: string;
     pending: string;
-    // We no longer need all the dummy translation strings here, but we'll leave them in the type 
-    // to avoid breaking the parent component layout until we refactor the dictionary.
-    issue1Location: string;
-    issue1Title: string;
-    issue1Days: string;
-    issue2Location: string;
-    issue2Title: string;
-    issue2Days: string;
-    issue3Location: string;
-    issue3Title: string;
-    issue3Days: string;
-    issue4Location: string;
-    issue4Title: string;
-    issue4Days: string;
-    issue5Location: string;
-    issue5Title: string;
-    issue5Days: string;
-    issue6Location: string;
-    issue6Title: string;
-    issue6Days: string;
+    [key: string]: string; // Fallback for other translation keys
   };
 }
 
@@ -47,15 +27,15 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
         if (data && data.length > 0) {
           const mapCategoryToIcon = (category: string) => {
             switch (category) {
-              case 'roads': return <Building2 size={20} className="text-charcoal" />;
-              case 'water': return <Droplets size={20} className="text-charcoal" />;
-              case 'sewage': return <Waves size={20} className="text-charcoal" />;
-              case 'streetlights': return <LightbulbOff size={20} className="text-charcoal" />;
-              case 'garbage': return <Trash2 size={20} className="text-charcoal" />;
-              case 'healthcare': return <Heart size={20} className="text-charcoal" />;
-              case 'safety': return <Shield size={20} className="text-charcoal" />;
-              case 'publicInfra': return <Zap size={20} className="text-charcoal" />;
-              default: return <AlertTriangle size={20} className="text-charcoal" />;
+              case 'roads': return <Building2 size={24} className="text-black" />;
+              case 'water': return <Droplets size={24} className="text-black" />;
+              case 'sewage': return <Waves size={24} className="text-black" />;
+              case 'streetlights': return <LightbulbOff size={24} className="text-black" />;
+              case 'garbage': return <Trash2 size={24} className="text-black" />;
+              case 'healthcare': return <Heart size={24} className="text-black" />;
+              case 'safety': return <Shield size={24} className="text-black" />;
+              case 'publicInfra': return <Zap size={24} className="text-black" />;
+              default: return <Inbox size={24} className="text-black" />;
             }
           };
 
@@ -65,7 +45,7 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
             return diffDays.toString();
           };
 
-          const formattedRealIssues = data.map((report: any) => ({
+          const formattedRealIssues = data.slice(0, 8).map((report: any) => ({
             id: report.id,
             location: report.ward,
             title: report.category.charAt(0).toUpperCase() + report.category.slice(1) + " Issue",
@@ -90,94 +70,79 @@ export default function LiveIssueCards({ translations }: LiveIssueCardsProps) {
 
   if (loading) {
     return (
-      <section className="py-12 sm:py-16 bg-off-white overflow-hidden border-b border-black/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8 flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-black/20 border-t-red rounded-full animate-spin"></div>
+      <section className="py-16 bg-off-white border-b border-black/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-mono text-sm uppercase tracking-widest text-black/50">
+          Loading Public Log...
         </div>
       </section>
     );
   }
 
   return (
-    <section className="py-12 sm:py-16 bg-off-white overflow-hidden border-b border-black/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8">
-        <div className="flex items-center gap-3">
-          <div className="pulse-dot"></div>
-          <h2 className="font-mono text-xs sm:text-sm font-semibold tracking-widest text-black/60 uppercase">
-            {translations.title}
-          </h2>
+    <section className="py-16 bg-white border-b border-black/10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 border-b border-black/10 pb-4 flex flex-col md:flex-row justify-between items-end">
+          <div>
+            <h2 className="font-hindi text-3xl sm:text-4xl font-bold text-black uppercase tracking-tight">
+              Public Grievance Log
+            </h2>
+            <p className="font-mono text-sm tracking-widest text-black/50 uppercase mt-2">
+              Documented structural failures awaiting resolution
+            </p>
+          </div>
+          <div className="mt-4 md:mt-0">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest border border-black px-3 py-1.5 bg-black text-white">
+              Official Record
+            </span>
+          </div>
         </div>
-      </div>
-
-      <div className="relative w-full overflow-x-hidden">
-        {/* Left fade */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-off-white to-transparent z-10 pointer-events-none"></div>
-        {/* Right fade */}
-        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-off-white to-transparent z-10 pointer-events-none"></div>
 
         {displayIssues.length > 0 ? (
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
-              repeat: Infinity,
-              ease: "linear",
-              duration: displayIssues.length > 3 ? 30 : 60, // Slower if fewer items
-            }}
-            className="flex gap-4 sm:gap-6 px-4 w-max"
-          >
-            {/* Duplicate array just to make the marquee loop cleanly */}
-            {[...displayIssues, ...displayIssues, ...displayIssues, ...displayIssues].map((issue, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {displayIssues.map((issue) => (
               <div
-                key={`${issue.id}-${i}`}
-                className={`w-72 sm:w-80 shrink-0 civic-card bg-white/70 hover:bg-white transition-colors duration-300 ${
-                  issue.isCritical ? "issue-card-pulse" : ""
-                }`}
+                key={issue.id}
+                className="border border-black p-6 bg-off-white flex flex-col hover:bg-black hover:text-white transition-colors group"
               >
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-center gap-1.5 text-black/50">
-                    <MapPin size={14} strokeWidth={2.5} />
-                    <span className="font-mono text-[10px] uppercase tracking-wider font-semibold">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-1.5 text-black group-hover:text-white transition-colors">
+                    <MapPin size={16} strokeWidth={2} />
+                    <span className="font-mono text-[11px] uppercase tracking-wider font-bold">
                       {issue.location}
                     </span>
                   </div>
-                  {issue.isCritical ? (
-                    <span className="bg-red/10 text-red px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-wider font-bold">
-                      {issue.tag}
-                    </span>
-                  ) : (
-                    <span className="bg-black/5 text-black/60 px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-wider font-semibold">
-                      {issue.tag}
+                  {issue.isCritical && (
+                    <span className="text-red font-mono text-[10px] uppercase tracking-wider font-bold border border-red px-2 py-1">
+                      Urgent Action
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="p-2 bg-black/5 rounded-lg shrink-0">
+                <div className="flex items-start gap-4 mb-8">
+                  <div className="shrink-0 text-black group-hover:text-white transition-colors">
                     {issue.icon}
                   </div>
-                  <h3 className="font-body text-sm font-semibold text-black leading-snug">
+                  <h3 className="font-body text-lg font-bold leading-tight">
                     {issue.title}
                   </h3>
                 </div>
 
-                <div className="pt-3 border-t border-black/5 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xl font-hindi font-semibold text-red">
+                <div className="mt-auto pt-4 border-t border-black/10 group-hover:border-white/20 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl font-black font-hindi">
                       {issue.days}
                     </span>
-                    <span className="font-body text-[11px] text-black/50 uppercase tracking-wide">
-                      {translations.unresolved}
+                    <span className="font-mono text-[10px] uppercase tracking-widest leading-tight opacity-70">
+                      Days<br/>Unresolved
                     </span>
                   </div>
                 </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-8 text-black/40">
-            <Inbox size={48} className="mb-4 opacity-50" />
-            <p className="font-body text-lg font-medium">No active issues reported</p>
-            <p className="font-mono text-xs uppercase tracking-widest mt-2">All clear in your ward</p>
+          <div className="py-12 border border-black p-8 bg-off-white text-center">
+            <p className="font-mono text-sm uppercase tracking-widest text-black/50">No structural failures reported recently.</p>
           </div>
         )}
       </div>

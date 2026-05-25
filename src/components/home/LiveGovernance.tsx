@@ -1,45 +1,33 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertCircle, Clock, MapPin } from "lucide-react";
+import { FileText, Users, Building, Shield } from "lucide-react";
 
 export default function LiveGovernance() {
   const blocks = [
     {
       id: 1,
-      ward: "Ward 42",
-      issue: "Drainage complaints",
-      status: "14 unresolved",
-      metricLabel: "Avg response",
-      metricValue: "11 days",
-      alert: true,
+      title: "Ward Assemblies",
+      description: "Mandatory public meetings held every month to audit local expenditures and prioritize neighborhood work.",
+      icon: Users,
     },
     {
       id: 2,
-      ward: "Okhla Phase 2",
-      issue: "Streetlights inactive",
-      status: "23 poles",
-      metricLabel: "Status",
-      metricValue: "Pending Action",
-      alert: true,
+      title: "Open Ledgers",
+      description: "Complete transparency of all municipal contracts, vendor payments, and project timelines accessible to any citizen.",
+      icon: FileText,
     },
     {
       id: 3,
-      ward: "Lajpat Nagar",
-      issue: "Public toilet maintenance",
-      status: "Reported poor",
-      metricLabel: "Last inspection",
-      metricValue: "47 days ago",
-      alert: true,
+      title: "Accountable Representatives",
+      description: "Elected officials bound by a public charter, facing immediate recall votes if constitutional duties are breached.",
+      icon: Building,
     },
     {
       id: 4,
-      ward: "South Extension",
-      issue: "Water Supply Delay",
-      status: "3 areas affected",
-      metricLabel: "Expected fix",
-      metricValue: "Unknown",
-      alert: true,
+      title: "Citizen Grievance Cells",
+      description: "Local hubs in every zone dedicated to tracking and resolving civic infrastructure complaints within strict deadlines.",
+      icon: Shield,
     }
   ];
 
@@ -49,57 +37,43 @@ export default function LiveGovernance() {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-black/10 pb-6">
           <div>
             <h2 className="font-hindi text-4xl sm:text-5xl font-bold text-black uppercase tracking-tight mb-2">
-              Live Governance
+              Civic Accountability Structure
             </h2>
             <p className="font-mono text-sm tracking-widest text-black/50 uppercase">
-              Real-time public infrastructure monitoring
+              How we enforce governance at the ward level
             </p>
           </div>
-          <div className="mt-6 md:mt-0 flex items-center gap-2">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-red"></span>
+          <div className="mt-6 md:mt-0">
+            <span className="font-mono text-xs uppercase tracking-widest font-bold text-black border border-black px-4 py-2">
+              Constitutional Framework
             </span>
-            <span className="font-mono text-xs uppercase tracking-widest font-bold text-red">System Active</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {blocks.map((block, index) => (
-            <motion.div
-              key={block.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="border border-black/10 bg-off-white p-6 relative group hover:border-black/30 transition-colors"
-            >
-              {block.alert && (
-                <div className="absolute top-0 left-0 w-full h-1 bg-red"></div>
-              )}
-              
-              <div className="flex items-center gap-2 text-black/60 mb-4">
-                <MapPin size={14} />
-                <span className="font-mono text-xs uppercase tracking-widest font-bold">{block.ward}</span>
-              </div>
-
-              <h3 className="font-body text-lg font-bold text-black mb-1">{block.issue}</h3>
-              <p className="font-mono text-sm text-red font-bold mb-6 flex items-center gap-2">
-                <AlertCircle size={14} />
-                {block.status}
-              </p>
-
-              <div className="border-t border-black/10 pt-4 mt-auto">
-                <div className="flex justify-between items-center">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-black/50">{block.metricLabel}</span>
-                  <span className="font-mono text-xs font-bold flex items-center gap-1 text-black/80">
-                    <Clock size={12} className="text-black/40"/>
-                    {block.metricValue}
-                  </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {blocks.map((block, index) => {
+            const Icon = block.icon;
+            return (
+              <motion.div
+                key={block.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="border border-black p-8 bg-off-white hover:bg-black hover:text-white transition-colors group"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-3 bg-black text-white group-hover:bg-white group-hover:text-black transition-colors">
+                    <Icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-body text-2xl font-bold uppercase tracking-tight">{block.title}</h3>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+                <p className="font-body text-lg opacity-80 leading-relaxed">
+                  {block.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

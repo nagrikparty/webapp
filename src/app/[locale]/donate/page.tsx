@@ -52,14 +52,14 @@ export default function DonatePage() {
 
   const purposeKeys = ["general", "ward", "healthcare", "campaign"] as const;
 
-  const inputClasses = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-red/50 focus:ring-1 focus:ring-red/20 transition-all duration-300";
-  const labelClasses = "block font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 mb-2";
+  const inputClasses = "w-full bg-white border border-black/10 rounded-xl px-4 py-3.5 font-body text-sm text-black placeholder:text-black/30 focus:outline-none focus:border-red/50 focus:ring-1 focus:ring-red/20 transition-all duration-300";
+  const labelClasses = "block font-mono text-[10px] uppercase tracking-[0.2em] text-black/50 mb-2";
 
   return (
     <>
       <Navbar />
       <PageTransition>
-        <main className="bg-black min-h-screen pt-24 pb-24">
+        <main className="bg-off-white min-h-screen text-black pt-24 pb-24">
           {/* Hero */}
           <section className="pt-8 pb-20 relative overflow-hidden">
             <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
@@ -74,10 +74,10 @@ export default function DonatePage() {
                   <span className="w-2 h-2 rounded-full bg-red animate-pulse"></span>
                   {t("heroTag")}
                 </div>
-                <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-white font-semibold mb-6 tracking-tight uppercase">
+                <h1 className="font-hindi text-[clamp(3.5rem,8vw,6rem)] leading-[0.9] text-black font-semibold mb-6 tracking-tight uppercase">
                   {t("title")}
                 </h1>
-                <p className="font-body text-xl sm:text-2xl text-white/60 leading-relaxed max-w-2xl">
+                <p className="font-body text-xl sm:text-2xl text-black/60 leading-relaxed max-w-2xl">
                   {t("content")}
                 </p>
               </motion.div>
@@ -92,16 +92,16 @@ export default function DonatePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.5 }}
-                className="bg-white/5 border border-white/10 p-6 rounded-2xl text-center hover:bg-white/10 transition-colors"
+                className="bg-white border border-black/10 p-6 rounded-2xl text-center hover:bg-black/10 transition-colors"
               >
                 <div className="w-12 h-12 bg-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Smartphone size={22} className="text-red" />
                 </div>
-                <h3 className="font-body text-lg font-bold text-white mb-1">{t("upiTitle")}</h3>
-                <p className="font-body text-sm text-white/50 mb-4">{t("upiDesc")}</p>
-                <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-2">
-                  <code className="font-mono text-sm text-white font-semibold truncate">donate@nagrikparty.in</code>
-                  <button onClick={copyUPI} className="shrink-0 text-white/40 hover:text-red transition-colors">
+                <h3 className="font-body text-lg font-bold text-black mb-1">{t("upiTitle")}</h3>
+                <p className="font-body text-sm text-black/50 mb-4">{t("upiDesc")}</p>
+                <div className="bg-white border border-black/10 rounded-xl p-3 flex items-center justify-between gap-2">
+                  <code className="font-mono text-sm text-black font-semibold truncate">donate@nagrikparty.in</code>
+                  <button onClick={copyUPI} className="shrink-0 text-black/40 hover:text-red transition-colors">
                     {copied ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
                   </button>
                 </div>
@@ -112,14 +112,14 @@ export default function DonatePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="bg-white/5 border border-white/10 p-6 rounded-2xl text-center hover:bg-white/10 transition-colors"
+                className="bg-white border border-black/10 p-6 rounded-2xl text-center hover:bg-black/10 transition-colors"
               >
                 <div className="w-12 h-12 bg-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building2 size={22} className="text-red" />
                 </div>
-                <h3 className="font-body text-lg font-bold text-white mb-1">{t("bankTitle")}</h3>
-                <p className="font-body text-sm text-white/50 mb-4">{t("bankDesc")}</p>
-                <div className="text-left font-mono text-xs text-white/60 leading-relaxed bg-white/5 border border-white/10 p-4 rounded-xl">
+                <h3 className="font-body text-lg font-bold text-black mb-1">{t("bankTitle")}</h3>
+                <p className="font-body text-sm text-black/50 mb-4">{t("bankDesc")}</p>
+                <div className="text-left font-mono text-xs text-black/60 leading-relaxed bg-white border border-black/10 p-4 rounded-xl">
                   {t("bankContactDetails") || "Please email donate@nagrikparty.in for NEFT/RTGS account details. We will provide our official SBI current account information."}
                 </div>
               </motion.div>
@@ -129,14 +129,14 @@ export default function DonatePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="bg-white/5 border border-white/10 p-6 rounded-2xl text-center hover:bg-white/10 transition-colors"
+                className="bg-white border border-black/10 p-6 rounded-2xl text-center hover:bg-black/10 transition-colors"
               >
                 <div className="w-12 h-12 bg-red/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <MapPin size={22} className="text-red" />
                 </div>
-                <h3 className="font-body text-lg font-bold text-white mb-1">{t("inPersonTitle")}</h3>
-                <p className="font-body text-sm text-white/50 mb-4">{t("inPersonDesc")}</p>
-                <p className="font-mono text-xs text-white/60 leading-relaxed">
+                <h3 className="font-body text-lg font-bold text-black mb-1">{t("inPersonTitle")}</h3>
+                <p className="font-body text-sm text-black/50 mb-4">{t("inPersonDesc")}</p>
+                <p className="font-mono text-xs text-black/60 leading-relaxed">
                   B-80, Street 8, Ghaffar Manzil, Jamia Nagar, Okhla, New Delhi – 110025
                 </p>
               </motion.div>
@@ -148,9 +148,9 @@ export default function DonatePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8 mb-12"
+              className="bg-white backdrop-blur-md border border-black/10 rounded-3xl p-6 sm:p-8 mb-12"
             >
-              <h2 className="font-body text-2xl font-bold text-white mb-8">{t("formTitle")}</h2>
+              <h2 className="font-body text-2xl font-bold text-black mb-8">{t("formTitle")}</h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -188,7 +188,7 @@ export default function DonatePage() {
                       onChange={(e) => setForm({ ...form, purpose: e.target.value })}
                     >
                       {purposeKeys.map((key) => (
-                        <option key={key} value={t(`purposes.${key}`)} className="bg-black text-white">
+                        <option key={key} value={t(`purposes.${key}`)} className="bg-off-white text-black">
                           {t(`purposes.${key}`)}
                         </option>
                       ))}
@@ -210,7 +210,7 @@ export default function DonatePage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-red text-white font-mono text-sm font-bold tracking-widest uppercase py-4 rounded-full hover:bg-red/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red/20"
+                  className="w-full bg-red text-black font-mono text-sm font-bold tracking-widest uppercase py-4 rounded-full hover:bg-red/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red/20"
                 >
                   {submitting ? "..." : t("submit")}
                 </button>
@@ -221,7 +221,7 @@ export default function DonatePage() {
             <div className="text-center">
               <Link
                 href="/transparency"
-                className="group inline-flex items-center gap-3 font-mono text-sm text-white/50 hover:text-red transition-colors tracking-widest uppercase font-bold"
+                className="group inline-flex items-center gap-3 font-mono text-sm text-black/50 hover:text-red transition-colors tracking-widest uppercase font-bold"
               >
                 {t("viewLedger")}
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

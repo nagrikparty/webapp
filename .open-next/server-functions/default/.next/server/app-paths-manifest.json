@@ -4,6 +4,7 @@
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
   "/[locale]/about/page": "app/[locale]/about/page.js",
+  "/[locale]/cadre/page": "app/[locale]/cadre/page.js",
   "/[locale]/candidates/page": "app/[locale]/candidates/page.js",
   "/[locale]/constitution/page": "app/[locale]/constitution/page.js",
   "/[locale]/contact/page": "app/[locale]/contact/page.js",
@@ -21,5 +22,6 @@
   "/[locale]/privacy/page": "app/[locale]/privacy/page.js",
   "/[locale]/report/page": "app/[locale]/report/page.js",
   "/[locale]/terms/page": "app/[locale]/terms/page.js",
-  "/[locale]/transparency/page": "app/[locale]/transparency/page.js"
+  "/[locale]/transparency/page": "app/[locale]/transparency/page.js",
+  "/[locale]/admin/page": "app/[locale]/admin/page.js"
 }

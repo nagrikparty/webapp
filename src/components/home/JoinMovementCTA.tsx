@@ -85,19 +85,11 @@ export default function JoinMovementCTA({ translations }: Props) {
             <ArrowRight size={18} strokeWidth={2} className="group-hover:translate-x-1 transition-transform" />
           </Link>
 
-          {/* Movement Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full pt-8 border-t border-white/10">
-            <div className="flex flex-col gap-1 items-center">
-              <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.groundOps}</span>
-              <span className="font-mono text-sm text-white font-medium tracking-widest">{translations.groundOpsVal}</span>
-            </div>
-            <div className="flex flex-col gap-1 items-center">
-              <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.leaders}</span>
-              <span className="font-mono text-lg text-white font-bold">{leaderCount}</span>
-            </div>
-            <div className="flex flex-col gap-1 items-center">
-              <span className="font-mono text-[9px] text-white/40 tracking-[0.2em]">{translations.meetDay}</span>
-              <span className="font-mono text-sm text-white font-medium tracking-widest">{translations.meetDayVal}</span>
+          {/* Action Statement */}
+          <div className="w-full pt-8 border-t border-white/10 flex justify-center">
+            <div className="border border-white/20 px-8 py-4 bg-white/5 backdrop-blur-sm max-w-lg">
+              <span className="font-mono text-[10px] text-white/50 tracking-[0.2em] uppercase block mb-2">OPERATIONAL STATUS</span>
+              <p className="font-body text-white font-medium">Over {leaderCount} volunteers are actively enforcing accountability across the city.</p>
             </div>
           </div>
         </motion.div>
