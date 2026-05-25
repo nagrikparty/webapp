@@ -23,8 +23,8 @@ export default function Home() {
           <div className="hidden md:flex items-center gap-8 font-mono text-xs uppercase font-semibold">
             <Link href="/ward/42" className="hover:text-[#A11212] transition-colors">Ward Data</Link>
             <Link href="/representative/1" className="hover:text-[#A11212] transition-colors">Accountability</Link>
-            <Link href="/brand/social" className="hover:text-[#A11212] transition-colors">Brand Kit</Link>
-            <Link href="#" className="bg-[#0A0A0A] text-[#F5F1E8] px-4 py-2 hover:bg-[#A11212] transition-colors">Report Issue</Link>
+            <Link href="/transparency" className="hover:text-[#A11212] transition-colors">Transparency</Link>
+            <Link href="/grievance" className="bg-[#0A0A0A] text-[#F5F1E8] px-4 py-2 hover:bg-[#A11212] transition-colors">Report Issue</Link>
           </div>
         </div>
       </nav>
@@ -178,8 +178,8 @@ export default function Home() {
           <div>
             <h4 className="font-mono text-[10px] uppercase text-white/40 tracking-widest mb-4">Ecosystem</h4>
             <ul className="space-y-2 text-sm text-white/70">
-              <li><Link href="#" className="hover:text-white">Governance Dashboard</Link></li>
-              <li><Link href="#" className="hover:text-white">Public Grievance System</Link></li>
+              <li><Link href="/ward/42" className="hover:text-white">Governance Dashboard</Link></li>
+              <li><Link href="/grievance" className="hover:text-white">Public Grievance System</Link></li>
               <li><Link href="/representative/1" className="hover:text-white">Accountability Tracker</Link></li>
               <li><Link href="/brand/social" className="hover:text-white">Brand & Media Kit</Link></li>
             </ul>
@@ -187,9 +187,10 @@ export default function Home() {
           <div>
             <h4 className="font-mono text-[10px] uppercase text-white/40 tracking-widest mb-4">Transparency</h4>
             <ul className="space-y-2 text-sm text-white/70">
-              <li><Link href="#" className="hover:text-white">Public Audit Reports</Link></li>
-              <li><Link href="#" className="hover:text-white">Donation Tracking</Link></li>
-              <li><Link href="#" className="hover:text-white">Constitutional Literacy</Link></li>
+              <li><Link href="/transparency" className="hover:text-white">Public Audit Reports</Link></li>
+              <li><Link href="/education" className="hover:text-white">Constitutional Literacy</Link></li>
+              <li><Link href="/campaign/onboarding" className="hover:text-white">Candidate Onboarding</Link></li>
+              <li><Link href="/campaign/volunteer" className="hover:text-white">Volunteer Hub</Link></li>
             </ul>
           </div>
         </div>
