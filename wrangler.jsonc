@@ -4,10 +4,10 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "main": ".open-next/worker.js",
+  "main": "dist/_worker.js/index.js",
 
   "assets": {
-    "directory": ".open-next/assets",
+    "directory": "dist",
     "binding": "ASSETS"
   },
   "d1_databases": [
