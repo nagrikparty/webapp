@@ -1,0 +1,63 @@
+"use client";
+
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+
+export default function FounderQuote() {
+  const t = useTranslations('HomePageV2.FounderQuote');
+
+  return (
+    <section className="bg-off-white dark:bg-[#0A0A0A] py-32 border-t border-black/10 dark:border-white/10 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="w-full lg:w-1/3 flex justify-center"
+          >
+            <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-8 border-white dark:border-[#111111] shadow-2xl">
+              <div className="absolute inset-0 grayscale contrast-125 brightness-95 dark:brightness-110">
+                <Image 
+                  src="/images/founder.jpg" 
+                  alt="Founder" 
+                  fill 
+                  className="object-cover object-top"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="w-full lg:w-2/3 text-center lg:text-left"
+          >
+            <svg className="w-12 h-12 text-red mb-8 mx-auto lg:mx-0 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+            </svg>
+            
+            <h3 className="font-hindi text-4xl sm:text-5xl lg:text-6xl font-black text-black dark:text-[#F7F7F5] leading-tight mb-8">
+              &quot;{t('quote')}&quot;
+            </h3>
+            
+            <div className="flex flex-col items-center lg:items-start">
+              <span className="font-body text-xl font-bold uppercase tracking-widest text-black dark:text-white">
+                Arsalan Azad
+              </span>
+              <span className="font-mono text-sm tracking-widest text-red uppercase mt-1">
+                Founder, Nagrik Party
+              </span>
+            </div>
+          </motion.div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
