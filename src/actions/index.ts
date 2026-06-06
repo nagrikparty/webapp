@@ -14,3 +14,5 @@ export const getLiveIssues = async (limit?: number, offset?: number) => {
   const res = await fetch(url.toString());
   return res.json();
 };
+
+export const server = {};

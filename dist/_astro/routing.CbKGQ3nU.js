@@ -1,0 +1,1 @@
+import{R as o}from"./index.DYrVU9rO.js";const i=({href:e,children:n,className:t,onClick:a})=>o.createElement("a",{href:e,className:t,onClick:a},n),s=()=>typeof window<"u"?window.location.pathname:"/";export{i as L,s as u};
