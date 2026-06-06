@@ -30,6 +30,7 @@ export default function DonatePage() {
         amount: parseInt(form.amount, 10),
         purpose: form.purpose,
         transaction_ref: form.transaction_ref,
+        turnstileToken: "dummy-token-for-now", // Will be implemented correctly with Turnstile
       });
       if (result.success) {
         toast.success(t("success") || "Donation submitted successfully!");

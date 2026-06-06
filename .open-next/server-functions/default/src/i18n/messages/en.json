@@ -4,7 +4,8 @@
     "mission": "MISSION",
     "about": "ABOUT",
     "report": "NAGRIK REPORT",
-    "join": "JOIN MOVEMENT",
+    "join": "JOIN",
+    "action": "ACTION",
     "issues": "ISSUES",
     "infrastructure": "INFRASTRUCTURE",
     "manifesto": "MANIFESTO",
@@ -509,9 +510,18 @@
     "policyTitle": "Policy Frameworks in Draft",
     "policyPhase": "PUBLIC CONSULTATION PHASE",
     "policies": {
-      "healthcare": { "title": "Ward-Level Healthcare Architecture", "status": "DRAFTING" },
-      "infrastructure": { "title": "Local Infrastructure Audit Process", "status": "DRAFTING" },
-      "womenSafety": { "title": "Women Safety Protocol & Urban Planning", "status": "DRAFTING" }
+      "healthcare": {
+        "title": "Ward-Level Healthcare Architecture",
+        "status": "DRAFTING"
+      },
+      "infrastructure": {
+        "title": "Local Infrastructure Audit Process",
+        "status": "DRAFTING"
+      },
+      "womenSafety": {
+        "title": "Women Safety Protocol & Urban Planning",
+        "status": "DRAFTING"
+      }
     }
   },
   "Transparency": {
@@ -536,11 +546,26 @@
     "draftVersion": "DRAFT v1.0.4",
     "ratifiedStatus": "RATIFIED: PENDING",
     "articles": {
-      "a01": { "title": "Supremacy of the Citizen", "desc": "No party leader, including the founder, holds authority greater than the collective will of the registered ward volunteers." },
-      "a02": { "title": "Financial Total Transparency", "desc": "Every contribution to the movement, regardless of size, must be logged in the public ledger within 48 hours of receipt." },
-      "a03": { "title": "Decentralized Leadership", "desc": "Ward Captains are the primary executive authority in their respective localities. The central headquarters acts only in a coordinating capacity." },
-      "a04": { "title": "Zero Tolerance for Violence", "desc": "The movement is strictly non-violent. Any member engaging in physical intimidation or violence will be immediately expelled and reported to authorities." },
-      "a05": { "title": "Electoral Candidacy", "desc": "Candidates for public office must have a documented history of at least two years of civic organizing within the ward they seek to represent." }
+      "a01": {
+        "title": "Supremacy of the Citizen",
+        "desc": "No party leader, including the founder, holds authority greater than the collective will of the registered ward volunteers."
+      },
+      "a02": {
+        "title": "Financial Total Transparency",
+        "desc": "Every contribution to the movement, regardless of size, must be logged in the public ledger within 48 hours of receipt."
+      },
+      "a03": {
+        "title": "Decentralized Leadership",
+        "desc": "Ward Captains are the primary executive authority in their respective localities. The central headquarters acts only in a coordinating capacity."
+      },
+      "a04": {
+        "title": "Zero Tolerance for Violence",
+        "desc": "The movement is strictly non-violent. Any member engaging in physical intimidation or violence will be immediately expelled and reported to authorities."
+      },
+      "a05": {
+        "title": "Electoral Candidacy",
+        "desc": "Candidates for public office must have a documented history of at least two years of civic organizing within the ward they seek to represent."
+      }
     }
   },
   "Media": {
@@ -657,6 +682,92 @@
     "citizenStructure": "CITIZEN STRUCTURE",
     "becomeCaption": "Become a Ward Captain",
     "activeLeaders": "Active Leaders"
+  },
+  "HomePageV2": {
+    "LiveGovernance": {
+      "title": "Civic Accountability Structure",
+      "subtitle": "How we enforce governance at the ward level",
+      "badge": "Constitutional Framework",
+      "wardAssemblies": "Ward Assemblies",
+      "wardAssembliesDesc": "Mandatory public meetings held every month to audit local expenditures and prioritize neighborhood work.",
+      "openLedgers": "Open Ledgers",
+      "openLedgersDesc": "Complete transparency of all municipal contracts, vendor payments, and project timelines accessible to any citizen.",
+      "accountableReps": "Accountable Representatives",
+      "accountableRepsDesc": "Elected officials bound by a public charter, facing immediate recall votes if constitutional duties are breached.",
+      "citizenGrievance": "Citizen Grievance Cells",
+      "citizenGrievanceDesc": "Local hubs in every zone dedicated to tracking and resolving civic infrastructure complaints within strict deadlines."
+    },
+    "ActionNetwork": {
+      "title": "People's Opposition",
+      "subtitle": "This movement exists to pressure governance systems daily, not only during elections.",
+      "wardCaptains": "Ward Captains",
+      "wardCaptainsDesc": "Local leaders designated in each neighborhood to coordinate issue reporting.",
+      "issueEscalation": "Issue Escalation",
+      "issueEscalationDesc": "Dedicated teams pushing reported issues through bureaucratic channels.",
+      "weeklyMeetings": "Weekly Meetings",
+      "weeklyMeetingsDesc": "Open public assemblies every Sunday to review pending ward tasks.",
+      "directAction": "Direct Action",
+      "directActionDesc": "Protests and peaceful sit-ins organized when institutional pathways fail."
+    },
+    "CivicInfrastructure": {
+      "title": "What Nagrik Builds",
+      "subtitle": "We do not promise abstract ideals. We commit to operational public infrastructure.",
+      "wardClinics": "Ward Clinics",
+      "wardClinicsDesc": "Accessible primary healthcare in every neighborhood, fully staffed and equipped.",
+      "hospitals": "Functional Hospitals",
+      "hospitalsDesc": "Upgraded secondary and tertiary care centers with transparent bed availability systems.",
+      "womenSafety": "Women Safety Systems",
+      "womenSafetyDesc": "Rapid response networks, well-lit public corridors, and dedicated grievance cells.",
+      "libraries": "Public Libraries",
+      "librariesDesc": "Modern, quiet, and digitally-enabled study spaces for youth in every zone.",
+      "water": "Clean Water Infrastructure",
+      "waterDesc": "Regulated municipal supply replacing private tanker monopolies."
+    },
+    "TransparencyStrip": {
+      "title": "Movement Foundations",
+      "subtitle": "The constitutional basis of our civic intervention",
+      "cta": "Read Complete Manifesto",
+      "principle1": "Principle I",
+      "principle1Value": "Right to Information",
+      "principle1Detail": "Mandatory public disclosure of all municipal contracts and vendor payments.",
+      "principle2": "Principle II",
+      "principle2Value": "Public Audits",
+      "principle2Detail": "Citizens hold the legal right to audit local government expenditure.",
+      "principle3": "Principle III",
+      "principle3Value": "Elected Accountability",
+      "principle3Detail": "Representatives must attend monthly ward assemblies or face recall.",
+      "principle4": "Principle IV",
+      "principle4Value": "Decentralized Power",
+      "principle4Detail": "Budgetary control shifted directly to neighborhood civic committees."
+    },
+    "HeroSection": {
+      "headline": "काम दिखना चाहिए।",
+      "subheadline1": "India doesn't only have a corruption problem.",
+      "subheadline2": "India has a governance problem.",
+      "points": "Broken roads. Flooded streets. Dead streetlights. Unanswered complaints. Missing accountability.",
+      "closing": "Nagrik Party exists to make governance visible.",
+      "reportButton": "REPORT AN ISSUE",
+      "volunteerButton": "BECOME A VOLUNTEER",
+      "trustText": "Citizen-first constitutional governance movement."
+    },
+    "Different": {
+      "title": "WHAT MAKES NAGRIK DIFFERENT",
+      "card1Title": "NOT DYNASTY POLITICS",
+      "card1Desc": "Leadership should be earned.",
+      "card2Title": "NOT COMMUNAL POLITICS",
+      "card2Desc": "Citizens before divisions.",
+      "card3Title": "NOT PERSONALITY POLITICS",
+      "card3Desc": "Governance over spectacle."
+    },
+    "FounderQuote": {
+      "quote": "Citizens should not have to beg institutions for dignity."
+    },
+    "FinalCTA": {
+      "headline1": "Democracy should work",
+      "headline2": "even after elections.",
+      "joinButton": "Join the Movement",
+      "reportButton": "Report an Issue"
+    }
   },
   "Cockroach": {
     "messages": [

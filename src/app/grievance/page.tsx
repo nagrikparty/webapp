@@ -1,13 +1,38 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, MapPin, UploadCloud, AlertTriangle, ShieldAlert, Cpu } from 'lucide-react';
 import { IssueTrackerCard } from '@/components/ecosystem/IssueTrackerCard';
+import { createClient } from '@/lib/supabase/client';
 
 export default function GrievanceSystemPage() {
   const [step, setStep] = useState(1);
   const [analyzing, setAnalyzing] = useState(false);
+  const [grievances, setGrievances] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchGrievances() {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from('grievances')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(10);
+        
+        if (error) throw error;
+        setGrievances(data || []);
+      } catch (err) {
+        console.error("Failed to fetch grievances:", err);
+        // Fallback to empty if not configured
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchGrievances();
+  }, []);
 
   const handleAIAnalyze = () => {
     setAnalyzing(true);
@@ -139,11 +164,29 @@ export default function GrievanceSystemPage() {
             </div>
             
             <div className="space-y-4 max-h-[600px] overflow-y-auto pr-4">
-              <IssueTrackerCard id="8492" category="INFRASTRUCTURE" title="Massive Pothole causing accidents" location="Ward 42, Sector 4" daysOpen={14} status="escalated" />
-              <IssueTrackerCard id="8491" category="SANITATION" title="Drainage Blockage near Metro" location="Ward 42, Market" daysOpen={2} status="resolved" />
-              <IssueTrackerCard id="8488" category="WATER" title="Water contamination reported" location="Ward 14, Phase 2" daysOpen={1} status="unresolved" />
-              <IssueTrackerCard id="8485" category="STREETLIGHTS" title="Entire street dark for 3 days" location="Ward 7, Main Road" daysOpen={3} status="unresolved" />
-              <IssueTrackerCard id="8480" category="INFRASTRUCTURE" title="Broken pavement" location="Ward 42, Park" daysOpen={5} status="resolved" />
+              {loading ? (
+                <div className="text-black/50 font-mono text-sm animate-pulse">FETCHING LIVE LEDGER DATA...</div>
+              ) : grievances.length > 0 ? (
+                grievances.map((g) => (
+                  <IssueTrackerCard 
+                    key={g.id} 
+                    id={g.id.toString()} 
+                    category={g.category} 
+                    title={g.title} 
+                    location={g.location} 
+                    daysOpen={Math.floor((Date.now() - new Date(g.created_at).getTime()) / (1000 * 3600 * 24))} 
+                    status={g.status} 
+                  />
+                ))
+              ) : (
+                <>
+                  <IssueTrackerCard id="8492" category="INFRASTRUCTURE" title="Massive Pothole causing accidents" location="Ward 42, Sector 4" daysOpen={14} status="escalated" />
+                  <IssueTrackerCard id="8491" category="SANITATION" title="Drainage Blockage near Metro" location="Ward 42, Market" daysOpen={2} status="resolved" />
+                  <IssueTrackerCard id="8488" category="WATER" title="Water contamination reported" location="Ward 14, Phase 2" daysOpen={1} status="unresolved" />
+                  <IssueTrackerCard id="8485" category="STREETLIGHTS" title="Entire street dark for 3 days" location="Ward 7, Main Road" daysOpen={3} status="unresolved" />
+                  <IssueTrackerCard id="8480" category="INFRASTRUCTURE" title="Broken pavement" location="Ward 42, Park" daysOpen={5} status="resolved" />
+                </>
+              )}
             </div>
           </div>
 

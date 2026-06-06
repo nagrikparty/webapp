@@ -1,8 +1,8 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Target, Users, MapPin, CheckCircle2, ChevronRight } from 'lucide-react';
+import { ArrowLeft, CheckSquare, ShieldCheck, FileText, ChevronRight, Target, Users, MapPin } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface TaskProps {

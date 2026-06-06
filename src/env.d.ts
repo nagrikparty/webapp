@@ -6,5 +6,7 @@ declare global {
     REPORTS_BUCKET: R2Bucket;
     DIDIT_API_KEY?: string;
     DIDIT_WORKFLOW_ID?: string;
+    TURNSTILE_SECRET_KEY?: string;
+    ADMIN_EMAILS?: string;
   }
 }

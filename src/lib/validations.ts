@@ -39,11 +39,17 @@ export const submitMemberSchema = z.object({
   social_media: z.string().optional().or(z.literal("")),
   referral_source: z.string().optional().or(z.literal("")),
   referral_code: z.string().optional().or(z.literal("")),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
   declaration_agreed: z.string().refine(val => val === "true", {
     message: "Declaration must be agreed to",
   }),
   skills: z.string().optional(),
+});
+
+export const submitContactSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
+  email: z.string().email('Invalid email address'),
+  message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
 });
 
 export const loginMemberSchema = z.object({

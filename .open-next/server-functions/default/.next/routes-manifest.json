@@ -50,6 +50,22 @@
   },
   "dynamicRoutes": [
     {
+      "page": "/representative/[id]",
+      "regex": "^/representative/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/representative/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/ward/[id]",
+      "regex": "^/ward/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/ward/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/[locale]",
       "regex": "^/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -238,10 +254,58 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/brand/social",
+      "regex": "^/brand/social(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/brand/social(?:/)?$"
+    },
+    {
+      "page": "/campaign/onboarding",
+      "regex": "^/campaign/onboarding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/campaign/onboarding(?:/)?$"
+    },
+    {
+      "page": "/campaign/volunteer",
+      "regex": "^/campaign/volunteer(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/campaign/volunteer(?:/)?$"
+    },
+    {
+      "page": "/education",
+      "regex": "^/education(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/education(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/grievance",
+      "regex": "^/grievance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/grievance(?:/)?$"
+    },
+    {
+      "page": "/sitemap.xml",
+      "regex": "^/sitemap\\.xml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sitemap\\.xml(?:/)?$"
+    },
+    {
+      "page": "/terminal",
+      "regex": "^/terminal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/terminal(?:/)?$"
+    },
+    {
+      "page": "/transparency",
+      "regex": "^/transparency(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/transparency(?:/)?$"
     }
   ],
   "dataRoutes": [],

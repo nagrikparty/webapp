@@ -2,27 +2,29 @@
 
 import { motion } from "framer-motion";
 import { Users, PhoneCall, Calendar, Flame } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function ActionNetwork() {
+  const t = useTranslations('HomePageV2.ActionNetwork');
   const steps = [
     {
-      title: "Ward Captains",
-      description: "Local leaders designated in each neighborhood to coordinate issue reporting.",
+      title: t('wardCaptains'),
+      description: t('wardCaptainsDesc'),
       icon: Users,
     },
     {
-      title: "Issue Escalation",
-      description: "Dedicated teams pushing reported issues through bureaucratic channels.",
+      title: t('issueEscalation'),
+      description: t('issueEscalationDesc'),
       icon: Flame,
     },
     {
-      title: "Weekly Meetings",
-      description: "Open public assemblies every Sunday to review pending ward tasks.",
+      title: t('weeklyMeetings'),
+      description: t('weeklyMeetingsDesc'),
       icon: Calendar,
     },
     {
-      title: "Direct Action",
-      description: "Protests and peaceful sit-ins organized when institutional pathways fail.",
+      title: t('directAction'),
+      description: t('directActionDesc'),
       icon: PhoneCall,
     }
   ];
@@ -39,10 +41,10 @@ export default function ActionNetwork() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="font-hindi text-4xl sm:text-5xl font-bold uppercase tracking-tight mb-4 text-white">
-                People's <br/> Opposition
+                {t('title')}
               </h2>
               <p className="font-body text-lg text-white/70 mb-8 border-l-2 border-red pl-4">
-                This movement exists to pressure governance systems daily, not only during elections.
+                {t('subtitle')}
               </p>
             </motion.div>
           </div>

@@ -2,6 +2,7 @@
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { createClient } from "@/lib/supabase/server";
+import { logger } from "@/lib/logger";
 
 export async function createVerificationSession() {
   try {
@@ -39,7 +40,7 @@ export async function createVerificationSession() {
     const workflowId = typeof process !== 'undefined' ? process.env.DIDIT_WORKFLOW_ID : env.DIDIT_WORKFLOW_ID;
     
     if (!apiKey) {
-      console.error("DIDIT_API_KEY is not configured in the environment.");
+      logger.error("DIDIT_API_KEY is not configured in the environment.");
       return { success: false, error: "Verification service configuration missing." };
     }
 
@@ -58,7 +59,7 @@ export async function createVerificationSession() {
 
     if (!diditResponse.ok) {
       const errorText = await diditResponse.text();
-      console.error("Didit API Error:", errorText);
+      logger.error({ errorText }, "Didit API Error");
       return { success: false, error: "Failed to initialize verification session with Didit." };
     }
 
@@ -79,7 +80,7 @@ export async function createVerificationSession() {
     return { success: true, url: verificationUrl };
 
   } catch (error) {
-    console.error("Error creating Didit session:", error);
+    logger.error({ err: error }, "Error creating Didit session");
     return { success: false, error: "Internal Server Error" };
   }
 }
@@ -139,7 +140,7 @@ export async function checkVerificationStatus() {
 
     return { success: true, isVerified: false };
   } catch (error) {
-    console.error("Error checking verification status:", error);
+    logger.error({ err: error }, "Error checking verification status");
     return { success: false, error: "Internal Server Error" };
   }
 }

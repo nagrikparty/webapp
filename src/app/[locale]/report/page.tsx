@@ -1,5 +1,6 @@
 "use client";
 
+// TODO (#18): Form accessibility (aria-invalid). Implement aria-invalid, aria-describedby, and role='alert' when field-level validation error states are added.
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useLenis } from "@/hooks/useLenis";

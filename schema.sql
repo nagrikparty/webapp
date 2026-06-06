@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS nagrik_members (
   referral_code TEXT,
   profile_photo_key TEXT,
   epic_photo_key TEXT,
-  password_hash TEXT,
+  password_hash TEXT, -- DEPRECATED: Auth handled by Supabase, this column is unused
   declaration_agreed INTEGER DEFAULT 0,
   didit_session_id TEXT,
   is_verified INTEGER DEFAULT 0,
@@ -86,3 +86,11 @@ CREATE TABLE IF NOT EXISTS nagrik_verifications (
   session_id TEXT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_members_phone ON nagrik_members(phone);
+CREATE INDEX IF NOT EXISTS idx_members_email ON nagrik_members(email);
+CREATE INDEX IF NOT EXISTS idx_reports_created_at ON nagrik_reports(created_at);
+CREATE INDEX IF NOT EXISTS idx_reports_ward ON nagrik_reports(ward);
+CREATE INDEX IF NOT EXISTS idx_reports_status ON nagrik_reports(status);
+CREATE INDEX IF NOT EXISTS idx_verifications_member_id ON nagrik_verifications(member_id);
+CREATE INDEX IF NOT EXISTS idx_donations_created_at ON nagrik_donations(created_at);

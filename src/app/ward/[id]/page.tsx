@@ -4,7 +4,8 @@ import { ArrowLeft, Map, AlertTriangle, FileText, Activity } from 'lucide-react'
 import { GovernanceMetric } from '@/components/ecosystem/GovernanceMetric';
 import { IssueTrackerCard } from '@/components/ecosystem/IssueTrackerCard';
 
-export default function WardPage({ params }: { params: { id: string } }) {
+export default async function WardPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
     <div className="min-h-screen bg-[#F5F1E8] text-[#0A0A0A] font-sans selection:bg-[#0B2553] selection:text-white">
       {/* Brutalist Top Nav */}
@@ -15,7 +16,7 @@ export default function WardPage({ params }: { params: { id: string } }) {
             <span className="font-bold tracking-tight text-sm">BACK TO ECOSYSTEM</span>
           </Link>
           <div className="font-mono text-xs uppercase font-semibold text-[#0B2553]">
-            WARD {params.id} INTELLIGENCE
+            WARD {id} INTELLIGENCE
           </div>
         </div>
       </nav>
@@ -25,7 +26,7 @@ export default function WardPage({ params }: { params: { id: string } }) {
         {/* Header */}
         <header className="border-b-2 border-black/10 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-5xl font-bold tracking-tighter mb-2">Ward {params.id}</h1>
+            <h1 className="text-5xl font-bold tracking-tighter mb-2">Ward {id}</h1>
             <p className="text-xl text-black/60">Governance Report & Issue Heatmap</p>
           </div>
           <div className="flex gap-4">
@@ -61,7 +62,7 @@ export default function WardPage({ params }: { params: { id: string } }) {
               <div className="text-center z-10 p-6 bg-white/80 backdrop-blur-sm border border-black/10 rounded-lg shadow-sm">
                 <Map size={48} className="mx-auto text-black/20 mb-4" />
                 <h3 className="font-bold text-lg">Interactive Map Offline</h3>
-                <p className="text-sm text-black/60 max-w-sm mx-auto">Mapbox integration required to view realtime geographical heatmaps of civic issues in Ward {params.id}.</p>
+                <p className="text-sm text-black/60 max-w-sm mx-auto">Mapbox integration required to view realtime geographical heatmaps of civic issues in Ward {id}.</p>
               </div>
               
               {/* Fake pins */}

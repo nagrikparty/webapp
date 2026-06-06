@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { ArrowLeft, CheckCircle2, FileText, Activity, ShieldCheck, MapPin } from 'lucide-react';
 import { GovernanceMetric } from '@/components/ecosystem/GovernanceMetric';
 
-export default function RepresentativePage({ params }: { params: { id: string } }) {
+export default async function RepresentativePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return (
     <div className="min-h-screen bg-[#F5F1E8] text-[#0A0A0A] font-sans selection:bg-[#0B2553] selection:text-white">
       {/* Brutalist Top Nav */}

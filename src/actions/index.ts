@@ -2,21 +2,66 @@
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { createClient } from "@/lib/supabase/server";
-import { submitDonationSchema, submitReportSchema, submitMemberSchema, loginMemberSchema, updateProfileSchema } from "@/lib/validations";
+import { submitDonationSchema, submitReportSchema, submitMemberSchema, loginMemberSchema, updateProfileSchema, submitContactSchema } from "@/lib/validations";
 import { logger } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/ratelimit";
 import { headers } from "next/headers";
 
+export async function verifyTurnstile(token: string): Promise<boolean> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const secretKey = env.TURNSTILE_SECRET_KEY || process.env.TURNSTILE_SECRET_KEY;
+    if (!secretKey) return false;
+    
+    const formData = new FormData();
+    formData.append('secret', secretKey);
+    formData.append('response', token);
+
+    const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      body: formData,
+      method: 'POST',
+    });
+
+    const outcome = await result.json() as any;
+    return !!outcome.success;
+  } catch (error) {
+    logger.error({ err: error }, "Turnstile verification error");
+    return false;
+  }
+}
+
+export async function validateFileUpload(file: File, maxSizeMB: number = 5): Promise<{ valid: boolean; error?: string }> {
+  const maxBytes = maxSizeMB * 1024 * 1024;
+  if (file.size > maxBytes) {
+    return { valid: false, error: `File size exceeds ${maxSizeMB}MB limit.` };
+  }
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  if (!allowedTypes.includes(file.type)) {
+    return { valid: false, error: 'Invalid file type. Only JPEG, PNG, WEBP, and GIF are allowed.' };
+  }
+  return { valid: true };
+}
+
 // ─── CONTACT ────────────────────────────────────────────────────────────────────
 
-export async function submitContact(data: { name: string; email: string; message: string }) {
+export async function submitContact(data: { name: string; email: string; message: string; turnstileToken: string }) {
   try {
     const headersList = await headers();
     const ip = headersList.get("x-forwarded-for") || "unknown";
 
-    if (!checkRateLimit(`contact_${ip}`, 5, 60000)) {
+    if (!await checkRateLimit(`contact_${ip}`, 5, 60000)) {
       return { success: false, error: "Too many requests, please try again later" };
     }
+
+    if (!data.turnstileToken || !(await verifyTurnstile(data.turnstileToken))) {
+      return { success: false, error: "CAPTCHA verification failed" };
+    }
+
+    const parsed = submitContactSchema.safeParse(data);
+    if (!parsed.success) {
+      return { success: false, error: parsed.error.issues[0].message };
+    }
+    const d = parsed.data;
 
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
@@ -24,7 +69,7 @@ export async function submitContact(data: { name: string; email: string; message
     const id = crypto.randomUUID();
     const result = await env.DB.prepare(
       "INSERT INTO nagrik_contact_messages (id, name, email, message) VALUES (?, ?, ?, ?)"
-    ).bind(id, data.name, data.email, data.message).run();
+    ).bind(id, d.name, d.email, d.message).run();
 
     return { success: result.success };
   } catch (error) {
@@ -82,6 +127,17 @@ export async function getWards(vidhanSabhaId: string) {
 
 export async function submitMember(formData: FormData) {
   try {
+    const turnstileToken = formData.get('cf-turnstile-response') as string;
+    if (!turnstileToken || !(await verifyTurnstile(turnstileToken))) {
+      return { success: false, error: "CAPTCHA verification failed" };
+    }
+
+    const headersList = await headers();
+    const ip = headersList.get("x-forwarded-for") || "unknown";
+    if (!await checkRateLimit(`member_${ip}`, 5, 60000)) {
+      return { success: false, error: "Too many requests, please try again later" };
+    }
+
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
@@ -142,6 +198,16 @@ export async function submitMember(formData: FormData) {
 
     const profileFile = formData.get("profile_photo") as File | null;
     const epicFile = formData.get("epic_photo") as File | null;
+
+    if (profileFile && profileFile.size > 0) {
+      const v = await validateFileUpload(profileFile);
+      if (!v.valid) return { success: false, error: v.error };
+    }
+
+    if (epicFile && epicFile.size > 0) {
+      const v = await validateFileUpload(epicFile);
+      if (!v.valid) return { success: false, error: v.error };
+    }
 
     let profile_photo_key = null;
     let epic_photo_key = null;
@@ -210,6 +276,17 @@ export async function getVolunteerCount() {
 
 export async function submitReport(formData: FormData) {
   try {
+    const turnstileToken = formData.get('cf-turnstile-response') as string;
+    if (!turnstileToken || !(await verifyTurnstile(turnstileToken))) {
+      return { success: false, error: "CAPTCHA verification failed" };
+    }
+
+    const headersList = await headers();
+    const ip = headersList.get("x-forwarded-for") || "unknown";
+    if (!await checkRateLimit(`report_${ip}`, 5, 60000)) {
+      return { success: false, error: "Too many requests, please try again later" };
+    }
+
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 
@@ -230,6 +307,11 @@ export async function submitReport(formData: FormData) {
     const d = parsed.data;
 
     const file = formData.get("file") as File | null;
+
+    if (file && file.size > 0) {
+      const v = await validateFileUpload(file);
+      if (!v.valid) return { success: false, error: v.error };
+    }
 
     let photo_url = null;
 
@@ -286,8 +368,18 @@ export async function getReportCount() {
 
 // ─── DONATIONS ──────────────────────────────────────────────────────────────────
 
-export async function submitDonation(data: { donor_name: string; amount: number; purpose: string; transaction_ref: string }) {
+export async function submitDonation(data: { donor_name: string; amount: number; purpose: string; transaction_ref: string; turnstileToken: string }) {
   try {
+    if (!data.turnstileToken || !(await verifyTurnstile(data.turnstileToken))) {
+      return { success: false, error: "CAPTCHA verification failed" };
+    }
+
+    const headersList = await headers();
+    const ip = headersList.get("x-forwarded-for") || "unknown";
+    if (!await checkRateLimit(`donation_${ip}`, 5, 60000)) {
+      return { success: false, error: "Too many requests, please try again later" };
+    }
+
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return { success: false, error: "Database not configured" };
 

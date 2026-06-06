@@ -2,50 +2,52 @@
 
 import { motion } from "framer-motion";
 import { FileText, Users, Building, Shield } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function LiveGovernance() {
+  const t = useTranslations('HomePageV2.LiveGovernance');
   const blocks = [
     {
       id: 1,
-      title: "Ward Assemblies",
-      description: "Mandatory public meetings held every month to audit local expenditures and prioritize neighborhood work.",
+      title: t('wardAssemblies'),
+      description: t('wardAssembliesDesc'),
       icon: Users,
     },
     {
       id: 2,
-      title: "Open Ledgers",
-      description: "Complete transparency of all municipal contracts, vendor payments, and project timelines accessible to any citizen.",
+      title: t('openLedgers'),
+      description: t('openLedgersDesc'),
       icon: FileText,
     },
     {
       id: 3,
-      title: "Accountable Representatives",
-      description: "Elected officials bound by a public charter, facing immediate recall votes if constitutional duties are breached.",
+      title: t('accountableReps'),
+      description: t('accountableRepsDesc'),
       icon: Building,
     },
     {
       id: 4,
-      title: "Citizen Grievance Cells",
-      description: "Local hubs in every zone dedicated to tracking and resolving civic infrastructure complaints within strict deadlines.",
+      title: t('citizenGrievance'),
+      description: t('citizenGrievanceDesc'),
       icon: Shield,
     }
   ];
 
   return (
-    <section className="bg-white py-24 border-t border-black/10">
+    <section className="bg-white dark:bg-[#111111] py-24 border-t border-black/10 dark:border-white/10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-black/10 pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-black/10 dark:border-white/10 pb-6">
           <div>
-            <h2 className="font-hindi text-4xl sm:text-5xl font-bold text-black uppercase tracking-tight mb-2">
-              Civic Accountability Structure
+            <h2 className="font-hindi text-4xl sm:text-5xl font-bold text-black dark:text-[#F7F7F5] uppercase tracking-tight mb-2">
+              {t('title')}
             </h2>
-            <p className="font-mono text-sm tracking-widest text-black/50 uppercase">
-              How we enforce governance at the ward level
+            <p className="font-mono text-sm tracking-widest text-black/50 dark:text-white/50 uppercase">
+              {t('subtitle')}
             </p>
           </div>
           <div className="mt-6 md:mt-0">
-            <span className="font-mono text-xs uppercase tracking-widest font-bold text-black border border-black px-4 py-2">
-              Constitutional Framework
+            <span className="font-mono text-xs uppercase tracking-widest font-bold text-black dark:text-[#F7F7F5] border border-black dark:border-[#F7F7F5] px-4 py-2">
+              {t('badge')}
             </span>
           </div>
         </div>
@@ -60,10 +62,10 @@ export default function LiveGovernance() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="border border-black p-8 bg-off-white hover:bg-black hover:text-white transition-colors group"
+                className="border border-black dark:border-white/10 p-8 bg-off-white dark:bg-[#0A0A0A] text-black dark:text-[#F7F7F5] hover:bg-black dark:hover:bg-[#1A1A1A] hover:text-white dark:hover:text-white transition-colors group"
               >
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="p-3 bg-black text-white group-hover:bg-white group-hover:text-black transition-colors">
+                  <div className="p-3 bg-black dark:bg-white text-white dark:text-black group-hover:bg-white dark:group-hover:bg-[#0A0A0A] group-hover:text-black dark:group-hover:text-white transition-colors">
                     <Icon size={24} strokeWidth={1.5} />
                   </div>
                   <h3 className="font-body text-2xl font-bold uppercase tracking-tight">{block.title}</h3>

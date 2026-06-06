@@ -30,9 +30,10 @@
     }
   },
   "vars": {
-    "DIDIT_API_KEY": "aWfsaiK7n52qyEKhXeLgz0Lw4ijzgA9jxVcsKBUdIzU",
-    "DIDIT_WORKFLOW_ID": "20eed894-B0f4-4ffa-9891-e363da88dfd9",
-    "NEXT_PUBLIC_SUPABASE_URL": "https://gwzjfqgvunyvvwygzkxp.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3empmcWd2dW55dnZ3eWd6a3hwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MzQ1ODgsImV4cCI6MjA5NTAxMDU4OH0.Uz4rDCzhpW2fhoujfRH2zsIQf5rsSvZ3YvlaSq4klEY"
+    // Add secrets using `wrangler secret put <VAR_NAME>` or via the Cloudflare dashboard
+    "DIDIT_API_KEY": "",
+    "DIDIT_WORKFLOW_ID": "",
+    "NEXT_PUBLIC_SUPABASE_URL": "",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": ""
   }
 }

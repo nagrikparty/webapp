@@ -4,6 +4,7 @@ import { ColorPalette } from '@/components/brand/ColorPalette';
 import { SocialCardMockup } from '@/components/brand/SocialCardMockup';
 import { InstagramScorecard } from '@/components/brand/InstagramScorecard';
 import { InstagramGrievance } from '@/components/brand/InstagramGrievance';
+import { ImageExportWrapper } from '@/components/brand/ImageExportWrapper';
 
 export const metadata = {
   title: 'Social Identity Kit | Nagrik Party',
@@ -74,11 +75,15 @@ export default function SocialBrandPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 place-items-center bg-black/5 p-8 rounded-3xl border border-black/10">
             <div className="flex flex-col items-center gap-4">
-              <InstagramScorecard />
+              <ImageExportWrapper filename="nagrik-scorecard">
+                <InstagramScorecard />
+              </ImageExportWrapper>
               <p className="text-sm font-mono text-black/50 uppercase">Public Audit Format (4:5)</p>
             </div>
             <div className="flex flex-col items-center gap-4">
-              <InstagramGrievance />
+               <ImageExportWrapper filename="nagrik-grievance">
+                <InstagramGrievance />
+               </ImageExportWrapper>
               <p className="text-sm font-mono text-black/50 uppercase">Issue Escalation Format (1:1)</p>
             </div>
           </div>

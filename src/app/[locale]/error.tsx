@@ -13,7 +13,7 @@ export default function ErrorBoundary({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Runtime Error Caught By Boundary:", error);
+    // TODO: Report to error reporting service like Sentry
   }, [error]);
 
   return (

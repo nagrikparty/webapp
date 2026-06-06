@@ -81,7 +81,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="fixed inset-0 z-30 bg-off-white/95 backdrop-blur-2xl flex flex-col justify-center overflow-hidden"
+      className="fixed inset-0 z-30 bg-off-white/95 dark:bg-[#0A0A0A]/95 backdrop-blur-2xl flex flex-col justify-center overflow-hidden"
     >
       <div className="relative z-10 px-6 sm:px-12 lg:px-20 max-w-5xl mx-auto w-full">
         {/* Primary Navigation */}
@@ -93,7 +93,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
                 onClick={onClose}
                 className="group flex items-baseline gap-4 py-1"
               >
-                <span className={`font-hindi text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase group-hover:text-red transition-colors duration-300 leading-tight ${'label' in item ? 'text-red' : 'text-black'}`}>
+                <span className={`font-hindi text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase group-hover:text-red transition-colors duration-300 leading-tight ${'label' in item ? 'text-red' : 'text-black dark:text-[#F7F7F5]'}`}>
                   {'labelKey' in item ? t(item.labelKey) : item.label}
                 </span>
                 <span className="hidden sm:block w-0 group-hover:w-16 h-px bg-red transition-all duration-500"></span>
@@ -105,7 +105,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
         {/* Divider */}
         <motion.div
           variants={secondaryVariants}
-          className="w-full h-px bg-black/10 mb-8"
+          className="w-full h-px bg-black/10 dark:bg-white/10 mb-8"
         ></motion.div>
 
         {/* Secondary Navigation */}
@@ -118,7 +118,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className="text-sm font-mono tracking-widest text-black/50 hover:text-red transition-colors duration-300 uppercase font-bold"
+              className="text-sm font-mono tracking-widest text-black/50 dark:text-white/50 hover:text-red transition-colors duration-300 uppercase font-bold"
             >
               {t(item.labelKey)}
             </Link>
@@ -142,7 +142,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
           variants={secondaryVariants}
           className="flex flex-col gap-2"
         >
-          <p className="font-mono text-xs tracking-[0.25em] uppercase text-black/40">
+          <p className="font-mono text-xs tracking-[0.25em] uppercase text-black/40 dark:text-white/40">
             {t("menuSubtext")}
           </p>
           <h2 className="font-hindi text-3xl sm:text-4xl text-red font-black tracking-tighter uppercase">

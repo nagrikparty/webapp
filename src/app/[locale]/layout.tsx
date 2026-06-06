@@ -48,7 +48,9 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider messages={messages}>
           <PostHogProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {children}
+              <div id="main-content">
+                {children}
+              </div>
               <Toaster position="top-center" richColors theme="system" />
               <PostHogPageView />
             </ThemeProvider>

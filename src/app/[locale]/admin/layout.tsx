@@ -1,5 +1,6 @@
 import { redirect } from "@/i18n/routing";
 import { createClient } from "@/lib/supabase/server";
+import { logger } from "@/lib/logger";
 
 export default async function AdminLayout({ children, params }: { children: React.ReactNode, params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -12,12 +13,16 @@ export default async function AdminLayout({ children, params }: { children: Reac
   }
 
   // Temporary admin authorization check
-  const adminEmails = [
-    "admin@nagrikparty.in",
-    "hudav@nagrikparty.in"
-  ];
+  // TODO: This should be replaced with a DB-backed RBAC (Role-Based Access Control) system
+  const adminEmails = process.env.ADMIN_EMAILS 
+    ? process.env.ADMIN_EMAILS.split(',')
+    : [
+        "admin@nagrikparty.in",
+        "hudav@nagrikparty.in"
+      ];
 
   if (!adminEmails.includes(user.email)) {
+    logger.warn({ email: user.email }, "Admin access denied");
     redirect({ href: "/dashboard", locale });
     return null;
   }
