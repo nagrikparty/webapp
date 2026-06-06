@@ -1,4 +1,4 @@
-"use client";
+
 
 import React from 'react';
 import { MapPin, AlertCircle, Clock, CheckCircle2 } from 'lucide-react';

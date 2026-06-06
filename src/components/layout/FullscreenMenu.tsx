@@ -1,7 +1,5 @@
-"use client";
-
-import { motion, Variants } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { Link } from "@/i18n/routing";
 import { Megaphone } from "lucide-react";
 
@@ -10,25 +8,23 @@ interface FullscreenMenuProps {
 }
 
 const primaryLinks = [
-  { href: "/", labelKey: "home" },
-  { href: "/manifesto", labelKey: "manifesto" },
+  { href: "/", label: "HOME" },
+  { href: "/manifesto", label: "MANIFESTO" },
   { href: "/cadre", label: "CADRE" },
-  { href: "/report", labelKey: "report" },
-  { href: "/join", labelKey: "join" },
-  { href: "/issues", labelKey: "issues" },
+  { href: "/report", label: "REPORT" },
+  { href: "/join", label: "JOIN" },
+  { href: "/issues", label: "ISSUES" },
 ] as const;
 
 const secondaryLinks = [
-  { href: "/about", labelKey: "about" },
-  { href: "/transparency", labelKey: "transparency" },
-  { href: "/donate", labelKey: "donate" },
-  { href: "/contact", labelKey: "contact" },
-  { href: "/login", labelKey: "login" },
+  { href: "/about", label: "ABOUT" },
+  { href: "/transparency", label: "TRANSPARENCY" },
+  { href: "/donate", label: "DONATE" },
+  { href: "/contact", label: "CONTACT" },
+  { href: "/login", label: "LOGIN" },
 ] as const;
 
 export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
-  const t = useTranslations("Navigation");
-
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -93,8 +89,8 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
                 onClick={onClose}
                 className="group flex items-baseline gap-4 py-1"
               >
-                <span className={`font-hindi text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase group-hover:text-red transition-colors duration-300 leading-tight ${'label' in item ? 'text-red' : 'text-black dark:text-[#F7F7F5]'}`}>
-                  {'labelKey' in item ? t(item.labelKey) : item.label}
+                <span className={`font-hindi text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter uppercase group-hover:text-red transition-colors duration-300 leading-tight ${item.label === 'CADRE' ? 'text-red' : 'text-black dark:text-[#F7F7F5]'}`}>
+                  {item.label}
                 </span>
                 <span className="hidden sm:block w-0 group-hover:w-16 h-px bg-red transition-all duration-500"></span>
               </Link>
@@ -120,7 +116,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
               onClick={onClose}
               className="text-sm font-mono tracking-widest text-black/50 dark:text-white/50 hover:text-red transition-colors duration-300 uppercase font-bold"
             >
-              {t(item.labelKey)}
+              {item.label}
             </Link>
           ))}
         </motion.div>
@@ -143,7 +139,7 @@ export default function FullscreenMenu({ onClose }: FullscreenMenuProps) {
           className="flex flex-col gap-2"
         >
           <p className="font-mono text-xs tracking-[0.25em] uppercase text-black/40 dark:text-white/40">
-            {t("menuSubtext")}
+            This country will not repair itself.
           </p>
           <h2 className="font-hindi text-3xl sm:text-4xl text-red font-black tracking-tighter uppercase">
             काम दिखना चाहिए.

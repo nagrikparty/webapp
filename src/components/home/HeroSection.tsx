@@ -1,13 +1,8 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import Image from "next/image";
+import { Image } from "@/lib/next-shims";
 
 export default function HeroSection() {
-  const t = useTranslations('HomePageV2.HeroSection');
-
   return (
     <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden bg-off-white dark:bg-[#0A0A0A] pt-20 transition-colors duration-300">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow flex flex-col lg:flex-row items-center py-20 gap-12 lg:gap-8">
@@ -20,7 +15,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h1 className="font-hindi text-[4rem] sm:text-[6rem] lg:text-[8rem] leading-[0.85] font-black text-black dark:text-[#F7F7F5] tracking-tighter uppercase mb-8 drop-shadow-sm">
-              {t('headline')}
+              काम दिखना चाहिए।
             </h1>
           </motion.div>
 
@@ -31,16 +26,16 @@ export default function HeroSection() {
             className="mb-10 font-body"
           >
             <p className="text-xl sm:text-2xl text-black dark:text-white font-bold tracking-tight mb-2">
-              {t('subheadline1')}
+              India doesn't only have a corruption problem.
             </p>
             <p className="text-xl sm:text-2xl text-red font-bold tracking-tight mb-6">
-              {t('subheadline2')}
+              India has a governance problem.
             </p>
             <p className="text-lg text-black/70 dark:text-white/70 max-w-xl font-medium tracking-tight mb-6 leading-relaxed">
-              {t('points')}
+              Broken roads. Flooded streets. Dead streetlights. Unanswered complaints. Missing accountability.
             </p>
             <p className="text-lg text-black dark:text-white font-bold tracking-tight max-w-xl">
-              {t('closing')}
+              Nagrik Party exists to make governance visible.
             </p>
           </motion.div>
 
@@ -54,14 +49,14 @@ export default function HeroSection() {
               href="/report" 
               className="flex items-center justify-center bg-black dark:bg-[#F7F7F5] text-white dark:text-[#0A0A0A] px-8 py-4 font-mono uppercase tracking-widest font-bold text-sm transition-all hover:bg-black/80 dark:hover:bg-white/80 rounded-none"
             >
-              [ {t('reportButton')} ]
+              [ REPORT AN ISSUE ]
             </Link>
             
             <Link 
               href="/join" 
               className="flex items-center justify-center border-2 border-black dark:border-[#F7F7F5] text-black dark:text-[#F7F7F5] px-8 py-4 font-mono uppercase tracking-widest font-bold text-sm transition-all hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black rounded-none"
             >
-              [ {t('volunteerButton')} ]
+              [ BECOME A VOLUNTEER ]
             </Link>
           </motion.div>
 
@@ -71,7 +66,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           >
             <p className="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-white/50 font-bold">
-              {t('trustText')}
+              Citizen-first constitutional governance movement.
             </p>
           </motion.div>
         </div>

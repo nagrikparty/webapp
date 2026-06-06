@@ -1,26 +1,21 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
 
 export default function DifferentSection() {
-  const t = useTranslations('HomePageV2.Different');
-  
   const cards = [
     {
       id: 1,
-      title: t('card1Title'),
-      desc: t('card1Desc'),
+      title: "NOT DYNASTY POLITICS",
+      desc: "Leadership should be earned.",
     },
     {
       id: 2,
-      title: t('card2Title'),
-      desc: t('card2Desc'),
+      title: "NOT COMMUNAL POLITICS",
+      desc: "Citizens before divisions.",
     },
     {
       id: 3,
-      title: t('card3Title'),
-      desc: t('card3Desc'),
+      title: "NOT PERSONALITY POLITICS",
+      desc: "Governance over spectacle.",
     }
   ];
 
@@ -36,7 +31,7 @@ export default function DifferentSection() {
           className="mb-20"
         >
           <h2 className="font-hindi text-5xl sm:text-7xl font-black text-black dark:text-[#F7F7F5] uppercase tracking-tighter mb-4">
-            {t('title')}
+            WHAT MAKES NAGRIK DIFFERENT
           </h2>
           <div className="w-24 h-2 bg-red"></div>
         </motion.div>

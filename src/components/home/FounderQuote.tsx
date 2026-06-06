@@ -1,12 +1,7 @@
-"use client";
-
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { Image } from "@/lib/next-shims";
 
 export default function FounderQuote() {
-  const t = useTranslations('HomePageV2.FounderQuote');
-
   return (
     <section className="bg-off-white dark:bg-[#0A0A0A] py-32 border-t border-black/10 dark:border-white/10 transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,7 +38,7 @@ export default function FounderQuote() {
             </svg>
             
             <h3 className="font-hindi text-4xl sm:text-5xl lg:text-6xl font-black text-black dark:text-[#F7F7F5] leading-tight mb-8">
-              &quot;{t('quote')}&quot;
+              &quot;Citizens should not have to beg institutions for dignity.&quot;
             </h3>
             
             <div className="flex flex-col items-center lg:items-start">

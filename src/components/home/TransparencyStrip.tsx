@@ -1,16 +1,12 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
 
 export default function TransparencyStrip() {
-  const t = useTranslations('HomePageV2.TransparencyStrip');
   const trackers = [
-    { label: t('principle1'), value: t('principle1Value'), detail: t('principle1Detail') },
-    { label: t('principle2'), value: t('principle2Value'), detail: t('principle2Detail') },
-    { label: t('principle3'), value: t('principle3Value'), detail: t('principle3Detail') },
-    { label: t('principle4'), value: t('principle4Value'), detail: t('principle4Detail') },
+    { label: "Principle I", value: "Right to Information", detail: "Mandatory public disclosure of all municipal contracts and vendor payments." },
+    { label: "Principle II", value: "Public Audits", detail: "Citizens hold the legal right to audit local government expenditure." },
+    { label: "Principle III", value: "Elected Accountability", detail: "Representatives must attend monthly ward assemblies or face recall." },
+    { label: "Principle IV", value: "Decentralized Power", detail: "Budgetary control shifted directly to neighborhood civic committees." },
   ];
 
   return (
@@ -18,10 +14,10 @@ export default function TransparencyStrip() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="font-hindi text-4xl sm:text-5xl font-bold text-black dark:text-[#F7F7F5] uppercase tracking-tight mb-4">
-            {t('title')}
+            Movement Foundations
           </h2>
           <p className="font-mono text-sm tracking-widest text-black/50 dark:text-white/50 uppercase">
-            {t('subtitle')}
+            The constitutional basis of our civic intervention
           </p>
         </div>
 
@@ -46,7 +42,7 @@ export default function TransparencyStrip() {
 
         <div className="text-center">
           <Link href="/manifesto" className="inline-block font-mono text-sm font-bold uppercase tracking-widest text-black dark:text-[#F7F7F5] hover:bg-black dark:hover:bg-[#F7F7F5] hover:text-white dark:hover:text-[#0A0A0A] border border-black dark:border-[#F7F7F5] px-8 py-4 transition-colors">
-            {t('cta')}
+            Read Complete Manifesto
           </Link>
         </div>
       </div>

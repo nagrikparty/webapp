@@ -1,13 +1,8 @@
-"use client";
-
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { ArrowUpRight } from "lucide-react";
-import Image from "next/image";
+import { Image } from "@/lib/next-shims";
 
 export default function Footer() {
-  const t = useTranslations("Footer");
-
   return (
     <footer className="bg-black text-white pt-32 pb-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden border-t border-white/10">
       {/* Background Graphic */}
@@ -38,16 +33,16 @@ export default function Footer() {
             href="/join" 
             className="inline-block bg-red text-white px-10 py-5 font-mono text-sm sm:text-base uppercase tracking-widest font-bold hover:bg-white hover:text-black transition-all duration-300 shadow-[0_0_30px_rgba(255,43,43,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.4)]"
           >
-            [ {t('join')} ]
+            [ JOIN ]
           </Link>
         </div>
 
         {/* Minimal Link Row */}
         <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-16">
-          <FooterLink href="/manifesto" text={t('manifesto') || "MANIFESTO"} />
-          <FooterLink href="/issues" text={t('issues') || "LIVE ISSUES"} />
+          <FooterLink href="/manifesto" text="MANIFESTO" />
+          <FooterLink href="/issues" text="LIVE ISSUES" />
           <FooterLink href="/cadre" text="CADRE DASHBOARD" />
-          <FooterLink href="/donate" text={t('donate') || "DONATE"} />
+          <FooterLink href="/donate" text="DONATE" />
         </div>
 
         {/* Socials & Legal */}
@@ -65,11 +60,11 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 text-white/40 font-mono text-[10px] uppercase tracking-widest">
-            <Link href="/privacy" className="hover:text-white transition-colors">{t('privacy') || "PRIVACY POLICY"}</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">PRIVACY POLICY</Link>
             <span>•</span>
-            <Link href="/terms" className="hover:text-white transition-colors">{t('terms') || "TERMS OF SERVICE"}</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">TERMS OF SERVICE</Link>
             <span>•</span>
-            <Link href="/contact" className="hover:text-white transition-colors">{t('contact') || "CONTACT"}</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">CONTACT</Link>
           </div>
 
           <div className="text-white/20 font-mono text-[10px] uppercase tracking-widest">

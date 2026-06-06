@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useState } from "react";
 import { updateProfile } from "@/actions";
@@ -47,7 +47,7 @@ export default function ProfileForm({ member, translations }: ProfileFormProps) 
     if (result.success) {
       toast.success(translations.successMessage);
       setIsEditing(false);
-      router.refresh();
+      window.location.reload();
     } else {
       toast.error(result.error || "Failed to update profile");
     }

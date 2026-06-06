@@ -1,7 +1,4 @@
-"use client";
-
 import { useState, useEffect } from "react";
-import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/routing";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Megaphone } from "lucide-react";
@@ -10,7 +7,6 @@ import Logo from "@/components/ui/Logo";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Navbar() {
-  const t = useTranslations("Navigation");
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,9 +31,8 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
-  const currentLocale = useLocale();
-  const toggleLocale = currentLocale === "hi" ? "en" : "hi";
-  const toggleText = currentLocale === "hi" ? "EN" : "हिन्दी";
+  const toggleLocale = "hi";
+  const toggleText = "हिन्दी";
 
   return (
     <>
@@ -70,11 +65,11 @@ export default function Navbar() {
 
             {/* Middle: Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-              <NavLink href="/issues" text={t("issues") || "ISSUES"} />
-              <NavLink href="/action" text={t("action") || "ACTION"} />
+              <NavLink href="/issues" text="ISSUES" />
+              <NavLink href="/action" text="ACTION" />
               <NavLink href="/cadre" text="CADRE" highlight />
-              <NavLink href="/transparency" text={t("transparency") || "TRANSPARENCY"} />
-              <NavLink href="/join" text={t("join") || "JOIN"} />
+              <NavLink href="/transparency" text="TRANSPARENCY" />
+              <NavLink href="/join" text="JOIN" />
             </div>
 
             {/* Right: Actions */}
@@ -82,8 +77,7 @@ export default function Navbar() {
               
               <Link
                 href={pathname}
-                locale={toggleLocale as "en" | "hi"}
-                aria-label={`Switch to ${toggleLocale === 'hi' ? 'Hindi' : 'English'}`}
+                aria-label="Switch Language"
                 className="flex text-xs font-mono font-bold text-black/70 dark:text-white/70 hover:text-red transition-colors duration-300 tracking-widest uppercase bg-black/5 dark:bg-white/5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full"
               >
                 {toggleText}

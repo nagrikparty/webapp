@@ -1,6 +1,6 @@
-"use client";
 
-import { usePathname, useSearchParams } from 'next/navigation';
+
+import { usePathname, useSearchParams } from '@/lib/next-shims';
 import { useEffect } from 'react';
 import { usePostHog } from 'posthog-js/react';
 

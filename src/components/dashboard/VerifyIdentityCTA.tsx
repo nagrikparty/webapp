@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useState, useEffect } from "react";
 import { ShieldAlert, ShieldCheck, Loader2, UserCheck } from "lucide-react";

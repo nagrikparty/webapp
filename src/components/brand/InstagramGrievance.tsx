@@ -1,4 +1,4 @@
-"use client";
+
 
 import React from 'react';
 import { AlertTriangle, Clock, Target, FileText } from 'lucide-react';

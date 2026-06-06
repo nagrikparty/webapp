@@ -1,4 +1,4 @@
-"use client";
+
 
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useTheme } from 'next-themes';

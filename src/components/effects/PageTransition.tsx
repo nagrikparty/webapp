@@ -1,7 +1,7 @@
-"use client";
+
 
 import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/lib/next-shims";
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
