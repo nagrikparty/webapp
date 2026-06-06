@@ -45,3 +45,4 @@ CLAUDE.md
 .agent-mem/
 wrangler.jsonc
 .dev.vars
+.wrangler
