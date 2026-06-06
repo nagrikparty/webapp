@@ -1,1 +1,0 @@
-import{j as t}from"./jsx-runtime.D_zvdyIk.js";import{J as m}from"./index.MziOsNvi.js";import"./index.DYrVU9rO.js";function n({children:r,...o}){return t.jsx(m,{...o,children:r})}export{n as ThemeProvider};
