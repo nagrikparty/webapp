@@ -85,7 +85,7 @@ export async function getStates() {
     const { env } = await getCloudflareContext({ async: true });
     if (!env.DB) return [];
     
-    const result = await env.DB.prepare("SELECT id, name, name_hi, serial_no FROM states ORDER BY serial_no ASC").all();
+    const result = await env.DB.prepare("SELECT id, name, name_hi, serial_no FROM states ORDER BY serial_no ASC").all<any>();
     return result.results || [];
   } catch (error) {
     logger.error({ err: error }, "Error fetching states");
@@ -100,7 +100,7 @@ export async function getVidhanSabhas(stateId: string) {
     
     const result = await env.DB.prepare(
       "SELECT id, name, serial_no FROM vidhan_sabhas WHERE state_id = ? ORDER BY serial_no ASC"
-    ).bind(stateId).all();
+    ).bind(stateId).all<any>();
     return result.results || [];
   } catch (error) {
     logger.error({ err: error }, "Error fetching vidhan sabhas");
@@ -115,7 +115,7 @@ export async function getWards(vidhanSabhaId: string) {
     
     const result = await env.DB.prepare(
       "SELECT id, name, serial_no FROM wards WHERE vidhan_sabha_id = ? ORDER BY serial_no ASC"
-    ).bind(vidhanSabhaId).all();
+    ).bind(vidhanSabhaId).all<any>();
     return result.results || [];
   } catch (error) {
     logger.error({ err: error }, "Error fetching wards");
@@ -260,17 +260,7 @@ export async function submitMember(formData: FormData) {
   }
 }
 
-export async function getVolunteerCount() {
-  try {
-    const { env } = await getCloudflareContext({ async: true });
-    if (!env.DB) return 0;
 
-    const result = await env.DB.prepare("SELECT COUNT(*) as count FROM nagrik_members").first<{ count: number }>();
-    return result?.count ?? 0;
-  } catch {
-    return 0;
-  }
-}
 
 // ─── REPORTS ────────────────────────────────────────────────────────────────────
 
@@ -346,7 +336,7 @@ export async function getLiveIssues(limit: number = 10, offset: number = 0) {
 
     const { results } = await env.DB.prepare(
       "SELECT * FROM nagrik_reports ORDER BY created_at DESC LIMIT ? OFFSET ?"
-    ).bind(limit, offset).all();
+    ).bind(limit, offset).all<any>();
 
     return results;
   } catch {
@@ -354,17 +344,7 @@ export async function getLiveIssues(limit: number = 10, offset: number = 0) {
   }
 }
 
-export async function getReportCount() {
-  try {
-    const { env } = await getCloudflareContext({ async: true });
-    if (!env.DB) return 0;
 
-    const result = await env.DB.prepare("SELECT COUNT(*) as count FROM nagrik_reports").first<{ count: number }>();
-    return result?.count ?? 0;
-  } catch {
-    return 0;
-  }
-}
 
 // ─── DONATIONS ──────────────────────────────────────────────────────────────────
 
@@ -408,7 +388,7 @@ export async function getDonations() {
 
     const { results } = await env.DB.prepare(
       "SELECT * FROM nagrik_donations ORDER BY created_at DESC LIMIT 20"
-    ).all();
+    ).all<any>();
 
     return results;
   } catch {
@@ -425,7 +405,7 @@ export async function getPressReleases() {
 
     const { results } = await env.DB.prepare(
       "SELECT * FROM nagrik_press_releases ORDER BY published_at DESC LIMIT 10"
-    ).all();
+    ).all<any>();
 
     return results;
   } catch {
@@ -442,7 +422,7 @@ export async function getLeaders() {
 
     const { results } = await env.DB.prepare(
       "SELECT * FROM nagrik_leaders WHERE status = 'ACTIVE' ORDER BY joined_at DESC"
-    ).all();
+    ).all<any>();
 
     return results;
   } catch {
@@ -555,7 +535,7 @@ export async function getMemberData(id: string) {
     return await env.DB.prepare(
       `SELECT id, name, phone, email, epic_number, is_indian_citizen, has_criminal_record, created_at, profile_photo_key, is_verified, didit_session_id 
        FROM nagrik_members WHERE id = ?`
-    ).bind(id).first();
+    ).bind(id).first<any>();
   } catch (error) {
     return null;
   }
