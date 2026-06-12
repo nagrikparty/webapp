@@ -1,0 +1,63 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { VolunteerForm } from "@/components/SignupForms";
+---
+
+<BaseLayout
+  title="Volunteer - Nagrik Party"
+  description="Help verify civic issues, translate content, do local research and manage outreach. No party membership needed."
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en="Volunteer" hi="स्वयंसेवक बनें" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Volunteers help with issue verification, outreach, translation, local research, event support and digital tasks. Volunteering is not legal party membership - you can help without enrolling as a member."
+          hi="स्वयंसेवक मुद्दा सत्यापन, आउटरीच, अनुवाद, स्थानीय शोध, कार्यक्रम सहायता और डिजिटल कार्यों में मदद करते हैं। स्वयंसेवा कानूनी पार्टी सदस्यता नहीं है - आप सदस्य बने बिना मदद कर सकते हैं।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 28px;">
+            <Bilingual en="How volunteers help" hi="स्वयंसेवक कैसे मदद करते हैं" />
+          </h2>
+          <div class="grid-2" style="gap: 14px;">
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Issue verification" hi="मुद्दा सत्यापन" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Ground-check reported problems in your ward or area." hi="अपने वार्ड या क्षेत्र में दर्ज समस्याओं की जमीनी जांच।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Translation" hi="अनुवाद" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Help make content accessible in Hindi and English." hi="हिंदी और अंग्रेजी में सामग्री सुलभ बनाने में मदद।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Local research" hi="स्थानीय शोध" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Document ward-level issues, infrastructure gaps and public needs." hi="वार्ड स्तर के मुद्दे, बुनियादी ढांचे की कमी और सार्वजनिक जरूरतों का दस्तावेज।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Digital outreach" hi="डिजिटल आउटरीच" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Social media, data entry, content moderation and design." hi="सोशल मीडिया, डेटा एंट्री, कंटेंट मॉडरेशन और डिजाइन।" /></p>
+            </div>
+          </div>
+          <div class="notice" style="margin-top: 18px;">
+            <strong>
+              <Bilingual en="Important:" hi="महत्वपूर्ण:" />
+            </strong>{" "}
+            <Bilingual
+              en="This is a volunteer/supporter application. It is not legal party membership. To become a legal party member, use the membership application page."
+              hi="यह एक स्वयंसेवक/समर्थक आवेदन है। यह कानूनी पार्टी सदस्यता नहीं है। कानूनी पार्टी सदस्य बनने के लिए, सदस्यता आवेदन पेज का उपयोग करें।"
+            />
+          </div>
+        </div>
+        <VolunteerForm client:load />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

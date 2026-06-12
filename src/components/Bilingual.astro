@@ -1,0 +1,9 @@
+---
+const { en, hi, tag = "span", class: className = "" } = Astro.props;
+const Tag = tag;
+---
+
+<Tag class={className}>
+  <span class="lang-en">{en}</span>
+  <span class="lang-hi">{hi}</span>
+</Tag>

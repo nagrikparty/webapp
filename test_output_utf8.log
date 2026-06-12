@@ -1,0 +1,4 @@
+﻿Γùç injected env (2) from .env // tip: Γîÿ multiple files { path: ['.env.local', '.env'] }
+Error: Timed out waiting 60000ms from config.webServer.
+
+[1A[2K

@@ -1,0 +1,73 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { legalPages, legalLinks } from "@/lib/content";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return Object.keys(legalPages).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const page = legalPages[slug];
+
+if (!page) {
+  return Astro.redirect("/");
+}
+---
+
+<BaseLayout
+  title={`${page.title} - Nagrik Party`}
+  description={page.summary}
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en={page.title} hi={page.titleHi} />
+      </h1>
+      <p class="page-copy">
+        <Bilingual en={page.summary} hi={page.summaryHi} />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container legal-article">
+      {page.sections.map((section) => (
+        <div>
+          <h2>
+            <Bilingual en={section.h} hi={section.hHi} />
+          </h2>
+          <p>
+            <Bilingual en={section.p} hi={section.pHi} />
+          </p>
+        </div>
+      ))}
+
+      <div class="notice" style="margin-top: 32px;">
+        <strong>
+          <Bilingual en="Document status:" hi="दस्तावेज स्थिति:" />
+        </strong>{" "}
+        <Bilingual
+          en="Nagrik Party is under registration. Final versions of all policy documents will be published after legal review and founder approval."
+          hi="नागरिक पार्टी पंजीकरण प्रक्रिया में है। सभी नीति दस्तावेजों के अंतिम संस्करण कानूनी समीक्षा और संस्थापक स्वीकृति के बाद प्रकाशित होंगे।"
+        />
+      </div>
+
+      <div style="margin-top: 36px;">
+        <strong style="display: block; margin-bottom: 12px;">
+          <Bilingual en="Other policy documents" hi="अन्य नीति दस्तावेज" />
+        </strong>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          {legalLinks
+            .filter((link) => link.slug !== slug)
+            .map((link) => (
+              <a class="tag" href={`/legal/${link.slug}`}>
+                <Bilingual en={link.en} hi={link.hi} />
+              </a>
+            ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

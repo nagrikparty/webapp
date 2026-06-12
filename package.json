@@ -1,0 +1,47 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nagrikparty/webapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nagrikparty/webapp/issues"
+  },
+  "homepage": "https://github.com/nagrikparty/webapp#readme",
+  "description": "",
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/cloudflare": "^13.6.1",
+    "@astrojs/react": "^5.0.7",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/inter": "^5.2.8",
+    "@google/genai": "^2.8.0",
+    "@supabase/supabase-js": "^2.107.0",
+    "astro": "^6.4.4",
+    "form-data": "^4.0.5",
+    "html2canvas": "^1.4.1",
+    "lucide-react": "^1.17.0",
+    "node-fetch": "^3.3.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-qr-code": "^2.2.0",
+    "rss-parser": "^3.13.0",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "dotenv": "^17.4.2",
+    "tsx": "^4.22.4"
+  }
+}

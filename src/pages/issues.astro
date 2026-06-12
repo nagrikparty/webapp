@@ -1,0 +1,70 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { IssueReporter } from "@/components/IssueReporter";
+import { IssuesList } from "@/components/IssuesList";
+---
+
+<BaseLayout
+  title="Report an Issue - Nagrik Party"
+  description="Report civic problems in your Delhi locality. Your identity stays private - only the work is public."
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en="Report an issue" hi="मुद्दा दर्ज करें" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Citizens submit local problems. Volunteers verify and classify. Nagrik Party files official complaints through lawful channels. If unresolved, the issue becomes an area manifesto commitment."
+          hi="नागरिक स्थानीय समस्याएं जमा करते हैं। स्वयंसेवक सत्यापित और वर्गीकृत करते हैं। नागरिक पार्टी विधिसम्मत चैनलों से आधिकारिक शिकायतें दर्ज करती है। अगर अनसुलझा रहा, तो मुद्दा क्षेत्र घोषणापत्र प्रतिबद्धता बनता है।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 28px;">
+            <Bilingual en="Submit a civic issue" hi="नागरिक मुद्दा जमा करें" />
+          </h2>
+          <p style="color: #5e6675; line-height: 1.6; margin-bottom: 18px;">
+            <Bilingual
+              en="Your name, email and personal identity will never appear on public issue pages. Only the issue details, location, category and status are shown publicly."
+              hi="आपका नाम, ईमेल और व्यक्तिगत पहचान कभी सार्वजनिक मुद्दा पेज पर नहीं दिखाई देगी। केवल मुद्दे का विवरण, स्थान, श्रेणी और स्थिति सार्वजनिक रूप से दिखाई जाती है।"
+            />
+          </p>
+          <div class="notice">
+            <strong>
+              <Bilingual en="Issue statuses:" hi="मुद्दा स्थितियां:" />
+            </strong>
+            <br />
+            <Bilingual
+              en="Submitted → Verified → Complaint filed → Escalated → Unresolved → Added to area manifesto → Resolved"
+              hi="जमा → सत्यापित → शिकायत दर्ज → एस्केलेटेड → अनसुलझा → क्षेत्र घोषणापत्र में जोड़ा गया → हल"
+            />
+          </div>
+        </div>
+        <IssueReporter client:load />
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual en="Reported issues" hi="दर्ज मुद्दे" />
+        </h2>
+        <p>
+          <Bilingual
+            en="Public view - complainant identity is never shown."
+            hi="सार्वजनिक दृश्य - शिकायतकर्ता की पहचान कभी नहीं दिखाई जाती।"
+          />
+        </p>
+      </div>
+      <IssuesList client:load />
+    </div>
+  </section>
+</BaseLayout>

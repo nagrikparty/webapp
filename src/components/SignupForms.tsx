@@ -1,0 +1,272 @@
+import { CheckCircle2, Mail, Upload, Loader2, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { lokSabhaToVidhanSabha, delhiConstituenciesAndWards } from "@/lib/delhi_data";
+
+function Result({ saved }: { saved: boolean }) {
+  if (!saved) return null;
+  return (
+    <div className="notice" role="status">
+      <CheckCircle2 size={17} style={{ display: "inline", verticalAlign: "-3px" }} />{" "}
+      <span className="lang-en">Received. This is saved as an application, not automatic approval.</span>
+      <span className="lang-hi">मिल गया। यह आवेदन के रूप में सेव हुआ है, स्वतः स्वीकृति नहीं।</span>
+    </div>
+  );
+}
+
+export function VolunteerForm() {
+  const [saved, setSaved] = useState(false);
+  const [lokSabha, setLokSabha] = useState("");
+  const [vidhanSabha, setVidhanSabha] = useState("");
+  const assemblies = lokSabha ? lokSabhaToVidhanSabha[lokSabha] : [];
+  const wards = vidhanSabha ? delhiConstituenciesAndWards[vidhanSabha] : [];
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaved(true);
+    const form = new FormData(event.currentTarget);
+    if (!supabase) {
+      await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          type: "volunteer",
+          full_name: form.get("name"),
+          email: form.get("email"),
+          lok_sabha: form.get("lok_sabha"),
+          vidhan_sabha: form.get("vidhan_sabha"),
+          ward: form.get("ward")
+        })
+      });
+      return;
+    }
+    await supabase.from("volunteer_applications").insert({
+      full_name: form.get("name"),
+      email: form.get("email"),
+      lok_sabha: form.get("lok_sabha"),
+      vidhan_sabha: form.get("vidhan_sabha"),
+      ward: form.get("ward"),
+      skills: form.get("skills"),
+      availability: form.get("availability"),
+    });
+  }
+
+  return (
+    <form className="form-surface" onSubmit={submit}>
+      <div className="form-grid">
+        <div className="field">
+          <label>Name</label>
+          <input name="name" required />
+        </div>
+        <div className="field">
+          <label>Email signup</label>
+          <input name="email" required type="email" />
+        </div>
+        <div className="field">
+          <label>Vidhan Sabha (Assembly)</label>
+          <select name="vidhan_sabha" required value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
+            <option value="">Select Assembly</option>
+            {Object.keys(delhiConstituenciesAndWards).sort().map((ac) => (
+              <option key={ac} value={ac}>{ac}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label>Ward</label>
+          <select name="ward" required disabled={!vidhanSabha}>
+            <option value="">Select Ward</option>
+            {wards.map((w) => (
+              <option key={w} value={w}>{w}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label>Availability</label>
+          <select name="availability">
+            <option>Weekends</option>
+            <option>Weekday evenings</option>
+            <option>Field visits</option>
+            <option>Remote digital work</option>
+          </select>
+        </div>
+        <div className="field full">
+          <label>How can you help?</label>
+          <textarea name="skills" placeholder="Issue verification, translation, social media, legal research, data entry..." />
+        </div>
+        <label className="checkbox-row field full">
+          <input required type="checkbox" />
+          <span>I understand this is a volunteer/supporter application and not legal party membership.</span>
+        </label>
+      </div>
+      <div className="form-submit-group">
+        <Result saved={saved} />
+        <button className="button green" type="submit">
+          <Mail size={17} />
+          Join volunteer list
+        </button>
+      </div>
+    </form>
+  );
+}
+
+export function MembershipForm() {
+  const [step, setStep] = useState(1);
+  const [saved, setSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const [lokSabha, setLokSabha] = useState("");
+  const [vidhanSabha, setVidhanSabha] = useState("");
+  const assemblies = lokSabha ? lokSabhaToVidhanSabha[lokSabha] : [];
+  const wards = vidhanSabha ? delhiConstituenciesAndWards[vidhanSabha] : [];
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitting(true);
+    setErrorMsg("");
+    const form = new FormData(event.currentTarget);
+    form.append("declaration_agreed", "true");
+    
+    try {
+      const res = await fetch("/api/register-member", {
+        method: "POST",
+        body: form
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to register");
+      setSaved(true);
+    } catch (err: any) {
+      setErrorMsg(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  if (saved) {
+    return (
+      <div className="form-surface">
+        <Result saved={saved} />
+      </div>
+    );
+  }
+
+  return (
+    <form className="form-surface" onSubmit={submit}>
+      <div className="step-indicator" style={{ marginBottom: "20px", fontSize: "14px", fontWeight: 600 }}>
+        Step {step} of 3: {step === 1 ? "Personal Details" : step === 2 ? "Location Details" : "Document & Declarations"}
+      </div>
+
+      <div className="form-grid" style={{ display: step === 1 ? "grid" : "none" }}>
+        <div className="field">
+          <label>Full legal name</label>
+          <input name="name" required={step === 1} />
+        </div>
+        <div className="field">
+          <label>Email signup</label>
+          <input name="email" required={step === 1} type="email" />
+        </div>
+        <div className="field">
+          <label>Parent / spouse name</label>
+          <input name="parent" required={step === 1} />
+        </div>
+        <div className="field">
+          <label>Date of birth</label>
+          <input name="dob" required={step === 1} type="date" />
+        </div>
+        <div className="field">
+          <label>EPIC / voter ID reference</label>
+          <input name="voter_id" required={step === 1} />
+        </div>
+      </div>
+
+      <div className="form-grid" style={{ display: step === 2 ? "grid" : "none" }}>
+        <div className="field">
+          <label>Lok Sabha (Parliament)</label>
+          <select name="lok_sabha" required={step === 2} value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
+            <option value="">Select Lok Sabha</option>
+            {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
+              <option key={ls} value={ls}>{ls}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label>Vidhan Sabha (Assembly)</label>
+          <select name="vidhan_sabha" required={step === 2} disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
+            <option value="">Select Assembly</option>
+            {assemblies.map((ac) => (
+              <option key={ac} value={ac}>{ac}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label>Ward</label>
+          <select name="ward" required={step === 2} disabled={!vidhanSabha}>
+            <option value="">Select Ward</option>
+            {wards.map((w) => (
+              <option key={w} value={w}>{w}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field full">
+          <label>Residential address</label>
+          <textarea name="address" required={step === 2} />
+        </div>
+      </div>
+
+      <div className="form-grid" style={{ display: step === 3 ? "grid" : "none" }}>
+        <div className="field full" style={{ background: "rgba(0,0,0,0.02)", padding: "16px", borderRadius: "8px", border: "1px dashed var(--line)" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            Upload Identity Document (Aadhaar or Voter ID)
+          </label>
+          <input type="file" name="file" accept="image/*,.pdf" required={step === 3} />
+        </div>
+
+        <label className="checkbox-row field full">
+          <input required={step === 3} type="checkbox" />
+          <span>I am an Indian citizen, 18 years or older, and a registered elector.</span>
+        </label>
+        <label className="checkbox-row field full">
+          <input required={step === 3} type="checkbox" />
+          <span>I am not currently a member of another ECI-registered political party.</span>
+        </label>
+        <label className="checkbox-row field full">
+          <input required={step === 3} type="checkbox" />
+          <span>I accept the proposed Party Constitution, Rulebook, Code of Ethics and verification process.</span>
+        </label>
+      </div>
+
+      {errorMsg && (
+        <p style={{ color: "var(--red)", fontSize: "13px", marginTop: "12px", display: "flex", alignItems: "center", gap: "4px" }}>
+          <AlertCircle size={14} /> {errorMsg}
+        </p>
+      )}
+
+      <div className="form-submit-group" style={{ marginTop: "24px" }}>
+        {step > 1 && (
+          <button type="button" className="button secondary" onClick={() => setStep(s => s - 1)} disabled={submitting}>
+            Back
+          </button>
+        )}
+        {step < 3 ? (
+          <button type="button" className="button primary" onClick={() => {
+            // A small hack to trigger native validation:
+            // Since button is type=button, it doesn't submit. We can use a trick:
+            const form = document.querySelector('form.form-surface') as HTMLFormElement;
+            if (form && form.checkValidity()) {
+              setStep(s => s + 1);
+            } else {
+              form?.reportValidity();
+            }
+          }}>
+            Next Step
+          </button>
+        ) : (
+          <button className="button primary" type="submit" disabled={submitting}>
+            {submitting ? <Loader2 className="spin" size={17} /> : <Upload size={17} />}
+            {submitting ? "Submitting..." : "Submit membership application"}
+          </button>
+        )}
+      </div>
+    </form>
+  );
+}

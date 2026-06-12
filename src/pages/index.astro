@@ -1,0 +1,197 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { ManifestoVoting } from "@/components/ManifestoVoting";
+import { CrimeDashboard } from "@/components/CrimeDashboard";
+import { delhiAreas } from "@/lib/content";
+import { fetchPublicStats } from "@/lib/queries";
+
+const stats = await fetchPublicStats(Astro.url.origin);
+---
+
+<BaseLayout
+  title="Nagrik Party - Kaam dikhna chahiye"
+  description="Delhi-first proposed political party under registration. Building a public worklist before power."
+>
+  <section class="hero section civic-hero">
+    <div class="civic-collage-container">
+      <!-- Background Floating Images -->
+      <div class="floating-images">
+        <img src="/images/civic/delhi_garbage_dump_1780960177637.png" class="civic-img img-1" alt="Delhi Garbage Dump" loading="lazy" decoding="async" />
+        <img src="/images/civic/delhi_broken_road_1780960190752.png" class="civic-img img-2" alt="Broken Road" loading="lazy" decoding="async" />
+        <img src="/images/civic/delhi_hanging_cables_1780960203224.png" class="civic-img img-3" alt="Hanging Cables" loading="lazy" decoding="async" />
+        <img src="/images/civic/delhi_flooded_lane_1780960214764.png" class="civic-img img-4" alt="Flooded Lane" loading="lazy" decoding="async" />
+        <img src="/images/civic/delhi_open_drain_1780960236315.png" class="civic-img img-5" alt="Open Drain" loading="lazy" decoding="async" />
+      </div>
+      
+      <!-- Central Content -->
+      <div class="container civic-hero-content">        
+        <h1 class="hindi-slogan">
+          काम दिखना चाहिए
+        </h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 40px; padding-bottom: 0;">
+    <div class="container">
+      <CrimeDashboard client:only="react" />
+    </div>
+  </section>
+
+  <section class="section band-soft" style="padding-top: 40px;">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      <div class="hero-panel" style="margin: 0; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
+        <div class="hero-panel-head" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <h2 class="panel-title">
+              <Bilingual en="How it works" hi="यह कैसे काम करता है" />
+            </h2>
+            <span class="mini-label">
+              <Bilingual en="Delhi" hi="दिल्ली" />
+            </span>
+          </div>
+          <p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5;">
+            <Bilingual en="The complete lifecycle of a civic issue, from the moment a citizen reports it to its final inclusion in our localized manifesto." hi="नागरिक द्वारा रिपोर्ट किए जाने से लेकर हमारे स्थानीय घोषणापत्र में शामिल होने तक, किसी नागरिक मुद्दे का संपूर्ण जीवनचक्र।" />
+          </p>
+        </div>
+        <div class="worklist">
+          <div class="work-item">
+            <div class="work-icon">1</div>
+            <div>
+              <strong><Bilingual en="Citizen reports issue" hi="नागरिक मुद्दा दर्ज करता है" /></strong>
+              <span><Bilingual en="Photo, location, category - identity stays private" hi="फोटो, लोकेशन, श्रेणी - पहचान निजी रहती है" /></span>
+            </div>
+          </div>
+          <div class="work-item">
+            <div class="work-icon">2</div>
+            <div>
+              <strong><Bilingual en="Volunteer verifies" hi="स्वयंसेवक सत्यापन करता है" /></strong>
+              <span><Bilingual en="Ground-check, classify, assign ward" hi="ग्राउंड-चेक, वर्गीकरण, वार्ड असाइन" /></span>
+            </div>
+          </div>
+          <div class="work-item">
+            <div class="work-icon">3</div>
+            <div>
+              <strong><Bilingual en="Official complaint filed" hi="आधिकारिक शिकायत दर्ज" /></strong>
+              <span><Bilingual en="Lawful complaint through proper channels" hi="उचित चैनलों से विधिसम्मत शिकायत" /></span>
+            </div>
+          </div>
+          <div class="work-item">
+            <div class="work-icon">4</div>
+            <div>
+              <strong><Bilingual en="Unresolved → Manifesto" hi="अनसुलझा → घोषणापत्र" /></strong>
+              <span><Bilingual en="If not fixed, it becomes an area manifesto commitment" hi="अगर ठीक नहीं हुआ, तो क्षेत्र घोषणापत्र प्रतिबद्धता बनता है" /></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat">
+          <strong>{stats.issues}</strong>
+          <span><Bilingual en="Issues reported" hi="मुद्दे दर्ज" /></span>
+        </div>
+        <div class="stat">
+          <strong>{stats.volunteers}</strong>
+          <span><Bilingual en="Volunteers" hi="स्वयंसेवक" /></span>
+        </div>
+        <div class="stat">
+          <strong>{stats.members}</strong>
+          <span><Bilingual en="Membership applications" hi="सदस्यता आवेदन" /></span>
+        </div>
+        <div class="stat">
+          <strong>{stats.areas}</strong>
+          <span><Bilingual en="Delhi constituencies" hi="दिल्ली विधानसभाएं" /></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual
+            en="Manifesto priorities"
+            hi="घोषणापत्र प्राथमिकताएं"
+          />
+        </h2>
+        <p>
+          <Bilingual
+            en="Supporters and members vote on what matters most. The top priorities shape the party programme."
+            hi="समर्थक और सदस्य सबसे जरूरी मुद्दों पर मतदान करते हैं। शीर्ष प्राथमिकताएं पार्टी कार्यक्रम बनाती हैं।"
+          />
+        </p>
+      </div>
+      <ManifestoVoting client:load />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual
+            en="Delhi coverage"
+            hi="दिल्ली कवरेज"
+          />
+        </h2>
+        <p>
+          <Bilingual
+            en="Building a presence across all 70 Assembly constituencies. Starting with these areas."
+            hi="सभी 70 विधानसभा क्षेत्रों में उपस्थिति बना रहे हैं। इन क्षेत्रों से शुरुआत।"
+          />
+        </p>
+      </div>
+      <div class="map-strip">
+        {delhiAreas.map((area) => (
+          <div class="area-chip">
+            <strong>{area}</strong>
+            <span><Bilingual en="Delhi AC" hi="दिल्ली विधानसभा" /></span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual en="What this platform does" hi="यह प्लेटफॉर्म क्या करता है" />
+        </h2>
+      </div>
+      <div class="grid-3">
+        <div class="card feature">
+          <h3><Bilingual en="Public issue reporting" hi="सार्वजनिक मुद्दा रिपोर्टिंग" /></h3>
+          <p><Bilingual en="Report civic problems with photos and location. Your identity stays private - only the work is public." hi="फोटो और लोकेशन के साथ नागरिक समस्याएं दर्ज करें। आपकी पहचान निजी रहती है - केवल काम सार्वजनिक है।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Living manifesto" hi="जीवंत घोषणापत्र" /></h3>
+          <p><Bilingual en="Not a static PDF. Priorities are set by verified public issues and supporter votes, not backroom deals." hi="स्थिर PDF नहीं। प्राथमिकताएं सत्यापित सार्वजनिक मुद्दों और समर्थक वोटों से तय होती हैं, बैकरूम डील से नहीं।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Transparent operations" hi="पारदर्शी संचालन" /></h3>
+          <p><Bilingual en="Every issue tracked, every escalation logged, every public report published. Kaam dikhna chahiye." hi="हर मुद्दा ट्रैक, हर एस्केलेशन लॉग, हर सार्वजनिक रिपोर्ट प्रकाशित। काम दिखना चाहिए।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Volunteer network" hi="स्वयंसेवक नेटवर्क" /></h3>
+          <p><Bilingual en="Help verify issues, translate content, do local research, manage outreach - no party membership needed." hi="मुद्दे सत्यापित करें, अनुवाद करें, स्थानीय शोध करें, आउटरीच करें - पार्टी सदस्यता जरूरी नहीं।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Legal membership" hi="कानूनी सदस्यता" /></h3>
+          <p><Bilingual en="Separate from volunteering. Members accept the constitution and go through ECI-aligned verification." hi="स्वयंसेवा से अलग। सदस्य संविधान स्वीकार करते हैं और ECI-संरेखित सत्यापन से गुजरते हैं।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Independent candidate home" hi="स्वतंत्र उम्मीदवार का घर" /></h3>
+          <p><Bilingual en="A constitutional platform for independent candidates and civic leaders who want party infrastructure without opaque politics." hi="स्वतंत्र उम्मीदवारों और नागरिक नेताओं के लिए एक संवैधानिक मंच जो अपारदर्शी राजनीति के बिना पार्टी बुनियादी ढांचा चाहते हैं।" /></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

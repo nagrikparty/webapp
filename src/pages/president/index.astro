@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+---
+
+<BaseLayout
+  title="Party President - Nagrik Party"
+  description="Arsalan Azad - From independent candidacy in Okhla to the formation of Nagrik Party."
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en="Arsalan Azad" hi="अरसलान आज़ाद" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="From independent candidacy in Delhi to the formation of a transparent, member-driven political organisation. Arsalan Azad contested independently from Okhla in the Delhi 2025 MLA election and is now building Nagrik Party as the next institutional step."
+          hi="दिल्ली में स्वतंत्र उम्मीदवारी से एक पारदर्शी, सदस्य-संचालित राजनीतिक संगठन के गठन तक। अरसलान आज़ाद ने दिल्ली 2025 विधानसभा चुनाव में ओखला से स्वतंत्र रूप से चुनाव लड़ा और अब अगले संस्थागत कदम के रूप में नागरिक पार्टी बना रहे हैं।"
+        />
+      </p>
+      <div class="action-row">
+        <a class="button primary" href="/president/about">
+          <Bilingual en="About the President" hi="अध्यक्ष के बारे में" />
+        </a>
+        <a class="button" href="/president/delhi-2025">
+          <Bilingual en="Delhi 2025" hi="दिल्ली 2025" />
+        </a>
+        <a class="button" href="/president/okhla">
+          <Bilingual en="Okhla" hi="ओखला" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 28px;">
+            <Bilingual en="The journey" hi="यात्रा" />
+          </h2>
+          <p style="color: #3e4653; line-height: 1.65;">
+            <Bilingual
+              en="Arsalan Azad's political journey began with direct civic engagement in Delhi. After contesting independently from Okhla in the 2025 MLA election, the next step is building a party that converts independent public work into a transparent, member-driven political organisation."
+              hi="अरसलान आज़ाद की राजनीतिक यात्रा दिल्ली में प्रत्यक्ष नागरिक जुड़ाव से शुरू हुई। 2025 विधानसभा चुनाव में ओखला से स्वतंत्र रूप से चुनाव लड़ने के बाद, अगला कदम एक ऐसी पार्टी बनाना है जो स्वतंत्र सार्वजनिक कार्य को एक पारदर्शी, सदस्य-संचालित राजनीतिक संगठन में बदले।"
+            />
+          </p>
+          <p style="color: #3e4653; line-height: 1.65;">
+            <Bilingual
+              en="The campaign was issue-focused and built around direct and digital outreach, not around caste, religion or identity mobilisation."
+              hi="अभियान मुद्दा-केंद्रित था और प्रत्यक्ष और डिजिटल आउटरीच पर बनाया गया था, जाति, धर्म या पहचान लामबंदी पर नहीं।"
+            />
+          </p>
+        </div>
+        <div>
+          <div class="grid-2" style="gap: 14px;">
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Independent candidate" hi="स्वतंत्र उम्मीदवार" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Contested from Okhla, South-East Delhi in the Delhi 2025 Assembly election." hi="दिल्ली 2025 विधानसभा चुनाव में ओखला, दक्षिण-पूर्व दिल्ली से चुनाव लड़ा।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Issue-focused politics" hi="मुद्दा-केंद्रित राजनीति" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Campaign built on local civic issues, public infrastructure and direct outreach." hi="स्थानीय नागरिक मुद्दों, सार्वजनिक बुनियादी ढांचे और प्रत्यक्ष आउटरीच पर बना अभियान।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Party formation" hi="पार्टी गठन" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Transitioning from independent electoral participation to building Nagrik Party." hi="स्वतंत्र चुनावी भागीदारी से नागरिक पार्टी के निर्माण में परिवर्तन।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 16px;"><Bilingual en="Public work first" hi="पहले सार्वजनिक काम" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Building a public worklist and civic issue pipeline before elections." hi="चुनाव से पहले सार्वजनिक कार्य सूची और नागरिक मुद्दा पाइपलाइन बना रहे हैं।" /></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

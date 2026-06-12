@@ -1,0 +1,33 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { MemberDashboard } from "@/components/MemberDashboard";
+---
+
+<BaseLayout
+  title="Member Dashboard - Nagrik Party"
+  description="Internal dashboard for verified members."
+>
+  <section class="page-hero">
+    <div class="container">
+      <h1>
+        <Bilingual en="Member Portal" hi="सदस्य पोर्टल" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual 
+          en="Welcome to your member dashboard. Here you can participate in verified voting, view party directives, and access internal resources." 
+          hi="आपके सदस्य डैशबोर्ड में स्वागत है। यहां आप सत्यापित मतदान में भाग ले सकते हैं, पार्टी निर्देश देख सकते हैं, और आंतरिक संसाधनों तक पहुंच सकते हैं।" 
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div>
+        <MemberDashboard client:only="react" />
+      </div>
+    </div>
+  </section>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</BaseLayout>

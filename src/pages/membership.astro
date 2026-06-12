@@ -1,0 +1,78 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { RegistrationForm } from "@/components/RegistrationForm";
+---
+
+<BaseLayout
+  title="Membership - Nagrik Party"
+  description="Apply for legal party membership. Members accept the constitution and go through ECI-aligned verification."
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en="Membership" hi="सदस्यता" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Legal party membership is separate from volunteering. Members must be adult Indian citizens, accept the Party Constitution and Rulebook, and confirm they are not members of another ECI-registered political party."
+          hi="कानूनी पार्टी सदस्यता स्वयंसेवा से अलग है। सदस्यों को वयस्क भारतीय नागरिक होना चाहिए, पार्टी संविधान और नियमावली स्वीकार करनी चाहिए, और पुष्टि करनी चाहिए कि वे किसी अन्य ECI-पंजीकृत राजनीतिक पार्टी के सदस्य नहीं हैं।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 28px;">
+            <Bilingual en="Membership requirements" hi="सदस्यता आवश्यकताएं" />
+          </h2>
+          <div style="display: grid; gap: 12px;">
+            <div class="card feature" style="padding: 16px;">
+              <p style="margin: 0; font-size: 15px;"><strong>1.</strong>{" "}
+                <Bilingual en="Indian citizen, 18 years or older" hi="भारतीय नागरिक, 18 वर्ष या उससे अधिक" />
+              </p>
+            </div>
+            <div class="card feature" style="padding: 16px;">
+              <p style="margin: 0; font-size: 15px;"><strong>2.</strong>{" "}
+                <Bilingual en="Registered elector with EPIC / voter ID reference" hi="EPIC / वोटर आईडी संदर्भ के साथ पंजीकृत मतदाता" />
+              </p>
+            </div>
+            <div class="card feature" style="padding: 16px;">
+              <p style="margin: 0; font-size: 15px;"><strong>3.</strong>{" "}
+                <Bilingual en="Not a member of another ECI-registered political party" hi="किसी अन्य ECI-पंजीकृत राजनीतिक पार्टी का सदस्य नहीं" />
+              </p>
+            </div>
+            <div class="card feature" style="padding: 16px;">
+              <p style="margin: 0; font-size: 15px;"><strong>4.</strong>{" "}
+                <Bilingual en="Accept the proposed Party Constitution, Rulebook, and Code of Ethics" hi="प्रस्तावित पार्टी संविधान, नियमावली और आचार संहिता स्वीकार करें" />
+              </p>
+            </div>
+            <div class="card feature" style="padding: 16px;">
+              <p style="margin: 0; font-size: 15px;"><strong>5.</strong>{" "}
+                <Bilingual en="Consent to legal verification and party membership processing" hi="कानूनी सत्यापन और पार्टी सदस्यता प्रसंस्करण के लिए सहमति" />
+              </p>
+            </div>
+          </div>
+          <div class="notice" style="margin-top: 18px;">
+            <strong>
+              <Bilingual en="ECI compliance:" hi="ECI अनुपालन:" />
+            </strong>{" "}
+            <Bilingual
+              en="For the registration-ready set, the party needs 100+ members with electoral proof. Your EPIC number and details will be used for registration evidence. Affidavit and attestation requirements may follow."
+              hi="पंजीकरण-तैयार सेट के लिए, पार्टी को मतदाता प्रमाण के साथ 100+ सदस्यों की जरूरत है। आपका EPIC नंबर और विवरण पंजीकरण प्रमाण के लिए उपयोग किया जाएगा। शपथपत्र और प्रमाणन आवश्यकताएं बाद में हो सकती हैं।"
+            />
+          </div>
+          <p style="margin-top: 14px; font-size: 14px; color: #5e6675;">
+            <Bilingual
+              en="This is an application, not automatic approval. Membership will be reviewed and processed."
+              hi="यह एक आवेदन है, स्वतः स्वीकृति नहीं। सदस्यता की समीक्षा और प्रसंस्करण किया जाएगा।"
+            />
+          </p>
+        </div>
+        <RegistrationForm client:load />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,87 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { ManifestoVoting } from "@/components/ManifestoVoting";
+---
+
+<BaseLayout
+  title="Manifesto - Nagrik Party"
+  description="Public priorities built from verified local issues and supporter votes. Not a backroom deal."
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en="Manifesto" hi="घोषणापत्र" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="The Nagrik Party manifesto has two layers. A national programme built from what the party stands for - and an area-wise manifesto built from verified local issues, public priorities and member voting."
+          hi="नागरिक पार्टी घोषणापत्र के दो स्तर हैं। एक राष्ट्रीय कार्यक्रम जो पार्टी के सिद्धांतों पर आधारित है - और एक क्षेत्रवार घोषणापत्र जो सत्यापित स्थानीय मुद्दों, सार्वजनिक प्राथमिकताओं और सदस्य मतदान से बनता है।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 28px;">
+            <Bilingual en="Top priorities" hi="शीर्ष प्राथमिकताएं" />
+          </h2>
+          <p style="color: #5e6675; line-height: 1.6;">
+            <Bilingual
+              en="Supporters and verified members can upvote proposals. The ranking is public. Voter identities are not shown."
+              hi="समर्थक और सत्यापित सदस्य प्रस्तावों को अपवोट कर सकते हैं। रैंकिंग सार्वजनिक है। मतदाता पहचान नहीं दिखाई जाती।"
+            />
+          </p>
+          <div class="notice" style="margin-top: 18px;">
+            <strong>
+              <Bilingual en="Pre-registration:" hi="प्री-रजिस्ट्रेशन:" />
+            </strong>{" "}
+            <Bilingual
+              en="Voting is open to supporters and members during the party formation phase. After registration, formal internal democracy processes will govern manifesto decisions."
+              hi="पार्टी गठन चरण के दौरान समर्थकों और सदस्यों के लिए मतदान खुला है। पंजीकरण के बाद, औपचारिक आंतरिक लोकतंत्र प्रक्रियाएं घोषणापत्र निर्णयों को नियंत्रित करेंगी।"
+            />
+          </div>
+        </div>
+        <ManifestoVoting client:load />
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual en="What the party stands for" hi="पार्टी किसके लिए खड़ी है" />
+        </h2>
+      </div>
+      <div class="grid-3">
+        <div class="card feature">
+          <h3><Bilingual en="Visible governance" hi="दिखने वाला शासन" /></h3>
+          <p><Bilingual en="Every public action tracked, every escalation logged, every report published." hi="हर सार्वजनिक कार्य ट्रैक, हर एस्केलेशन लॉग, हर रिपोर्ट प्रकाशित।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Women safety" hi="महिला सुरक्षा" /></h3>
+          <p><Bilingual en="Streetlight audits, safety mapping, response cell with heightened privacy protections." hi="स्ट्रीटलाइट ऑडिट, सुरक्षा मैपिंग, उच्च गोपनीयता सुरक्षा के साथ प्रतिक्रिया सेल।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Healthcare access" hi="स्वास्थ्य सुविधा" /></h3>
+          <p><Bilingual en="Public clinic tracking, medicine availability, community health infrastructure." hi="सार्वजनिक क्लिनिक ट्रैकिंग, दवा उपलब्धता, सामुदायिक स्वास्थ्य बुनियादी ढांचा।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Legal accessibility" hi="कानूनी सुलभता" /></h3>
+          <p><Bilingual en="Mohalla-level legal help desks, documentation assistance, citizen rights awareness." hi="मोहल्ला स्तर कानूनी सहायता डेस्क, दस्तावेज सहायता, नागरिक अधिकार जागरूकता।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Youth & employment" hi="युवा और रोजगार" /></h3>
+          <p><Bilingual en="Constituency libraries, skill hubs, community centres, and training programmes." hi="विधानसभा लाइब्रेरी, स्किल हब, सामुदायिक केंद्र, और प्रशिक्षण कार्यक्रम।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Environment" hi="पर्यावरण" /></h3>
+          <p><Bilingual en="Rainwater harvesting, flood-risk mapping, green civic infrastructure, sustainability campaigns." hi="रेनवॉटर हार्वेस्टिंग, बाढ़-जोखिम मैपिंग, हरित नागरिक बुनियादी ढांचा, स्थिरता अभियान।" /></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

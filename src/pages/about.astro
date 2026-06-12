@@ -1,0 +1,117 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { legalLinks } from "@/lib/content";
+---
+
+<BaseLayout
+  title="About - Nagrik Party"
+  description="A Delhi-first proposed political party under registration. Building visible governance before power."
+>
+  <section class="page-hero">
+    <div class="container">      <h1>
+        <Bilingual en="About Nagrik Party" hi="नागरिक पार्टी के बारे में" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="A Delhi-first proposed political party building a citizen-driven public accountability system before asking for power. Currently under registration with the Election Commission of India."
+          hi="एक दिल्ली-प्रथम प्रस्तावित राजनीतिक पार्टी जो सत्ता मांगने से पहले नागरिक-संचालित सार्वजनिक जवाबदेही प्रणाली बना रही है। वर्तमान में भारत निर्वाचन आयोग के साथ पंजीकरण प्रक्रिया में।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div>
+          <h2 style="margin: 0 0 20px; font-size: 32px;">
+            <Bilingual en="Kaam dikhna chahiye" hi="काम दिखना चाहिए" />
+          </h2>
+          <p style="color: #3e4653; line-height: 1.65; font-size: 17px;">
+            <Bilingual
+              en="This is the core operating doctrine. Every workflow should produce a visible record: issue reported, volunteer assigned, escalation logged, representative response captured, public status updated, report published."
+              hi="यह मूल संचालन सिद्धांत है। हर कार्यप्रवाह को एक दिखने वाला रिकॉर्ड बनाना चाहिए: मुद्दा दर्ज, स्वयंसेवक नियुक्त, एस्केलेशन लॉग, प्रतिनिधि प्रतिक्रिया दर्ज, सार्वजनिक स्थिति अपडेट, रिपोर्ट प्रकाशित।"
+            />
+          </p>
+        </div>
+        <div>
+          <div class="grid-2" style="gap: 14px;">
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 17px;"><Bilingual en="People's Opposition" hi="जनता का विपक्ष" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Collect public problems, verify them, escalate lawfully, and publish accountability - without exposing sensitive citizen data." hi="सार्वजनिक समस्याएं जमा करें, सत्यापित करें, विधिसम्मत एस्केलेट करें, और जवाबदेही प्रकाशित करें - संवेदनशील नागरिक डेटा उजागर किए बिना।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 17px;"><Bilingual en="Hybrid democracy" hi="हाइब्रिड लोकतंत्र" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Digital participation supports physical units and delegate systems. Not all democratic decisions happen online." hi="डिजिटल भागीदारी भौतिक इकाइयों और प्रतिनिधि प्रणालियों का समर्थन करती है। सभी लोकतांत्रिक निर्णय ऑनलाइन नहीं होते।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 17px;"><Bilingual en="Transparency with safeguards" hi="सुरक्षा के साथ पारदर्शिता" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="Public dashboards are important, but complainant identity, women safety cases, legal aid requests and whistleblower reports need strict privacy controls." hi="सार्वजनिक डैशबोर्ड महत्वपूर्ण हैं, लेकिन शिकायतकर्ता पहचान, महिला सुरक्षा मामले, कानूनी सहायता अनुरोध और व्हिसलब्लोअर रिपोर्ट को सख्त गोपनीयता नियंत्रण चाहिए।" /></p>
+            </div>
+            <div class="card feature" style="padding: 18px;">
+              <h3 style="font-size: 17px;"><Bilingual en="Independent candidate home" hi="स्वतंत्र उम्मीदवार का घर" /></h3>
+              <p style="font-size: 14px;"><Bilingual en="A constitutional home for independent candidates, civic leaders and public-service volunteers who want party infrastructure without opaque high-command politics." hi="स्वतंत्र उम्मीदवारों, नागरिक नेताओं और सार्वजनिक सेवा स्वयंसेवकों के लिए एक संवैधानिक घर जो अपारदर्शी हाई-कमांड राजनीति के बिना पार्टी बुनियादी ढांचा चाहते हैं।" /></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual en="Delhi-first strategy" hi="दिल्ली-प्रथम रणनीति" />
+        </h2>
+      </div>
+      <div class="grid-3">
+        <div class="card feature">
+          <h3><Bilingual en="70 Assembly constituencies" hi="70 विधानसभा क्षेत्र" /></h3>
+          <p><Bilingual en="Launching as a Delhi-based party formation from day one. Building issue intake, manifesto priorities, volunteer signup and membership application flows across all Delhi ACs." hi="पहले दिन से दिल्ली-आधारित पार्टी गठन के रूप में शुरुआत। सभी दिल्ली विधानसभाओं में मुद्दा प्रवेश, घोषणापत्र प्राथमिकताएं, स्वयंसेवक साइनअप और सदस्यता आवेदन प्रवाह बना रहे हैं।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Okhla anchor" hi="ओखला एंकर" /></h3>
+          <p><Bilingual en="The Party President contested independently from Okhla in Delhi 2025. It serves as the first public proof point of the party's civic work approach." hi="पार्टी अध्यक्ष ने दिल्ली 2025 में ओखला से स्वतंत्र रूप से चुनाव लड़ा। यह पार्टी के नागरिक कार्य दृष्टिकोण का पहला सार्वजनिक प्रमाण बिंदु है।" /></p>
+        </div>
+        <div class="card feature">
+          <h3><Bilingual en="Expansion model" hi="विस्तार मॉडल" /></h3>
+          <p><Bilingual en="Expand operating depth constituency by constituency as volunteers, independent candidates and local teams come together. National expansion after Delhi operations prove field readiness." hi="स्वयंसेवकों, स्वतंत्र उम्मीदवारों और स्थानीय टीमों के आने पर विधानसभा दर विधानसभा संचालन गहराई बढ़ाएं। दिल्ली संचालन क्षेत्र तैयारी साबित करने के बाद राष्ट्रीय विस्तार।" /></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>
+          <Bilingual en="Registration status" hi="पंजीकरण स्थिति" />
+        </h2>
+      </div>
+      <div class="notice" style="max-width: 780px;">
+        <strong>
+          <Bilingual en="Important:" hi="महत्वपूर्ण:" />
+        </strong>{" "}
+        <Bilingual
+          en="Nagrik Party is not yet registered with the Election Commission of India. Section 29A registration is the first legal milestone. The party should be described as a proposed party / party under registration until ECI registration is complete. 'Recognised State party' status is a separate, later electoral-performance milestone."
+          hi="नागरिक पार्टी अभी भारत निर्वाचन आयोग के साथ पंजीकृत नहीं है। धारा 29A पंजीकरण पहला कानूनी मील का पत्थर है। ECI पंजीकरण पूरा होने तक पार्टी को प्रस्तावित पार्टी / पंजीकरण प्रक्रिया में पार्टी के रूप में वर्णित किया जाना चाहिए। 'मान्यता प्राप्त राज्य पार्टी' स्थिति एक अलग, बाद का चुनावी-प्रदर्शन मील का पत्थर है।"
+        />
+      </div>
+
+      <div style="margin-top: 36px;">
+        <strong style="display: block; margin-bottom: 14px; font-size: 18px;">
+          <Bilingual en="Policy documents" hi="नीति दस्तावेज" />
+        </strong>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          {legalLinks.map((link) => (
+            <a class="button" href={`/legal/${link.slug}`}>
+              <Bilingual en={link.en} hi={link.hi} />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

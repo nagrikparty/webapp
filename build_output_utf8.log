@@ -1,0 +1,17 @@
+﻿
+> webapp@1.0.0 build
+> astro build
+
+[2m09:18:41[22m [34m[@astrojs/cloudflare][39m Enabling image processing with Cloudflare Images for production with the "IMAGES" Images binding.
+[2m09:18:41[22m [34m[@astrojs/cloudflare][39m Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+Using secrets defined in .env
+node.exe : Network connection lost.
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Network connection lost.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  [1mStack trace:[22m
+[2m    at runInRunnerObject (workers/runner-worker/index.js:107:3)
+    at null.<anonymous> (workers/runner-worker/index.js:350:37)[22m

@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { AdminDashboard } from "@/components/AdminDashboard";
+
+export const prerender = false;
+---
+
+<BaseLayout
+  title="Administrator Dashboard - Nagrik Party"
+  description="Internal dashboard for party administrators."
+>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Administrator Portal</h1>
+      <p class="page-copy">Internal system access for verified administrators only.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div style={{ minHeight: "60vh" }}>
+        <AdminDashboard client:only="react" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

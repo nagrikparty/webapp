@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Dashboard - Nagrik Party"
+  description="Redirecting to your dashboard..."
+>
+  <div style="min-height: 50vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+    <p>Loading your dashboard...</p>
+  </div>
+
+  <script>
+    import { supabase } from "@/lib/supabase";
+
+    async function redirectDashboard() {
+      if (!supabase) return;
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        window.location.replace("/login");
+        return;
+      }
+
+      const { data } = await supabase.from("profiles").select("role").eq("id", session.user.id).single();
+      
+      const devRole = import.meta.env.DEV ? localStorage.getItem("dev_role") : null;
+      const finalRole = devRole || data?.role || "volunteer";
+      
+      window.location.replace(`/dashboard/${finalRole}`);
+    }
+
+    redirectDashboard();
+  </script>
+</BaseLayout>

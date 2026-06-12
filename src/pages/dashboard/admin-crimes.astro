@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { AdminCrimesManager } from "@/components/AdminCrimesManager";
+
+export const prerender = false;
+---
+
+<BaseLayout
+  title="Admin: Crime Citations"
+  description="Manage verified crime citations."
+>
+  <section class="section" style="padding-top: 60px; min-height: 80vh; background: #000;">
+    <div class="container">
+      <AdminCrimesManager client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

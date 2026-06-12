@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { AuthFlow } from "@/components/AuthFlow";
+---
+
+<BaseLayout
+  title="Account - Nagrik Party"
+  description="Sign in or join the Nagrik Party platform."
+  bodyClass="auth-page"
+>
+  <section class="page-hero" style="padding-bottom: 32px; text-align: center; position: relative; z-index: 10;">
+    <div class="container">
+      <h1 style="margin: 0 auto; font-weight: 800; font-size: 3rem; letter-spacing: -0.02em; color: #fff; text-shadow: 0 4px 16px rgba(0,0,0,0.2);">
+        <Bilingual en="Hello Nagrik ji" hi="नमस्ते नागरिक जी" />
+      </h1>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 16px; min-height: 55vh; position: relative; z-index: 10;">
+    <div class="container">
+      <AuthFlow client:load />
+    </div>
+  </section>
+</BaseLayout>
