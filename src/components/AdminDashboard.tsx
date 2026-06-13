@@ -1,20 +1,80 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Loader2, Users, FileText, CheckCircle, Trash2, Megaphone } from "lucide-react";
+import { Loader2, Users, FileText, CheckCircle, Trash2, Megaphone, UserCheck, UserX } from "lucide-react";
+import type { Profile, Task, Announcement, Issue, MembershipApplication, Proposer } from "@/lib/types";
+
+const API_BASE = "/api/v1/admin";
+
+async function apiPost(path: string, body: unknown) {
+  const sessionRes = await supabase.auth.getSession();
+  const token = sessionRes.data.session?.access_token;
+  if (!token) throw new Error("Not authenticated");
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Request failed");
+  return data;
+}
+
+async function apiDelete(path: string, params: Record<string, string>) {
+  const sessionRes = await supabase.auth.getSession();
+  const token = sessionRes.data.session?.access_token;
+  if (!token) throw new Error("Not authenticated");
+
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(`${API_BASE}${path}?${qs}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Request failed");
+  return data;
+}
+
+async function apiGet(path: string, params?: Record<string, string>) {
+  const sessionRes = await supabase.auth.getSession();
+  const token = sessionRes.data.session?.access_token;
+  if (!token) throw new Error("Not authenticated");
+
+  const qs = params ? "?" + new URLSearchParams(params).toString() : "";
+  const res = await fetch(`${API_BASE}${path}${qs}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Request failed");
+  return data;
+}
+
+interface VolunteerApplication {
+  id: string;
+  full_name: string;
+  email: string;
+  lok_sabha?: string;
+  vidhan_sabha?: string;
+  ward?: string;
+  skills?: string;
+  availability?: string;
+  status?: string;
+  created_at: string;
+}
 
 export function AdminDashboard() {
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<any>(null);
-  const [tab, setTab] = useState<"users" | "tasks" | "announcements" | "issues" | "verifications" | "proposers">("users");
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [tab, setTab] = useState<"users" | "volunteers" | "tasks" | "announcements" | "issues" | "verifications" | "proposers">("users");
 
-  const [profilesList, setProfilesList] = useState<any[]>([]);
-  const [tasksList, setTasksList] = useState<any[]>([]);
-  const [announcementsList, setAnnouncementsList] = useState<any[]>([]);
-  const [issuesList, setIssuesList] = useState<any[]>([]);
-  const [verificationsList, setVerificationsList] = useState<any[]>([]);
-  const [proposersList, setProposersList] = useState<any[]>([]);
+  const [profilesList, setProfilesList] = useState<Profile[]>([]);
+  const [tasksList, setTasksList] = useState<Task[]>([]);
+  const [announcementsList, setAnnouncementsList] = useState<Announcement[]>([]);
+  const [issuesList, setIssuesList] = useState<Issue[]>([]);
+  const [verificationsList, setVerificationsList] = useState<MembershipApplication[]>([]);
+  const [proposersList, setProposersList] = useState<Proposer[]>([]);
+  const [volunteerApps, setVolunteerApps] = useState<VolunteerApplication[]>([]);
 
-  // Proposer Form State
   const [proposerName, setProposerName] = useState("");
   const [proposerEpic, setProposerEpic] = useState("");
   const [proposerWard, setProposerWard] = useState("");
@@ -23,7 +83,6 @@ export function AdminDashboard() {
   const [proposerAddress, setProposerAddress] = useState("");
   const [proposerUploading, setProposerUploading] = useState(false);
 
-  // Forms
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDesc, setNewTaskDesc] = useState("");
   const [newTaskWard, setNewTaskWard] = useState("");
@@ -32,25 +91,17 @@ export function AdminDashboard() {
   const [newAnnounceContent, setNewAnnounceContent] = useState("");
   const [newAnnounceTarget, setNewAnnounceTarget] = useState("all");
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
+  useEffect(() => { loadDashboard(); }, []);
 
   async function loadDashboard() {
     setLoading(true);
-    const { data: { user } } = await supabase!.auth.getUser();
-    if (!user) {
-      window.location.href = "/auth";
-      return;
-    }
+    if (!supabase) return;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { window.location.href = "/auth"; return; }
 
-    const { data: profileData } = await supabase!.from("profiles").select("*").eq("id", user.id).single();
-
+    const { data: profileData } = await supabase.from("profiles").select("*").eq("id", user.id).single();
     if (profileData) {
-      if (profileData.role !== "admin") {
-        window.location.href = "/dashboard/" + profileData.role;
-        return;
-      }
+      if (profileData.role !== "admin") { window.location.href = "/dashboard/" + profileData.role; return; }
       setProfile(profileData);
     }
 
@@ -58,112 +109,117 @@ export function AdminDashboard() {
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchTabData(tab);
-  }, [tab]);
+  useEffect(() => { fetchTabData(tab); }, [tab]);
 
   async function fetchTabData(currentTab: string) {
     if (currentTab === "users") {
-      const { data } = await supabase!.from("profiles").select("*").order("created_at", { ascending: false });
+      const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
       if (data) setProfilesList(data);
+    } else if (currentTab === "volunteers") {
+      try {
+        const data = await apiGet("/volunteers");
+        setVolunteerApps(data);
+      } catch { setVolunteerApps([]); }
     } else if (currentTab === "tasks") {
-      const { data } = await supabase!.from("volunteer_tasks").select("*, profiles(full_name)").order("created_at", { ascending: false });
+      const { data } = await supabase.from("volunteer_tasks").select("*, profiles(full_name)").order("created_at", { ascending: false });
       if (data) setTasksList(data);
     } else if (currentTab === "announcements") {
-      const { data } = await supabase!.from("announcements").select("*").order("created_at", { ascending: false });
+      const { data } = await supabase.from("announcements").select("*").order("created_at", { ascending: false });
       if (data) setAnnouncementsList(data);
     } else if (currentTab === "issues") {
-      const { data } = await supabase!.from("issues").select("*").order("created_at", { ascending: false });
+      const { data } = await supabase.from("issues").select("*").order("created_at", { ascending: false });
       if (data) setIssuesList(data);
     } else if (currentTab === "verifications") {
-      const { data } = await supabase!.from("membership_applications").select("*").eq("status", "pending").order("created_at", { ascending: false });
+      const { data } = await supabase.from("membership_applications").select("*").eq("status", "pending").order("created_at", { ascending: false });
       if (data) setVerificationsList(data);
     } else if (currentTab === "proposers") {
-      const { data } = await supabase!.from("proposers").select("*").order("created_at", { ascending: false });
+      const { data } = await supabase.from("proposers").select("*").order("created_at", { ascending: false });
       if (data) setProposersList(data);
     }
   }
 
-  // --- ACTIONS ---
-
   async function changeRole(userId: string, newRole: string) {
-    await supabase!.from("profiles").update({ role: newRole }).eq("id", userId);
+    try { await apiPost("/change-role", { userId, newRole }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to change role");
+    }
     fetchTabData("users");
   }
 
   async function createTask(e: React.FormEvent) {
     e.preventDefault();
-    await supabase!.from("volunteer_tasks").insert({
-      title: newTaskTitle,
-      description: newTaskDesc,
-      ward: newTaskWard || null,
-      status: "open"
-    });
-    setNewTaskTitle("");
-    setNewTaskDesc("");
-    setNewTaskWard("");
+    try {
+      await apiPost("/tasks", { title: newTaskTitle, description: newTaskDesc, ward: newTaskWard || null });
+      setNewTaskTitle(""); setNewTaskDesc(""); setNewTaskWard("");
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to create task");
+    }
     fetchTabData("tasks");
   }
 
   async function deleteTask(id: string) {
-    await supabase!.from("volunteer_tasks").delete().eq("id", id);
+    try { await apiDelete("/tasks", { id }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to delete task");
+    }
     fetchTabData("tasks");
   }
 
   async function createAnnouncement(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile) return;
-    await supabase!.from("announcements").insert({
-      title: newAnnounceTitle,
-      content: newAnnounceContent,
-      target_audience: newAnnounceTarget,
-      author_id: profile.id
-    });
-    setNewAnnounceTitle("");
-    setNewAnnounceContent("");
+    try {
+      await apiPost("/announcements", { title: newAnnounceTitle, content: newAnnounceContent, target_audience: newAnnounceTarget });
+      setNewAnnounceTitle(""); setNewAnnounceContent("");
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to create announcement");
+    }
     fetchTabData("announcements");
   }
 
   async function deleteAnnouncement(id: string) {
-    await supabase!.from("announcements").delete().eq("id", id);
+    try { await apiDelete("/announcements", { id }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to delete announcement");
+    }
     fetchTabData("announcements");
   }
 
   async function resolveIssue(id: string) {
-    await supabase!.from("issues").update({ status: "resolved" }).eq("id", id);
+    try { await apiPost("/issues", { id }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to resolve issue");
+    }
     fetchTabData("issues");
   }
 
   async function deleteIssue(id: string) {
-    await supabase!.from("issues").delete().eq("id", id);
+    try { await apiDelete("/issues", { id }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to delete issue");
+    }
     fetchTabData("issues");
   }
 
-  // --- MEMBER VERIFICATIONS ---
-  async function inductMember(app: any) {
-    await supabase!.from("membership_applications").update({ status: "approved" }).eq("id", app.id);
-    await supabase!.from("profiles").update({ role: "member", full_name: app.full_name, ward: app.ward }).eq("email", app.email);
-    fetchTabData("verifications");
-  }
-  
-  async function rejectMember(id: string) {
-    await supabase!.from("membership_applications").update({ status: "rejected" }).eq("id", id);
+  async function inductMember(app: MembershipApplication) {
+    try { await apiPost("/members", { applicationId: app.id, action: "induct" }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to induct member");
+    }
     fetchTabData("verifications");
   }
 
-  // --- PROPOSERS ---
+  async function rejectMember(id: string) {
+    try { await apiPost("/members", { applicationId: id, action: "reject" }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to reject member");
+    }
+    fetchTabData("verifications");
+  }
+
   async function createProposer(e: React.FormEvent) {
     e.preventDefault();
-    await supabase!.from("proposers").insert({
-      full_name: proposerName,
-      epic_number: proposerEpic,
-      ward: proposerWard,
-      vidhan_sabha: proposerVS,
-      contact_number: proposerContact,
-      address: proposerAddress,
-      added_by: profile?.id
-    });
-    setProposerName(""); setProposerEpic(""); setProposerWard(""); setProposerVS(""); setProposerContact(""); setProposerAddress("");
+    try {
+      await apiPost("/proposers", {
+        full_name: proposerName, epic_number: proposerEpic, ward: proposerWard,
+        vidhan_sabha: proposerVS, contact_number: proposerContact, address: proposerAddress
+      });
+      setProposerName(""); setProposerEpic(""); setProposerWard(""); setProposerVS(""); setProposerContact(""); setProposerAddress("");
+    } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to create proposer");
+    }
     fetchTabData("proposers");
   }
 
@@ -173,25 +229,32 @@ export function AdminDashboard() {
     setProposerUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    
+
     try {
-      const res = await fetch("/api/vision/parse-proposer", { method: "POST", body: formData });
+      const res = await fetch("/api/v1/vision/parse-proposer", { method: "POST", body: formData });
       const data = await res.json();
       if (data && !data.error) {
-        if(data.full_name) setProposerName(data.full_name);
-        if(data.epic_number) setProposerEpic(data.epic_number);
-        if(data.ward) setProposerWard(data.ward);
-        if(data.vidhan_sabha) setProposerVS(data.vidhan_sabha);
-        if(data.contact_number) setProposerContact(data.contact_number);
-        if(data.address) setProposerAddress(data.address);
+        if (data.full_name) setProposerName(data.full_name);
+        if (data.epic_number) setProposerEpic(data.epic_number);
+        if (data.ward) setProposerWard(data.ward);
+        if (data.vidhan_sabha) setProposerVS(data.vidhan_sabha);
+        if (data.contact_number) setProposerContact(data.contact_number);
+        if (data.address) setProposerAddress(data.address);
       } else {
         alert("Could not parse PDF: " + data.error);
       }
-    } catch(err) {
+    } catch {
       alert("Error parsing PDF.");
     } finally {
       setProposerUploading(false);
     }
+  }
+
+  async function updateVolunteerStatus(applicationId: string, status: string) {
+    try { await apiPost("/volunteers", { applicationId, status }); } catch (e: unknown) {
+      alert(e instanceof Error ? e.message : "Failed to update");
+    }
+    fetchTabData("volunteers");
   }
 
   if (loading) {
@@ -211,6 +274,7 @@ export function AdminDashboard() {
 
       <div className="dashboard-tabs">
         <button data-testid="admin-settings-link" className={`button ${tab === "users" ? "primary" : ""}`} onClick={() => setTab("users")} type="button">User Directory</button>
+        <button className={`button ${tab === "volunteers" ? "primary" : ""}`} onClick={() => setTab("volunteers")} type="button">Volunteer Apps</button>
         <button className={`button ${tab === "verifications" ? "primary" : ""}`} onClick={() => setTab("verifications")} type="button">Verifications</button>
         <button className={`button ${tab === "proposers" ? "primary" : ""}`} onClick={() => setTab("proposers")} type="button">Proposers</button>
         <button className={`button ${tab === "tasks" ? "primary" : ""}`} onClick={() => setTab("tasks")} type="button">Task Dispatcher</button>
@@ -236,8 +300,8 @@ export function AdminDashboard() {
                   <td>{p.full_name || "-"}</td>
                   <td>{p.ward || "-"}</td>
                   <td>
-                    <select 
-                      value={p.role} 
+                    <select
+                      value={p.role}
                       onChange={e => changeRole(p.id, e.target.value)}
                       className="admin-role-select"
                     >
@@ -250,6 +314,34 @@ export function AdminDashboard() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {tab === "volunteers" && (
+        <div className="dashboard-list">
+          {volunteerApps.length === 0 && <p style={{ color: "var(--muted)" }}>No volunteer applications found.</p>}
+          {volunteerApps.map(app => (
+            <div key={app.id} className="card dashboard-card" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px" }}>
+              <div>
+                <h4 className="m-0 mb-1">{app.full_name}</h4>
+                <div className="task-desc m-0" style={{ fontSize: "14px", lineHeight: "1.5" }}>
+                  <strong>Email:</strong> {app.email}<br />
+                  <strong>Ward:</strong> {app.ward || "-"} ({app.vidhan_sabha || "-"})<br />
+                  <strong>Availability:</strong> {app.availability || "-"}<br />
+                  <strong>Skills:</strong> {app.skills || "-"}<br />
+                  <strong>Status:</strong> <span style={{ color: app.status === "approved" ? "var(--green)" : app.status === "rejected" ? "var(--red)" : "var(--yellow)" }}>{app.status || "pending"}</span>
+                </div>
+              </div>
+              <div className="flex gap-2" style={{ flexDirection: "column" }}>
+                {(!app.status || app.status === "pending") && (
+                  <>
+                    <button className="button primary" onClick={() => updateVolunteerStatus(app.id, "approved")} type="button"><UserCheck size={16} /> Approve</button>
+                    <button className="button btn-danger" onClick={() => updateVolunteerStatus(app.id, "rejected")} type="button"><UserX size={16} /> Reject</button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -341,12 +433,12 @@ export function AdminDashboard() {
               <div>
                 <h4 className="m-0 mb-1" style={{ fontSize: "18px" }}>{app.full_name}</h4>
                 <div className="task-desc m-0" style={{ fontSize: "14px", lineHeight: "1.5" }}>
-                  <strong>Email:</strong> {app.email}<br/>
-                  <strong>DOB:</strong> {app.date_of_birth}<br/>
-                  <strong>Ward:</strong> {app.ward} ({app.vidhan_sabha})<br/>
-                  <strong>Voter ID:</strong> {app.voter_id}<br/>
+                  <strong>Email:</strong> {app.email}<br />
+                  <strong>DOB:</strong> {app.date_of_birth}<br />
+                  <strong>Ward:</strong> {app.ward} ({app.vidhan_sabha})<br />
+                  <strong>Voter ID:</strong> {app.voter_id}<br />
                   {app.identity_doc_url && (
-                    <a href={app.identity_doc_url.startsWith('http') ? app.identity_doc_url : `https://xlxanliztdzonbdrrriw.supabase.co/storage/v1/object/public/${app.identity_doc_url}`} target="_blank" rel="noreferrer" style={{ display: "inline-block", marginTop: "8px", color: "var(--blue)", textDecoration: "underline" }}>View Identity Document</a>
+                    <a href={app.identity_doc_url.startsWith('http') ? app.identity_doc_url : `${import.meta.env.PUBLIC_SUPABASE_URL}/storage/v1/object/public/${app.identity_doc_url}`} target="_blank" rel="noreferrer" style={{ display: "inline-block", marginTop: "8px", color: "var(--blue)", textDecoration: "underline" }}>View Identity Document</a>
                   )}
                 </div>
                 {app.vision_validation_status && (
@@ -378,7 +470,7 @@ export function AdminDashboard() {
                 </label>
               </div>
             </div>
-            
+
             <form onSubmit={createProposer} className="admin-form">
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                 <input type="text" value={proposerName} onChange={e => setProposerName(e.target.value)} placeholder="Full Name" required />

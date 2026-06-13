@@ -1,0 +1,70 @@
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 60px 20px 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 60px;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.footer-links strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.footer a {
+  display: block;
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 12px;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: var(--ink);
+}
+
+.footer small,
+.footer p {
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.footer-brand-mark {
+  background: rgba(0,0,0,0.06);
+  color: inherit;
+}
+
+.legal-article {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.legal-article h2 {
+  margin-top: 40px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.legal-article p,
+.legal-article li {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 16px;
+}

@@ -25,7 +25,7 @@ export function AdminCrimesManager() {
       let allCrimes: CrimeRow[] = [];
       
       for (const cat of types) {
-        const res = await fetch(`/api/crimes?type=${cat}`);
+        const res = await fetch(`/api/v1/crimes?type=${cat}`);
         if (res.ok) {
           const data = await res.json();
           allCrimes = [...allCrimes, ...data];
@@ -35,8 +35,8 @@ export function AdminCrimesManager() {
       // Sort all newest first
       allCrimes.sort((a, b) => new Date(b.incident_date).getTime() - new Date(a.incident_date).getTime());
       setCrimes(allCrimes);
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Network error
     } finally {
       setLoading(false);
     }
@@ -49,10 +49,10 @@ export function AdminCrimesManager() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this citation?')) return;
     try {
-      const res = await fetch(`/api/crimes?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/v1/crimes?id=${id}`, { method: 'DELETE' });
       if (res.ok) fetchCrimes();
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Network error
     }
   };
 
@@ -61,7 +61,7 @@ export function AdminCrimesManager() {
     if (!title || !url || !date) return alert('Fill all fields');
     
     try {
-      const res = await fetch('/api/crimes', {
+      const res = await fetch('/api/v1/crimes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -78,8 +78,8 @@ export function AdminCrimesManager() {
       } else {
         alert('Failed to add');
       }
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Network error
     }
   };
 

@@ -23,7 +23,7 @@ const typeMap: Record<string, string> = {
 const dbType = typeMap[type as string];
 
 // Fetch data directly from backend API to ensure fresh data
-const res = await fetch(`${Astro.url.origin}/api/crimes?type=${dbType}`);
+const res = await fetch(`${Astro.url.origin}/api/v1/crimes?type=${dbType}`);
 const incidents = await res.json();
 ---
 
@@ -59,7 +59,7 @@ const incidents = await res.json();
             <p style="color: #6b7280; margin: 0;">No verified articles found for this category yet.</p>
           </div>
         ) : (
-          incidents.map((incident: any) => (
+          incidents.map((incident: { id: string; title: string; source_url: string; incident_date: string }) => (
             <a href={incident.source_url} target="_blank" rel="noopener noreferrer" style="
               display: block;
               background: rgba(255,255,255,0.02);

@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createClient } from "@supabase/supabase-js";
+import { createApiSupabase } from "@/lib/supabase";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -13,20 +13,10 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Invalid token format" }), { status: 401 });
     }
 
-    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-    
-    if (!supabaseUrl || !supabaseKey) {
+    const scopedSupabase = createApiSupabase(token);
+    if (!scopedSupabase) {
       return new Response(JSON.stringify({ error: "Supabase not configured" }), { status: 500 });
     }
-
-    const scopedSupabase = createClient(supabaseUrl, supabaseKey, {
-      global: {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    });
 
     const { data: { user }, error: authError } = await scopedSupabase.auth.getUser(token);
     
@@ -37,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
     let body;
     try {
       body = await request.json();
-    } catch (e) {
+    } catch {
       return new Response(JSON.stringify({ error: "Invalid JSON body" }), { status: 400 });
     }
 
@@ -65,8 +55,9 @@ export const POST: APIRoute = async ({ request }) => {
       status: 200, 
       headers: { "Content-Type": "application/json" } 
     });
-  } catch (e: any) {
-    console.error("Donation API error:", e);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+  } catch (err: unknown) {
+    console.error("Donation API error:", err);
+    const message = err instanceof Error ? err.message : "Internal Server Error";
+    return new Response(JSON.stringify({ error: message }), { status: 500 });
   }
 };

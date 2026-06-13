@@ -1,0 +1,623 @@
+body.auth-page {
+  background: linear-gradient(-45deg, #FF2D55, #FF9500, #FFCC00, #34C759, #007AFF, #AF52DE, #FF2D55);
+  background-size: 400% 400%;
+  animation: rainbowDrift 15s ease infinite;
+}
+
+body.auth-page .page-hero {
+  background: transparent;
+}
+
+@keyframes rainbowDrift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.civic-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  background: #fdfdfd;
+}
+
+.civic-collage-container {
+  width: 100%;
+  position: relative;
+}
+
+.floating-images {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.civic-img {
+  position: absolute;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  filter: grayscale(10%) contrast(1.1);
+  opacity: 0.85;
+}
+
+.img-1 { width: 220px; height: 280px; top: -10%; left: -2%; animation: float1 22s ease-in-out infinite; }
+.img-2 { width: 300px; height: 200px; bottom: 5%; left: 8%; animation: float2 26s ease-in-out infinite; }
+.img-3 { width: 240px; height: 240px; top: 5%; right: 4%; animation: float3 24s ease-in-out infinite; }
+.img-4 { width: 260px; height: 320px; bottom: -5%; right: 12%; animation: float4 28s ease-in-out infinite; }
+.img-5 { width: 200px; height: 200px; top: 40%; left: 80%; animation: float5 20s ease-in-out infinite; }
+
+@keyframes float1 { 0%, 100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-20px) rotate(-4deg); } }
+@keyframes float2 { 0%, 100% { transform: translateY(0) rotate(4deg); } 50% { transform: translateY(-15px) rotate(6deg); } }
+@keyframes float3 { 0%, 100% { transform: translateY(0) rotate(8deg); } 50% { transform: translateY(20px) rotate(10deg); } }
+@keyframes float4 { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-25px) rotate(-6deg); } }
+@keyframes float5 { 0%, 100% { transform: translateY(0) rotate(-12deg); } 50% { transform: translateY(15px) rotate(-10deg); } }
+
+.civic-hero-content {
+  position: relative;
+  z-index: 10;
+  padding: 140px 20px 80px;
+  text-align: center;
+}
+
+.hero h1.hindi-slogan {
+  font-family: 'Yantramanav', sans-serif;
+  font-size: clamp(40px, 9vw, 110px);
+  white-space: nowrap;
+  font-weight: 900;
+  line-height: 1.2;
+  padding: 16px 48px;
+  margin: 0 auto 32px !important;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 99px;
+  display: inline-block;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), inset 0 2px 4px rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.civic-copy {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 24px 32px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.04);
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.auth-flow-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.auth-flow-form {
+  display: grid;
+  gap: 16px;
+}
+
+.auth-flow-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface, var(--paper));
+}
+
+.auth-message {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.auth-message.error {
+  color: var(--red);
+}
+
+.auth-message.success {
+  color: var(--green);
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.dashboard-loader {
+  display: flex;
+  justify-content: center;
+  padding: 64px;
+}
+
+.dashboard-content-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.dashboard-welcome-card {
+  padding: 24px;
+}
+
+.dashboard-welcome-card.member {
+  background: rgba(52, 199, 89, 0.05);
+  border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+.dashboard-welcome-title {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: var(--green);
+}
+
+.dashboard-welcome-subtitle {
+  color: var(--muted);
+  margin: 0;
+}
+
+.dashboard-welcome-icon {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+  overflow-x: auto;
+}
+
+.dashboard-list {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-card {
+  padding: 24px;
+}
+
+.announcement-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.announcement-icon-wrap {
+  width: 40px;
+  height: 40px;
+  background: var(--paper);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcement-date {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.announcement-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.m-0 { margin: 0; }
+.mb-1 { margin-bottom: 4px; }
+
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.directory-card {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.directory-avatar {
+  width: 48px;
+  height: 48px;
+  background: rgba(52, 199, 89, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.directory-role {
+  font-size: 12px;
+  background: var(--paper);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.task-desc {
+  margin: 0 0 16px 0;
+  color: var(--muted);
+}
+
+.task-tag {
+  background: var(--paper);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.task-tag.category {
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--blue);
+}
+
+.task-tags-row {
+  display: flex;
+  gap: 8px;
+}
+
+.task-complete-badge {
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mr-1 { margin-right: 6px; }
+
+.dashboard-settings-card {
+  padding: 24px;
+  max-width: 500px;
+}
+
+.dashboard-settings-form {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-welcome-card.admin-welcome {
+  background: rgba(0,0,0,0.8);
+  color: white;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.admin-table thead tr {
+  border-bottom: 2px solid var(--line);
+}
+
+.admin-table th, .admin-table td {
+  padding: 12px 8px;
+}
+
+.admin-table tbody tr {
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-role-select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+}
+
+.admin-form-card {
+  padding: 20px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 12px;
+}
+
+.btn-start {
+  justify-self: start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.task-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.btn-danger {
+  color: var(--red);
+}
+
+.mb-3 { margin-bottom: 16px; }
+.mt-2 { margin-top: 8px; }
+.flex { display: flex; }
+.gap-2 { gap: 8px; }
+
+.crime-dashboard-skeleton {
+  height: 200px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.crime-dashboard-card {
+  background: linear-gradient(145deg, rgba(20,20,22,0.95) 0%, rgba(10,10,12,0.98) 100%);
+  border: 1px solid rgba(255, 50, 50, 0.1);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.crime-dashboard-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, #ff3333, transparent);
+  box-shadow: 0 2px 10px rgba(255, 50, 50, 0.5);
+}
+
+.crime-dashboard-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.crime-dashboard-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.crime-dashboard-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.crime-dashboard-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #ff6b6b;
+  background: rgba(255, 50, 50, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.crime-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+}
+
+.crime-stat-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-decoration: none;
+}
+
+.crime-stat-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.crime-stat-card.critical {
+  background: rgba(255, 50, 50, 0.05);
+  border-color: rgba(255, 50, 50, 0.2);
+}
+
+.crime-stat-card.critical:hover {
+  background: rgba(255, 50, 50, 0.1);
+  box-shadow: 0 10px 20px rgba(255, 50, 50, 0.15);
+  border-color: rgba(255, 50, 50, 0.4);
+}
+
+.crime-stat-label {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.crime-stat-card.critical .crime-stat-label {
+  color: #ff4d4d;
+}
+
+.crime-stat-count {
+  font-size: 36px;
+  font-weight: 800;
+  color: #f3f4f6;
+  font-family: system-ui, sans-serif;
+  line-height: 1;
+}
+
+.crime-stat-card.critical .crime-stat-count {
+  color: #fff;
+}
+
+.crime-stat-icon {
+  opacity: 0.8;
+  color: #6b7280;
+}
+
+.crime-stat-card.critical .crime-stat-icon {
+  color: #ff4d4d;
+}
+
+.crime-stat-help {
+  font-size: 10px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.crime-dashboard-footer {
+  margin-top: 32px;
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.crime-dashboard-footer span {
+  color: #9ca3af;
+}
+
+.admin-crimes-container {
+  padding: 24px;
+  background: #111;
+  border-radius: 12px;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+.admin-crimes-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.admin-crimes-title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.admin-crimes-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #222;
+}
+
+.admin-crimes-input {
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+.flex-1 { flex: 1; }
+
+.admin-crimes-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-crimes-table-wrapper {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-crimes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-crimes-table thead tr {
+  background: #1a1a1a;
+  text-align: left;
+}
+
+.admin-crimes-table th {
+  padding: 12px 16px;
+  border-bottom: 1px solid #333;
+}
+
+.admin-crimes-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #222;
+}
+
+.text-muted { color: #9ca3af; }
+.text-right { text-align: right; }
+
+.admin-crimes-link {
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-crimes-delete-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.admin-crimes-empty {
+  padding: 24px;
+  text-align: center;
+  color: #666;
+}

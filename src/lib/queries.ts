@@ -37,10 +37,10 @@ export interface PublicStats {
 export async function fetchManifestoItems(): Promise<ManifestoItem[]> {
   if (!hasSupabaseConfig || !supabase) {
     try {
-      const res = await fetch("/api/manifesto");
+      const res = await fetch("/api/v1/manifesto");
       if (res.ok) return await res.json();
-    } catch (e) {
-      console.error("Local fetch failed", e);
+    } catch {
+      // Fallback to empty
     }
     return [];
   }
@@ -62,10 +62,10 @@ export async function fetchManifestoItems(): Promise<ManifestoItem[]> {
 export async function fetchPublicIssues(): Promise<PublicIssue[]> {
   if (!hasSupabaseConfig || !supabase) {
     try {
-      const res = await fetch("/api/issues");
+      const res = await fetch("/api/v1/issues");
       if (res.ok) return await res.json();
-    } catch (e) {
-      console.error("Local fetch failed", e);
+    } catch {
+      // Fallback to empty
     }
     return [];
   }
@@ -90,11 +90,11 @@ export async function fetchPublicStats(origin?: string): Promise<PublicStats> {
   if (!hasSupabaseConfig || !supabase) {
     try {
       if (origin) {
-        const res = await fetch(origin + "/api/stats");
+        const res = await fetch(origin + "/api/v1/stats");
         if (res.ok) return await res.json();
       }
-    } catch (e) {
-      console.error("Local fetch failed", e);
+    } catch {
+      // Fallback to empty
     }
     return empty;
   }
@@ -114,30 +114,14 @@ export async function fetchPublicStats(origin?: string): Promise<PublicStats> {
 }
 
 export async function voteForManifestoItem(itemId: string): Promise<boolean> {
-  if (!hasSupabaseConfig || !supabase) {
-    try {
-      const res = await fetch("/api/manifesto", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId })
-      });
-      return res.ok;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  const { error } = await supabase.from("manifesto_votes").insert({
-    manifesto_item_id: itemId,
-  });
-
-  if (error) {
-    console.error("Failed to vote:", error.message);
+  try {
+    const res = await fetch("/api/v1/manifesto", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ itemId })
+    });
+    return res.ok;
+  } catch {
     return false;
   }
-
-  // Increment the cached count on the item
-  await supabase.rpc("increment_manifesto_vote", { item_id: itemId });
-
-  return true;
 }

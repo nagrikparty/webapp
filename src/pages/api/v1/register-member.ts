@@ -1,13 +1,11 @@
 import type { APIRoute } from "astro";
-import { supabase } from "@/lib/supabase";
-import { createClient } from "@supabase/supabase-js";
+import { supabase, hasSupabaseConfig } from "@/lib/supabase";
 import { GoogleGenAI } from "@google/genai";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const formData = await request.formData();
     
-    // Extract fields
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const parent = formData.get("parent") as string;
@@ -18,6 +16,7 @@ export const POST: APIRoute = async ({ request }) => {
     const ward = formData.get("ward") as string;
     const voter_id = formData.get("voter_id") as string;
     const declarationAgreed = formData.get("declaration_agreed") === "true";
+    const referredBy = formData.get("referred_by") as string;
     const file = formData.get("file") as File;
 
     if (!file) {
@@ -27,12 +26,10 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Voter ID is required" }), { status: 400 });
     }
 
-    // Convert file to base64
     const buffer = await file.arrayBuffer();
     const base64 = Buffer.from(buffer).toString("base64");
     const mimeType = file.type;
 
-    // Call Gemini API for Validation
     const apiKey = import.meta.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
     if (!apiKey) return new Response(JSON.stringify({ error: "Missing GEMINI_API_KEY" }), { status: 500 });
 
@@ -72,25 +69,24 @@ Return ONLY a valid JSON object with exactly these keys:
     let visionResult;
     try {
       visionResult = JSON.parse(text);
-    } catch(e) {
+    } catch {
       return new Response(JSON.stringify({ error: "Failed to parse vision validation" }), { status: 500 });
     }
 
     const vision_validation_status = visionResult.isValid ? "success" : "failed";
     const vision_extracted_text = JSON.stringify(visionResult.extracted || {});
 
-    // Try to upload to Supabase storage
     let identity_doc_url = "";
     if (supabase) {
       const ext = file.name.split('.').pop() || 'jpg';
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+      const fileName = `${crypto.randomUUID()}.${ext}`;
       const { data, error } = await supabase.storage.from("documents").upload(fileName, file);
       if (!error && data) {
         identity_doc_url = data.path;
       }
     }
 
-    const recordId = "mem-" + Date.now();
+    const recordId = crypto.randomUUID();
     const record = {
       id: recordId,
       full_name: name,
@@ -104,35 +100,30 @@ Return ONLY a valid JSON object with exactly these keys:
       voter_id: voter_id,
       identity_doc_url,
       declaration_agreed: declarationAgreed,
+      referred_by: referredBy || null,
       status: "pending",
       vision_extracted_text,
       vision_validation_status,
       created_at: new Date().toISOString()
     };
 
-    const serviceRoleKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
-    const serverSupabase = (supabaseUrl && serviceRoleKey) 
-      ? createClient(supabaseUrl as string, serviceRoleKey as string) 
-      : supabase;
-
-    if (serverSupabase) {
-      const { error } = await serverSupabase.from("membership_applications").insert(record);
+    if (!hasSupabaseConfig || !supabase) {
+      console.log("No supabase configured, would have inserted:", record);
+    } else {
+      const { error } = await supabase.from("membership_applications").insert(record);
       if (error) {
          console.error("Insert error:", error);
          return new Response(JSON.stringify({ error: "Failed to save application to database" }), { status: 500 });
       }
-    } else {
-      // Dummy response if no supabase
-      console.log("No supabase, would have inserted:", record);
     }
 
     return new Response(JSON.stringify({ success: true, id: recordId }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Registration error:", err);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: message }), { status: 500 });
   }
 };

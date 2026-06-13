@@ -14,8 +14,17 @@ function Result({ saved }: { saved: boolean }) {
   );
 }
 
+function getReferrerId(): string | null {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+  if (ref && /^[0-9a-f-]{36}$/i.test(ref)) return ref;
+  return null;
+}
+
 export function VolunteerForm() {
   const [saved, setSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [lokSabha, setLokSabha] = useState("");
   const [vidhanSabha, setVidhanSabha] = useState("");
   const assemblies = lokSabha ? lokSabhaToVidhanSabha[lokSabha] : [];
@@ -23,32 +32,52 @@ export function VolunteerForm() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSaved(true);
+    setSubmitting(true);
+    setErrorMsg("");
     const form = new FormData(event.currentTarget);
-    if (!supabase) {
-      await fetch("/api/signup", {
+
+    try {
+      const body: Record<string, unknown> = {
+        type: "volunteer",
+        full_name: form.get("name"),
+        email: form.get("email"),
+        lok_sabha: form.get("lok_sabha"),
+        vidhan_sabha: form.get("vidhan_sabha"),
+        ward: form.get("ward"),
+        skills: form.get("skills"),
+        availability: form.get("availability"),
+      };
+
+      const referrerId = getReferrerId();
+      if (referrerId) {
+        if (supabase) {
+          const { data: refProfile } = await supabase.from("profiles").select("id").eq("id", referrerId).maybeSingle();
+          if (refProfile) body.referred_by = referrerId;
+        }
+      }
+
+      const res = await fetch("/api/v1/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          type: "volunteer",
-          full_name: form.get("name"),
-          email: form.get("email"),
-          lok_sabha: form.get("lok_sabha"),
-          vidhan_sabha: form.get("vidhan_sabha"),
-          ward: form.get("ward")
-        })
+        body: JSON.stringify(body)
       });
-      return;
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Submission failed");
+      setSaved(true);
+    } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to submit");
+    } finally {
+      setSubmitting(false);
     }
-    await supabase.from("volunteer_applications").insert({
-      full_name: form.get("name"),
-      email: form.get("email"),
-      lok_sabha: form.get("lok_sabha"),
-      vidhan_sabha: form.get("vidhan_sabha"),
-      ward: form.get("ward"),
-      skills: form.get("skills"),
-      availability: form.get("availability"),
-    });
+  }
+
+  if (saved) {
+    return (
+      <div className="form-surface">
+        <Result saved={saved} />
+      </div>
+    );
   }
 
   return (
@@ -63,10 +92,19 @@ export function VolunteerForm() {
           <input name="email" required type="email" />
         </div>
         <div className="field">
+          <label>Lok Sabha (Parliament)</label>
+          <select name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
+            <option value="">Select Lok Sabha</option>
+            {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
+              <option key={ls} value={ls}>{ls}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
           <label>Vidhan Sabha (Assembly)</label>
-          <select name="vidhan_sabha" required value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
+          <select name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
             <option value="">Select Assembly</option>
-            {Object.keys(delhiConstituenciesAndWards).sort().map((ac) => (
+            {assemblies.map((ac) => (
               <option key={ac} value={ac}>{ac}</option>
             ))}
           </select>
@@ -99,10 +137,14 @@ export function VolunteerForm() {
         </label>
       </div>
       <div className="form-submit-group">
-        <Result saved={saved} />
-        <button className="button green" type="submit">
-          <Mail size={17} />
-          Join volunteer list
+        {errorMsg && (
+          <p style={{ color: "var(--red)", fontSize: "13px", display: "flex", alignItems: "center", gap: "4px" }}>
+            <AlertCircle size={14} /> {errorMsg}
+          </p>
+        )}
+        <button className="button green" type="submit" disabled={submitting}>
+          {submitting ? <Loader2 className="spin" size={17} /> : <Mail size={17} />}
+          {submitting ? "Submitting..." : "Join volunteer list"}
         </button>
       </div>
     </form>
@@ -126,17 +168,20 @@ export function MembershipForm() {
     setErrorMsg("");
     const form = new FormData(event.currentTarget);
     form.append("declaration_agreed", "true");
-    
+
+    const referrerId = getReferrerId();
+    if (referrerId) form.append("referred_by", referrerId);
+
     try {
-      const res = await fetch("/api/register-member", {
+      const res = await fetch("/api/v1/register-member", {
         method: "POST",
         body: form
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to register");
       setSaved(true);
-    } catch (err: any) {
-      setErrorMsg(err.message);
+    } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to register");
     } finally {
       setSubmitting(false);
     }
@@ -249,8 +294,6 @@ export function MembershipForm() {
         )}
         {step < 3 ? (
           <button type="button" className="button primary" onClick={() => {
-            // A small hack to trigger native validation:
-            // Since button is type=button, it doesn't submit. We can use a trick:
             const form = document.querySelector('form.form-surface') as HTMLFormElement;
             if (form && form.checkValidity()) {
               setStep(s => s + 1);

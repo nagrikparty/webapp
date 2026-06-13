@@ -323,7 +323,7 @@ test.describe('Tier 2 - Boundary & Corner Cases', () => {
     await authenticateMember(page);
     await page.goto('/dashboard/member');
     const responseStatus = await page.evaluate(async () => {
-      const res = await fetch('/api/donations', {
+      const res = await fetch('/api/v1/donations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -339,7 +339,7 @@ test.describe('Tier 2 - Boundary & Corner Cases', () => {
   test('T2.F3.3: API route /api/donations rejects unauthenticated requests', async ({ page }) => {
     await page.goto('/dashboard/member');
     const responseStatus = await page.evaluate(async () => {
-      const res = await fetch('/api/donations', {
+      const res = await fetch('/api/v1/donations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

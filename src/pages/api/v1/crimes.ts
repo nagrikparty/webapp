@@ -1,17 +1,20 @@
 import type { APIRoute } from 'astro';
 import Parser from 'rss-parser';
-import { supabase } from '@/lib/supabase';
+import { supabase, hasSupabaseConfig } from '@/lib/supabase';
 import crypto from 'crypto';
 
 export const prerender = false;
 
 export const GET: APIRoute = async ({ request }) => {
   try {
+    if (!hasSupabaseConfig || !supabase) {
+      return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
+    }
     const url = new URL(request.url);
     const type = url.searchParams.get('type');
 
     if (type) {
-      const { data, error } = await supabase!
+      const { data, error } = await supabase
         .from('crimes')
         .select('*')
         .eq('crime_type', type)
@@ -21,7 +24,7 @@ export const GET: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify(data || []), { status: 200, headers: { 'Content-Type': 'application/json' } });
     }
 
-    const { data, error } = await supabase!.from('crimes').select('crime_type');
+    const { data, error } = await supabase.from('crimes').select('crime_type');
     if (error) throw error;
     
     const counts: Record<string, number> = {};
@@ -42,13 +45,17 @@ export const GET: APIRoute = async ({ request }) => {
     });
 
     return new Response(JSON.stringify(result), { status: 200, headers: { 'Content-Type': 'application/json' } });
-  } catch (error) {
+  } catch (err: unknown) {
+    console.error("GET crimes error:", err instanceof Error ? err.message : err);
     return new Response(JSON.stringify({ error: 'Failed to fetch crimes' }), { status: 500 });
   }
 };
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    if (!hasSupabaseConfig || !supabase) {
+      return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
+    }
     const contentType = request.headers.get('content-type') || '';
     
     if (contentType.includes('application/json')) {
@@ -58,7 +65,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
       
       const id = crypto.createHash('md5').update(body.source_url).digest('hex');
-      const { error } = await supabase!.from('crimes').upsert({
+      const { error } = await supabase.from('crimes').upsert({
         id,
         crime_type: body.crime_type,
         title: body.title,
@@ -102,10 +109,10 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
         if (inserts.length > 0) {
-          const { error, count } = await supabase!.from('crimes').upsert(inserts, { onConflict: 'id', ignoreDuplicates: true });
+          const { error, count } = await supabase.from('crimes').upsert(inserts, { onConflict: 'id', ignoreDuplicates: true });
           if (!error && count) newRecords += count;
         }
-      } catch (e) {
+      } catch {
         // Skip on error
       }
     }
@@ -123,11 +130,14 @@ export const POST: APIRoute = async ({ request }) => {
 
 export const DELETE: APIRoute = async ({ request }) => {
   try {
+    if (!hasSupabaseConfig || !supabase) {
+      return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
+    }
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
     if (!id) return new Response(JSON.stringify({ error: 'Missing ID' }), { status: 400 });
 
-    const { error } = await supabase!.from('crimes').delete().eq('id', id);
+    const { error } = await supabase.from('crimes').delete().eq('id', id);
     if (error) throw error;
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });

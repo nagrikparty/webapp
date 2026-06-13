@@ -1,6 +1,5 @@
 import { Camera, LocateFixed, UploadCloud } from "lucide-react";
 import React, { useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { lokSabhaToVidhanSabha, delhiConstituenciesAndWards } from "@/lib/delhi_data";
 
 type Status = "idle" | "ready" | "saved";
@@ -46,18 +45,10 @@ export function IssueReporter() {
       ward: form.get("ward"),
     };
 
-    if (!supabase) {
-      await fetch("/api/issues", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      return;
-    }
-
-    await supabase.from("issues").insert({
-      ...data,
-      status: "submitted",
+    await fetch("/api/v1/issues", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, status: "submitted" })
     });
   }
 

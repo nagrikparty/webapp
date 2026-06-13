@@ -12,17 +12,13 @@ export function CrimeDashboard() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('/api/crimes');
+      const res = await fetch('/api/v1/crimes');
       if (res.ok) {
         const data = await res.json();
         setStats(data);
       }
-      
-      // Also silently trigger a sync in the background so it updates every 24h naturally
-      // A proper implementation would use Vercel Cron, but this ensures fresh data locally
-      fetch('/api/crimes', { method: 'POST' }).catch(() => {});
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Network error — stats unavailable
     } finally {
       setLoading(false);
     }

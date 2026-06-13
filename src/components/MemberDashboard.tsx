@@ -4,29 +4,26 @@ import { Loader2, Megaphone, Users, User, MapPin } from "lucide-react";
 import { ManifestoVoting } from "./ManifestoVoting";
 import html2canvas from "html2canvas";
 import QRCode from "react-qr-code";
+import type { Profile, Task, Announcement, Transaction } from "@/lib/types";
 
 export function MemberDashboard() {
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<any>(null);
-  const [announcements, setAnnouncements] = useState<any[]>([]);
-  const [unitMembers, setUnitMembers] = useState<any[]>([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [unitMembers, setUnitMembers] = useState<Profile[]>([]);
   const [tab, setTab] = useState<"announcements" | "manifesto" | "directory">("announcements");
 
-  // R1 Tasks
-  const [tasks, setTasks] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
-  // R2 ID Card Download
   const [downloading, setDownloading] = useState(false);
   const [cardError, setCardError] = useState("");
 
-  // R3 Payments
   const [amount, setAmount] = useState<string>("100");
   const [donating, setDonating] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  // R4 Referrals
   const [referralCount, setReferralCount] = useState(0);
 
   useEffect(() => {
@@ -42,70 +39,60 @@ export function MemberDashboard() {
       return;
     }
 
-    const { data: profileData } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+    const userId = user.id;
 
-    if (profileData) {
-      // If a volunteer manages to get here without member role, redirect them.
-      // Admins and members are allowed.
+    const [profileResult, announcementsResult, tasksResult, transactionsResult, referralResult] = await Promise.allSettled([
+      supabase.from("profiles").select("*").eq("id", userId).single(),
+      supabase.from("announcements").select("*").in("target_audience", ["all", "members", "volunteers"]).order("created_at", { ascending: false }),
+      supabase.from("volunteer_tasks").select("*").or(`status.eq.open,assigned_to.eq.${userId}`).order("created_at", { ascending: false }),
+      supabase.from("transactions").select("*").eq("user_id", userId).order("created_at", { ascending: false }),
+      supabase.from("profiles").select("*", { count: "exact", head: true }).eq("referred_by", userId),
+    ]);
+
+    // Profile
+    if (profileResult.status === "fulfilled" && profileResult.value.data) {
+      const profileData = profileResult.value.data;
       if (profileData.role === "volunteer") {
         window.location.href = "/dashboard/volunteer";
         return;
       }
       setProfile(profileData);
 
-      // Load Unit Members (same ward)
       if (profileData.ward) {
         const { data: membersData } = await supabase
           .from("profiles")
           .select("*")
           .eq("ward", profileData.ward)
           .in("role", ["member", "admin"])
-          .neq("id", user.id);
+          .neq("id", userId);
         if (membersData) setUnitMembers(membersData);
       }
     }
 
-    // Load Announcements
-    const { data: announcementsData } = await supabase
-      .from("announcements")
-      .select("*")
-      .in("target_audience", ["all", "members"])
-      .order("created_at", { ascending: false });
-    if (announcementsData) setAnnouncements(announcementsData);
+    // Announcements
+    if (announcementsResult.status === "fulfilled" && announcementsResult.value.data) {
+      setAnnouncements(announcementsResult.value.data);
+    }
 
-    // Load Tasks (R1: open status or assigned to user ID)
-    const { data: tasksData } = await supabase
-      .from("volunteer_tasks")
-      .select("*")
-      .or(`status.eq.open,assigned_to.eq.${user.id}`)
-      .order("created_at", { ascending: false });
-    if (tasksData) setTasks(tasksData || []);
+    // Tasks
+    if (tasksResult.status === "fulfilled" && tasksResult.value.data) {
+      setTasks(tasksResult.value.data);
+    }
 
-    // Load Transaction History (R3)
-    const { data: transactionsData } = await supabase
-      .from("transactions")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
-    if (transactionsData) setTransactions(transactionsData);
+    // Transactions
+    if (transactionsResult.status === "fulfilled" && transactionsResult.value.data) {
+      setTransactions(transactionsResult.value.data);
+    }
 
-    // Load Referral Count (R4)
-    const { count } = await supabase
-      .from("profiles")
-      .select("*", { count: "exact", head: true })
-      .eq("referred_by", user.id);
-    if (count !== null && count !== undefined) {
-      setReferralCount(count);
-    } else {
-      const { data: refData } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("referred_by", user.id);
-      if (refData) setReferralCount(refData.length);
+    // Referral count
+    if (referralResult.status === "fulfilled") {
+      const count = referralResult.value.count;
+      if (count !== null && count !== undefined) {
+        setReferralCount(count);
+      } else {
+        const { data: refData } = await supabase.from("profiles").select("id").eq("referred_by", userId);
+        if (refData) setReferralCount(refData.length);
+      }
     }
 
     setLoading(false);
@@ -115,6 +102,7 @@ export function MemberDashboard() {
     if (!supabase) return;
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
+
     const { data: transactionsData } = await supabase
       .from("transactions")
       .select("*")
@@ -134,18 +122,13 @@ export function MemberDashboard() {
         throw new Error("ID Card element not found");
       }
 
-      let canvas;
-      if ((window as any).html2canvas) {
-        canvas = await (window as any).html2canvas(cardElement);
-      } else {
-        canvas = await html2canvas(cardElement);
-      }
-      
+      const canvas = await html2canvas(cardElement);
+
       const link = document.createElement("a");
       link.download = `${profile?.full_name || "member"}_id_card.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setCardError("Failed to download ID Card.");
     } finally {
       setDownloading(false);
@@ -159,9 +142,8 @@ export function MemberDashboard() {
   async function copyReferralLink() {
     try {
       await navigator.clipboard.writeText(referralLink);
-      (window as any).__clipboardText = referralLink;
-    } catch (err) {
-      console.error("Failed to copy link:", err);
+    } catch {
+      // Clipboard access denied
     }
   }
 
@@ -175,17 +157,20 @@ export function MemberDashboard() {
     setErrorMsg("");
 
     try {
-      if (!(window as any).Razorpay) {
+      const RazorpayConstructor = (window as Record<string, unknown>).Razorpay as unknown as new (options: Record<string, unknown>) => { open: () => void };
+      if (typeof RazorpayConstructor !== "function") {
         throw new Error("Razorpay SDK is not loaded.");
       }
 
+      const razorpayKey = import.meta.env.PUBLIC_RAZORPAY_KEY || "rzp_test_mock";
+
       const options = {
-        key: "rzp_test_mock",
+        key: razorpayKey,
         amount: numericAmount * 100,
         currency: "INR",
         name: "Nagrik Party",
         description: "Donation / Fee payment",
-        handler: async function (response: any) {
+        handler: async function (response: { razorpay_payment_id: string }) {
           try {
             const sessionRes = await supabase.auth.getSession();
             const token = sessionRes.data.session?.access_token;
@@ -193,7 +178,7 @@ export function MemberDashboard() {
               throw new Error("Missing auth session token.");
             }
 
-            const res = await fetch("/api/donations", {
+            const res = await fetch("/api/v1/donations", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -212,8 +197,9 @@ export function MemberDashboard() {
 
             setSuccessMsg("Success! Donation recorded.");
             loadTransactions();
-          } catch (err: any) {
-            setErrorMsg(err.message || "Failed to log transaction.");
+          } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : "Failed to log transaction.";
+            setErrorMsg(message);
           } finally {
             setDonating(false);
           }
@@ -233,10 +219,11 @@ export function MemberDashboard() {
         }
       };
 
-      const rzp = new (window as any).Razorpay(options);
+      const rzp = new RazorpayConstructor(options);
       rzp.open();
-    } catch (err: any) {
-      setErrorMsg(err.message || "Payment modal failed to open.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Payment modal failed to open.";
+      setErrorMsg(message);
       setDonating(false);
     }
   }

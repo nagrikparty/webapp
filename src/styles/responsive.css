@@ -1,0 +1,144 @@
+@media (max-width: 920px) {
+  .nav-wrapper {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .nav {
+    max-width: 100%;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: var(--island-shadow);
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  body.nav-open .nav-links {
+    display: flex;
+  }
+
+  .nav-links a {
+    text-align: center;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .mobile-menu {
+    display: inline-grid;
+  }
+
+  .hero-inner,
+  .split,
+  .grid-2,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-inner {
+    min-height: auto;
+    padding: 60px 0;
+  }
+
+  .stats-grid,
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .map-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section-head {
+    display: grid;
+  }
+}
+
+@media (max-width: 620px) {
+  .nav-inner {
+    padding: 6px 10px 6px 16px;
+  }
+
+  .brand-word small {
+    display: none;
+  }
+
+  .language-toggle span:last-child {
+    display: none;
+  }
+
+  .language-toggle {
+    padding: 0 12px;
+  }
+
+  .section,
+  .section-tight {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero, .page-hero {
+    padding-top: 100px;
+  }
+
+  .hero h1,
+  .page-hero h1 {
+    font-size: clamp(38px, 11vw, 50px);
+  }
+
+  .hero-copy,
+  .page-copy {
+    font-size: 16px;
+  }
+
+  .stats-grid,
+  .grid-3,
+  .form-grid,
+  .footer-links {
+    grid-template-columns: 1fr;
+  }
+
+  .work-item,
+  .rank-row,
+  .issue-row {
+    grid-template-columns: 40px 1fr;
+  }
+
+  .work-item .metric,
+  .rank-row > .tag,
+  .issue-row > .tag {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 8px;
+  }
+
+  .form-surface {
+    padding: 24px;
+  }
+
+  .footer {
+    padding-top: 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .civic-img { opacity: 0.4; }
+  .img-1 { width: 140px; height: 180px; }
+  .img-2 { width: 180px; height: 120px; }
+  .img-3 { width: 150px; height: 150px; }
+  .img-4 { width: 160px; height: 200px; }
+  .img-5 { display: none; }
+  .civic-hero-content { padding-top: 180px; }
+}

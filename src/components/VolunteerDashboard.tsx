@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import { Loader2, CheckCircle, ShieldAlert, User, MapPin } from "lucide-react";
+import { supabase, hasSupabaseConfig } from "@/lib/supabase";
+import { Loader2, CheckCircle, ShieldAlert, User, MapPin, Megaphone } from "lucide-react";
+import type { Profile, Task, Issue, Announcement } from "@/lib/types";
 
 export function VolunteerDashboard() {
   const [loading, setLoading] = useState(true);
-  const [profile, setProfile] = useState<any>(null);
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [issues, setIssues] = useState<any[]>([]);
-  const [tab, setTab] = useState<"tasks" | "issues" | "settings">("tasks");
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [issues, setIssues] = useState<Issue[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [tab, setTab] = useState<"tasks" | "issues" | "announcements" | "settings">("tasks");
 
-  // Settings form
   const [fullName, setFullName] = useState("");
   const [ward, setWard] = useState("");
 
@@ -26,7 +27,6 @@ export function VolunteerDashboard() {
       return;
     }
 
-    // Load Profile
     const { data: profileData } = await supabase
       .from("profiles")
       .select("*")
@@ -39,7 +39,6 @@ export function VolunteerDashboard() {
       setWard(profileData.ward || "");
     }
 
-    // Load Tasks (open tasks or tasks assigned to me)
     const { data: tasksData } = await supabase
       .from("volunteer_tasks")
       .select("*")
@@ -47,7 +46,6 @@ export function VolunteerDashboard() {
       .order("created_at", { ascending: false });
     if (tasksData) setTasks(tasksData);
 
-    // Load Issues to verify (submitted issues)
     let issueQuery = supabase.from("issues").select("*").eq("status", "submitted").order("created_at", { ascending: false });
     if (profileData?.ward) {
       issueQuery = issueQuery.eq("ward", profileData.ward);
@@ -55,31 +53,68 @@ export function VolunteerDashboard() {
     const { data: issuesData } = await issueQuery;
     if (issuesData) setIssues(issuesData);
 
+    const { data: announcementsData } = await supabase
+      .from("announcements")
+      .select("*")
+      .in("target_audience", ["all", "volunteers"])
+      .order("created_at", { ascending: false });
+    if (announcementsData) setAnnouncements(announcementsData);
+
     setLoading(false);
   }
 
   async function claimTask(taskId: string) {
-    if (!profile || !supabase) return;
-    await supabase.from("volunteer_tasks").update({ status: "assigned", assigned_to: profile.id }).eq("id", taskId);
+    if (!profile) return;
+    try {
+      await fetch("/api/v1/volunteer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${(await supabase?.auth.getSession())?.data.session?.access_token || ""}` },
+        body: JSON.stringify({ action: "claim-task", taskId })
+      });
+    } catch {
+      // Network error
+    }
     loadDashboard();
   }
 
   async function completeTask(taskId: string) {
-    if (!supabase) return;
-    await supabase.from("volunteer_tasks").update({ status: "completed" }).eq("id", taskId);
+    try {
+      await fetch("/api/v1/volunteer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${(await supabase?.auth.getSession())?.data.session?.access_token || ""}` },
+        body: JSON.stringify({ action: "complete-task", taskId })
+      });
+    } catch {
+      // Network error
+    }
     loadDashboard();
   }
 
   async function verifyIssue(issueId: string) {
-    if (!supabase) return;
-    await supabase.from("issues").update({ status: "verified" }).eq("id", issueId);
+    try {
+      await fetch("/api/v1/volunteer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${(await supabase?.auth.getSession())?.data.session?.access_token || ""}` },
+        body: JSON.stringify({ action: "verify-issue", issueId })
+      });
+    } catch {
+      // Network error
+    }
     loadDashboard();
   }
 
   async function saveSettings(e: React.FormEvent) {
     e.preventDefault();
-    if (!profile || !supabase) return;
-    await supabase.from("profiles").update({ full_name: fullName, ward }).eq("id", profile.id);
+    if (!profile) return;
+    try {
+      await fetch("/api/v1/volunteer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${(await supabase?.auth.getSession())?.data.session?.access_token || ""}` },
+        body: JSON.stringify({ action: "save-profile", fullName, ward })
+      });
+    } catch {
+      // Network error
+    }
     loadDashboard();
   }
 
@@ -104,6 +139,7 @@ export function VolunteerDashboard() {
       <div className="dashboard-tabs">
         <button className={`button ${tab === "tasks" ? "primary" : ""}`} onClick={() => setTab("tasks")} type="button">Digital & Offline Tasks</button>
         <button className={`button ${tab === "issues" ? "primary" : ""}`} onClick={() => setTab("issues")} type="button">Verify Local Issues</button>
+        <button className={`button ${tab === "announcements" ? "primary" : ""}`} onClick={() => setTab("announcements")} type="button">Announcements</button>
         <button className={`button ${tab === "settings" ? "primary" : ""}`} onClick={() => setTab("settings")} type="button">Profile Settings</button>
       </div>
 
@@ -160,6 +196,27 @@ export function VolunteerDashboard() {
                   <button className="button primary" onClick={() => verifyIssue(iss.id)} type="button">
                     <ShieldAlert size={16} className="mr-1" /> Verify Issue
                   </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {tab === "announcements" && (
+        <div className="dashboard-list">
+          {announcements.length === 0 ? (
+            <p className="text-muted">No announcements yet.</p>
+          ) : (
+            announcements.map(a => (
+              <div key={a.id} className="card dashboard-card">
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                  <Megaphone size={20} style={{ color: "var(--blue)", marginTop: "2px", flexShrink: 0 }} />
+                  <div>
+                    <h3 className="m-0 mb-1">{a.title}</h3>
+                    <p className="task-desc">{a.content}</p>
+                    <span className="task-tag">{new Date(a.created_at).toLocaleDateString()}</span>
+                  </div>
                 </div>
               </div>
             ))

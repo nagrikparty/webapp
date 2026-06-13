@@ -65,7 +65,7 @@ export function RegistrationForm() {
     payload.append("file", idFile);
 
     try {
-      const res = await fetch("/api/register-member", {
+      const res = await fetch("/api/v1/register-member", {
         method: "POST",
         body: payload
       });
@@ -76,8 +76,8 @@ export function RegistrationForm() {
       } else {
         setSaved(true);
       }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
     } finally {
       setSubmitting(false);
     }
@@ -192,7 +192,11 @@ export function RegistrationForm() {
         ) : <div />}
         
         {step < 3 ? (
-          <button type="submit" className="button primary">
+          <button type="button" className="button primary" onClick={() => {
+            const form = document.querySelector<HTMLFormElement>("form");
+            if (form?.checkValidity()) nextStep();
+            else form?.reportValidity();
+          }}>
             Next <ChevronRight size={17} />
           </button>
         ) : (

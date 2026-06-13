@@ -16,6 +16,45 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
   const [successMsg, setSuccessMsg] = useState("");
   const [hydrated, setHydrated] = useState(false);
 
+  async function syncSession(session: import("@supabase/supabase-js").Session): Promise<void> {
+    setLoading(true);
+    setErrorMsg("");
+
+    const storedReferrer = localStorage.getItem("referrer_id");
+    const loggedInUser = session.user;
+
+    if (loggedInUser && storedReferrer && loggedInUser.id === storedReferrer) {
+      setErrorMsg("You cannot refer yourself.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/v1/sync-profile", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${session.access_token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          referred_by: storedReferrer || undefined
+        })
+      });
+
+      if (!res.ok) {
+        const resData = await res.json();
+        throw new Error(resData.error || "Failed to sync profile.");
+      }
+
+      const body = await res.json() as { role: string };
+      window.location.href = `/dashboard/${body.role}`;
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "An error occurred during profile sync.";
+      setErrorMsg(message);
+      setLoading(false);
+    }
+  }
+
   React.useEffect(() => {
     setHydrated(true);
 
@@ -56,87 +95,20 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
       validateReferrer();
     }
 
-    // Subscribe to auth state changes
+    // Subscribe to auth state changes and check existing session
     let isSyncing = false;
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session && !isSyncing) {
         isSyncing = true;
-        setLoading(true);
-        setErrorMsg("");
-
-        const loggedInUser = session.user;
-        const storedReferrer = localStorage.getItem("referrer_id");
-        if (loggedInUser && storedReferrer && loggedInUser.id === storedReferrer) {
-          setErrorMsg("You cannot refer yourself.");
-          setLoading(false);
-          isSyncing = false;
-          return;
-        }
-
-        try {
-          const res = await fetch("/api/sync-profile", {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${session.access_token}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              referred_by: storedReferrer || undefined
-            })
-          });
-
-          if (!res.ok) {
-            const resData = await res.json();
-            throw new Error(resData.error || "Failed to sync profile.");
-          }
-
-          const { role: syncedRole } = await res.json();
-          window.location.href = `/dashboard/${syncedRole}`;
-        } catch (err: any) {
-          setErrorMsg(err.message || "An error occurred during profile sync.");
-          setLoading(false);
-          isSyncing = false;
-        }
+        await syncSession(session);
+        isSyncing = false;
       }
     });
 
-    // Check if there is an existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session && !isSyncing) {
         isSyncing = true;
-        setLoading(true);
-        setErrorMsg("");
-
-        const loggedInUser = session.user;
-        const storedReferrer = localStorage.getItem("referrer_id");
-        if (loggedInUser && storedReferrer && loggedInUser.id === storedReferrer) {
-          setErrorMsg("You cannot refer yourself.");
-          setLoading(false);
-          isSyncing = false;
-          return;
-        }
-
-        fetch("/api/sync-profile", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${session.access_token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            referred_by: storedReferrer || undefined
-          })
-        }).then(async (res) => {
-          if (!res.ok) {
-            const resData = await res.json();
-            throw new Error(resData.error || "Failed to sync profile.");
-          }
-          const { role: syncedRole } = await res.json();
-          window.location.href = `/dashboard/${syncedRole}`;
-        }).catch((err: any) => {
-          setErrorMsg(err.message || "An error occurred during profile sync.");
-          setLoading(false);
-          isSyncing = false;
-        });
+        syncSession(session).finally(() => { isSyncing = false; });
       }
     });
 

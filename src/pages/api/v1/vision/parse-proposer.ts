@@ -7,7 +7,6 @@ export const POST: APIRoute = async ({ request }) => {
     const file = formData.get("file") as File;
     if (!file) return new Response(JSON.stringify({ error: "No file provided" }), { status: 400 });
     
-    // Convert file to base64
     const buffer = await file.arrayBuffer();
     const base64 = Buffer.from(buffer).toString("base64");
     const mimeType = file.type;
@@ -18,20 +17,19 @@ export const POST: APIRoute = async ({ request }) => {
     const ai = new GoogleGenAI({ apiKey });
     
     const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.5-pro',
         contents: [
             {
                 role: 'user',
                 parts: [
                     { inlineData: { data: base64, mimeType } },
-                    { text: 'Analyze this identity document (Aadhaar or Voter ID). Extract the following details: Full Name, Date of Birth (format: YYYY-MM-DD), and ID Number (EPIC number or Aadhaar number). Return ONLY a valid JSON object with the exact keys: "name", "dob", "idNumber", "type" (either "Voter ID" or "Aadhaar"). If the document is unreadable, invalid, or not an identity card, return exactly: {"error": "unreadable"}. Do not include markdown code block formatting.' }
+                    { text: 'Analyze this Proposer form for a political candidate or party. Extract the handwritten or printed details into a JSON object. We need: "full_name" (name of proposer), "epic_number" (Voter ID number), "ward" (ward number/name), "vidhan_sabha" (Assembly constituency), "contact_number", "address". Return ONLY a valid JSON object with these keys. If a field is not found or empty, leave it as an empty string "". Do not include markdown code block formatting.' }
                 ]
             }
         ]
     });
     
     let text = response.text || "";
-    // Clean markdown if present
     text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '');
     const data = JSON.parse(text);
 
@@ -39,7 +37,8 @@ export const POST: APIRoute = async ({ request }) => {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+  } catch (err: unknown) {
+    console.error("parse-proposer error:", err instanceof Error ? err.message : err);
+    return new Response(JSON.stringify({ error: "Failed to parse proposer form" }), { status: 500 });
   }
 };

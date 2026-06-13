@@ -18,3 +18,15 @@ dist/
 .env
 .astro/
 local.db
+
+# build & test artifacts
+build_output*.log
+test_out*.txt
+test_out*_utf8.log
+test_list*.txt
+test_list_utf8.log
+test_output*.log
+test_output_utf8.log
+test-results/
+playwright-report/
+.wrangler/
