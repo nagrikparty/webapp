@@ -22,9 +22,14 @@ const typeMap: Record<string, string> = {
 };
 const dbType = typeMap[type as string];
 
-// Fetch data directly from backend API to ensure fresh data
-const res = await fetch(`${Astro.url.origin}/api/v1/crimes?type=${dbType}`);
-const incidents = await res.json();
+import { supabase } from "@/lib/supabase";
+
+// Fetch data directly from DB to avoid SSR fetch issues
+const { data: incidents = [] } = await supabase
+  .from('crimes')
+  .select('*')
+  .eq('crime_type', dbType)
+  .order('incident_date', { ascending: false });
 ---
 
 <BaseLayout
