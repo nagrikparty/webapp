@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
-import Parser from 'rss-parser';
+
 import { supabase, hasSupabaseConfig } from '@/lib/supabase';
-import crypto from 'crypto';
+
 
 export const prerender = false;
 
@@ -64,7 +64,7 @@ export const POST: APIRoute = async ({ request }) => {
          return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 });
       }
       
-      const id = crypto.createHash('md5').update(body.source_url).digest('hex');
+      const id = btoa(body.source_url).replace(/[/+=]/g, '');
       const { error } = await supabase.from('crimes').upsert({
         id,
         crime_type: body.crime_type,
@@ -77,6 +77,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
 
+    const { default: Parser } = await import('rss-parser');
     const parser = new Parser();
     const categories = ['rape', 'murder', 'kidnap', 'robbery', 'extortion'];
     let newRecords = 0;
@@ -97,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
         feed.items.forEach((item: { title?: string; link?: string; pubDate?: string }) => {
           const title = item.title?.toLowerCase() || '';
           if (title.includes('delhi') || title.includes('ncr') || title.includes('noida') || title.includes('gurugram')) {
-            const id = crypto.createHash('md5').update(item.link || title).digest('hex');
+            const id = btoa(item.link || title).replace(/[/+=]/g, '');
             inserts.push({
               id,
               crime_type: mappedType,

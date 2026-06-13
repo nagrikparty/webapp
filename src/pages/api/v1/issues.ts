@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { supabase, hasSupabaseConfig } from "@/lib/supabase";
-import crypto from "crypto";
+
 
 export const GET: APIRoute = async () => {
   try {

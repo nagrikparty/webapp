@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { supabase, hasSupabaseConfig } from "@/lib/supabase";
-import crypto from "crypto";
+
 
 export const prerender = false;
 
@@ -18,10 +18,18 @@ export const POST: APIRoute = async ({ request }) => {
 
   const body = await request.text();
 
-  const expectedSignature = crypto
-    .createHmac("sha256", webhookSecret)
-    .update(body)
-    .digest("hex");
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw", 
+    encoder.encode(webhookSecret), 
+    { name: "HMAC", hash: "SHA-256" }, 
+    false, 
+    ["sign"]
+  );
+  const signatureBuffer = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
+  const expectedSignature = Array.from(new Uint8Array(signatureBuffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
 
   if (signature !== expectedSignature) {
     return new Response(JSON.stringify({ error: "Invalid signature" }), { status: 401 });
