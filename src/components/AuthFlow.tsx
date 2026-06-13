@@ -212,6 +212,7 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
               disabled={loading || (mode !== "email" && initialMode === "email")}
               autoFocus
               required
+              autoComplete="email"
             />
           </div>
 
@@ -228,6 +229,7 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
                 disabled={loading}
                 required
                 minLength={6}
+                autoComplete={mode === "signup" ? "new-password" : "current-password"}
               />
             </div>
           )}

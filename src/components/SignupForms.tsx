@@ -84,16 +84,16 @@ export function VolunteerForm() {
     <form className="form-surface" onSubmit={submit}>
       <div className="form-grid">
         <div className="field">
-          <label>Name</label>
-          <input name="name" required />
+          <label htmlFor="vol-name">Name</label>
+          <input id="vol-name" name="name" required autoComplete="name" />
         </div>
         <div className="field">
-          <label>Email signup</label>
-          <input name="email" required type="email" />
+          <label htmlFor="vol-email">Email signup</label>
+          <input id="vol-email" name="email" required type="email" autoComplete="email" />
         </div>
         <div className="field">
-          <label>Lok Sabha (Parliament)</label>
-          <select name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
+          <label htmlFor="vol-loksabha">Lok Sabha (Parliament)</label>
+          <select id="vol-loksabha" name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
             <option value="">Select Lok Sabha</option>
             {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
               <option key={ls} value={ls}>{ls}</option>
@@ -101,8 +101,8 @@ export function VolunteerForm() {
           </select>
         </div>
         <div className="field">
-          <label>Vidhan Sabha (Assembly)</label>
-          <select name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
+          <label htmlFor="vol-vidhansabha">Vidhan Sabha (Assembly)</label>
+          <select id="vol-vidhansabha" name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
             <option value="">Select Assembly</option>
             {assemblies.map((ac) => (
               <option key={ac} value={ac}>{ac}</option>
@@ -110,8 +110,8 @@ export function VolunteerForm() {
           </select>
         </div>
         <div className="field">
-          <label>Ward</label>
-          <select name="ward" required disabled={!vidhanSabha}>
+          <label htmlFor="vol-ward">Ward</label>
+          <select id="vol-ward" name="ward" required disabled={!vidhanSabha}>
             <option value="">Select Ward</option>
             {wards.map((w) => (
               <option key={w} value={w}>{w}</option>
@@ -119,8 +119,8 @@ export function VolunteerForm() {
           </select>
         </div>
         <div className="field">
-          <label>Availability</label>
-          <select name="availability">
+          <label htmlFor="vol-availability">Availability</label>
+          <select id="vol-availability" name="availability">
             <option>Weekends</option>
             <option>Weekday evenings</option>
             <option>Field visits</option>
@@ -128,11 +128,11 @@ export function VolunteerForm() {
           </select>
         </div>
         <div className="field full">
-          <label>How can you help?</label>
-          <textarea name="skills" placeholder="Issue verification, translation, social media, legal research, data entry..." />
+          <label htmlFor="vol-skills">How can you help?</label>
+          <textarea id="vol-skills" name="skills" placeholder="Issue verification, translation, social media, legal research, data entry..." />
         </div>
-        <label className="checkbox-row field full">
-          <input required type="checkbox" />
+        <label className="checkbox-row field full" htmlFor="vol-disclaimer">
+          <input id="vol-disclaimer" required type="checkbox" />
           <span>I understand this is a volunteer/supporter application and not legal party membership.</span>
         </label>
       </div>
@@ -203,31 +203,31 @@ export function MembershipForm() {
 
       <div className="form-grid" style={{ display: step === 1 ? "grid" : "none" }}>
         <div className="field">
-          <label>Full legal name</label>
-          <input name="name" required={step === 1} />
+          <label htmlFor="mem-name">Full legal name</label>
+          <input id="mem-name" name="name" required={step === 1} autoComplete="name" />
         </div>
         <div className="field">
-          <label>Email signup</label>
-          <input name="email" required={step === 1} type="email" />
+          <label htmlFor="mem-email">Email signup</label>
+          <input id="mem-email" name="email" required={step === 1} type="email" autoComplete="email" />
         </div>
         <div className="field">
-          <label>Parent / spouse name</label>
-          <input name="parent" required={step === 1} />
+          <label htmlFor="mem-parent">Parent / spouse name</label>
+          <input id="mem-parent" name="parent" required={step === 1} />
         </div>
         <div className="field">
-          <label>Date of birth</label>
-          <input name="dob" required={step === 1} type="date" />
+          <label htmlFor="mem-dob">Date of birth</label>
+          <input id="mem-dob" name="dob" required={step === 1} type="date" autoComplete="bday" />
         </div>
         <div className="field">
-          <label>EPIC / voter ID reference</label>
-          <input name="voter_id" required={step === 1} />
+          <label htmlFor="mem-voterid">EPIC / voter ID reference</label>
+          <input id="mem-voterid" name="voter_id" required={step === 1} />
         </div>
       </div>
 
       <div className="form-grid" style={{ display: step === 2 ? "grid" : "none" }}>
         <div className="field">
-          <label>Lok Sabha (Parliament)</label>
-          <select name="lok_sabha" required={step === 2} value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
+          <label htmlFor="mem-loksabha">Lok Sabha (Parliament)</label>
+          <select id="mem-loksabha" name="lok_sabha" required={step === 2} value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
             <option value="">Select Lok Sabha</option>
             {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
               <option key={ls} value={ls}>{ls}</option>
@@ -235,8 +235,8 @@ export function MembershipForm() {
           </select>
         </div>
         <div className="field">
-          <label>Vidhan Sabha (Assembly)</label>
-          <select name="vidhan_sabha" required={step === 2} disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
+          <label htmlFor="mem-vidhansabha">Vidhan Sabha (Assembly)</label>
+          <select id="mem-vidhansabha" name="vidhan_sabha" required={step === 2} disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
             <option value="">Select Assembly</option>
             {assemblies.map((ac) => (
               <option key={ac} value={ac}>{ac}</option>
@@ -244,8 +244,8 @@ export function MembershipForm() {
           </select>
         </div>
         <div className="field">
-          <label>Ward</label>
-          <select name="ward" required={step === 2} disabled={!vidhanSabha}>
+          <label htmlFor="mem-ward">Ward</label>
+          <select id="mem-ward" name="ward" required={step === 2} disabled={!vidhanSabha}>
             <option value="">Select Ward</option>
             {wards.map((w) => (
               <option key={w} value={w}>{w}</option>
@@ -253,29 +253,29 @@ export function MembershipForm() {
           </select>
         </div>
         <div className="field full">
-          <label>Residential address</label>
-          <textarea name="address" required={step === 2} />
+          <label htmlFor="mem-address">Residential address</label>
+          <textarea id="mem-address" name="address" required={step === 2} autoComplete="street-address" />
         </div>
       </div>
 
       <div className="form-grid" style={{ display: step === 3 ? "grid" : "none" }}>
         <div className="field full" style={{ background: "rgba(0,0,0,0.02)", padding: "16px", borderRadius: "8px", border: "1px dashed var(--line)" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <label htmlFor="mem-file" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             Upload Identity Document (Aadhaar or Voter ID)
           </label>
-          <input type="file" name="file" accept="image/*,.pdf" required={step === 3} />
+          <input id="mem-file" type="file" name="file" accept="image/*,.pdf" required={step === 3} />
         </div>
 
-        <label className="checkbox-row field full">
-          <input required={step === 3} type="checkbox" />
+        <label className="checkbox-row field full" htmlFor="mem-citizen">
+          <input id="mem-citizen" required={step === 3} type="checkbox" />
           <span>I am an Indian citizen, 18 years or older, and a registered elector.</span>
         </label>
-        <label className="checkbox-row field full">
-          <input required={step === 3} type="checkbox" />
+        <label className="checkbox-row field full" htmlFor="mem-notmember">
+          <input id="mem-notmember" required={step === 3} type="checkbox" />
           <span>I am not currently a member of another ECI-registered political party.</span>
         </label>
-        <label className="checkbox-row field full">
-          <input required={step === 3} type="checkbox" />
+        <label className="checkbox-row field full" htmlFor="mem-accept">
+          <input id="mem-accept" required={step === 3} type="checkbox" />
           <span>I accept the proposed Party Constitution, Rulebook, Code of Ethics and verification process.</span>
         </label>
       </div>

@@ -56,18 +56,18 @@ export function IssueReporter() {
     <form className="form-surface" onSubmit={submit}>
       <div className="form-grid">
         <div className="field full">
-          <label>
+          <label htmlFor="issue-title">
             <span className="lang-en">Issue title</span>
             <span className="lang-hi">मुद्दे का शीर्षक</span>
           </label>
-          <input name="title" required placeholder="Broken drain cover, dark lane, waterlogging..." />
+          <input id="issue-title" name="title" required placeholder="Broken drain cover, dark lane, waterlogging..." />
         </div>
         <div className="field">
-          <label>
+          <label htmlFor="issue-category">
             <span className="lang-en">Issue type</span>
             <span className="lang-hi">मुद्दे का प्रकार</span>
           </label>
-          <select name="category" required>
+          <select id="issue-category" name="category" required>
             <option>Roads & infrastructure</option>
             <option>Drainage / sewage</option>
             <option>Women safety</option>
@@ -79,11 +79,11 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field">
-          <label>
+          <label htmlFor="issue-loksabha">
             <span className="lang-en">Lok Sabha (Parliament)</span>
             <span className="lang-hi">लोकसभा</span>
           </label>
-          <select name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
+          <select id="issue-loksabha" name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
             <option value="">Select Lok Sabha</option>
             {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
               <option key={ls} value={ls}>{ls}</option>
@@ -91,11 +91,11 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field">
-          <label>
+          <label htmlFor="issue-vidhansabha">
             <span className="lang-en">Vidhan Sabha (Assembly)</span>
             <span className="lang-hi">विधानसभा</span>
           </label>
-          <select name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
+          <select id="issue-vidhansabha" name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
             <option value="">Select Assembly</option>
             {assemblies.map((ac) => (
               <option key={ac} value={ac}>{ac}</option>
@@ -103,11 +103,11 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field">
-          <label>
+          <label htmlFor="issue-ward">
             <span className="lang-en">Ward</span>
             <span className="lang-hi">वार्ड</span>
           </label>
-          <select name="ward" required disabled={!vidhanSabha}>
+          <select id="issue-ward" name="ward" required disabled={!vidhanSabha}>
             <option value="">Select Ward</option>
             {wards.map((w) => (
               <option key={w} value={w}>{w}</option>
@@ -115,25 +115,25 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field full">
-          <label>
+          <label htmlFor="issue-description">
             <span className="lang-en">Description</span>
             <span className="lang-hi">विवरण</span>
           </label>
-          <textarea name="description" required placeholder="Describe what citizens are facing and since when." />
+          <textarea id="issue-description" name="description" required placeholder="Describe what citizens are facing and since when." />
         </div>
         <div className="field">
-          <label>
+          <label htmlFor="issue-photo">
             <span className="lang-en">Photo evidence</span>
             <span className="lang-hi">फोटो प्रमाण</span>
           </label>
-          <input name="photo" accept="image/*" capture="environment" type="file" />
+          <input id="issue-photo" name="photo" accept="image/*" capture="environment" type="file" />
         </div>
         <div className="field">
-          <label>
+          <label htmlFor="issue-email">
             <span className="lang-en">Optional email</span>
             <span className="lang-hi">वैकल्पिक ईमेल</span>
           </label>
-          <input name="email" type="email" placeholder="For private follow-up only" />
+          <input id="issue-email" name="email" type="email" autoComplete="email" placeholder="For private follow-up only" />
         </div>
       </div>
 
