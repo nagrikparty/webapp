@@ -5,8 +5,6 @@ import { ManifestoVoting } from "@/components/ManifestoVoting";
 import { CrimeDashboard } from "@/components/CrimeDashboard";
 import { delhiAreas } from "@/lib/content";
 import { fetchPublicStats } from "@/lib/queries";
-import { Image } from "astro:assets";
-import leaderImg from "@/assets/leader.png";
 
 const stats = await fetchPublicStats(Astro.url.origin);
 ---
@@ -37,7 +35,7 @@ const stats = await fetchPublicStats(Astro.url.origin);
       </div>
     </div>
     <div class="political-hero-image">
-      <Image src={leaderImg} alt="Nagrik Party Leadership" loading="lazy" decoding="async" />
+      <img src="/images/leader.png" alt="Nagrik Party Leadership" loading="lazy" decoding="async" />
     </div>
   </section>
 
