@@ -2,8 +2,9 @@ import type { APIRoute } from "astro";
 import { createApiSupabase } from "@/lib/supabase";
 
 export const POST: APIRoute = async ({ request }) => {
-  if (!import.meta.env.DEV) {
-    return new Response("Not Found", { status: 404 });
+  if (import.meta.env.PROD || !import.meta.env.DEV) {
+    // Hard block any attempt to use this outside of local development
+    return new Response("Forbidden", { status: 403 });
   }
 
   try {

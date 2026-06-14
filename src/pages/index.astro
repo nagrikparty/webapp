@@ -5,6 +5,8 @@ import { ManifestoVoting } from "@/components/ManifestoVoting";
 import { CrimeDashboard } from "@/components/CrimeDashboard";
 import { delhiAreas } from "@/lib/content";
 import { fetchPublicStats } from "@/lib/queries";
+import { Image } from "astro:assets";
+import leaderImg from "@/assets/leader.png";
 
 const stats = await fetchPublicStats(Astro.url.origin);
 ---
@@ -13,23 +15,29 @@ const stats = await fetchPublicStats(Astro.url.origin);
   title="Nagrik Party - Kaam dikhna chahiye"
   description="Delhi-first proposed political party under registration. Building a public worklist before power."
 >
-  <section class="hero section civic-hero">
-    <div class="civic-collage-container">
-      <!-- Background Floating Images -->
-      <div class="floating-images">
-        <img src="/images/civic/delhi_garbage_dump_1780960177637.png" class="civic-img img-1" alt="Delhi Garbage Dump" loading="lazy" decoding="async" />
-        <img src="/images/civic/delhi_broken_road_1780960190752.png" class="civic-img img-2" alt="Broken Road" loading="lazy" decoding="async" />
-        <img src="/images/civic/delhi_hanging_cables_1780960203224.png" class="civic-img img-3" alt="Hanging Cables" loading="lazy" decoding="async" />
-        <img src="/images/civic/delhi_flooded_lane_1780960214764.png" class="civic-img img-4" alt="Flooded Lane" loading="lazy" decoding="async" />
-        <img src="/images/civic/delhi_open_drain_1780960236315.png" class="civic-img img-5" alt="Open Drain" loading="lazy" decoding="async" />
+  <section class="political-hero">
+    <div class="political-hero-text">
+      <h1 class="hindi-slogan">
+        काम दिखना चाहिए<br/>
+        <span style="color: var(--saffron); font-size: 0.6em; display: block; margin-top: 10px;">The Nagrik Promise</span>
+      </h1>
+      <p>
+        <Bilingual 
+          en="Join the movement to build a public worklist before power. Delhi deserves transparent leadership." 
+          hi="सत्ता से पहले सार्वजनिक कार्यसूची बनाने के आंदोलन में शामिल हों। दिल्ली पारदर्शी नेतृत्व की हकदार है।" 
+        />
+      </p>
+      <div class="political-hero-actions">
+        <a href="/volunteer" class="button saffron">
+          <Bilingual en="Join the Movement" hi="आंदोलन से जुड़ें" />
+        </a>
+        <a href="/manifesto" class="button primary">
+          <Bilingual en="Read Manifesto" hi="घोषणापत्र पढ़ें" />
+        </a>
       </div>
-      
-      <!-- Central Content -->
-      <div class="container civic-hero-content">        
-        <h1 class="hindi-slogan">
-          काम दिखना चाहिए
-        </h1>
-      </div>
+    </div>
+    <div class="political-hero-image">
+      <Image src={leaderImg} alt="Nagrik Party Leadership" loading="lazy" decoding="async" />
     </div>
   </section>
 

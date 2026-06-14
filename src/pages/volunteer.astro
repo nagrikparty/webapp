@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Bilingual from "@/components/Bilingual.astro";
 import { VolunteerForm } from "@/components/SignupForms";
+import { Image } from "astro:assets";
+import leaderImg from "@/assets/leader.png";
 ---
 
 <BaseLayout
@@ -9,15 +11,21 @@ import { VolunteerForm } from "@/components/SignupForms";
   description="Help verify civic issues, translate content, do local research and manage outreach. No party membership needed."
 >
   <section class="page-hero">
-    <div class="container">      <h1>
-        <Bilingual en="Volunteer" hi="स्वयंसेवक बनें" />
-      </h1>
-      <p class="page-copy">
-        <Bilingual
-          en="Volunteers help with issue verification, outreach, translation, local research, event support and digital tasks. Volunteering is not legal party membership - you can help without enrolling as a member."
-          hi="स्वयंसेवक मुद्दा सत्यापन, आउटरीच, अनुवाद, स्थानीय शोध, कार्यक्रम सहायता और डिजिटल कार्यों में मदद करते हैं। स्वयंसेवा कानूनी पार्टी सदस्यता नहीं है - आप सदस्य बने बिना मदद कर सकते हैं।"
-        />
-      </p>
+    <div class="container split" style="align-items: center;">
+      <div>
+        <h1>
+          <Bilingual en="Volunteer" hi="स्वयंसेवक बनें" />
+        </h1>
+        <p class="page-copy">
+          <Bilingual
+            en="Volunteers help with issue verification, outreach, translation, local research, event support and digital tasks. Volunteering is not legal party membership - you can help without enrolling as a member."
+            hi="स्वयंसेवक मुद्दा सत्यापन, आउटरीच, अनुवाद, स्थानीय शोध, कार्यक्रम सहायता और डिजिटल कार्यों में मदद करते हैं। स्वयंसेवा कानूनी पार्टी सदस्यता नहीं है - आप सदस्य बने बिना मदद कर सकते हैं।"
+          />
+        </p>
+      </div>
+      <div>
+        <Image src={leaderImg} alt="Volunteer for the Party" style="border-radius: 24px; box-shadow: var(--shadow); max-width: 100%; height: auto;" loading="lazy" decoding="async" />
+      </div>
     </div>
   </section>
 

@@ -16,7 +16,8 @@ export const GET: APIRoute = async () => {
       issues: issueRes.count ?? 0,
       volunteers: volRes.count ?? 0,
       members: memRes.count ?? 0,
-      areas: 70
+      areas: 70,
+      errors: [issueRes.error, volRes.error, memRes.error].filter(Boolean)
     }), {
       status: 200,
       headers: { "Content-Type": "application/json" }

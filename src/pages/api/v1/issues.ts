@@ -31,6 +31,19 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
     }
     const payload = await request.json();
+
+    // Payload Validation
+    if (!payload.title || typeof payload.title !== "string" || payload.title.length > 255) {
+      return new Response(JSON.stringify({ error: "Invalid title" }), { status: 400 });
+    }
+    if (!payload.category || typeof payload.category !== "string" || payload.category.length > 50) {
+      return new Response(JSON.stringify({ error: "Invalid category" }), { status: 400 });
+    }
+    if (!payload.description || typeof payload.description !== "string" || payload.description.length > 5000) {
+      return new Response(JSON.stringify({ error: "Invalid description" }), { status: 400 });
+    }
+    // Basic sanitization by allowing only alphanumeric and basic punctuation could be added here
+    
     const id = crypto.randomUUID();
     
     const { error } = await supabase.from("issues").insert({

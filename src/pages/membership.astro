@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Bilingual from "@/components/Bilingual.astro";
 import { RegistrationForm } from "@/components/RegistrationForm";
+import { Image } from "astro:assets";
+import leaderImg from "@/assets/leader.png";
 ---
 
 <BaseLayout
@@ -9,15 +11,21 @@ import { RegistrationForm } from "@/components/RegistrationForm";
   description="Apply for legal party membership. Members accept the constitution and go through ECI-aligned verification."
 >
   <section class="page-hero">
-    <div class="container">      <h1>
-        <Bilingual en="Membership" hi="सदस्यता" />
-      </h1>
-      <p class="page-copy">
-        <Bilingual
-          en="Legal party membership is separate from volunteering. Members must be adult Indian citizens, accept the Party Constitution and Rulebook, and confirm they are not members of another ECI-registered political party."
-          hi="कानूनी पार्टी सदस्यता स्वयंसेवा से अलग है। सदस्यों को वयस्क भारतीय नागरिक होना चाहिए, पार्टी संविधान और नियमावली स्वीकार करनी चाहिए, और पुष्टि करनी चाहिए कि वे किसी अन्य ECI-पंजीकृत राजनीतिक पार्टी के सदस्य नहीं हैं।"
-        />
-      </p>
+    <div class="container split" style="align-items: center;">
+      <div>
+        <h1>
+          <Bilingual en="Membership" hi="सदस्यता" />
+        </h1>
+        <p class="page-copy">
+          <Bilingual
+            en="Legal party membership is separate from volunteering. Members must be adult Indian citizens, accept the Party Constitution and Rulebook, and confirm they are not members of another ECI-registered political party."
+            hi="कानूनी पार्टी सदस्यता स्वयंसेवा से अलग है। सदस्यों को वयस्क भारतीय नागरिक होना चाहिए, पार्टी संविधान और नियमावली स्वीकार करनी चाहिए, और पुष्टि करनी चाहिए कि वे किसी अन्य ECI-पंजीकृत राजनीतिक पार्टी के सदस्य नहीं हैं।"
+          />
+        </p>
+      </div>
+      <div>
+        <Image src={leaderImg} alt="Join the Party" style="border-radius: 24px; box-shadow: var(--shadow); max-width: 100%; height: auto;" loading="lazy" decoding="async" />
+      </div>
     </div>
   </section>
 

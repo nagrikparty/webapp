@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Bilingual from "@/components/Bilingual.astro";
 import { ManifestoVoting } from "@/components/ManifestoVoting";
+import { Image } from "astro:assets";
+import leaderImg from "@/assets/leader.png";
 ---
 
 <BaseLayout
@@ -9,15 +11,21 @@ import { ManifestoVoting } from "@/components/ManifestoVoting";
   description="Public priorities built from verified local issues and supporter votes. Not a backroom deal."
 >
   <section class="page-hero">
-    <div class="container">      <h1>
-        <Bilingual en="Manifesto" hi="घोषणापत्र" />
-      </h1>
-      <p class="page-copy">
-        <Bilingual
-          en="The Nagrik Party manifesto has two layers. A national programme built from what the party stands for - and an area-wise manifesto built from verified local issues, public priorities and member voting."
-          hi="नागरिक पार्टी घोषणापत्र के दो स्तर हैं। एक राष्ट्रीय कार्यक्रम जो पार्टी के सिद्धांतों पर आधारित है - और एक क्षेत्रवार घोषणापत्र जो सत्यापित स्थानीय मुद्दों, सार्वजनिक प्राथमिकताओं और सदस्य मतदान से बनता है।"
-        />
-      </p>
+    <div class="container split" style="align-items: center;">
+      <div>
+        <h1>
+          <Bilingual en="Manifesto" hi="घोषणापत्र" />
+        </h1>
+        <p class="page-copy">
+          <Bilingual
+            en="The Nagrik Party manifesto has two layers. A national programme built from what the party stands for - and an area-wise manifesto built from verified local issues, public priorities and member voting."
+            hi="नागरिक पार्टी घोषणापत्र के दो स्तर हैं। एक राष्ट्रीय कार्यक्रम जो पार्टी के सिद्धांतों पर आधारित है - और एक क्षेत्रवार घोषणापत्र जो सत्यापित स्थानीय मुद्दों, सार्वजनिक प्राथमिकताओं और सदस्य मतदान से बनता है।"
+          />
+        </p>
+      </div>
+      <div>
+        <Image src={leaderImg} alt="Nagrik Vision" style="border-radius: 24px; box-shadow: var(--shadow); max-width: 100%; height: auto;" loading="lazy" decoding="async" />
+      </div>
     </div>
   </section>
 
