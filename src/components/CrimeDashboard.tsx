@@ -15,7 +15,9 @@ export function CrimeDashboard() {
       const res = await fetch('/api/v1/crimes');
       if (res.ok) {
         const data = await res.json();
-        setStats(data);
+        if (Array.isArray(data)) {
+          setStats(data);
+        }
       }
     } catch {
       // Network error — stats unavailable

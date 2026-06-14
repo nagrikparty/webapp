@@ -25,11 +25,13 @@ const dbType = typeMap[type as string];
 import { supabase } from "@/lib/supabase";
 
 // Fetch data directly from DB to avoid SSR fetch issues
-const { data: incidents = [] } = await supabase
-  .from('crimes')
-  .select('*')
-  .eq('crime_type', dbType)
-  .order('incident_date', { ascending: false });
+const { data: incidents = [] } = supabase 
+  ? await supabase
+      .from('crimes')
+      .select('*')
+      .eq('crime_type', dbType)
+      .order('incident_date', { ascending: false })
+  : { data: [] };
 ---
 
 <BaseLayout

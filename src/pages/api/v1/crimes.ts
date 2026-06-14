@@ -77,15 +77,14 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
 
-    const { default: Parser } = await import('rss-parser');
-    const parser = new Parser();
     const categories = ['rape', 'murder', 'kidnap', 'robbery', 'extortion'];
     let newRecords = 0;
 
     for (const cat of categories) {
       try {
         const query = encodeURIComponent(`Delhi ${cat}`);
-        const feed = await parser.parseURL(`https://news.google.com/rss/search?q=${query}&hl=en-IN&gl=IN&ceid=IN:en`);
+        const rssRes = await fetch(`https://news.google.com/rss/search?q=${query}&hl=en-IN&gl=IN&ceid=IN:en`);
+        const feedText = await rssRes.text();
         
         let mappedType = '';
         if (cat === 'rape') mappedType = 'Rape';
@@ -95,16 +94,29 @@ export const POST: APIRoute = async ({ request }) => {
         if (cat === 'extortion') mappedType = 'Extortion';
 
         const inserts: Record<string, unknown>[] = [];
-        feed.items.forEach((item: { title?: string; link?: string; pubDate?: string }) => {
-          const title = item.title?.toLowerCase() || '';
-          if (title.includes('delhi') || title.includes('ncr') || title.includes('noida') || title.includes('gurugram')) {
-            const id = btoa(item.link || title).replace(/[/+=]/g, '');
+        
+        // Lightweight RSS parsing to avoid Node.js dependency issues on Cloudflare
+        const items = [...feedText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
+        items.forEach((match) => {
+          const itemXml = match[1];
+          const titleMatch = itemXml.match(/<title>([\s\S]*?)<\/title>/);
+          const linkMatch = itemXml.match(/<link>([\s\S]*?)<\/link>/);
+          const pubDateMatch = itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+          
+          const rawTitle = titleMatch ? titleMatch[1] : '';
+          const title = rawTitle.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1');
+          const titleLower = title.toLowerCase();
+          const link = linkMatch ? linkMatch[1] : '';
+          const pubDate = pubDateMatch ? pubDateMatch[1] : '';
+
+          if (titleLower.includes('delhi') || titleLower.includes('ncr') || titleLower.includes('noida') || titleLower.includes('gurugram')) {
+            const id = btoa(link || title).replace(/[/+=]/g, '');
             inserts.push({
               id,
               crime_type: mappedType,
-              title: item.title,
-              source_url: item.link || '',
-              incident_date: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString()
+              title: title,
+              source_url: link,
+              incident_date: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString()
             });
           }
         });
