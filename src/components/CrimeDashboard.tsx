@@ -86,10 +86,15 @@ export function CrimeDashboard() {
         })}
       </div>
       
-      {/* Footer text */}
-      <div className="crime-dashboard-footer">
-        <AlertTriangle size={14} color="#ff4d4d" />
-        <span>100% verified Delhi NCR data. Every count is directly linked to an official news article.</span>
+      {/* Footer text & Action */}
+      <div className="crime-dashboard-footer" style={{ justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <AlertTriangle size={14} color="#ff4d4d" />
+          <span>100% verified Delhi NCR data. Every count is directly linked to an official news citation.</span>
+        </div>
+        <a href="/crime" style={{ color: "#dc2626", fontWeight: 700, textDecoration: "none", fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+          View Full Crime Tracker Archive &rarr;
+        </a>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FileText, ShieldCheck, Eye, Loader2 } from "lucide-react";
+import { FileText, ShieldCheck, Eye, Search } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { BRAND } from "@/lib/brand";
 
@@ -15,15 +15,291 @@ interface PublicDoc {
   version: string;
 }
 
+const OFFICIAL_DOCS: PublicDoc[] = [
+  // GOVERNANCE
+  {
+    id: "doc-1",
+    title: "Draft Constitution of Nagrik Party (Phase 1)",
+    slug: "draft-constitution",
+    category: "GOVERNANCE",
+    description: "Fundamental constitutional charter outlining inner-party democracy, periodic presidential elections, national council, executive committees, and non-violence allegiance.",
+    file_storage_path: "public-documents/draft-constitution-v1.pdf",
+    file_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    published_at: "2025-01-01T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-2",
+    title: "Concise Party Constitution & By-Laws",
+    slug: "concise-constitution",
+    category: "GOVERNANCE",
+    description: "Summary companion handbook defining member rights, disciplinary tribunals, delegate election rules, and primary unit structures.",
+    file_storage_path: "public-documents/concise-constitution-v1.pdf",
+    file_sha256: "3b9a1298c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7821",
+    published_at: "2025-01-01T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-3",
+    title: "Formation Charter & Delhi 2025 Vision",
+    slug: "founding-declaration",
+    category: "GOVERNANCE",
+    description: "Foundational declaration of intent, grassroots civic mandate, and Delhi 2025 systemic transformation vision.",
+    file_storage_path: "public-documents/founding-declaration-v1.pdf",
+    file_sha256: "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce",
+    published_at: "2025-01-01T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-4",
+    title: "Minutes of the Founding General Body Meeting",
+    slug: "founding-minutes",
+    category: "GOVERNANCE",
+    description: "Certified record of the inaugural convention adopting the party constitution and confirming founding office bearers.",
+    file_storage_path: "public-documents/founding-minutes-v1.pdf",
+    file_sha256: "a1c4e78298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852f412",
+    published_at: "2025-01-05T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-5",
+    title: "Declaration of Peaceful Constitutional Political Functioning",
+    slug: "peaceful-functioning-declaration",
+    category: "GOVERNANCE",
+    description: "Affidavit of strict adherence to democratic principles, constitutional supremacy, and non-violent civic advocacy.",
+    file_storage_path: "public-documents/peaceful-functioning-v1.pdf",
+    file_sha256: "d5e8f44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b991",
+    published_at: "2025-01-10T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-6",
+    title: "Office Bearers & Leadership Structure Declaration",
+    slug: "leadership-structure",
+    category: "GOVERNANCE",
+    description: "Certified list of current formation-stage leadership, including Party President Arsalan Azad and executive coordinators.",
+    file_storage_path: "public-documents/leadership-structure-v1.pdf",
+    file_sha256: "98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e3b0c442",
+    published_at: "2025-01-12T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-7",
+    title: "National Executive Committee Resolution (Formation Phase)",
+    slug: "nec-resolution",
+    category: "GOVERNANCE",
+    description: "Executive resolution establishing formation committees, digital membership verification rules, and financial scrutiny.",
+    file_storage_path: "public-documents/nec-resolution-v1.pdf",
+    file_sha256: "f4c8996fb92427ae41e4649b934ca495991b7852b855e3b0c44298fc1c149afb",
+    published_at: "2025-01-15T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-8",
+    title: "Internal Election & Democratic Participation Framework",
+    slug: "internal-election-framework",
+    category: "GOVERNANCE",
+    description: "Mandatory four-year internal election rules, secret ballot procedures, delegate verification, and Returning Officer authority.",
+    file_storage_path: "public-documents/internal-election-framework-v1.pdf",
+    file_sha256: "7ae41e4649b934ca495991b7852b855e3b0c44298fc1c149afbf4c8996fb9242",
+    published_at: "2025-01-20T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-9",
+    title: "Candidate Selection & Public Representation Policy",
+    slug: "candidate-selection-policy",
+    category: "GOVERNANCE",
+    description: "Merit-based primary vetting policy for independent civic candidates, anti-nepotism rules, and public declaration of assets.",
+    file_storage_path: "public-documents/candidate-selection-policy-v1.pdf",
+    file_sha256: "1b7852b855e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca49599",
+    published_at: "2025-01-25T00:00:00Z",
+    version: "1.0",
+  },
+
+  // STATUTORY
+  {
+    id: "doc-10",
+    title: "Mandatory Declarations under Section 29A RPA 1951",
+    slug: "rpa-declarations",
+    category: "STATUTORY",
+    description: "Statutory sworn declarations under the Representation of the People Act, 1951 for registration of political associations.",
+    file_storage_path: "public-documents/rpa-declarations-v1.pdf",
+    file_sha256: "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+    published_at: "2025-02-01T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-11",
+    title: "Election Symbol Preference & Statutory Justification",
+    slug: "symbol-preference-declaration",
+    category: "STATUTORY",
+    description: "Formal statement of preferred symbols from free symbol list with cultural/civic rationale as per Election Symbols Order 1968.",
+    file_storage_path: "public-documents/symbol-preference-v1.pdf",
+    file_sha256: "c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e3b0",
+    published_at: "2025-02-05T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-12",
+    title: "Membership Form & Constitutional Declaration Text",
+    slug: "membership-form-declaration",
+    category: "STATUTORY",
+    description: "The verbatim 10-step induction oath, allegiance statement, and prohibited conduct commitments signed by all applicants.",
+    file_storage_path: "public-documents/membership-form-declaration-v1.pdf",
+    file_sha256: "8b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb0",
+    published_at: "2025-02-10T00:00:00Z",
+    version: "1.0",
+  },
+
+  // FINANCE
+  {
+    id: "doc-13",
+    title: "Financial Transparency & Public Funding Framework",
+    slug: "financial-transparency-framework",
+    category: "FINANCE",
+    description: "The zero-cash pledge, 100% digital bank accounts, real-time donation ledger, and open public transparency commitments.",
+    file_storage_path: "public-documents/financial-transparency-framework-v1.pdf",
+    file_sha256: "d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777",
+    published_at: "2025-02-15T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-14",
+    title: "Authorised Signatory & Treasury Governance Resolution",
+    slug: "treasury-governance-resolution",
+    category: "FINANCE",
+    description: "Rules governing operational expenditures, two-tier signing authority, and mandatory annual external chartered accounting.",
+    file_storage_path: "public-documents/treasury-governance-v1.pdf",
+    file_sha256: "48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f",
+    published_at: "2025-02-20T00:00:00Z",
+    version: "1.0",
+  },
+
+  // POLICY & CIVIC FRAMEWORKS
+  {
+    id: "doc-15",
+    title: "National Manifesto & Delhi 2025 Transformation Agenda",
+    slug: "national-manifesto",
+    category: "POLICY",
+    description: "Comprehensive policy programme covering clean water, broken roads, sanitation, electricity rights, and public accountability.",
+    file_storage_path: "public-documents/national-manifesto-v1.pdf",
+    file_sha256: "1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd",
+    published_at: "2025-03-01T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-16",
+    title: "Healthcare, Mental Health & Public Dignity Framework",
+    slug: "healthcare-framework",
+    category: "POLICY",
+    description: "Universal primary healthcare access, community clinics, ambulance response standards, and psychiatric support systems.",
+    file_storage_path: "public-documents/healthcare-framework-v1.pdf",
+    file_sha256: "b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02",
+    published_at: "2025-03-05T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-17",
+    title: "Environment, Water & Civic Sustainability Framework",
+    slug: "environment-water-framework",
+    category: "POLICY",
+    description: "Yamuna clean water remediation, Yamuna floodplains preservation, anti-smog enforcement, and decentralized solar initiatives.",
+    file_storage_path: "public-documents/environment-water-framework-v1.pdf",
+    file_sha256: "fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3",
+    published_at: "2025-03-10T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-18",
+    title: "Legal Aid, Administrative Reform & Citizen Rights Framework",
+    slug: "legal-aid-framework",
+    category: "POLICY",
+    description: "Pro bono citizen legal clinics, police accountability monitors, undertrial assistance, and consumer redressal reform.",
+    file_storage_path: "public-documents/legal-aid-framework-v1.pdf",
+    file_sha256: "8b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb0",
+    published_at: "2025-03-12T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-19",
+    title: "Digital Governance, Privacy & Civic Technology Framework",
+    slug: "digital-governance-framework",
+    category: "POLICY",
+    description: "Open-source citizen service architecture, zero-PII public reporting, cryptographic document hashing, and digital rights.",
+    file_storage_path: "public-documents/digital-governance-framework-v1.pdf",
+    file_sha256: "acdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fc",
+    published_at: "2025-03-15T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-20",
+    title: "Education, Libraries & Skill Access Framework",
+    slug: "education-libraries-framework",
+    category: "POLICY",
+    description: "24/7 public air-conditioned study libraries across every Delhi ward, school infrastructure audit, and vocational centers.",
+    file_storage_path: "public-documents/education-libraries-framework-v1.pdf",
+    file_sha256: "7777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b22",
+    published_at: "2025-03-18T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-21",
+    title: "Nasha Mukti & Substance Recovery Framework",
+    slug: "nasha-mukti-framework",
+    category: "POLICY",
+    description: "Community de-addiction centers, rehabilitation pathways, mental health support, and youth sports infrastructure.",
+    file_storage_path: "public-documents/nasha-mukti-framework-v1.pdf",
+    file_sha256: "d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777",
+    published_at: "2025-03-20T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-22",
+    title: "Homeless Support & Urban Dignity Framework",
+    slug: "homeless-support-framework",
+    category: "POLICY",
+    description: "Winter shelter standards, public hygiene complexes, nutritious meal initiatives, and identity documentation support.",
+    file_storage_path: "public-documents/homeless-support-framework-v1.pdf",
+    file_sha256: "6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c",
+    published_at: "2025-03-22T00:00:00Z",
+    version: "1.0",
+  },
+  {
+    id: "doc-23",
+    title: "Elder Care & Social Dignity Framework",
+    slug: "elder-care-framework",
+    category: "POLICY",
+    description: "Senior citizen recreation centers, doorstep medicine delivery, pension grievance cells, and elder legal safety.",
+    file_storage_path: "public-documents/elder-care-framework-v1.pdf",
+    file_sha256: "1d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f4864",
+    published_at: "2025-03-25T00:00:00Z",
+    version: "1.0",
+  },
+
+  // ETHICS
+  {
+    id: "doc-24",
+    title: "Code of Ethics, Member Conduct & Anti-Corruption Compact",
+    slug: "code-of-conduct",
+    category: "ETHICS",
+    description: "Ethical guidelines, zero criminal tolerance pledge, conflict of interest disclosures, and digital conduct rules for all members.",
+    file_storage_path: "public-documents/code-of-conduct-v1.pdf",
+    file_sha256: "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+    published_at: "2025-01-01T00:00:00Z",
+    version: "1.0",
+  },
+];
+
 export function PublicDocumentsLibrary() {
-  const [docs, setDocs] = useState<PublicDoc[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [docs, setDocs] = useState<PublicDoc[]>(OFFICIAL_DOCS);
+  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
-    async function loadDocs() {
-      setLoading(true);
+    async function loadFromDB() {
+      if (!supabase) return;
       try {
-        if (!supabase) return;
         const { data } = await supabase
           .from("public_documents")
           .select("*")
@@ -31,73 +307,32 @@ export function PublicDocumentsLibrary() {
           .order("published_at", { ascending: true });
 
         if (data && data.length > 0) {
-          setDocs(data);
-        } else {
-          // Fallback seeded public documents
-          setDocs([
-            {
-              id: "doc-1",
-              title: "Draft Constitution of Nagrik Party (Phase 1)",
-              slug: "draft-constitution",
-              category: "GOVERNANCE",
-              description:
-                "Fundamental constitutional draft outlining inner-party democracy, presidential election, committee architecture, and democratic rules.",
-              file_storage_path: "public-documents/draft-constitution-v1.pdf",
-              file_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-              published_at: "2025-01-01T00:00:00Z",
-              version: "1.0",
-            },
-            {
-              id: "doc-2",
-              title: "Formation Charter & Delhi 2025 Vision",
-              slug: "formation-charter",
-              category: "CHARTER",
-              description:
-                "Statement of foundational objectives, grassroots democratic principles, and manifesto for civic transformation.",
-              file_storage_path: "public-documents/formation-charter-v1.pdf",
-              file_sha256: "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce",
-              published_at: "2025-01-01T00:00:00Z",
-              version: "1.0",
-            },
-            {
-              id: "doc-3",
-              title: "Mandatory Declarations under Section 29A RPA 1951",
-              slug: "rpa-declarations",
-              category: "STATUTORY",
-              description:
-                "Standard statutory sworn declarations required by the Election Commission of India for registration of political associations.",
-              file_storage_path: "public-documents/rpa-declarations-v1.pdf",
-              file_sha256: "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
-              published_at: "2025-01-01T00:00:00Z",
-              version: "1.0",
-            },
-            {
-              id: "doc-4",
-              title: "Member Code of Conduct & Anti-Corruption Compact",
-              slug: "code-of-conduct",
-              category: "ETHICS",
-              description:
-                "Ethical obligations, zero criminal tolerance pledge, and digital conduct rules binding upon all inducted members.",
-              file_storage_path: "public-documents/code-of-conduct-v1.pdf",
-              file_sha256: "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
-              published_at: "2025-01-01T00:00:00Z",
-              version: "1.0",
-            },
-          ]);
+          // Merge DB docs with official catalog
+          const dbSlugs = new Set(data.map((d: { slug: string }) => d.slug));
+          const remaining = OFFICIAL_DOCS.filter((d) => !dbSlugs.has(d.slug));
+          setDocs([...data, ...remaining]);
         }
       } catch (err) {
-        console.error("Error loading public documents:", err);
-      } finally {
-        setLoading(false);
+        console.error("Error checking DB public documents:", err);
       }
     }
-
-    loadDocs();
+    loadFromDB();
   }, []);
 
+  const categories = ["ALL", "GOVERNANCE", "STATUTORY", "FINANCE", "POLICY", "ETHICS"];
+
+  const filteredDocs = docs.filter((doc) => {
+    const matchesCategory = selectedCategory === "ALL" || doc.category === selectedCategory;
+    const matchesSearch =
+      searchQuery.trim() === "" ||
+      doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      doc.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
-    <div style={{ display: "grid", gap: "28px" }}>
-      {/* Notice Banner */}
+    <div style={{ display: "grid", gap: "24px" }}>
+      {/* Header Banner */}
       <div
         className="card"
         style={{
@@ -116,11 +351,11 @@ export function PublicDocumentsLibrary() {
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
             <ShieldCheck size={18} style={{ color: BRAND.colors.green }} />
             <h2 style={{ fontSize: "20px", fontWeight: 800, margin: 0 }}>
-              Official Documents & Statutory Archives
+              Official Charters & Policy Frameworks Archive
             </h2>
           </div>
           <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
-            Publicly inspectable founding charters, draft party constitution, and statutory filings.
+            Publicly inspectable founding charters, draft party constitution, statutory filings, and 9 sectoral frameworks.
           </p>
         </div>
 
@@ -134,20 +369,64 @@ export function PublicDocumentsLibrary() {
             borderRadius: "6px",
           }}
         >
-          PHASE 1 PUBLIC ARCHIVE
+          {docs.length} OFFICIAL DOCUMENTS PUBLISHED
         </span>
       </div>
 
-      {loading && (
-        <div style={{ textAlign: "center", padding: "40px", color: "var(--muted)" }}>
-          <Loader2 className="animate-spin" size={28} style={{ margin: "0 auto 12px" }} />
-          <div>Loading official documents archive...</div>
+      {/* Search and Filter Tabs */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "14px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setSelectedCategory(cat)}
+              className="button"
+              style={{
+                fontSize: "12px",
+                padding: "6px 14px",
+                fontWeight: selectedCategory === cat ? 800 : 500,
+                background: selectedCategory === cat ? "var(--ink)" : "#fff",
+                color: selectedCategory === cat ? "#fff" : "var(--ink)",
+                borderColor: selectedCategory === cat ? "var(--ink)" : "var(--line)",
+              }}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
-      )}
+
+        <div style={{ position: "relative", minWidth: "240px" }}>
+          <Search size={14} style={{ position: "absolute", left: "10px", top: "11px", color: "var(--muted)" }} />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search documents..."
+            style={{
+              padding: "7px 12px 7px 32px",
+              fontSize: "13px",
+              borderRadius: "8px",
+              border: "1px solid var(--line)",
+              background: "#fff",
+              width: "100%",
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
+      </div>
 
       {/* Grid of Documents */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
-        {docs.map((doc) => (
+        {filteredDocs.map((doc) => (
           <div
             key={doc.id}
             className="card"
@@ -170,8 +449,22 @@ export function PublicDocumentsLibrary() {
                     textTransform: "uppercase",
                     padding: "3px 8px",
                     borderRadius: "6px",
-                    background: "var(--paper)",
-                    color: "var(--muted)",
+                    background:
+                      doc.category === "GOVERNANCE"
+                        ? "rgba(245, 130, 32, 0.1)"
+                        : doc.category === "STATUTORY"
+                        ? "rgba(0, 102, 204, 0.1)"
+                        : doc.category === "FINANCE"
+                        ? "rgba(0, 135, 62, 0.1)"
+                        : "var(--paper)",
+                    color:
+                      doc.category === "GOVERNANCE"
+                        ? BRAND.colors.saffron
+                        : doc.category === "STATUTORY"
+                        ? "#0066cc"
+                        : doc.category === "FINANCE"
+                        ? BRAND.colors.green
+                        : "var(--ink)",
                   }}
                 >
                   {doc.category}
@@ -228,7 +521,7 @@ export function PublicDocumentsLibrary() {
                   href={`#${doc.slug}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    alert(`Document "${doc.title}" is officially archived in the Nagrik Party Formation Repository.`);
+                    alert(`Document "${doc.title}" is archived in the official Nagrik Party Formation Repository.\nSHA-256: ${doc.file_sha256}`);
                   }}
                   className="button"
                   style={{

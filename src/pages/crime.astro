@@ -1,0 +1,204 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { supabase } from "@/lib/supabase";
+import { ShieldAlert, ExternalLink, Calendar, CheckCircle2, ChevronRight, Info } from "lucide-react";
+
+export const prerender = false;
+
+// Fetch stats and recent verified crimes
+let stats: Array<{ crime_type: string; count: number }> = [];
+let recentCrimes: Array<{ id: string; title: string; source_url: string; incident_date: string; crime_type: string }> = [];
+
+const defaultCategories = ["Rape", "Murder", "Kidnapping", "Robbery", "Extortion"];
+
+if (supabase) {
+  try {
+    const { data: allCrimes } = await supabase
+      .from("crimes")
+      .select("*")
+      .order("incident_date", { ascending: false });
+
+    if (allCrimes) {
+      const counts: Record<string, number> = {};
+      allCrimes.forEach((c: { crime_type: string }) => {
+        counts[c.crime_type] = (counts[c.crime_type] || 0) + 1;
+      });
+
+      stats = defaultCategories.map((type) => ({
+        crime_type: type,
+        count: counts[type] || 0,
+      }));
+
+      // Add other detected types
+      Object.keys(counts).forEach((k) => {
+        if (!defaultCategories.includes(k)) {
+          stats.push({ crime_type: k, count: counts[k] });
+        }
+      });
+
+      recentCrimes = allCrimes.slice(0, 50);
+    }
+  } catch (e) {
+    console.error("Error fetching crime records:", e);
+  }
+}
+
+const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
+---
+
+<BaseLayout
+  title="Verified Crime Tracker - Nagrik Party"
+  description="Publicly documented crime citations in Delhi NCR, verified and linked directly to published sources. Zero statistical guesswork."
+>
+  <section class="page-hero" style="padding-bottom: 32px;">
+    <div class="container">
+      <div class="civic-hero-badge">
+        <ShieldAlert size={14} color="#c45500" />
+        Civic Evidence & Public Accountability
+      </div>
+      <h1>
+        <Bilingual en="Verified Crime Tracker" hi="सत्यापित अपराध ट्रैकर" />
+      </h1>
+      <p class="page-copy" style="max-width: 760px;">
+        <Bilingual
+          en="Publicly documented information, organised for civic understanding. Every incident count is verified and directly linked to public news citations and official reports. We do not use statistical estimates."
+          hi="सार्वजनिक रूप से प्रलेखित जानकारी, जो नागरिक समझ के लिए व्यवस्थित है। हर घटना की पुष्टि की गई है और वह सीधे समाचार लेखों या आधिकारिक रिपोर्टों से जुड़ी है।"
+        />
+      </p>
+      
+      <div style="display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; align-items: center;">
+        <span class="badge-verified">
+          <CheckCircle2 size={13} /> {totalCitations} Verified Citations Active
+        </span>
+        <span class="badge-citation">
+          Coverage: Delhi NCR
+        </span>
+        <span class="badge-citation">
+          Source: Verified News & Police Reports
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container" style="max-width: 1060px;">
+      
+      <!-- Methodology & Accountability Notice -->
+      <div class="card" style="background: #fff; border: 1px solid #fed7aa; border-radius: 14px; padding: 20px 24px; margin-bottom: 32px; display: flex; gap: 16px; align-items: flex-start;">
+        <Info size={22} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
+        <div>
+          <strong style="font-size: 15px; color: var(--ink);">Civic Methodology & Evidence Standard</strong>
+          <p style="font-size: 13px; color: var(--muted); margin: 6px 0 0; line-height: 1.6;">
+            The Nagrik Party Verified Crime Tracker indexes public evidence of serious offenses across the National Capital Region.
+            Citations are automatically ingested from reputable national news providers and monitored for veracity.
+            Each item represents a documented, published event with a verifiable link.
+          </p>
+        </div>
+      </div>
+
+      <!-- Categories Summary Grid -->
+      <div style="margin-bottom: 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 800; margin: 0;">Category Breakdown</h2>
+            <p style="font-size: 13px; color: var(--muted); margin: 2px 0 0;">Select a category to view all verified news records.</p>
+          </div>
+          <a href="/issues" class="button" style="font-size: 12px; padding: 6px 14px;">
+            Report Unlisted Incident
+          </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+          {stats.map((st) => (
+            <a href={`/crimes/${st.crime_type.toLowerCase()}`} class="crime-hero-stat-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 13px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em;">
+                  {st.crime_type}
+                </span>
+                <span style="color: #dc2626;">
+                  <ChevronRight size={16} />
+                </span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; color: #111827; font-family: system-ui, sans-serif; line-height: 1;">
+                {st.count}
+              </div>
+              <div style="font-size: 11px; color: var(--muted); margin-top: 6px;">
+                Verified incidents &rarr;
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Recent Citations Feed -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--line); padding-bottom: 12px;">
+          <div>
+            <h3 style="font-size: 18px; font-weight: 800; margin: 0;">Recent Verified Citations</h3>
+            <span style="font-size: 13px; color: var(--muted);">Live audit feed of documented offenses</span>
+          </div>
+          <div style="font-size: 12px; color: var(--muted);">
+            Showing latest {recentCrimes.length} records
+          </div>
+        </div>
+
+        {recentCrimes.length === 0 ? (
+          <div class="card" style="padding: 40px; text-align: center; color: var(--muted);">
+            No verified citations available at this moment.
+          </div>
+        ) : (
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            {recentCrimes.map((c) => {
+              let domain = "";
+              try {
+                domain = new URL(c.source_url).hostname.replace("www.", "");
+              } catch {
+                domain = "news source";
+              }
+
+              return (
+                <a
+                  href={c.source_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="citation-card"
+                >
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="flex: 1;">
+                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; background: rgba(220, 38, 38, 0.1); color: #dc2626; padding: 2px 8px; border-radius: 4px;">
+                          {c.crime_type}
+                        </span>
+                        <span class="badge-citation">
+                          {domain}
+                        </span>
+                        <span style="font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 4px;">
+                          <Calendar size={12} />
+                          {new Date(c.incident_date).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      
+                      <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4;">
+                        {c.title}
+                      </h4>
+                    </div>
+
+                    <div style="color: #dc2626; flex-shrink: 0; padding-top: 4px;">
+                      <ExternalLink size={16} />
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>

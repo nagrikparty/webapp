@@ -9,6 +9,11 @@
       "env": {
         "BRAINSYNC_ENV_FILE": "C:\\Users\\hudav\\.bsync_core\\webapp\\mcp-secret-env.json"
       }
-    }
+    },
+    "cloudflare": { "url": "https://mcp.cloudflare.com/mcp", "type": "sse" },
+    "cloudflare-docs": { "url": "https://docs.mcp.cloudflare.com/mcp", "type": "sse" },
+    "cloudflare-bindings": { "url": "https://bindings.mcp.cloudflare.com/mcp", "type": "sse" },
+    "cloudflare-builds": { "url": "https://builds.mcp.cloudflare.com/mcp", "type": "sse" },
+    "cloudflare-observability": { "url": "https://observability.mcp.cloudflare.com/mcp", "type": "sse" }
   }
 }
