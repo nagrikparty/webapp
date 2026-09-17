@@ -93,21 +93,22 @@ export function AdminMembersView() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          padding: "20px 24px",
-          borderRadius: "14px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          padding: "18px 22px",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
-          gap: "16px",
+          gap: "14px",
         }}
       >
-        <div style={{ display: "flex", gap: "12px", flex: 1, minWidth: "280px" }}>
-          <div style={{ position: "relative", flex: 1 }}>
+        <div style={{ display: "flex", gap: "12px", flex: 1, minWidth: "260px", flexWrap: "wrap" }}>
+          <div style={{ position: "relative", flex: 1, minWidth: "200px" }}>
             <Search
-              size={18}
+              size={16}
               style={{ position: "absolute", left: "14px", top: "12px", color: "var(--muted)" }}
             />
             <input
@@ -117,11 +118,12 @@ export function AdminMembersView() {
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: "100%",
-                padding: "10px 14px 10px 42px",
-                borderRadius: "8px",
-                border: "1px solid var(--line)",
-                fontSize: "14px",
+                padding: "9px 14px 9px 38px",
+                borderRadius: "3px",
+                border: "1px solid var(--line-strong)",
+                fontSize: "13.5px",
                 background: "var(--paper)",
+                color: "var(--ink)",
               }}
             />
           </div>
@@ -130,11 +132,12 @@ export function AdminMembersView() {
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
             style={{
-              padding: "10px 14px",
-              borderRadius: "8px",
-              border: "1px solid var(--line)",
-              fontSize: "14px",
-              background: "var(--paper)",
+              padding: "9px 14px",
+              borderRadius: "3px",
+              border: "1px solid var(--line-strong)",
+              fontSize: "13.5px",
+              background: "var(--paper-card)",
+              color: "var(--ink)",
             }}
           >
             <option value="ALL">All Categories</option>
@@ -148,7 +151,7 @@ export function AdminMembersView() {
           type="button"
           onClick={loadMembers}
           className="button"
-          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", minHeight: "38px", padding: "8px 16px", borderRadius: "3px", fontSize: "13px" }}
         >
           <RefreshCw size={14} /> Refresh
         </button>
@@ -158,10 +161,11 @@ export function AdminMembersView() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
           overflow: "hidden",
+          boxShadow: "var(--shadow)",
         }}
       >
         <div
@@ -171,12 +175,14 @@ export function AdminMembersView() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexWrap: "wrap",
+            gap: "8px",
           }}
         >
-          <h3 style={{ fontSize: "16px", fontWeight: 800, margin: 0 }}>
+          <h3 style={{ fontSize: "16px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>
             Master Member Register ({filteredMembers.length})
           </h3>
-          <span style={{ fontSize: "12px", color: "var(--muted)" }}>
+          <span style={{ fontSize: "11.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
             Sequential membership numbers issued upon full verification
           </span>
         </div>
@@ -192,98 +198,107 @@ export function AdminMembersView() {
             <div>No members found matching your search.</div>
           </div>
         ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-            <thead>
-              <tr style={{ background: "var(--paper)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
-                <th style={{ padding: "12px 18px" }}>Member ID</th>
-                <th style={{ padding: "12px 18px" }}>Full Legal Name</th>
-                <th style={{ padding: "12px 18px" }}>Category</th>
-                <th style={{ padding: "12px 18px" }}>Constituency</th>
-                <th style={{ padding: "12px 18px" }}>Card Status</th>
-                <th style={{ padding: "12px 18px" }}>Approved Date</th>
-                <th style={{ padding: "12px 18px", textAlign: "right" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMembers.map((m) => {
-                const addr = Array.isArray(m.membership_applications?.member_addresses)
-                  ? m.membership_applications?.member_addresses[0]
-                  : m.membership_applications?.member_addresses;
-                const card = m.membership_cards?.[0];
+          <div className="table-responsive">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+              <thead>
+                <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line-strong)", textAlign: "left" }}>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Member ID</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Full Legal Name</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Category</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Constituency</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Card Status</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Approved Date</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)", textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredMembers.map((m) => {
+                  const addr = Array.isArray(m.membership_applications?.member_addresses)
+                    ? m.membership_applications?.member_addresses[0]
+                    : m.membership_applications?.member_addresses;
+                  const card = m.membership_cards?.[0];
 
-                return (
-                  <tr key={m.id} style={{ borderBottom: "1px solid var(--line)" }}>
-                    <td style={{ padding: "14px 18px", fontWeight: 700, fontFamily: "monospace", color: BRAND.colors.saffron }}>
-                      {m.membership_id}
-                    </td>
-                    <td style={{ padding: "14px 18px", fontWeight: 700 }}>
-                      {m.full_name}
-                    </td>
-                    <td style={{ padding: "14px 18px" }}>
-                      <span
-                        style={{
-                          padding: "3px 8px",
-                          borderRadius: "6px",
-                          background: "var(--paper)",
-                          fontWeight: 600,
-                          fontSize: "11px",
-                        }}
-                      >
-                        {m.category}
-                      </span>
-                    </td>
-                    <td style={{ padding: "14px 18px", color: "var(--muted)" }}>
-                      {addr?.vidhan_sabha || "Delhi"}
-                    </td>
-                    <td style={{ padding: "14px 18px" }}>
-                      {card ? (
+                  return (
+                    <tr key={m.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                      <td style={{ padding: "12px 16px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--saffron)" }}>
+                        {m.membership_id}
+                      </td>
+                      <td style={{ padding: "12px 16px", fontWeight: 700, color: "var(--ink)", fontFamily: "var(--font-serif)" }}>
+                        {m.full_name}
+                      </td>
+                      <td style={{ padding: "12px 16px" }}>
                         <span
                           style={{
-                            padding: "3px 8px",
-                            borderRadius: "100px",
+                            padding: "2px 7px",
+                            borderRadius: "2px",
+                            background: "var(--paper-subtle)",
+                            border: "1px solid var(--line)",
+                            fontWeight: 600,
                             fontSize: "11px",
-                            fontWeight: 700,
-                            background: "rgba(0, 135, 62, 0.1)",
-                            color: BRAND.colors.green,
+                            fontFamily: "var(--font-mono)",
                           }}
                         >
-                          ACTIVE ({card.card_number})
+                          {m.category}
                         </span>
-                      ) : (
-                        <span style={{ fontSize: "11px", color: "var(--muted)" }}>Pending Card</span>
-                      )}
-                    </td>
-                    <td style={{ padding: "14px 18px", color: "var(--muted)" }}>
-                      {new Date(m.approved_at).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                    <td style={{ padding: "14px 18px", textAlign: "right" }}>
-                      {card && (
-                        <a
-                          href={`/verify/member/${card.card_number}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="button"
-                          style={{
-                            padding: "5px 10px",
-                            fontSize: "11px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "4px",
-                          }}
-                        >
-                          <ExternalLink size={12} /> Verify
-                        </a>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                      <td style={{ padding: "12px 16px", color: "var(--muted)" }}>
+                        {addr?.vidhan_sabha || "Delhi"} AC
+                      </td>
+                      <td style={{ padding: "12px 16px" }}>
+                        {card ? (
+                          <span
+                            style={{
+                              padding: "2px 7px",
+                              borderRadius: "2px",
+                              fontSize: "10.5px",
+                              fontWeight: 700,
+                              fontFamily: "var(--font-mono)",
+                              letterSpacing: "0.03em",
+                              background: "rgba(29, 86, 53, 0.08)",
+                              border: "1px solid rgba(29, 86, 53, 0.25)",
+                              color: "var(--green)",
+                            }}
+                          >
+                            ACTIVE ({card.card_number})
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>Pending Card</span>
+                        )}
+                      </td>
+                      <td style={{ padding: "12px 16px", color: "var(--muted)", fontFamily: "var(--font-mono)", fontSize: "12px" }}>
+                        {new Date(m.approved_at).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </td>
+                      <td style={{ padding: "12px 16px", textAlign: "right" }}>
+                        {card && (
+                          <a
+                            href={`/verify/member/${card.card_number}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="button"
+                            style={{
+                              minHeight: "32px",
+                              padding: "4px 10px",
+                              fontSize: "11px",
+                              borderRadius: "3px",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                            }}
+                          >
+                            <ExternalLink size={12} /> Verify
+                          </a>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

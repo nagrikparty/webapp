@@ -103,41 +103,61 @@ export function MemberDocumentVault() {
 
   if (needsAuth) {
     return (
-      <div className="card" style={{ padding: "40px", textAlign: "center", background: "#fff", borderRadius: "16px", border: "1px solid var(--line)" }}>
-        <FileText size={40} style={{ color: BRAND.colors.saffron, margin: "0 auto 16px" }} />
-        <h2 style={{ fontSize: "20px", fontWeight: 800, marginBottom: "8px" }}>Sign In to Access Document Vault</h2>
-        <p style={{ color: "var(--muted)", maxWidth: "480px", margin: "0 auto 24px" }}>
-          Your uploaded documents are securely vaulted with encrypted storage. Please sign in to access your records.
+      <div className="card" style={{ padding: "40px 24px", textAlign: "center", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)", maxWidth: "580px", margin: "0 auto" }}>
+        <FileText size={44} style={{ color: "var(--saffron)", margin: "0 auto 16px" }} />
+        <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "4px", color: "var(--ink)" }}>Sign In to Access Document Vault</h2>
+        <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>दस्तावेज़ वॉल्ट देखने के लिए लॉगिन करें</div>
+        <p style={{ color: "var(--muted)", fontSize: "13.5px", maxWidth: "460px", margin: "0 auto 24px", lineHeight: 1.5 }}>
+          Your uploaded documents are vaulted in private encrypted storage with cryptographic integrity hashes. Please sign in to access your records.
         </p>
-        <a href="/login" className="button button-primary" style={{ padding: "10px 24px" }}>
-          Log In
+        <a href="/login" className="button primary" style={{ minHeight: "44px", padding: "10px 24px", borderRadius: "3px", fontSize: "14px", fontWeight: 700 }}>
+          Log In / प्रवेश करें
         </a>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "920px", margin: "0 auto" }}>
       <div
+        className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
-          padding: "24px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          padding: "20px 24px",
+          border: "1px solid var(--line-strong)",
           marginBottom: "24px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
           gap: "16px",
+          boxShadow: "var(--shadow)",
         }}
       >
         <div>
-          <h2 style={{ fontSize: "20px", fontWeight: 800, margin: "0 0 4px" }}>
-            Digital Document Vault
-          </h2>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
-            Encrypted private storage with SHA-256 integrity verification.
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+            <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>
+              Digital Document Vault
+            </h2>
+            <span
+              style={{
+                fontSize: "10.5px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: "2px",
+                background: "rgba(22, 53, 92, 0.08)",
+                border: "1px solid rgba(22, 53, 92, 0.25)",
+                color: "var(--blue)",
+                textTransform: "uppercase",
+              }}
+            >
+              SHA-256 Vault
+            </span>
+          </div>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0 }}>
+            गोपनीय एन्क्रिप्टेड दस्तावेज़ वॉल्ट • SHA-256 अखंडता सत्यापन और विधिक साक्ष्य।
           </p>
         </div>
 
@@ -153,10 +173,20 @@ export function MemberDocumentVault() {
           <label
             htmlFor="vault-upload"
             className="button primary"
-            style={{ cursor: uploading ? "not-allowed" : "pointer", display: "inline-flex", alignItems: "center", gap: "6px" }}
+            style={{
+              cursor: uploading ? "not-allowed" : "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              minHeight: "44px",
+              padding: "10px 20px",
+              fontSize: "13.5px",
+              fontWeight: 700,
+              borderRadius: "3px",
+            }}
           >
             {uploading ? <Loader2 className="animate-spin" size={16} /> : <Upload size={16} />}
-            Upload Document
+            Upload Document / दस्तावेज़ अपलोड करें
           </label>
         </div>
       </div>
@@ -165,124 +195,138 @@ export function MemberDocumentVault() {
         <div
           style={{
             padding: "12px 16px",
-            backgroundColor: "#fff2f0",
-            border: "1px solid #ffccc7",
-            borderRadius: "8px",
-            color: "#cf1322",
-            fontSize: "14px",
+            backgroundColor: "rgba(142, 38, 23, 0.06)",
+            border: "1px solid rgba(142, 38, 23, 0.3)",
+            borderRadius: "3px",
+            color: "var(--red)",
+            fontSize: "13.5px",
             marginBottom: "20px",
             display: "flex",
             alignItems: "center",
             gap: "8px",
           }}
         >
-          <AlertCircle size={18} />
+          <AlertCircle size={18} style={{ flexShrink: 0 }} />
           <span>{error}</span>
         </div>
       )}
 
       {loading ? (
-        <div style={{ padding: "40px", textAlign: "center" }}>
+        <div style={{ padding: "40px", textAlign: "center", color: "var(--muted)" }}>
           <Loader2 className="animate-spin" size={32} style={{ margin: "0 auto 12px" }} />
-          <div>Accessing secure vault...</div>
+          <div style={{ fontSize: "14px" }}>Accessing secure vault...</div>
         </div>
       ) : documents.length === 0 ? (
         <div
           className="card"
           style={{
-            background: "#fff",
-            borderRadius: "16px",
+            background: "var(--paper-card)",
+            borderRadius: "4px",
             padding: "48px 24px",
             textAlign: "center",
-            border: "1px solid var(--line)",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
           }}
         >
-          <FileText size={48} style={{ color: "var(--muted)", margin: "0 auto 16px" }} />
-          <h3 style={{ fontSize: "18px", fontWeight: 700, margin: "0 0 8px" }}>No Documents in Vault</h3>
-          <p style={{ color: "var(--muted)", fontSize: "14px", maxWidth: "420px", margin: "0 auto 20px" }}>
-            Documents uploaded during digital induction or for identity verification will be securely stored here.
+          <FileText size={44} style={{ color: "var(--muted)", margin: "0 auto 16px" }} />
+          <h3 style={{ fontSize: "18px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 4px", color: "var(--ink)" }}>No Documents in Vault</h3>
+          <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>वॉल्ट में कोई दस्तावेज़ नहीं है</div>
+          <p style={{ color: "var(--muted)", fontSize: "13.5px", maxWidth: "440px", margin: "0 auto 20px", lineHeight: 1.5 }}>
+            Identity proof and eligibility records uploaded during your digital induction will be securely archived here with audit hash verification.
           </p>
-          <a href="/member/induction" className="button primary">
-            Start Digital Induction
+          <a href="/member/induction" className="button primary" style={{ minHeight: "44px", padding: "10px 24px", borderRadius: "3px", fontSize: "14px", fontWeight: 700 }}>
+            Start Digital Induction / इंडक्शन शुरू करें
           </a>
         </div>
       ) : (
-        <div className="card" style={{ background: "#fff", borderRadius: "16px", border: "1px solid var(--line)", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-            <thead>
-              <tr style={{ background: "var(--paper)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
-                <th style={{ padding: "14px 16px" }}>Document</th>
-                <th style={{ padding: "14px 16px" }}>Type</th>
-                <th style={{ padding: "14px 16px" }}>SHA-256 Hash</th>
-                <th style={{ padding: "14px 16px" }}>Status</th>
-                <th style={{ padding: "14px 16px", textAlign: "right" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {documents.map((doc) => (
-                <tr key={doc.id} style={{ borderBottom: "1px solid var(--line)" }}>
-                  <td style={{ padding: "14px 16px" }}>
-                    <div style={{ fontWeight: 600 }}>{doc.original_filename}</div>
-                    <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px" }}>
-                      {(doc.file_size / 1024).toFixed(1)} KB • v{doc.current_version} • {new Date(doc.created_at).toLocaleDateString("en-IN")}
-                    </div>
-                  </td>
-                  <td style={{ padding: "14px 16px" }}>
-                    <span
-                      style={{
-                        padding: "4px 8px",
-                        background: "var(--paper)",
-                        borderRadius: "6px",
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      {doc.document_type.replace(/_/g, " ")}
-                    </span>
-                  </td>
-                  <td style={{ padding: "14px 16px", fontFamily: "monospace", fontSize: "11px", color: "var(--muted)" }}>
-                    {doc.sha256_hash.slice(0, 10)}...{doc.sha256_hash.slice(-8)}
-                  </td>
-                  <td style={{ padding: "14px 16px" }}>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "3px 8px",
-                        borderRadius: "100px",
-                        fontSize: "11px",
-                        fontWeight: 700,
-                        backgroundColor:
-                          doc.verification_status === "VERIFIED"
-                            ? "rgba(0, 135, 62, 0.1)"
-                            : doc.verification_status === "REJECTED"
-                            ? "rgba(255, 59, 48, 0.1)"
-                            : "rgba(245, 130, 32, 0.1)",
-                        color:
-                          doc.verification_status === "VERIFIED"
-                            ? BRAND.colors.green
-                            : doc.verification_status === "REJECTED"
-                            ? "var(--red)"
-                            : BRAND.colors.saffron,
-                      }}
-                    >
-                      {doc.verification_status.replace(/_/g, " ")}
-                    </span>
-                  </td>
-                  <td style={{ padding: "14px 16px", textAlign: "right" }}>
-                    <button
-                      type="button"
-                      onClick={() => viewDocument(doc.id)}
-                      className="button"
-                      style={{ padding: "6px 12px", fontSize: "12px", display: "inline-flex", alignItems: "center", gap: "4px" }}
-                    >
-                      <Eye size={14} /> View
-                    </button>
-                  </td>
+        <div className="card" style={{ background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", overflow: "hidden", boxShadow: "var(--shadow)" }}>
+          <div className="table-responsive">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+              <thead>
+                <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line-strong)", textAlign: "left" }}>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Document / दस्तावेज़</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Type / प्रकार</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>SHA-256 Hash</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Status / स्थिति</th>
+                  <th style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)", textAlign: "right" }}>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {documents.map((doc) => (
+                  <tr key={doc.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                    <td style={{ padding: "12px 16px" }}>
+                      <div style={{ fontWeight: 700, color: "var(--ink)" }}>{doc.original_filename}</div>
+                      <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px", fontFamily: "var(--font-mono)" }}>
+                        {(doc.file_size / 1024).toFixed(1)} KB • v{doc.current_version} • {new Date(doc.created_at).toLocaleDateString("en-IN")}
+                      </div>
+                    </td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <span
+                        style={{
+                          padding: "3px 8px",
+                          background: "var(--paper-subtle)",
+                          borderRadius: "2px",
+                          border: "1px solid var(--line)",
+                          fontSize: "11px",
+                          fontWeight: 600,
+                          textTransform: "capitalize",
+                          fontFamily: "var(--font-mono)",
+                        }}
+                      >
+                        {doc.document_type.replace(/_/g, " ")}
+                      </span>
+                    </td>
+                    <td style={{ padding: "12px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--muted)" }}>
+                      {doc.sha256_hash.slice(0, 10)}...{doc.sha256_hash.slice(-8)}
+                    </td>
+                    <td style={{ padding: "12px 16px" }}>
+                      <span
+                        style={{
+                          display: "inline-block",
+                          padding: "2px 8px",
+                          borderRadius: "2px",
+                          fontSize: "10.5px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-mono)",
+                          letterSpacing: "0.03em",
+                          backgroundColor:
+                            doc.verification_status === "VERIFIED"
+                              ? "rgba(29, 86, 53, 0.08)"
+                              : doc.verification_status === "REJECTED"
+                              ? "rgba(142, 38, 23, 0.08)"
+                              : "rgba(179, 74, 21, 0.08)",
+                          border:
+                            doc.verification_status === "VERIFIED"
+                              ? "1px solid rgba(29, 86, 53, 0.25)"
+                              : doc.verification_status === "REJECTED"
+                              ? "1px solid rgba(142, 38, 23, 0.25)"
+                              : "1px solid rgba(179, 74, 21, 0.25)",
+                          color:
+                            doc.verification_status === "VERIFIED"
+                              ? "var(--green)"
+                              : doc.verification_status === "REJECTED"
+                              ? "var(--red)"
+                              : "var(--saffron)",
+                        }}
+                      >
+                        {doc.verification_status.replace(/_/g, " ")}
+                      </span>
+                    </td>
+                    <td style={{ padding: "12px 16px", textAlign: "right" }}>
+                      <button
+                        type="button"
+                        onClick={() => viewDocument(doc.id)}
+                        className="button"
+                        style={{ minHeight: "36px", padding: "6px 14px", fontSize: "12px", borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                      >
+                        <Eye size={14} /> View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

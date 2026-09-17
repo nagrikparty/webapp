@@ -44,14 +44,15 @@ export function MemberProfileView() {
 
   if (needsAuth) {
     return (
-      <div className="card" style={{ padding: "40px", textAlign: "center", background: "#fff", borderRadius: "16px", border: "1px solid var(--line)" }}>
-        <Clock size={40} style={{ color: BRAND.colors.saffron, margin: "0 auto 16px" }} />
-        <h2 style={{ fontSize: "20px", fontWeight: 800, marginBottom: "8px" }}>Sign In to View Status</h2>
-        <p style={{ color: "var(--muted)", maxWidth: "480px", margin: "0 auto 24px" }}>
-          Please sign in to view your verification status and membership application details.
+      <div className="card" style={{ padding: "40px 24px", textAlign: "center", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)", maxWidth: "580px", margin: "0 auto" }}>
+        <Clock size={44} style={{ color: "var(--saffron)", margin: "0 auto 16px" }} />
+        <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "4px", color: "var(--ink)" }}>Sign In to View Status</h2>
+        <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>स्थिति देखने के लिए लॉगिन करें</div>
+        <p style={{ color: "var(--muted)", fontSize: "13.5px", maxWidth: "460px", margin: "0 auto 24px", lineHeight: 1.5 }}>
+          Please sign in to view your verification status, induction docket, and membership application record.
         </p>
-        <a href="/login" className="button button-primary" style={{ padding: "10px 24px" }}>
-          Log In
+        <a href="/login" className="button primary" style={{ minHeight: "44px", padding: "10px 24px", borderRadius: "3px", fontSize: "14px", fontWeight: 700 }}>
+          Log In / प्रवेश करें
         </a>
       </div>
     );
@@ -61,15 +62,16 @@ export function MemberProfileView() {
   const appStatus = application?.status || "NO_APPLICATION";
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "860px", margin: "0 auto" }}>
       {/* Top Banner Status */}
       <div
+        className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
           padding: "24px",
-          border: "1px solid var(--line)",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
           marginBottom: "24px",
           display: "flex",
           justifyContent: "space-between",
@@ -81,26 +83,27 @@ export function MemberProfileView() {
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
             style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "50%",
-              background: "var(--paper)",
+              width: "56px",
+              height: "56px",
+              borderRadius: "3px",
+              background: "var(--paper-subtle)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              border: "1px solid var(--line)",
-              fontSize: "24px",
+              border: "1px solid var(--line-strong)",
+              fontSize: "22px",
               fontWeight: 800,
-              color: BRAND.colors.saffron,
+              fontFamily: "var(--font-serif)",
+              color: "var(--saffron)",
             }}
           >
             {profile?.full_name ? profile.full_name[0].toUpperCase() : "N"}
           </div>
           <div>
-            <h2 style={{ fontSize: "20px", fontWeight: 800, margin: "0 0 4px" }}>
+            <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 4px", color: "var(--ink)" }}>
               {profile?.full_name || "Supporter / Member"}
             </h2>
-            <div style={{ fontSize: "13px", color: "var(--muted)" }}>{profile?.email}</div>
+            <div style={{ fontSize: "12.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>{profile?.email}</div>
           </div>
         </div>
 
@@ -111,15 +114,18 @@ export function MemberProfileView() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "6px 14px",
-                borderRadius: "100px",
-                background: "rgba(0, 135, 62, 0.1)",
-                color: BRAND.colors.green,
+                padding: "4px 10px",
+                borderRadius: "2px",
+                background: "rgba(29, 86, 53, 0.08)",
+                border: "1px solid rgba(29, 86, 53, 0.25)",
+                color: "var(--green)",
                 fontWeight: 700,
-                fontSize: "13px",
+                fontSize: "11px",
+                fontFamily: "var(--font-mono)",
+                letterSpacing: "0.04em",
               }}
             >
-              <CheckCircle2 size={16} /> APPROVED MEMBER
+              <CheckCircle2 size={14} /> APPROVED MEMBER / सत्यापित सदस्य
             </div>
           ) : (
             <div
@@ -127,15 +133,18 @@ export function MemberProfileView() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "6px 14px",
-                borderRadius: "100px",
-                background: "rgba(245, 130, 32, 0.1)",
-                color: BRAND.colors.saffron,
+                padding: "4px 10px",
+                borderRadius: "2px",
+                background: "rgba(179, 74, 21, 0.08)",
+                border: "1px solid rgba(179, 74, 21, 0.25)",
+                color: "var(--saffron)",
                 fontWeight: 700,
-                fontSize: "13px",
+                fontSize: "11px",
+                fontFamily: "var(--font-mono)",
+                letterSpacing: "0.04em",
               }}
             >
-              <Clock size={16} /> {appStatus.replace(/_/g, " ")}
+              <Clock size={14} /> {appStatus.replace(/_/g, " ")}
             </div>
           )}
         </div>
@@ -145,62 +154,73 @@ export function MemberProfileView() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
-          padding: "28px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          padding: "24px 28px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
           marginBottom: "24px",
         }}
       >
-        <h3 style={{ fontSize: "17px", fontWeight: 800, margin: "0 0 20px" }}>Organisational Record Details</h3>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", fontSize: "14px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--line)", paddingBottom: "14px", marginBottom: "20px" }}>
           <div>
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Membership ID
+            <h3 style={{ fontSize: "16px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>
+              Organisational Record Details
+            </h3>
+            <div style={{ fontSize: "12px", color: "var(--muted)" }}>सांगठनिक पंजी विवरण</div>
+          </div>
+          <span style={{ fontSize: "10.5px", fontFamily: "var(--font-mono)", color: "var(--muted)", textTransform: "uppercase" }}>
+            CONFIDENTIAL DOCKET
+          </span>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", fontSize: "13.5px" }}>
+          <div>
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+              Membership ID / संख्या
             </div>
-            <div style={{ fontSize: "16px", fontWeight: 800, color: BRAND.colors.saffron, marginTop: "4px" }}>
+            <div style={{ fontSize: "15px", fontWeight: 800, color: "var(--saffron)", fontFamily: "var(--font-mono)", marginTop: "4px" }}>
               {member?.membership_id || (application ? `App: ${application.application_number}` : "Not Assigned")}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Category
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+              Category / श्रेणी
             </div>
-            <div style={{ fontSize: "15px", fontWeight: 700, marginTop: "4px" }}>
+            <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--ink)", marginTop: "4px" }}>
               {member?.category || application?.membership_category || "Public Supporter"}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Vidhan Sabha Constituency
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+              Constituency / विधान सभा
             </div>
-            <div style={{ fontSize: "15px", marginTop: "4px" }}>
+            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "4px" }}>
               {profile?.vidhan_sabha || "Not set"}
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Ward / Locality
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+              Ward / Locality / वार्ड
             </div>
-            <div style={{ fontSize: "15px", marginTop: "4px" }}>{profile?.ward || "Not set"}</div>
+            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "4px" }}>{profile?.ward || "Not set"}</div>
           </div>
 
           <div>
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Contact Phone
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+              Contact Phone / फोन
             </div>
-            <div style={{ fontSize: "15px", marginTop: "4px" }}>{profile?.phone || "Not set"}</div>
+            <div style={{ fontSize: "14px", color: "var(--ink)", fontFamily: "var(--font-mono)", marginTop: "4px" }}>{profile?.phone || "Not set"}</div>
           </div>
 
           <div>
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Enrolled / Applied Date
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+              Enrolled Date / पंजीकरण तिथि
             </div>
-            <div style={{ fontSize: "15px", marginTop: "4px" }}>
+            <div style={{ fontSize: "14px", color: "var(--ink)", fontFamily: "var(--font-mono)", marginTop: "4px" }}>
               {member?.approved_at
                 ? new Date(member.approved_at).toLocaleDateString("en-IN")
                 : application?.submitted_at
@@ -214,9 +234,10 @@ export function MemberProfileView() {
           <div
             style={{
               marginTop: "24px",
-              padding: "16px",
-              background: "var(--paper)",
-              borderRadius: "10px",
+              padding: "16px 18px",
+              background: "var(--paper-subtle)",
+              borderRadius: "3px",
+              border: "1px solid var(--line-strong)",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
@@ -225,12 +246,12 @@ export function MemberProfileView() {
             }}
           >
             <div>
-              <strong>Complete Digital Induction</strong>
-              <div style={{ fontSize: "13px", color: "var(--muted)" }}>
-                Submit required declarations and identity documents for verification.
+              <strong style={{ fontSize: "13.5px", color: "var(--ink)" }}>Complete Digital Induction / डिजिटल इंडक्शन पूर्ण करें</strong>
+              <div style={{ fontSize: "12.5px", color: "var(--muted)", marginTop: "2px" }}>
+                Submit required declarations and identity evidence for verification.
               </div>
             </div>
-            <a href="/member/induction" className="button primary" style={{ fontSize: "13px" }}>
+            <a href="/member/induction" className="button primary" style={{ minHeight: "40px", padding: "8px 18px", fontSize: "13px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
               Continue Induction <ArrowRight size={14} />
             </a>
           </div>
@@ -238,19 +259,20 @@ export function MemberProfileView() {
       </div>
 
       {/* Quick Action Navigation Tabs */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "14px" }}>
         <a
           href="/member/membership-card"
           className="card"
           style={{
-            background: "#fff",
-            padding: "18px",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            background: "var(--paper-card)",
+            padding: "18px 20px",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             textAlign: "center",
           }}
         >
-          <div style={{ fontWeight: 700, fontSize: "15px", marginBottom: "4px" }}>Membership Card</div>
+          <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Membership Card</div>
           <div style={{ fontSize: "12px", color: "var(--muted)" }}>Preview & CR80 Print PDF</div>
         </a>
 
@@ -258,14 +280,15 @@ export function MemberProfileView() {
           href="/member/documents"
           className="card"
           style={{
-            background: "#fff",
-            padding: "18px",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            background: "var(--paper-card)",
+            padding: "18px 20px",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             textAlign: "center",
           }}
         >
-          <div style={{ fontWeight: 700, fontSize: "15px", marginBottom: "4px" }}>Document Vault</div>
+          <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Document Vault</div>
           <div style={{ fontSize: "12px", color: "var(--muted)" }}>Encrypted Private Storage</div>
         </a>
 
@@ -273,14 +296,15 @@ export function MemberProfileView() {
           href="/member/status"
           className="card"
           style={{
-            background: "#fff",
-            padding: "18px",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            background: "var(--paper-card)",
+            padding: "18px 20px",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             textAlign: "center",
           }}
         >
-          <div style={{ fontWeight: 700, fontSize: "15px", marginBottom: "4px" }}>Audit & Status</div>
+          <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Audit & Status</div>
           <div style={{ fontSize: "12px", color: "var(--muted)" }}>Live Verification Trace</div>
         </a>
       </div>

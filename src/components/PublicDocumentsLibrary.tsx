@@ -336,40 +336,41 @@ export function PublicDocumentsLibrary() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          padding: "24px 28px",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          padding: "22px 26px",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
           gap: "16px",
+          boxShadow: "var(--shadow)",
         }}
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-            <ShieldCheck size={18} style={{ color: BRAND.colors.green }} />
-            <h2 style={{ fontSize: "20px", fontWeight: 800, margin: 0 }}>
+            <ShieldCheck size={18} style={{ color: "var(--green)" }} />
+            <h2 style={{ fontSize: "19px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
               Official Charters & Policy Frameworks Archive
             </h2>
           </div>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0 }}>
             Publicly inspectable founding charters, draft party constitution, statutory filings, and 9 sectoral frameworks.
           </p>
         </div>
 
         <span
+          className="badge-citation"
           style={{
-            fontSize: "12px",
+            fontSize: "11px",
             fontWeight: 700,
-            background: "rgba(245, 130, 32, 0.1)",
-            color: BRAND.colors.saffron,
-            padding: "4px 10px",
-            borderRadius: "6px",
+            background: "var(--paper-subtle)",
+            color: "var(--saffron)",
+            borderColor: "rgba(179, 74, 21, 0.3)",
           }}
         >
-          {docs.length} OFFICIAL DOCUMENTS PUBLISHED
+          {docs.length} OFFICIAL CHARTERS PUBLISHED
         </span>
       </div>
 
@@ -383,7 +384,7 @@ export function PublicDocumentsLibrary() {
           gap: "14px",
         }}
       >
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {categories.map((cat) => (
             <button
               key={cat}
@@ -392,11 +393,14 @@ export function PublicDocumentsLibrary() {
               className="button"
               style={{
                 fontSize: "12px",
-                padding: "6px 14px",
-                fontWeight: selectedCategory === cat ? 800 : 500,
-                background: selectedCategory === cat ? "var(--ink)" : "#fff",
-                color: selectedCategory === cat ? "#fff" : "var(--ink)",
-                borderColor: selectedCategory === cat ? "var(--ink)" : "var(--line)",
+                padding: "4px 12px",
+                minHeight: "36px",
+                borderRadius: "3px",
+                fontWeight: selectedCategory === cat ? 700 : 500,
+                background: selectedCategory === cat ? "var(--ink)" : "var(--paper-card)",
+                color: selectedCategory === cat ? "#fff" : "var(--ink-body)",
+                borderColor: selectedCategory === cat ? "var(--ink)" : "var(--line-strong)",
+                fontFamily: "var(--font-mono)",
               }}
             >
               {cat}
@@ -405,19 +409,21 @@ export function PublicDocumentsLibrary() {
         </div>
 
         <div style={{ position: "relative", minWidth: "240px" }}>
-          <Search size={14} style={{ position: "absolute", left: "10px", top: "11px", color: "var(--muted)" }} />
+          <Search size={14} style={{ position: "absolute", left: "12px", top: "12px", color: "var(--muted)" }} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search documents..."
             style={{
-              padding: "7px 12px 7px 32px",
+              padding: "8px 12px 8px 34px",
               fontSize: "13px",
-              borderRadius: "8px",
-              border: "1px solid var(--line)",
-              background: "#fff",
+              borderRadius: "3px",
+              border: "1px solid var(--line-strong)",
+              background: "#ffffff",
+              color: "var(--ink)",
               width: "100%",
+              minHeight: "38px",
               boxSizing: "border-box",
             }}
           />
@@ -425,19 +431,20 @@ export function PublicDocumentsLibrary() {
       </div>
 
       {/* Grid of Documents */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "18px" }}>
         {filteredDocs.map((doc) => (
           <div
             key={doc.id}
             className="card"
             style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "16px",
+              background: "var(--paper-card)",
+              padding: "22px",
+              borderRadius: "4px",
               border: "1px solid var(--line)",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
+              boxShadow: "var(--shadow)",
             }}
           >
             <div>
@@ -477,20 +484,21 @@ export function PublicDocumentsLibrary() {
               <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "12px" }}>
                 <div
                   style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "8px",
-                    background: "rgba(245, 130, 32, 0.08)",
-                    color: BRAND.colors.saffron,
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "3px",
+                    background: "var(--paper-subtle)",
+                    color: "var(--saffron)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     flexShrink: 0,
+                    border: "1px solid var(--line)",
                   }}
                 >
-                  <FileText size={20} />
+                  <FileText size={18} />
                 </div>
-                <h3 style={{ fontSize: "16px", fontWeight: 800, margin: 0, lineHeight: 1.3 }}>
+                <h3 style={{ fontSize: "16px", fontWeight: 700, margin: 0, lineHeight: 1.3, fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
                   {doc.title}
                 </h3>
               </div>
@@ -500,21 +508,23 @@ export function PublicDocumentsLibrary() {
               </p>
             </div>
 
-            <div style={{ borderTop: "1px solid var(--line)", paddingTop: "14px", marginTop: "12px" }}>
+            <div style={{ borderTop: "1px solid var(--line)", paddingTop: "12px", marginTop: "12px" }}>
               <div
+                className="badge-citation"
                 style={{
-                  fontSize: "11px",
-                  fontFamily: "monospace",
+                  fontSize: "10.5px",
+                  display: "block",
                   color: "var(--muted)",
                   marginBottom: "12px",
                   wordBreak: "break-all",
+                  padding: "4px 8px",
                 }}
               >
                 SHA-256: {doc.file_sha256.slice(0, 16)}...{doc.file_sha256.slice(-8)}
               </div>
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "11px", color: "var(--muted)" }}>
+                <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
                   Published: {new Date(doc.published_at).toLocaleDateString("en-IN")}
                 </span>
                 <a
@@ -525,14 +535,16 @@ export function PublicDocumentsLibrary() {
                   }}
                   className="button"
                   style={{
-                    padding: "6px 12px",
-                    fontSize: "12px",
+                    padding: "4px 10px",
+                    fontSize: "11.5px",
+                    minHeight: "32px",
+                    borderRadius: "2px",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
                   }}
                 >
-                  <Eye size={14} /> Inspect Record
+                  <Eye size={13} /> Inspect Record
                 </a>
               </div>
             </div>

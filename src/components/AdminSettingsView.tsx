@@ -107,28 +107,34 @@ export function AdminSettingsView() {
 
       {/* Phase Status Card */}
       <div
+        className="card"
         style={{
-          padding: "20px 24px",
-          backgroundColor: "#fff",
-          borderRadius: "14px",
-          border: `2px solid ${BRAND.colors.saffron}44`,
+          padding: "24px 28px",
+          backgroundColor: "var(--paper-card)",
+          borderRadius: "4px",
+          border: `1px solid var(--line)`,
+          borderLeft: `4px solid var(--saffron)`,
+          boxShadow: "var(--shadow)",
           marginBottom: "24px",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
           <Shield size={20} style={{ color: BRAND.colors.saffron }} />
-          <h3 style={{ fontSize: "16px", fontWeight: 700, margin: 0 }}>Organisation Phase</h3>
+          <h3 style={{ fontSize: "16px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)" }}>
+            Organisation Phase / संगठन का चरण
+          </h3>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
           <span
             style={{
-              padding: "6px 14px",
-              borderRadius: "100px",
-              fontSize: "12px",
+              padding: "4px 10px",
+              borderRadius: "2px",
+              border: "1px dashed var(--saffron)",
+              fontSize: "11px",
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.05em",
-              backgroundColor: "rgba(245, 130, 32, 0.1)",
+              backgroundColor: "rgba(245, 130, 32, 0.08)",
               color: BRAND.colors.saffron,
             }}
           >
@@ -138,26 +144,28 @@ export function AdminSettingsView() {
             {BRAND.status.phaseDescription}
           </span>
         </div>
-        <p style={{ fontSize: "12px", color: "var(--muted)", marginTop: "12px", marginBottom: 0 }}>
+        <p style={{ fontSize: "12px", color: "var(--muted)", marginTop: "12px", marginBottom: 0, lineHeight: 1.5 }}>
           {BRAND.status.disclaimer}
         </p>
       </div>
 
       {/* Settings Grid */}
-      <h3 style={{ fontSize: "16px", fontWeight: 700, marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+      <h3 style={{ fontSize: "16px", fontWeight: 700, marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-serif)" }}>
         <Settings size={18} />
-        System Configuration
+        System Configuration / प्रणाली विन्यास
       </h3>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         {settings.map((setting) => (
           <div
             key={setting.key}
+            className="card"
             style={{
               padding: "16px 20px",
-              backgroundColor: "#fff",
-              borderRadius: "10px",
+              backgroundColor: "var(--paper-card)",
+              borderRadius: "4px",
               border: "1px solid var(--line)",
+              boxShadow: "var(--shadow)",
               display: "flex",
               alignItems: "center",
               gap: "16px",
@@ -165,7 +173,7 @@ export function AdminSettingsView() {
             }}
           >
             <div style={{ flex: 1, minWidth: "200px" }}>
-              <div style={{ fontSize: "14px", fontWeight: 700, marginBottom: "2px", fontFamily: "monospace" }}>
+              <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "2px", fontFamily: "monospace" }}>
                 {setting.key}
               </div>
               <div style={{ fontSize: "12px", color: "var(--muted)" }}>{setting.description}</div>
@@ -175,7 +183,7 @@ export function AdminSettingsView() {
                 <select
                   value={setting.value}
                   onChange={(e) => updateLocalSetting(setting.key, e.target.value)}
-                  style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid var(--line)", fontSize: "13px", backgroundColor: "#fff" }}
+                  style={{ padding: "8px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", fontSize: "13px", backgroundColor: "var(--paper)" }}
                 >
                   <option value="formation">Formation</option>
                   <option value="registered_party">Registered Party</option>
@@ -184,7 +192,7 @@ export function AdminSettingsView() {
                 <select
                   value={setting.value}
                   onChange={(e) => updateLocalSetting(setting.key, e.target.value)}
-                  style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid var(--line)", fontSize: "13px", backgroundColor: "#fff" }}
+                  style={{ padding: "8px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", fontSize: "13px", backgroundColor: "var(--paper)" }}
                 >
                   <option value="true">Enabled</option>
                   <option value="false">Disabled</option>
@@ -194,27 +202,25 @@ export function AdminSettingsView() {
                   type="text"
                   value={setting.value}
                   onChange={(e) => updateLocalSetting(setting.key, e.target.value)}
-                  style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid var(--line)", fontSize: "13px", width: "200px" }}
+                  style={{ padding: "8px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", fontSize: "13px", width: "200px", backgroundColor: "var(--paper)" }}
                 />
               )}
               <button
                 onClick={() => saveSetting(setting.key, setting.value)}
                 disabled={saving}
+                className="button primary"
                 style={{
-                  padding: "8px 12px",
-                  backgroundColor: BRAND.colors.ink,
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: saving ? "not-allowed" : "pointer",
-                  display: "flex",
+                  padding: "8px 16px",
+                  minHeight: "44px",
+                  borderRadius: "3px",
+                  display: "inline-flex",
                   alignItems: "center",
-                  gap: "4px",
+                  gap: "6px",
                   fontSize: "12px",
-                  fontWeight: 600,
+                  fontWeight: 700,
                 }}
               >
-                <Save size={12} />
+                <Save size={13} />
                 Save
               </button>
             </div>
@@ -223,10 +229,10 @@ export function AdminSettingsView() {
       </div>
 
       {/* System Info */}
-      <div style={{ marginTop: "32px", padding: "16px 20px", backgroundColor: "#fafafa", borderRadius: "10px", border: "1px solid var(--line)" }}>
-        <h4 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+      <div className="card" style={{ marginTop: "32px", padding: "20px 24px", backgroundColor: "var(--paper-subtle)", borderRadius: "4px", border: "1px solid var(--line)", boxShadow: "var(--shadow)" }}>
+        <h4 style={{ fontSize: "14px", fontWeight: 700, marginBottom: "14px", display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-serif)" }}>
           <Database size={16} style={{ color: "var(--muted)" }} />
-          System Information
+          System Information / प्रणाली विवरण
         </h4>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px", fontSize: "13px" }}>
           <div>

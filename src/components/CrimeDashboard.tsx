@@ -42,22 +42,22 @@ export function CrimeDashboard() {
   });
 
   return (
-    <div className="crime-dashboard-card">
-      {/* Top red glowing bar */}
-      <div className="crime-dashboard-glow" />
+    <div className="crime-dashboard-card" style={{ background: "var(--paper-card)", border: "1px solid var(--line-strong)", borderRadius: "4px", padding: "24px", boxShadow: "var(--shadow)" }}>
+      {/* Official printed border */}
+      <div style={{ height: "3px", background: "var(--red)", width: "100%", marginBottom: "18px", borderRadius: "2px 2px 0 0" }} />
       
       {/* Header section */}
-      <div className="crime-dashboard-header">
-        <div className="crime-dashboard-header-inner">
-          <div className="flex align-center gap-2">
-            <ShieldAlert size={28} color="#ff4444" />
-            <h3 className="crime-dashboard-title">
+      <div className="crime-dashboard-header" style={{ marginBottom: "20px" }}>
+        <div className="crime-dashboard-header-inner" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+          <div className="flex align-center gap-2" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <ShieldAlert size={24} color="var(--red)" />
+            <h3 className="crime-dashboard-title" style={{ margin: 0, fontSize: "18px", fontWeight: 700, fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
               Verified Crime Tracker
             </h3>
           </div>
-          <div className="crime-dashboard-badge">
-            <Clock size={14} />
-            <span>100% Real Citations</span>
+          <div className="badge-citation" style={{ border: "1px solid rgba(142, 38, 23, 0.3)", background: "rgba(142, 38, 23, 0.06)", color: "var(--red)" }}>
+            <Clock size={12} />
+            <span>100% Verified Citations</span>
           </div>
         </div>
       </div>

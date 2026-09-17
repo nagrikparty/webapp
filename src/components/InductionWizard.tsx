@@ -377,18 +377,19 @@ export function InductionWizard() {
       {/* Progress Bar Header */}
       <div
         style={{
-          background: "#fff",
-          padding: "20px 24px",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
-          marginBottom: "24px",
+          background: "var(--paper-card)",
+          padding: "18px 22px",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
+          marginBottom: "20px",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-          <span style={{ fontSize: "13px", fontWeight: 700, color: BRAND.colors.saffron, textTransform: "uppercase" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+          <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--saffron)", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
             Step {step} of 10
           </span>
-          <span style={{ fontSize: "13px", color: "var(--muted)" }}>
+          <span style={{ fontSize: "12.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
             {step === 1 && "Account Confirmation"}
             {step === 2 && "Personal Details"}
             {step === 3 && "Identity & Electoral Proof"}
@@ -401,12 +402,12 @@ export function InductionWizard() {
             {step === 10 && "Submission Confirmation"}
           </span>
         </div>
-        <div style={{ height: "6px", background: "var(--paper)", borderRadius: "100px", overflow: "hidden" }}>
+        <div style={{ height: "4px", background: "var(--paper-subtle)", borderRadius: "2px", overflow: "hidden", border: "1px solid var(--line)" }}>
           <div
             style={{
               height: "100%",
               width: `${(step / 10) * 100}%`,
-              background: `linear-gradient(90deg, ${BRAND.colors.saffron}, ${BRAND.colors.green})`,
+              background: `var(--ink)`,
               transition: "width 0.3s ease",
             }}
           />
@@ -417,18 +418,18 @@ export function InductionWizard() {
         <div
           style={{
             padding: "12px 16px",
-            backgroundColor: "#fff2f0",
-            border: "1px solid #ffccc7",
-            borderRadius: "8px",
-            color: "#cf1322",
-            fontSize: "14px",
+            backgroundColor: "rgba(142, 38, 23, 0.08)",
+            border: "1px solid rgba(142, 38, 23, 0.25)",
+            borderRadius: "3px",
+            color: "var(--red)",
+            fontSize: "13.5px",
             marginBottom: "20px",
             display: "flex",
             alignItems: "center",
             gap: "8px",
           }}
         >
-          <AlertCircle size={18} />
+          <AlertCircle size={16} />
           <span>{error}</span>
         </div>
       )}
@@ -437,11 +438,11 @@ export function InductionWizard() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
-          padding: "32px",
-          border: "1px solid var(--line)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.04)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          padding: "28px 24px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
         }}
       >
         {/* STEP 1: Account */}

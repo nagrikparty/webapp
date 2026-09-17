@@ -85,11 +85,11 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
     <div class="container" style="max-width: 1060px;">
       
       <!-- Methodology & Accountability Notice -->
-      <div class="card" style="background: #fff; border: 1px solid #fed7aa; border-radius: 14px; padding: 20px 24px; margin-bottom: 32px; display: flex; gap: 16px; align-items: flex-start;">
-        <Info size={22} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
+      <div class="card" style="background: var(--paper-card); border: 1px solid var(--line-strong); border-left: 3px solid var(--saffron); border-radius: 3px; padding: 18px 22px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow);">
+        <Info size={20} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
         <div>
-          <strong style="font-size: 15px; color: var(--ink);">Civic Methodology & Evidence Standard</strong>
-          <p style="font-size: 13px; color: var(--muted); margin: 6px 0 0; line-height: 1.6;">
+          <strong style="font-size: 14.5px; color: var(--ink); font-family: var(--font-serif);">Civic Methodology & Evidence Standard</strong>
+          <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.6;">
             The Nagrik Party Verified Crime Tracker indexes public evidence of serious offenses across the National Capital Region.
             Citations are automatically ingested from reputable national news providers and monitored for veracity.
             Each item represents a documented, published event with a verifiable link.
@@ -98,13 +98,13 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
       </div>
 
       <!-- Categories Summary Grid -->
-      <div style="margin-bottom: 40px;">
+      <div style="margin-bottom: 36px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
           <div>
-            <h2 style="font-size: 20px; font-weight: 800; margin: 0;">Category Breakdown</h2>
+            <h2 style="font-size: 20px; font-weight: 700; margin: 0; font-family: var(--font-serif);">Category Breakdown</h2>
             <p style="font-size: 13px; color: var(--muted); margin: 2px 0 0;">Select a category to view all verified news records.</p>
           </div>
-          <a href="/issues" class="button" style="font-size: 12px; padding: 6px 14px;">
+          <a href="/issues" class="button" style="font-size: 12px; padding: 6px 14px; min-height: 36px;">
             Report Unlisted Incident
           </a>
         </div>
@@ -112,15 +112,15 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
           {stats.map((st) => (
             <a href={`/crimes/${st.crime_type.toLowerCase()}`} class="crime-hero-stat-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 13px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 12.5px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono);">
                   {st.crime_type}
                 </span>
-                <span style="color: #dc2626;">
-                  <ChevronRight size={16} />
+                <span style="color: var(--red);">
+                  <ChevronRight size={15} />
                 </span>
               </div>
-              <div style="font-size: 32px; font-weight: 800; color: #111827; font-family: system-ui, sans-serif; line-height: 1;">
+              <div style="font-size: 28px; font-weight: 700; color: var(--ink); font-family: var(--font-mono); line-height: 1;">
                 {st.count}
               </div>
               <div style="font-size: 11px; color: var(--muted); margin-top: 6px;">

@@ -90,41 +90,35 @@ export function TransparencyLedger() {
   const netBalance = totalReceipts - totalExp;
 
   return (
-    <div style={{ display: "grid", gap: "28px" }}>
+    <div style={{ display: "grid", gap: "24px" }}>
       {/* Transparency Pledge Header */}
       <div
         className="card"
         style={{
-          background: "#fff",
-          padding: "28px",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          padding: "24px 28px",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
           display: "grid",
           gap: "16px",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "14px" }}>
           <div>
             <div
+              className="badge-verified"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "4px 10px",
-                borderRadius: "100px",
-                background: "rgba(0, 135, 62, 0.1)",
-                color: BRAND.colors.green,
-                fontWeight: 700,
-                fontSize: "12px",
+                fontSize: "11px",
                 marginBottom: "8px",
               }}
             >
-              <ShieldCheck size={14} /> ZERO UNACCOUNTED FUNDS PLEDGE
+              <ShieldCheck size={13} /> ZERO UNACCOUNTED FUNDS PLEDGE
             </div>
-            <h2 style={{ fontSize: "24px", fontWeight: 800, margin: "0 0 6px" }}>
+            <h2 style={{ fontSize: "22px", fontWeight: 700, margin: "0 0 6px", fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
               Radical Financial Transparency
             </h2>
-            <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0, maxWidth: "700px", lineHeight: 1.6 }}>
+            <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0, maxWidth: "700px", lineHeight: 1.6 }}>
               Political clean-up begins at the bank account. Nagrik Party operates on a strictly cashless,
               100% digital audit policy. Every rupee received in voluntary support and expended in operations
               is recorded in our public ledger.
@@ -133,32 +127,32 @@ export function TransparencyLedger() {
 
           <div
             style={{
-              padding: "16px 20px",
-              background: "var(--paper)",
-              borderRadius: "12px",
-              border: "1px solid var(--line)",
+              padding: "14px 18px",
+              background: "var(--paper-subtle)",
+              borderRadius: "3px",
+              border: "1px solid var(--line-strong)",
               minWidth: "220px",
             }}
           >
-            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Statutory Compliance
             </div>
-            <div style={{ fontSize: "13px", fontWeight: 700, marginTop: "4px" }}>
+            <div style={{ fontSize: "13px", fontWeight: 700, marginTop: "4px", color: "var(--ink)" }}>
               RPA 1951 Transparency Model
             </div>
-            <div style={{ fontSize: "11px", color: BRAND.colors.green, marginTop: "4px", display: "flex", alignItems: "center", gap: "4px" }}>
+            <div style={{ fontSize: "11.5px", color: "var(--green)", marginTop: "4px", display: "flex", alignItems: "center", gap: "4px", fontWeight: 600 }}>
               <CheckCircle2 size={12} /> Cashless Bank Deposits Only
             </div>
           </div>
         </div>
 
         {/* Stats Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginTop: "8px" }}>
-          <div style={{ padding: "16px", background: "var(--paper)", borderRadius: "10px" }}>
-            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "14px", marginTop: "6px" }}>
+          <div style={{ padding: "14px 18px", background: "var(--paper-subtle)", borderRadius: "3px", border: "1px solid var(--line)" }}>
+            <div style={{ fontSize: "10.5px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Total Voluntary Receipts
             </div>
-            <div style={{ fontSize: "24px", fontWeight: 800, color: BRAND.colors.green, marginTop: "4px" }}>
+            <div style={{ fontSize: "24px", fontWeight: 700, color: "var(--green)", marginTop: "4px", fontFamily: "var(--font-mono)" }}>
               ₹{totalReceipts.toLocaleString("en-IN")}
             </div>
             <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px" }}>
@@ -166,11 +160,11 @@ export function TransparencyLedger() {
             </div>
           </div>
 
-          <div style={{ padding: "16px", background: "var(--paper)", borderRadius: "10px" }}>
-            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+          <div style={{ padding: "14px 18px", background: "var(--paper-subtle)", borderRadius: "3px", border: "1px solid var(--line)" }}>
+            <div style={{ fontSize: "10.5px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Formation Expenditure
             </div>
-            <div style={{ fontSize: "24px", fontWeight: 800, color: "var(--red)", marginTop: "4px" }}>
+            <div style={{ fontSize: "24px", fontWeight: 700, color: "var(--red)", marginTop: "4px", fontFamily: "var(--font-mono)" }}>
               ₹{totalExp.toLocaleString("en-IN")}
             </div>
             <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px" }}>
@@ -178,11 +172,11 @@ export function TransparencyLedger() {
             </div>
           </div>
 
-          <div style={{ padding: "16px", background: "var(--paper)", borderRadius: "10px" }}>
-            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+          <div style={{ padding: "14px 18px", background: "var(--paper-subtle)", borderRadius: "3px", border: "1px solid var(--line)" }}>
+            <div style={{ fontSize: "10.5px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Current Operating Balance
             </div>
-            <div style={{ fontSize: "24px", fontWeight: 800, color: BRAND.colors.saffron, marginTop: "4px" }}>
+            <div style={{ fontSize: "24px", fontWeight: 700, color: "var(--saffron)", marginTop: "4px", fontFamily: "var(--font-mono)" }}>
               ₹{netBalance.toLocaleString("en-IN")}
             </div>
             <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px" }}>
@@ -196,15 +190,16 @@ export function TransparencyLedger() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
           overflow: "hidden",
+          boxShadow: "var(--shadow)",
         }}
       >
         <div
           style={{
-            padding: "20px 24px",
+            padding: "18px 22px",
             borderBottom: "1px solid var(--line)",
             display: "flex",
             justifyContent: "space-between",
@@ -212,7 +207,7 @@ export function TransparencyLedger() {
           }}
         >
           <div>
-            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: 0 }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
               Audited Financial Statements
             </h3>
             <span style={{ fontSize: "12px", color: "var(--muted)" }}>
@@ -221,18 +216,19 @@ export function TransparencyLedger() {
           </div>
         </div>
 
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-          <thead>
-            <tr style={{ background: "var(--paper)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
-              <th style={{ padding: "14px 20px" }}>Statement Period</th>
-              <th style={{ padding: "14px 20px" }}>Type</th>
-              <th style={{ padding: "14px 20px" }}>Receipts</th>
-              <th style={{ padding: "14px 20px" }}>Expenditure</th>
-              <th style={{ padding: "14px 20px" }}>Closing</th>
-              <th style={{ padding: "14px 20px" }}>Audit Certification</th>
-            </tr>
-          </thead>
-          <tbody>
+        <div className="table-responsive">
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+            <thead>
+              <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
+                <th style={{ padding: "12px 18px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Statement Period</th>
+                <th style={{ padding: "12px 18px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Type</th>
+                <th style={{ padding: "12px 18px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Receipts</th>
+                <th style={{ padding: "12px 18px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Expenditure</th>
+                <th style={{ padding: "12px 18px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Closing</th>
+                <th style={{ padding: "12px 18px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Audit Certification</th>
+              </tr>
+            </thead>
+            <tbody>
             {statements.map((s) => (
               <tr key={s.id} style={{ borderBottom: "1px solid var(--line)" }}>
                 <td style={{ padding: "16px 20px" }}>
@@ -284,8 +280,9 @@ export function TransparencyLedger() {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {loading && (
@@ -299,70 +296,74 @@ export function TransparencyLedger() {
         <div
           className="card"
           style={{
-            background: "#fff",
-            borderRadius: "16px",
-            border: "1px solid var(--line)",
+            background: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
             overflow: "hidden",
+            boxShadow: "var(--shadow)",
           }}
         >
           <div style={{ padding: "16px 20px", borderBottom: "1px solid var(--line)" }}>
-            <h3 style={{ fontSize: "15px", fontWeight: 800, margin: 0 }}>
+            <h3 style={{ fontSize: "15px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
               Recent Cashless Transactions & Vouchers
             </h3>
           </div>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px" }}>
-            <thead>
-              <tr style={{ background: "var(--paper)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
-                <th style={{ padding: "10px 16px" }}>Date</th>
-                <th style={{ padding: "10px 16px" }}>Voucher #</th>
-                <th style={{ padding: "10px 16px" }}>Type</th>
-                <th style={{ padding: "10px 16px" }}>Particulars</th>
-                <th style={{ padding: "10px 16px" }}>Amount (₹)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((tx) => (
-                <tr key={tx.id} style={{ borderBottom: "1px solid var(--line)" }}>
-                  <td style={{ padding: "10px 16px", color: "var(--muted)" }}>
-                    {new Date(tx.transaction_date).toLocaleDateString("en-IN")}
-                  </td>
-                  <td style={{ padding: "10px 16px", fontFamily: "monospace" }}>
-                    {tx.receipt_voucher_number || "-"}
-                  </td>
-                  <td style={{ padding: "10px 16px" }}>
-                    <span
-                      style={{
-                        padding: "2px 6px",
-                        borderRadius: "4px",
-                        fontSize: "10px",
-                        fontWeight: 700,
-                        background: tx.transaction_type === "RECEIPT" ? "rgba(0,135,62,0.1)" : "rgba(255,59,48,0.1)",
-                        color: tx.transaction_type === "RECEIPT" ? BRAND.colors.green : "var(--red)",
-                      }}
-                    >
-                      {tx.transaction_type}
-                    </span>
-                  </td>
-                  <td style={{ padding: "10px 16px" }}>
-                    <strong>{tx.category}</strong> - {tx.source_or_payee}
-                  </td>
-                  <td style={{ padding: "10px 16px", fontWeight: 700 }}>
-                    ₹{Number(tx.amount).toLocaleString("en-IN")}
-                  </td>
+          <div className="table-responsive">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px" }}>
+              <thead>
+                <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
+                  <th style={{ padding: "10px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Date</th>
+                  <th style={{ padding: "10px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Voucher #</th>
+                  <th style={{ padding: "10px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Type</th>
+                  <th style={{ padding: "10px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Particulars</th>
+                  <th style={{ padding: "10px 16px", fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", color: "var(--muted)" }}>Amount (₹)</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {transactions.map((tx) => (
+                  <tr key={tx.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                    <td style={{ padding: "10px 16px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+                      {new Date(tx.transaction_date).toLocaleDateString("en-IN")}
+                    </td>
+                    <td style={{ padding: "10px 16px", fontFamily: "var(--font-mono)" }}>
+                      {tx.receipt_voucher_number || "-"}
+                    </td>
+                    <td style={{ padding: "10px 16px" }}>
+                      <span
+                        className="tag"
+                        style={{
+                          fontSize: "10px",
+                          padding: "2px 6px",
+                          borderRadius: "2px",
+                          background: tx.transaction_type === "RECEIPT" ? "rgba(29,86,53,0.1)" : "rgba(142,38,23,0.1)",
+                          color: tx.transaction_type === "RECEIPT" ? "var(--green)" : "var(--red)",
+                          borderColor: tx.transaction_type === "RECEIPT" ? "rgba(29,86,53,0.25)" : "rgba(142,38,23,0.25)",
+                        }}
+                      >
+                        {tx.transaction_type}
+                      </span>
+                    </td>
+                    <td style={{ padding: "10px 16px" }}>
+                      <strong>{tx.category}</strong> - {tx.source_or_payee}
+                    </td>
+                    <td style={{ padding: "10px 16px", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+                      ₹{Number(tx.amount).toLocaleString("en-IN")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
       {/* Anti-Corruption Principles Banner */}
       <div
         style={{
-          padding: "20px 24px",
-          background: "var(--paper)",
-          borderRadius: "14px",
-          border: "1px solid var(--line)",
+          padding: "18px 22px",
+          background: "var(--paper-subtle)",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
           gap: "20px",

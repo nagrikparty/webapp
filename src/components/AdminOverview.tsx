@@ -72,15 +72,16 @@ export function AdminOverview() {
   }, []);
 
   return (
-    <div style={{ display: "grid", gap: "28px" }}>
+    <div style={{ display: "grid", gap: "24px" }}>
       {/* Top Banner */}
       <div
         className="card"
         style={{
-          background: "#fff",
-          padding: "24px 28px",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          padding: "22px 26px",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -90,21 +91,24 @@ export function AdminOverview() {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: 800, margin: 0 }}>Executive Command Center</h2>
+            <h2 style={{ fontSize: "21px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>Executive Command Center</h2>
             <span
               style={{
-                fontSize: "11px",
+                fontSize: "10.5px",
+                fontFamily: "var(--font-mono)",
                 fontWeight: 700,
-                background: "rgba(245, 130, 32, 0.1)",
-                color: BRAND.colors.saffron,
-                padding: "3px 8px",
-                borderRadius: "6px",
+                background: "rgba(179, 74, 21, 0.08)",
+                border: "1px solid rgba(179, 74, 21, 0.25)",
+                color: "var(--saffron)",
+                padding: "2px 7px",
+                borderRadius: "2px",
+                letterSpacing: "0.04em",
               }}
             >
               PHASE 1 FORMATION
             </span>
           </div>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0 }}>
             {BRAND.fullName} • Independent political initiative working toward formal party formation & registration.
           </p>
         </div>
@@ -113,82 +117,82 @@ export function AdminOverview() {
           type="button"
           onClick={loadStats}
           className="button"
-          style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", minHeight: "40px", padding: "8px 16px", borderRadius: "3px", fontSize: "13px" }}
         >
-          <RefreshCw size={15} /> Refresh Data
+          <RefreshCw size={14} /> Refresh Data
         </button>
       </div>
 
       {/* Metrics Row */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "14px" }}>
         <div
           className="card"
-          style={{ background: "#fff", padding: "20px", borderRadius: "14px", border: "1px solid var(--line)" }}
+          style={{ background: "var(--paper-card)", padding: "18px 20px", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)" }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-            <span style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+            <span style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Approved Members
             </span>
-            <Award size={18} style={{ color: BRAND.colors.green }} />
+            <Award size={18} style={{ color: "var(--green)" }} />
           </div>
-          <div style={{ fontSize: "28px", fontWeight: 800, color: BRAND.colors.green }}>
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--green)" }}>
             {loading ? "..." : stats.approvedMembers}
           </div>
-          <div style={{ fontSize: "12px", color: "var(--muted)", marginTop: "4px" }}>
+          <div style={{ fontSize: "11.5px", color: "var(--muted)", marginTop: "4px" }}>
             Verified with sequential ID
           </div>
         </div>
 
         <div
           className="card"
-          style={{ background: "#fff", padding: "20px", borderRadius: "14px", border: "1px solid var(--line)" }}
+          style={{ background: "var(--paper-card)", padding: "18px 20px", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)" }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-            <span style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+            <span style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Awaiting Scrutiny
             </span>
-            <AlertTriangle size={18} style={{ color: BRAND.colors.saffron }} />
+            <AlertTriangle size={18} style={{ color: "var(--saffron)" }} />
           </div>
-          <div style={{ fontSize: "28px", fontWeight: 800, color: BRAND.colors.saffron }}>
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--saffron)" }}>
             {loading ? "..." : stats.pendingApplications}
           </div>
-          <div style={{ fontSize: "12px", color: "var(--muted)", marginTop: "4px" }}>
+          <div style={{ fontSize: "11.5px", color: "var(--muted)", marginTop: "4px" }}>
             In verification queue
           </div>
         </div>
 
         <div
           className="card"
-          style={{ background: "#fff", padding: "20px", borderRadius: "14px", border: "1px solid var(--line)" }}
+          style={{ background: "var(--paper-card)", padding: "18px 20px", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)" }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-            <span style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+            <span style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Submission Dossiers
             </span>
-            <Layers size={18} style={{ color: BRAND.colors.blue }} />
+            <Layers size={18} style={{ color: "var(--blue)" }} />
           </div>
-          <div style={{ fontSize: "28px", fontWeight: 800, color: BRAND.colors.blue }}>
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--blue)" }}>
             {loading ? "..." : stats.totalExports}
           </div>
-          <div style={{ fontSize: "12px", color: "var(--muted)", marginTop: "4px" }}>
+          <div style={{ fontSize: "11.5px", color: "var(--muted)", marginTop: "4px" }}>
             Compiled continuous bundles
           </div>
         </div>
 
         <div
           className="card"
-          style={{ background: "#fff", padding: "20px", borderRadius: "14px", border: "1px solid var(--line)" }}
+          style={{ background: "var(--paper-card)", padding: "18px 20px", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)" }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-            <span style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
+            <span style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
               Public Disclosures
             </span>
-            <TrendingUp size={18} style={{ color: BRAND.colors.saffron }} />
+            <TrendingUp size={18} style={{ color: "var(--saffron)" }} />
           </div>
-          <div style={{ fontSize: "28px", fontWeight: 800, color: "var(--ink)" }}>
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--ink)" }}>
             {loading ? "..." : stats.totalStatements}
           </div>
-          <div style={{ fontSize: "12px", color: "var(--muted)", marginTop: "4px" }}>
+          <div style={{ fontSize: "11.5px", color: "var(--muted)", marginTop: "4px" }}>
             Published balance sheets
           </div>
         </div>
@@ -196,41 +200,42 @@ export function AdminOverview() {
 
       {/* Admin Quick Action Hub */}
       <div>
-        <h3 style={{ fontSize: "18px", fontWeight: 800, marginBottom: "16px" }}>Administrative Operations</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
+        <h3 style={{ fontSize: "17px", fontFamily: "var(--font-serif)", fontWeight: 700, color: "var(--ink)", marginBottom: "14px" }}>Administrative Operations</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "14px" }}>
           <a
             href="/admin/verifications"
             className="card"
             style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "14px",
-              border: "1px solid var(--line)",
+              background: "var(--paper-card)",
+              padding: "22px",
+              borderRadius: "4px",
+              border: "1px solid var(--line-strong)",
+              boxShadow: "var(--shadow)",
               textDecoration: "none",
               color: "inherit",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
-              transition: "transform 0.15s ease, box-shadow 0.15s ease",
             }}
           >
             <div>
               <div
                 style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "10px",
-                  background: "rgba(245, 130, 32, 0.1)",
-                  color: BRAND.colors.saffron,
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "3px",
+                  background: "rgba(179, 74, 21, 0.08)",
+                  border: "1px solid rgba(179, 74, 21, 0.25)",
+                  color: "var(--saffron)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "16px",
+                  marginBottom: "14px",
                 }}
               >
-                <FileCheck2 size={24} />
+                <FileCheck2 size={22} />
               </div>
-              <h4 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 6px" }}>
+              <h4 style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
                 Verification & Scrutiny Desk
               </h4>
               <p style={{ fontSize: "13px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>
@@ -244,7 +249,7 @@ export function AdminOverview() {
                 gap: "6px",
                 fontSize: "13px",
                 fontWeight: 700,
-                color: BRAND.colors.saffron,
+                color: "var(--saffron)",
                 marginTop: "16px",
               }}
             >
@@ -256,10 +261,11 @@ export function AdminOverview() {
             href="/admin/exports"
             className="card"
             style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "14px",
-              border: "1px solid var(--line)",
+              background: "var(--paper-card)",
+              padding: "22px",
+              borderRadius: "4px",
+              border: "1px solid var(--line-strong)",
+              boxShadow: "var(--shadow)",
               textDecoration: "none",
               color: "inherit",
               display: "flex",
@@ -270,20 +276,21 @@ export function AdminOverview() {
             <div>
               <div
                 style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "10px",
-                  background: "rgba(0, 102, 204, 0.1)",
-                  color: BRAND.colors.blue,
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "3px",
+                  background: "rgba(22, 53, 92, 0.08)",
+                  border: "1px solid rgba(22, 53, 92, 0.25)",
+                  color: "var(--blue)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "16px",
+                  marginBottom: "14px",
                 }}
               >
-                <Layers size={24} />
+                <Layers size={22} />
               </div>
-              <h4 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 6px" }}>
+              <h4 style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
                 Continuous Submission Export Engine
               </h4>
               <p style={{ fontSize: "13px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>
@@ -297,7 +304,7 @@ export function AdminOverview() {
                 gap: "6px",
                 fontSize: "13px",
                 fontWeight: 700,
-                color: BRAND.colors.blue,
+                color: "var(--blue)",
                 marginTop: "16px",
               }}
             >
@@ -309,10 +316,11 @@ export function AdminOverview() {
             href="/admin/members"
             className="card"
             style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "14px",
-              border: "1px solid var(--line)",
+              background: "var(--paper-card)",
+              padding: "22px",
+              borderRadius: "4px",
+              border: "1px solid var(--line-strong)",
+              boxShadow: "var(--shadow)",
               textDecoration: "none",
               color: "inherit",
               display: "flex",
@@ -323,20 +331,21 @@ export function AdminOverview() {
             <div>
               <div
                 style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "10px",
-                  background: "rgba(0, 135, 62, 0.1)",
-                  color: BRAND.colors.green,
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "3px",
+                  background: "rgba(29, 86, 53, 0.08)",
+                  border: "1px solid rgba(29, 86, 53, 0.25)",
+                  color: "var(--green)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "16px",
+                  marginBottom: "14px",
                 }}
               >
-                <Users size={24} />
+                <Users size={22} />
               </div>
-              <h4 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 6px" }}>
+              <h4 style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
                 Founding Member Register
               </h4>
               <p style={{ fontSize: "13px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>
@@ -350,7 +359,7 @@ export function AdminOverview() {
                 gap: "6px",
                 fontSize: "13px",
                 fontWeight: 700,
-                color: BRAND.colors.green,
+                color: "var(--green)",
                 marginTop: "16px",
               }}
             >
@@ -362,10 +371,11 @@ export function AdminOverview() {
             href="/admin/finance"
             className="card"
             style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "14px",
-              border: "1px solid var(--line)",
+              background: "var(--paper-card)",
+              padding: "22px",
+              borderRadius: "4px",
+              border: "1px solid var(--line-strong)",
+              boxShadow: "var(--shadow)",
               textDecoration: "none",
               color: "inherit",
               display: "flex",
@@ -376,20 +386,21 @@ export function AdminOverview() {
             <div>
               <div
                 style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "10px",
-                  background: "rgba(245, 130, 32, 0.1)",
-                  color: BRAND.colors.saffron,
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "3px",
+                  background: "rgba(179, 74, 21, 0.08)",
+                  border: "1px solid rgba(179, 74, 21, 0.25)",
+                  color: "var(--saffron)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "16px",
+                  marginBottom: "14px",
                 }}
               >
-                <FileSpreadsheet size={24} />
+                <FileSpreadsheet size={22} />
               </div>
-              <h4 style={{ fontSize: "16px", fontWeight: 800, margin: "0 0 6px" }}>
+              <h4 style={{ fontSize: "15px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
                 Financial Transparency Ledger
               </h4>
               <p style={{ fontSize: "13px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>
@@ -403,7 +414,7 @@ export function AdminOverview() {
                 gap: "6px",
                 fontSize: "13px",
                 fontWeight: 700,
-                color: BRAND.colors.saffron,
+                color: "var(--saffron)",
                 marginTop: "16px",
               }}
             >

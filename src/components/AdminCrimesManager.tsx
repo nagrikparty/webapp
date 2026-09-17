@@ -84,93 +84,267 @@ export function AdminCrimesManager() {
   };
 
   return (
-    <div className="admin-crimes-container">
-      <div className="admin-crimes-header">
-        <ShieldCheck size={24} color="#10b981" />
-        <h2 className="admin-crimes-title">Verified Crime Citations Manager</h2>
+    <div style={{ display: "grid", gap: "24px" }}>
+      <div
+        className="card"
+        style={{
+          background: "var(--paper-card)",
+          padding: "24px 28px",
+          borderRadius: "4px",
+          border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "16px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <ShieldCheck size={26} style={{ color: "var(--green)" }} />
+          <div>
+            <h2 style={{ fontSize: "20px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)" }}>
+              Verified Crime Citations Manager
+            </h2>
+            <span style={{ fontSize: "12px", color: "var(--muted)" }}>
+              प्रमाणित अपराध उद्धरण प्रबंधन • Real-time legal citations linked to the Verified Crime Tracker
+            </span>
+          </div>
+        </div>
+        <span
+          style={{
+            fontSize: "12px",
+            fontWeight: 700,
+            fontFamily: "monospace",
+            color: "var(--muted)",
+            background: "var(--paper-subtle)",
+            padding: "4px 8px",
+            borderRadius: "2px",
+            border: "1px solid var(--line)",
+          }}
+        >
+          {crimes.length} Citations Recorded
+        </span>
       </div>
 
-      <form onSubmit={handleAdd} className="admin-crimes-form">
-        <select value={type} onChange={e => setType(e.target.value)} className="admin-crimes-input">
-          <option value="Rape">Rape</option>
-          <option value="Murder">Murder</option>
-          <option value="Kidnapping">Kidnapping</option>
-          <option value="Robbery">Robbery</option>
-          <option value="Extortion">Extortion</option>
-        </select>
-        
-        <input 
-          type="text" 
-          placeholder="News Article Headline" 
-          value={title} 
-          onChange={e => setTitle(e.target.value)}
-          className="admin-crimes-input flex-1"
-        />
-        
-        <input 
-          type="url" 
-          placeholder="https://..." 
-          value={url} 
-          onChange={e => setUrl(e.target.value)}
-          className="admin-crimes-input flex-1"
-        />
-        
-        <input 
-          type="date" 
-          value={date} 
-          onChange={e => setDate(e.target.value)}
-          className="admin-crimes-input"
-        />
-        
-        <button type="submit" className="admin-crimes-btn">
-          <Plus size={16} /> Add Verified Record
-        </button>
-      </form>
+      <div
+        className="card"
+        style={{
+          background: "var(--paper-card)",
+          padding: "24px",
+          borderRadius: "4px",
+          border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
+        }}
+      >
+        <h3 style={{ fontSize: "16px", fontWeight: 700, margin: "0 0 16px", fontFamily: "var(--font-serif)" }}>
+          Add New Verified Citation / नया सत्यापित उद्धरण जोड़ें
+        </h3>
+        <form
+          onSubmit={handleAdd}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "14px",
+            alignItems: "end",
+          }}
+        >
+          <div>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 700, marginBottom: "4px" }}>
+              Category / श्रेणी
+            </label>
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                minHeight: "44px",
+                borderRadius: "3px",
+                border: "1px solid var(--line)",
+                background: "var(--paper)",
+                fontSize: "13px",
+              }}
+            >
+              <option value="Rape">Rape</option>
+              <option value="Murder">Murder</option>
+              <option value="Kidnapping">Kidnapping</option>
+              <option value="Robbery">Robbery</option>
+              <option value="Extortion">Extortion</option>
+            </select>
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 700, marginBottom: "4px" }}>
+              News Article Headline / शीर्षक
+            </label>
+            <input
+              type="text"
+              placeholder="Verified incident headline"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                minHeight: "44px",
+                borderRadius: "3px",
+                border: "1px solid var(--line)",
+                background: "var(--paper)",
+                fontSize: "13px",
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 700, marginBottom: "4px" }}>
+              Source URL / स्रोत लिंक
+            </label>
+            <input
+              type="url"
+              placeholder="https://thehindu.com/..."
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                minHeight: "44px",
+                borderRadius: "3px",
+                border: "1px solid var(--line)",
+                background: "var(--paper)",
+                fontSize: "13px",
+              }}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 700, marginBottom: "4px" }}>
+              Incident Date / घटना की तारीख
+            </label>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                minHeight: "44px",
+                borderRadius: "3px",
+                border: "1px solid var(--line)",
+                background: "var(--paper)",
+                fontSize: "13px",
+              }}
+            />
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="button primary"
+              style={{
+                width: "100%",
+                minHeight: "44px",
+                borderRadius: "3px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                fontWeight: 700,
+              }}
+            >
+              <Plus size={16} /> Add Record
+            </button>
+          </div>
+        </form>
+      </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <p style={{ color: "var(--muted)", textAlign: "center", padding: "40px" }}>Loading citations...</p>
       ) : (
-        <div className="admin-crimes-table-wrapper">
-          <table className="admin-crimes-table">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Headline</th>
-                <th>Date</th>
-                <th className="text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {crimes.map(c => (
-                <tr key={c.id}>
-                  <td className="text-muted">{c.crime_type}</td>
-                  <td>
-                    <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="admin-crimes-link">
-                      {c.title} <ExternalLink size={12} color="#666" />
-                    </a>
-                  </td>
-                  <td className="text-muted">
-                    {new Date(c.incident_date).toLocaleDateString()}
-                  </td>
-                  <td className="text-right">
-                    <button 
-                      onClick={() => handleDelete(c.id)}
-                      className="admin-crimes-delete-btn"
-                      title="Delete false positive"
-                      type="button"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </td>
+        <div
+          className="card"
+          style={{
+            background: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line)",
+            boxShadow: "var(--shadow)",
+            overflow: "hidden",
+          }}
+        >
+          <div className="table-responsive">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+              <thead>
+                <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
+                  <th style={{ padding: "12px 18px" }}>Type / श्रेणी</th>
+                  <th style={{ padding: "12px 18px" }}>Headline / समाचार</th>
+                  <th style={{ padding: "12px 18px" }}>Date / दिनांक</th>
+                  <th style={{ padding: "12px 18px", textAlign: "right" }}>Actions</th>
                 </tr>
-              ))}
-              {crimes.length === 0 && (
-                <tr>
-                  <td colSpan={4} className="admin-crimes-empty">No verified records found. Run sync or add manually.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {crimes.map((c) => (
+                  <tr key={c.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                    <td style={{ padding: "12px 18px" }}>
+                      <span
+                        style={{
+                          padding: "3px 8px",
+                          borderRadius: "2px",
+                          background: "var(--paper-subtle)",
+                          border: "1px solid var(--line)",
+                          fontWeight: 700,
+                          fontSize: "11px",
+                        }}
+                      >
+                        {c.crime_type}
+                      </span>
+                    </td>
+                    <td style={{ padding: "12px 18px" }}>
+                      <a
+                        href={c.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "var(--ink)",
+                          textDecoration: "underline",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {c.title} <ExternalLink size={12} style={{ color: "var(--muted)" }} />
+                      </a>
+                    </td>
+                    <td style={{ padding: "12px 18px", color: "var(--muted)", fontFamily: "monospace", fontSize: "12px" }}>
+                      {new Date(c.incident_date).toLocaleDateString("en-IN")}
+                    </td>
+                    <td style={{ padding: "12px 18px", textAlign: "right" }}>
+                      <button
+                        onClick={() => handleDelete(c.id)}
+                        className="button"
+                        title="Delete record"
+                        type="button"
+                        style={{
+                          padding: "6px 10px",
+                          minHeight: "36px",
+                          borderRadius: "3px",
+                          color: "var(--red)",
+                        }}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {crimes.length === 0 && (
+                  <tr>
+                    <td colSpan={4} style={{ padding: "32px", textAlign: "center", color: "var(--muted)" }}>
+                      No verified records found. Run sync or add manually. / कोई प्रमाणित रिकॉर्ड नहीं मिला।
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

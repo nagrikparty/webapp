@@ -74,25 +74,26 @@ export function MemberContributions() {
     <div>
       {/* Formation Phase Notice */}
       <div
+        className="card"
         style={{
           padding: "16px 20px",
-          backgroundColor: "rgba(245, 130, 32, 0.06)",
-          border: `1px solid ${BRAND.colors.saffron}33`,
-          borderRadius: "12px",
+          backgroundColor: "rgba(179, 74, 21, 0.06)",
+          border: "1px solid rgba(179, 74, 21, 0.25)",
+          borderRadius: "4px",
           marginBottom: "24px",
           display: "flex",
           alignItems: "flex-start",
           gap: "12px",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <AlertCircle size={18} style={{ color: BRAND.colors.saffron, flexShrink: 0, marginTop: "2px" }} />
-        <div style={{ fontSize: "13px", color: "var(--muted)" }}>
-          <strong style={{ color: BRAND.colors.ink }}>Formation Phase — Voluntary Support Only</strong>
+        <AlertCircle size={18} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
+        <div style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.5 }}>
+          <strong style={{ color: "var(--ink)", fontFamily: "var(--font-serif)" }}>Formation Phase — Voluntary Support Only / स्वैच्छिक गठन सहयोग</strong>
           <br />
-          Nagrik Party is in its formation phase. All contributions are voluntary formation-phase
-          support and are not party membership fees or political donations under any statutory framework.
-          Full financial transparency is maintained at{" "}
-          <a href="/transparency" style={{ color: BRAND.colors.saffron, fontWeight: 600 }}>
+          Nagrik Party is in its formation phase. All contributions are strictly voluntary support towards organisational formation and statutory filings. Zero cash policy is enforced.
+          Full financial disclosure is maintained at{" "}
+          <a href="/transparency" style={{ color: "var(--saffron)", fontWeight: 700, textDecoration: "underline" }}>
             /transparency
           </a>.
         </div>
@@ -103,100 +104,110 @@ export function MemberContributions() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "16px",
-          marginBottom: "32px",
+          gap: "14px",
+          marginBottom: "28px",
         }}
       >
         <div
+          className="card"
           style={{
             padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            backgroundColor: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             textAlign: "center",
           }}
         >
-          <Heart size={24} style={{ color: BRAND.colors.saffron, marginBottom: "8px" }} />
-          <div style={{ fontSize: "28px", fontWeight: 800, color: BRAND.colors.ink }}>{contributions.length}</div>
-          <div style={{ fontSize: "13px", color: "var(--muted)" }}>Total Contributions</div>
+          <Heart size={22} style={{ color: "var(--saffron)", marginBottom: "8px" }} />
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--ink)" }}>{contributions.length}</div>
+          <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginTop: "2px" }}>Total Contributions</div>
         </div>
 
         <div
+          className="card"
           style={{
             padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            backgroundColor: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             textAlign: "center",
           }}
         >
-          <IndianRupee size={24} style={{ color: BRAND.colors.green, marginBottom: "8px" }} />
-          <div style={{ fontSize: "28px", fontWeight: 800, color: BRAND.colors.ink }}>
+          <IndianRupee size={22} style={{ color: "var(--green)", marginBottom: "8px" }} />
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--green)" }}>
             ₹{totalAmount.toLocaleString("en-IN")}
           </div>
-          <div style={{ fontSize: "13px", color: "var(--muted)" }}>Total Amount</div>
+          <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginTop: "2px" }}>Total Amount (Cashless)</div>
         </div>
 
         <div
+          className="card"
           style={{
             padding: "20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            backgroundColor: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             textAlign: "center",
           }}
         >
-          <FileText size={24} style={{ color: BRAND.colors.blue, marginBottom: "8px" }} />
-          <div style={{ fontSize: "28px", fontWeight: 800, color: BRAND.colors.ink }}>
+          <FileText size={22} style={{ color: "var(--blue)", marginBottom: "8px" }} />
+          <div style={{ fontSize: "26px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--ink)" }}>
             {contributions.filter((c) => c.receipt_number).length}
           </div>
-          <div style={{ fontSize: "13px", color: "var(--muted)" }}>Receipts Issued</div>
+          <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginTop: "2px" }}>Receipts Issued</div>
         </div>
       </div>
 
       {/* Contributions List */}
       {contributions.length === 0 ? (
         <div
+          className="card"
           style={{
             textAlign: "center",
             padding: "48px 20px",
-            backgroundColor: "#fff",
-            borderRadius: "12px",
-            border: "1px solid var(--line)",
+            backgroundColor: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
           }}
         >
-          <Heart size={32} style={{ color: "var(--muted)", marginBottom: "12px" }} />
-          <h3 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "8px" }}>No Contributions Yet</h3>
-          <p style={{ fontSize: "14px", color: "var(--muted)", maxWidth: "400px", margin: "0 auto 20px" }}>
-            Formation-phase support contributions will appear here once recorded.
+          <Heart size={36} style={{ color: "var(--muted)", marginBottom: "12px" }} />
+          <h3 style={{ fontSize: "18px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "4px", color: "var(--ink)" }}>No Contributions Yet</h3>
+          <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>अभी कोई सहयोग दर्ज नहीं है</div>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", maxWidth: "420px", margin: "0 auto 20px", lineHeight: 1.5 }}>
+            Formation-phase support contributions will appear here once recorded with digital voucher hashes.
             All contributions are publicly disclosed in our transparency ledger.
           </p>
           <a
             href="/transparency"
+            className="button primary"
             style={{
               display: "inline-block",
-              padding: "10px 20px",
-              backgroundColor: BRAND.colors.ink,
-              color: "#fff",
-              borderRadius: "8px",
-              textDecoration: "none",
+              minHeight: "44px",
+              padding: "10px 24px",
+              borderRadius: "3px",
               fontSize: "14px",
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           >
-            View Transparency Ledger
+            View Transparency Ledger / पारदर्शिता बहीखाता
           </a>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {contributions.map((c) => (
             <div
               key={c.id}
+              className="card"
               style={{
                 padding: "16px 20px",
-                backgroundColor: "#fff",
-                borderRadius: "12px",
-                border: "1px solid var(--line)",
+                backgroundColor: "var(--paper-card)",
+                borderRadius: "4px",
+                border: "1px solid var(--line-strong)",
+                boxShadow: "var(--shadow)",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -205,30 +216,32 @@ export function MemberContributions() {
               }}
             >
               <div>
-                <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "4px" }}>{c.description}</div>
-                <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "var(--muted)" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--ink)", marginBottom: "4px" }}>{c.description}</div>
+                <div style={{ display: "flex", gap: "14px", fontSize: "12px", color: "var(--muted)", flexWrap: "wrap" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "4px", fontFamily: "var(--font-mono)" }}>
                     <Calendar size={12} /> {new Date(c.created_at).toLocaleDateString("en-IN")}
                   </span>
                   {c.receipt_number && (
-                    <span>Receipt: {c.receipt_number}</span>
+                    <span style={{ fontFamily: "var(--font-mono)" }}>Receipt: <strong>{c.receipt_number}</strong></span>
                   )}
                 </div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: "18px", fontWeight: 800, color: BRAND.colors.green }}>
+                <div style={{ fontSize: "18px", fontWeight: 800, color: "var(--green)", fontFamily: "var(--font-mono)" }}>
                   ₹{c.amount.toLocaleString("en-IN")}
                 </div>
                 <span
                   style={{
                     display: "inline-block",
                     padding: "2px 8px",
-                    borderRadius: "100px",
-                    fontSize: "11px",
-                    fontWeight: 600,
+                    borderRadius: "2px",
+                    fontSize: "10.5px",
+                    fontWeight: 700,
+                    fontFamily: "var(--font-mono)",
                     textTransform: "uppercase",
-                    backgroundColor: c.status === "confirmed" ? "#f6ffed" : "#fff7e6",
-                    color: c.status === "confirmed" ? "#389e0d" : "#d48806",
+                    backgroundColor: c.status === "confirmed" ? "rgba(29, 86, 53, 0.08)" : "rgba(179, 74, 21, 0.08)",
+                    border: c.status === "confirmed" ? "1px solid rgba(29, 86, 53, 0.25)" : "1px solid rgba(179, 74, 21, 0.25)",
+                    color: c.status === "confirmed" ? "var(--green)" : "var(--saffron)",
                   }}
                 >
                   {c.status}

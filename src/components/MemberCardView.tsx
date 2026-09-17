@@ -88,22 +88,28 @@ export function MemberCardView() {
       <div
         className="card"
         style={{
-          maxWidth: "600px",
+          maxWidth: "580px",
           margin: "0 auto",
-          padding: "48px 24px",
+          padding: "40px 24px",
           textAlign: "center",
-          background: "#fff",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <ShieldCheck size={48} style={{ color: BRAND.colors.saffron, margin: "0 auto 16px" }} />
-        <h3 style={{ fontSize: "20px", fontWeight: 800, margin: "0 0 8px" }}>Sign In to View Membership Card</h3>
-        <p style={{ color: "var(--muted)", fontSize: "14px", maxWidth: "440px", margin: "0 auto 20px" }}>
-          CR80 membership cards are issued to verified party members. Please log in with your registered account.
+        <ShieldCheck size={44} style={{ color: "var(--saffron)", margin: "0 auto 16px" }} />
+        <h3 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
+          Sign In to View Membership Card
+        </h3>
+        <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>
+          सदस्यता कार्ड देखने के लिए लॉगिन करें
+        </div>
+        <p style={{ color: "var(--muted)", fontSize: "13.5px", maxWidth: "440px", margin: "0 auto 20px" }}>
+          Standards-compliant CR80 cards are issued strictly to verified party members. Please log in with your registered account.
         </p>
-        <a href="/login" className="button button-primary" style={{ padding: "10px 24px" }}>
-          Log In
+        <a href="/login" className="button primary" style={{ minHeight: "44px", padding: "10px 28px", borderRadius: "3px", fontSize: "14px", fontWeight: 700 }}>
+          Log In / प्रवेश करें
         </a>
       </div>
     );
@@ -114,22 +120,28 @@ export function MemberCardView() {
       <div
         className="card"
         style={{
-          maxWidth: "600px",
+          maxWidth: "580px",
           margin: "0 auto",
-          padding: "48px 24px",
+          padding: "40px 24px",
           textAlign: "center",
-          background: "#fff",
-          borderRadius: "16px",
-          border: "1px solid var(--line)",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <AlertCircle size={48} style={{ color: BRAND.colors.saffron, margin: "0 auto 16px" }} />
-        <h3 style={{ fontSize: "20px", fontWeight: 800, margin: "0 0 8px" }}>Card Not Yet Issued</h3>
-        <p style={{ color: "var(--muted)", fontSize: "14px", maxWidth: "440px", margin: "0 auto 20px" }}>
-          In accordance with party principles, active printable membership cards are only generated once your digital induction has been fully verified and approved by the organisation.
+        <AlertCircle size={44} style={{ color: "var(--saffron)", margin: "0 auto 16px" }} />
+        <h3 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
+          Card Not Yet Issued
+        </h3>
+        <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>
+          सदस्यता कार्ड अभी जारी नहीं हुआ है
+        </div>
+        <p style={{ color: "var(--muted)", fontSize: "13.5px", maxWidth: "460px", margin: "0 auto 24px", lineHeight: 1.5 }}>
+          In accordance with party principles, active printable membership cards are generated only once your digital induction has been fully scrutinized and approved by the verification desk.
         </p>
-        <a href="/member/induction" className="button primary">
-          Check Induction Status
+        <a href="/member/induction" className="button primary" style={{ minHeight: "44px", padding: "10px 24px", borderRadius: "3px", fontSize: "14px", fontWeight: 700 }}>
+          Check Induction Status / स्थिति देखें
         </a>
       </div>
     );
@@ -140,24 +152,47 @@ export function MemberCardView() {
   const isRevoked = card?.status === "REVOKED";
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "860px", margin: "0 auto" }}>
       {/* Action Header */}
       <div
+        className="card"
         style={{
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          border: "1px solid var(--line-strong)",
+          padding: "20px 24px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
           gap: "16px",
-          marginBottom: "28px",
+          marginBottom: "24px",
+          boxShadow: "var(--shadow)",
         }}
       >
         <div>
-          <h2 style={{ fontSize: "22px", fontWeight: 800, margin: "0 0 4px" }}>
-            Printable Membership Card (CR80)
-          </h2>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
-            Standards-compliant CR80 (85.60 mm × 53.98 mm) digital preview and vector print PDF.
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+            <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>
+              Printable Membership Card (CR80)
+            </h2>
+            <span
+              style={{
+                fontSize: "10.5px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: "2px",
+                background: "rgba(29, 86, 53, 0.08)",
+                border: "1px solid rgba(29, 86, 53, 0.25)",
+                color: "var(--green)",
+                textTransform: "uppercase",
+              }}
+            >
+              Verified Active
+            </span>
+          </div>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0 }}>
+            मान्यता प्राप्त CR80 (85.60 mm × 53.98 mm) डिजिटल पहचान पत्र और सत्यापन प्रपत्र।
           </p>
         </div>
 
@@ -170,12 +205,15 @@ export function MemberCardView() {
             display: "inline-flex",
             alignItems: "center",
             gap: "8px",
-            padding: "12px 20px",
-            fontSize: "14px",
+            minHeight: "44px",
+            padding: "10px 20px",
+            fontSize: "13.5px",
+            fontWeight: 700,
+            borderRadius: "3px",
           }}
         >
           {downloading ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
-          Download CR80 Print PDF
+          Download CR80 Print PDF / पीडीएफ डाउनलोड करें
         </button>
       </div>
 
@@ -183,10 +221,10 @@ export function MemberCardView() {
         <div
           style={{
             padding: "14px 18px",
-            background: "#fff2f0",
-            border: "1px solid #ffccc7",
-            borderRadius: "10px",
-            color: "#cf1322",
+            background: "rgba(142, 38, 23, 0.06)",
+            border: "1px solid rgba(142, 38, 23, 0.3)",
+            borderRadius: "3px",
+            color: "var(--red)",
             marginBottom: "24px",
             display: "flex",
             alignItems: "center",
@@ -194,26 +232,27 @@ export function MemberCardView() {
           }}
         >
           <AlertOctagon size={20} />
-          <div>
-            <strong>This card has been revoked:</strong> {card?.revocation_reason || "Superseded or withdrawn."}
+          <div style={{ fontSize: "13.5px" }}>
+            <strong>This card has been revoked / यह कार्ड रद्द किया गया है:</strong> {card?.revocation_reason || "Superseded or withdrawn."}
           </div>
         </div>
       )}
 
       {/* DUAL-SIDED CR80 CARD PREVIEW */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px" }}>
         {/* FRONT */}
         <div>
-          <div style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", color: "var(--muted)", marginBottom: "8px" }}>
-            Card Front
+          <div style={{ fontSize: "11px", fontWeight: 700, fontFamily: "var(--font-mono)", textTransform: "uppercase", color: "var(--muted)", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
+            <span>Card Front / मुख पृष्ठ</span>
+            <span>CR80 • 85.6 × 54 mm</span>
           </div>
           <div
             style={{
               aspectRatio: "85.6 / 53.98",
-              background: "#ffffff",
-              borderRadius: "12px",
-              border: "1px solid var(--line)",
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
+              background: "#fffefb",
+              borderRadius: "4px",
+              border: "1px solid rgba(36, 30, 22, 0.25)",
+              boxShadow: "0 2px 4px rgba(35, 30, 20, 0.08), 0 8px 24px rgba(35, 30, 20, 0.06)",
               position: "relative",
               overflow: "hidden",
               padding: "16px",
@@ -224,15 +263,17 @@ export function MemberCardView() {
           >
             {/* Top Accent Lines */}
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", display: "flex" }}>
-              <div style={{ width: "50%", background: BRAND.colors.saffron }} />
-              <div style={{ width: "50%", background: BRAND.colors.green }} />
+              <div style={{ width: "50%", background: "var(--saffron)" }} />
+              <div style={{ width: "50%", background: "var(--green)" }} />
             </div>
 
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
-                  <div style={{ fontWeight: 900, fontSize: "14px", letterSpacing: "0.02em" }}>NAGRIK PARTY</div>
-                  <div style={{ fontSize: "7px", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.05em" }}>
+                  <div style={{ fontWeight: 800, fontSize: "14px", fontFamily: "var(--font-serif)", letterSpacing: "0.02em", color: "var(--ink)" }}>
+                    NAGRIK PARTY
+                  </div>
+                  <div style={{ fontSize: "7.5px", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.05em", fontFamily: "var(--font-mono)" }}>
                     FORMATION PHASE — MEMBERSHIP CARD
                   </div>
                 </div>
@@ -244,17 +285,18 @@ export function MemberCardView() {
               {/* Photo Box */}
               <div
                 style={{
-                  width: "56px",
-                  height: "70px",
-                  background: "var(--paper)",
-                  borderRadius: "6px",
-                  border: "1px solid var(--line)",
+                  width: "58px",
+                  height: "72px",
+                  background: "var(--paper-subtle)",
+                  borderRadius: "2px",
+                  border: "1px dashed var(--line-strong)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "9px",
+                  fontSize: "8.5px",
                   color: "var(--muted)",
                   fontWeight: 600,
+                  fontFamily: "var(--font-mono)",
                   flexShrink: 0,
                 }}
               >
@@ -263,39 +305,41 @@ export function MemberCardView() {
 
               {/* Data Fields */}
               <div style={{ overflow: "hidden" }}>
-                <div style={{ fontSize: "7px", color: "var(--muted)", fontWeight: 700 }}>NAME</div>
-                <div style={{ fontSize: "11px", fontWeight: 800, color: "var(--ink)", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>
+                <div style={{ fontSize: "7px", color: "var(--muted)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>FULL NAME / नाम</div>
+                <div style={{ fontSize: "12px", fontWeight: 800, color: "var(--ink)", fontFamily: "var(--font-serif)", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>
                   {member.full_name.toUpperCase()}
                 </div>
 
-                <div style={{ fontSize: "7px", color: "var(--muted)", fontWeight: 700, marginTop: "6px" }}>MEMBERSHIP ID</div>
-                <div style={{ fontSize: "12px", fontWeight: 800, color: BRAND.colors.saffron, fontFamily: "monospace" }}>
+                <div style={{ fontSize: "7px", color: "var(--muted)", fontWeight: 700, marginTop: "5px", fontFamily: "var(--font-mono)" }}>MEMBERSHIP ID / सदस्यता संख्या</div>
+                <div style={{ fontSize: "12px", fontWeight: 800, color: "var(--saffron)", fontFamily: "var(--font-mono)" }}>
                   {member.membership_id}
                 </div>
 
-                <div style={{ fontSize: "7px", color: "var(--muted)", fontWeight: 700, marginTop: "6px" }}>CATEGORY</div>
-                <div style={{ fontSize: "9px", fontWeight: 600, color: "var(--ink)" }}>{member.category}</div>
+                <div style={{ fontSize: "7px", color: "var(--muted)", fontWeight: 700, marginTop: "5px", fontFamily: "var(--font-mono)" }}>CATEGORY / श्रेणी</div>
+                <div style={{ fontSize: "9px", fontWeight: 700, color: "var(--ink)" }}>{member.category}</div>
               </div>
             </div>
 
-            <div style={{ fontSize: "8px", fontWeight: 700, color: "var(--muted)", borderTop: "1px solid var(--line)", paddingTop: "4px" }}>
-              Kaam dikhna chahiye.
+            <div style={{ fontSize: "8.5px", fontWeight: 700, color: "var(--muted)", borderTop: "1px solid var(--line)", paddingTop: "4px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontStyle: "italic", fontFamily: "var(--font-serif)" }}>काम दिखना चाहिए।</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "7.5px" }}>CIVIC DOCKET</span>
             </div>
           </div>
         </div>
 
         {/* BACK */}
         <div>
-          <div style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", color: "var(--muted)", marginBottom: "8px" }}>
-            Card Back
+          <div style={{ fontSize: "11px", fontWeight: 700, fontFamily: "var(--font-mono)", textTransform: "uppercase", color: "var(--muted)", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
+            <span>Card Back / पृष्ठ भाग</span>
+            <span>SECURE VERIFICATION</span>
           </div>
           <div
             style={{
               aspectRatio: "85.6 / 53.98",
-              background: "#ffffff",
-              borderRadius: "12px",
-              border: "1px solid var(--line)",
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
+              background: "#fffefb",
+              borderRadius: "4px",
+              border: "1px solid rgba(36, 30, 22, 0.25)",
+              boxShadow: "0 2px 4px rgba(35, 30, 20, 0.08), 0 8px 24px rgba(35, 30, 20, 0.06)",
               position: "relative",
               padding: "16px",
               display: "flex",
@@ -305,22 +349,22 @@ export function MemberCardView() {
           >
             <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
               {/* QR Code */}
-              <div style={{ background: "#fff", padding: "4px", borderRadius: "6px", border: "1px solid var(--line)", flexShrink: 0 }}>
+              <div style={{ background: "#ffffff", padding: "4px", borderRadius: "2px", border: "1px solid var(--line-strong)", flexShrink: 0 }}>
                 <QRCode value={verificationUrl} size={64} level="M" />
               </div>
 
-              <div style={{ fontSize: "9px", display: "grid", gap: "4px" }}>
+              <div style={{ fontSize: "9px", display: "grid", gap: "5px" }}>
                 <div>
-                  <div style={{ fontSize: "6.5px", color: "var(--muted)", fontWeight: 700 }}>CONSTITUENCY</div>
-                  <div style={{ fontWeight: 600 }}>{profile?.vidhan_sabha || "Delhi"}, Delhi</div>
+                  <div style={{ fontSize: "6.5px", color: "var(--muted)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>CONSTITUENCY / विधान सभा</div>
+                  <div style={{ fontWeight: 700, color: "var(--ink)" }}>{profile?.vidhan_sabha || "Delhi"}, Delhi</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: "6.5px", color: "var(--muted)", fontWeight: 700 }}>ISSUE DATE</div>
-                  <div style={{ fontWeight: 600 }}>{card?.issue_date || new Date().toISOString().split("T")[0]}</div>
+                  <div style={{ fontSize: "6.5px", color: "var(--muted)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>ISSUE DATE / जारी तिथि</div>
+                  <div style={{ fontWeight: 700, color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{card?.issue_date || new Date().toISOString().split("T")[0]}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: "6.5px", color: "var(--muted)", fontWeight: 700 }}>VERIFICATION</div>
-                  <div style={{ color: "var(--blue)", fontSize: "7.5px", wordBreak: "break-all" }}>
+                  <div style={{ fontSize: "6.5px", color: "var(--muted)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>PUBLIC VERIFY URL</div>
+                  <div style={{ color: "var(--blue)", fontSize: "7.5px", wordBreak: "break-all", fontFamily: "var(--font-mono)" }}>
                     nagrik.party/verify/member/{member.membership_id}
                   </div>
                 </div>
@@ -330,16 +374,17 @@ export function MemberCardView() {
             {/* Bottom Disclaimer */}
             <div
               style={{
-                background: "var(--paper)",
-                padding: "6px",
-                borderRadius: "6px",
-                fontSize: "6px",
-                lineHeight: 1.3,
+                background: "var(--paper-subtle)",
+                padding: "6px 8px",
+                borderRadius: "2px",
+                fontSize: "6.5px",
+                lineHeight: 1.35,
                 color: "var(--muted)",
                 textAlign: "justify",
+                border: "1px solid var(--line)",
               }}
             >
-              <strong>ORGANISATIONAL MEMBERSHIP CARD • NOT A GOVERNMENT IDENTITY DOCUMENT.</strong> This card certifies enrollment in the Nagrik Party register (Phase 1 — Formation Phase). It does not substitute for any official government identity document or voter card.
+              <strong>ORGANISATIONAL MEMBERSHIP CARD • NOT A GOVERNMENT IDENTITY DOCUMENT.</strong> This card certifies enrollment in the Nagrik Party register (Phase 1 — Formation Phase). It does not substitute for any official government voter identity card.
             </div>
           </div>
         </div>
@@ -347,10 +392,11 @@ export function MemberCardView() {
 
       <div
         style={{
-          marginTop: "28px",
+          marginTop: "24px",
           padding: "16px",
-          background: "var(--paper)",
-          borderRadius: "12px",
+          background: "var(--paper-subtle)",
+          borderRadius: "4px",
+          border: "1px solid var(--line)",
           fontSize: "13px",
           color: "var(--muted)",
           display: "flex",
@@ -358,9 +404,9 @@ export function MemberCardView() {
           gap: "10px",
         }}
       >
-        <ShieldCheck size={20} style={{ color: BRAND.colors.green, flexShrink: 0 }} />
+        <ShieldCheck size={20} style={{ color: "var(--green)", flexShrink: 0 }} />
         <div>
-          <strong>Privacy Safeguard:</strong> This card intentionally omits private contact details, complete home addresses, and sensitive identity numbers. Anyone scanning the QR code sees only the verified member status.
+          <strong>Privacy Safeguard / गोपनीयता संरक्षण:</strong> This card intentionally omits private contact phone numbers, complete home addresses, and sensitive identity numbers. Anyone scanning the QR code sees strictly the verified public member confirmation.
         </div>
       </div>
     </div>

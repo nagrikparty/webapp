@@ -90,10 +90,11 @@ export function AdminFinanceView() {
       <div
         className="card"
         style={{
-          background: "#fff",
+          background: "var(--paper-card)",
           padding: "24px 28px",
-          borderRadius: "16px",
+          borderRadius: "4px",
           border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -103,7 +104,7 @@ export function AdminFinanceView() {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: 800, margin: 0 }}>
+            <h2 style={{ fontSize: "22px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)" }}>
               Financial Transparency Ledger
             </h2>
             <span
@@ -113,14 +114,16 @@ export function AdminFinanceView() {
                 background: "rgba(0, 135, 62, 0.1)",
                 color: BRAND.colors.green,
                 padding: "3px 8px",
-                borderRadius: "6px",
+                borderRadius: "2px",
+                border: "1px dashed var(--green)",
+                letterSpacing: "0.04em",
               }}
             >
-              100% DISCLOSURE
+              100% DISCLOSURE • वित्तीय पारदर्शिता
             </span>
           </div>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
-            Manage published formation accounts, voluntary contributions, and administrative expenditure disclosures.
+          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>
+            Manage published formation accounts, voluntary contributions, and administrative expenditure disclosures. / गठन खाते, योगदान और प्रशासनिक व्यय का प्रबंधन करें।
           </p>
         </div>
 
@@ -129,7 +132,7 @@ export function AdminFinanceView() {
             type="button"
             onClick={() => setShowAddModal(true)}
             className="button primary"
-            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px", minHeight: "44px", borderRadius: "3px" }}
           >
             <Plus size={15} /> Publish Statement
           </button>
@@ -137,7 +140,7 @@ export function AdminFinanceView() {
             type="button"
             onClick={loadStatements}
             className="button"
-            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px", minHeight: "44px", borderRadius: "3px" }}
           >
             <RefreshCw size={14} /> Refresh
           </button>
@@ -150,7 +153,7 @@ export function AdminFinanceView() {
             padding: "14px 18px",
             backgroundColor: "#f6ffed",
             border: "1px solid #b7eb8f",
-            borderRadius: "10px",
+            borderRadius: "3px",
             color: "#389e0d",
             fontSize: "14px",
             display: "flex",
@@ -167,9 +170,10 @@ export function AdminFinanceView() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
           border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
           overflow: "hidden",
         }}
       >
@@ -180,10 +184,12 @@ export function AdminFinanceView() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
           }}
         >
-          <h3 style={{ fontSize: "16px", fontWeight: 800, margin: 0 }}>
-            Published Financial Disclosures ({statements.length})
+          <h3 style={{ fontSize: "16px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)" }}>
+            Published Financial Disclosures ({statements.length}) / प्रकाशित वित्तीय खुलासे
           </h3>
           <span style={{ fontSize: "12px", color: "var(--muted)" }}>
             Publicly visible on the /transparency page
@@ -198,75 +204,79 @@ export function AdminFinanceView() {
         ) : statements.length === 0 ? (
           <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--muted)" }}>
             <FileSpreadsheet size={36} style={{ margin: "0 auto 12px", opacity: 0.5 }} />
-            <div>No financial statements published yet.</div>
+            <div>No financial statements published yet. / कोई वित्तीय विवरण अभी प्रकाशित नहीं हुआ।</div>
           </div>
         ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-            <thead>
-              <tr style={{ background: "var(--paper)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
-                <th style={{ padding: "12px 18px" }}>Fiscal Period</th>
-                <th style={{ padding: "12px 18px" }}>Type</th>
-                <th style={{ padding: "12px 18px" }}>Total Receipts (₹)</th>
-                <th style={{ padding: "12px 18px" }}>Total Expenditure (₹)</th>
-                <th style={{ padding: "12px 18px" }}>Closing Balance (₹)</th>
-                <th style={{ padding: "12px 18px" }}>Audit Status</th>
-                <th style={{ padding: "12px 18px" }}>Published Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {statements.map((s) => (
-                <tr key={s.id} style={{ borderBottom: "1px solid var(--line)" }}>
-                  <td style={{ padding: "14px 18px" }}>
-                    <div style={{ fontWeight: 700 }}>{s.period_name}</div>
-                    <div style={{ fontSize: "11px", color: "var(--muted)" }}>FY {s.fiscal_year}</div>
-                  </td>
-                  <td style={{ padding: "14px 18px" }}>
-                    <span
-                      style={{
-                        padding: "3px 8px",
-                        borderRadius: "6px",
-                        background: "var(--paper)",
-                        fontWeight: 600,
-                        fontSize: "11px",
-                      }}
-                    >
-                      {s.statement_type}
-                    </span>
-                  </td>
-                  <td style={{ padding: "14px 18px", fontWeight: 700, color: BRAND.colors.green }}>
-                    ₹{Number(s.total_receipts).toLocaleString("en-IN")}
-                  </td>
-                  <td style={{ padding: "14px 18px", fontWeight: 700, color: "var(--red)" }}>
-                    ₹{Number(s.total_expenditure).toLocaleString("en-IN")}
-                  </td>
-                  <td style={{ padding: "14px 18px", fontWeight: 800 }}>
-                    ₹{Number(s.closing_balance).toLocaleString("en-IN")}
-                  </td>
-                  <td style={{ padding: "14px 18px" }}>
-                    {s.is_audited ? (
+          <div className="table-responsive">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+              <thead>
+                <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
+                  <th style={{ padding: "12px 18px" }}>Fiscal Period</th>
+                  <th style={{ padding: "12px 18px" }}>Type</th>
+                  <th style={{ padding: "12px 18px" }}>Total Receipts (₹)</th>
+                  <th style={{ padding: "12px 18px" }}>Total Expenditure (₹)</th>
+                  <th style={{ padding: "12px 18px" }}>Closing Balance (₹)</th>
+                  <th style={{ padding: "12px 18px" }}>Audit Status</th>
+                  <th style={{ padding: "12px 18px" }}>Published Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {statements.map((s) => (
+                  <tr key={s.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                    <td style={{ padding: "14px 18px" }}>
+                      <div style={{ fontWeight: 700 }}>{s.period_name}</div>
+                      <div style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "monospace" }}>FY {s.fiscal_year}</div>
+                    </td>
+                    <td style={{ padding: "14px 18px" }}>
                       <span
                         style={{
                           padding: "3px 8px",
-                          borderRadius: "100px",
+                          borderRadius: "2px",
+                          background: "var(--paper-subtle)",
+                          border: "1px solid var(--line)",
+                          fontWeight: 600,
                           fontSize: "11px",
-                          fontWeight: 700,
-                          background: "rgba(0, 135, 62, 0.1)",
-                          color: BRAND.colors.green,
                         }}
                       >
-                        AUDITED ({s.auditor_name || "Internal"})
+                        {s.statement_type}
                       </span>
-                    ) : (
-                      <span style={{ fontSize: "11px", color: "var(--muted)" }}>Provisional</span>
-                    )}
-                  </td>
-                  <td style={{ padding: "14px 18px", color: "var(--muted)" }}>
-                    {new Date(s.published_at).toLocaleDateString("en-IN")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                    <td style={{ padding: "14px 18px", fontWeight: 700, color: BRAND.colors.green, fontFamily: "monospace" }}>
+                      ₹{Number(s.total_receipts).toLocaleString("en-IN")}
+                    </td>
+                    <td style={{ padding: "14px 18px", fontWeight: 700, color: "var(--red)", fontFamily: "monospace" }}>
+                      ₹{Number(s.total_expenditure).toLocaleString("en-IN")}
+                    </td>
+                    <td style={{ padding: "14px 18px", fontWeight: 800, fontFamily: "monospace" }}>
+                      ₹{Number(s.closing_balance).toLocaleString("en-IN")}
+                    </td>
+                    <td style={{ padding: "14px 18px" }}>
+                      {s.is_audited ? (
+                        <span
+                          style={{
+                            padding: "3px 8px",
+                            borderRadius: "2px",
+                            border: "1px dashed var(--green)",
+                            fontSize: "11px",
+                            fontWeight: 700,
+                            background: "rgba(0, 135, 62, 0.1)",
+                            color: BRAND.colors.green,
+                          }}
+                        >
+                          AUDITED ({s.auditor_name || "Internal"})
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: "11px", color: "var(--muted)" }}>Provisional</span>
+                      )}
+                    </td>
+                    <td style={{ padding: "14px 18px", color: "var(--muted)" }}>
+                      {new Date(s.published_at).toLocaleDateString("en-IN")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
@@ -276,7 +286,7 @@ export function AdminFinanceView() {
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(0,0,0,0.5)",
+            background: "rgba(10, 15, 25, 0.6)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -287,92 +297,94 @@ export function AdminFinanceView() {
           <div
             className="card"
             style={{
-              background: "#fff",
-              borderRadius: "16px",
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              border: "1px solid var(--line)",
+              boxShadow: "var(--shadow-lg)",
               padding: "28px",
-              maxWidth: "500px",
+              maxWidth: "520px",
               width: "100%",
             }}
           >
-            <h3 style={{ fontSize: "18px", fontWeight: 800, margin: "0 0 16px" }}>
-              Publish New Financial Statement
+            <h3 style={{ fontSize: "18px", fontWeight: 700, margin: "0 0 16px", fontFamily: "var(--font-serif)" }}>
+              Publish New Financial Statement / नया वित्तीय विवरण प्रकाशित करें
             </h3>
             <form onSubmit={handleCreate} style={{ display: "grid", gap: "14px", fontSize: "13px" }}>
               <div>
                 <label style={{ display: "block", fontWeight: 700, marginBottom: "4px" }}>
-                  Fiscal Year
+                  Fiscal Year / वित्तीय वर्ष
                 </label>
                 <input
                   type="text"
                   required
                   value={newStmt.fiscal_year}
                   onChange={(e) => setNewStmt({ ...newStmt, fiscal_year: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--line)" }}
+                  style={{ width: "100%", padding: "10px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)" }}
                 />
               </div>
 
               <div>
                 <label style={{ display: "block", fontWeight: 700, marginBottom: "4px" }}>
-                  Period / Description
+                  Period / Description / विवरण
                 </label>
                 <input
                   type="text"
                   required
                   value={newStmt.period_name}
                   onChange={(e) => setNewStmt({ ...newStmt, period_name: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--line)" }}
+                  style={{ width: "100%", padding: "10px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)" }}
                 />
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                 <div>
                   <label style={{ display: "block", fontWeight: 700, marginBottom: "4px" }}>
-                    Total Receipts (₹)
+                    Total Receipts (₹) / प्राप्तियां
                   </label>
                   <input
                     type="number"
                     required
                     value={newStmt.total_receipts}
                     onChange={(e) => setNewStmt({ ...newStmt, total_receipts: Number(e.target.value) })}
-                    style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--line)" }}
+                    style={{ width: "100%", padding: "10px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontFamily: "monospace" }}
                   />
                 </div>
 
                 <div>
                   <label style={{ display: "block", fontWeight: 700, marginBottom: "4px" }}>
-                    Total Expenditure (₹)
+                    Total Expenditure (₹) / व्यय
                   </label>
                   <input
                     type="number"
                     required
                     value={newStmt.total_expenditure}
                     onChange={(e) => setNewStmt({ ...newStmt, total_expenditure: Number(e.target.value) })}
-                    style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--line)" }}
+                    style={{ width: "100%", padding: "10px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontFamily: "monospace" }}
                   />
                 </div>
               </div>
 
               <div>
                 <label style={{ display: "block", fontWeight: 700, marginBottom: "4px" }}>
-                  Auditor Name
+                  Auditor Name / लेखा परीक्षक का नाम
                 </label>
                 <input
                   type="text"
                   value={newStmt.auditor_name}
                   onChange={(e) => setNewStmt({ ...newStmt, auditor_name: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--line)" }}
+                  style={{ width: "100%", padding: "10px 12px", minHeight: "44px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)" }}
                 />
               </div>
 
               <div>
                 <label style={{ display: "block", fontWeight: 700, marginBottom: "4px" }}>
-                  Notes / Public Remark
+                  Notes / Public Remark / सार्वजनिक टिप्पणी
                 </label>
                 <textarea
                   rows={2}
                   value={newStmt.notes}
                   onChange={(e) => setNewStmt({ ...newStmt, notes: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--line)" }}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)" }}
                 />
               </div>
 
@@ -382,10 +394,16 @@ export function AdminFinanceView() {
                   onClick={() => setShowAddModal(false)}
                   className="button"
                   disabled={submitting}
+                  style={{ minHeight: "44px", borderRadius: "3px" }}
                 >
                   Cancel
                 </button>
-                <button type="submit" className="button primary" disabled={submitting}>
+                <button
+                  type="submit"
+                  className="button primary"
+                  disabled={submitting}
+                  style={{ minHeight: "44px", borderRadius: "3px" }}
+                >
                   {submitting ? "Publishing..." : "Confirm & Publish"}
                 </button>
               </div>

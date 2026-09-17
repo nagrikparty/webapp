@@ -47,16 +47,16 @@ const incidents = rawIncidents ?? [];
       </div>
 
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap;">
-        <h1 style="margin: 0; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;">
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-family: var(--font-serif);">
           {dbType}
         </h1>
-        <span class="badge-verified">
-          {incidents.length} Verified Citations
+        <span class="badge-verified" style="border-radius: 2px; border: 1px dashed var(--red);">
+          {incidents.length} Verified Citations / सत्यापित उद्धरण
         </span>
       </div>
 
       <p class="page-copy" style="margin: 0;">
-        Every incident listed below is verified and directly linked to a public news article or official report. Zero statistical estimates.
+        Every incident listed below is verified and directly linked to a public news article or official report. Zero statistical estimates. / नीचे सूचीबद्ध प्रत्येक घटना सत्यापित है और सार्वजनिक समाचार लेख से जुड़ी है।
       </p>
     </div>
   </section>
@@ -65,8 +65,8 @@ const incidents = rawIncidents ?? [];
     <div class="container" style="max-width: 900px;">
       <div style="display: flex; flex-direction: column; gap: 12px;">
         {incidents.length === 0 ? (
-          <div class="card" style="text-align: center; padding: 48px 24px; background: #fff; border-radius: 14px; border: 1px dashed var(--line);">
-            <p style="color: var(--muted); margin: 0; font-size: 14px;">No verified citations found for this category yet.</p>
+          <div class="card" style="text-align: center; padding: 48px 24px; background: var(--paper-card); border-radius: 4px; border: 1px dashed var(--line); box-shadow: var(--shadow);">
+            <p style="color: var(--muted); margin: 0; font-size: 14px;">No verified citations found for this category yet. / इस श्रेणी के लिए अभी तक कोई सत्यापित उद्धरण नहीं मिला।</p>
           </div>
         ) : (
           incidents.map((incident: { id: string; title: string; source_url: string; incident_date: string }) => {

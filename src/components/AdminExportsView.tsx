@@ -177,10 +177,11 @@ export function AdminExportsView() {
       <div
         className="card"
         style={{
-          background: "#fff",
+          background: "var(--paper-card)",
           padding: "24px 28px",
-          borderRadius: "16px",
+          borderRadius: "4px",
           border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -190,7 +191,7 @@ export function AdminExportsView() {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-            <h2 style={{ fontSize: "22px", fontWeight: 800, margin: 0 }}>
+            <h2 style={{ fontSize: "22px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)" }}>
               Government Submission Export Engine
             </h2>
             <span
@@ -200,15 +201,17 @@ export function AdminExportsView() {
                 background: "rgba(245, 130, 32, 0.1)",
                 color: BRAND.colors.saffron,
                 padding: "3px 8px",
-                borderRadius: "6px",
+                borderRadius: "2px",
+                border: "1px dashed var(--saffron)",
+                letterSpacing: "0.04em",
               }}
             >
-              FORMATION PHASE
+              FORMATION PHASE • सरकारी निर्यात
             </span>
           </div>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0, maxWidth: "680px" }}>
+          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0, maxWidth: "680px", lineHeight: 1.5 }}>
             Generate page-numbered continuous PDF dossiers for party registration filings, Delhi State
-            committee registers, and official regulatory submissions.
+            committee registers, and official regulatory submissions. / आधिकारिक विनियामक फाइलों के लिए सतत पीडीएफ संकलन उत्पन्न करें।
           </p>
         </div>
 
@@ -220,10 +223,10 @@ export function AdminExportsView() {
               borderRight: "1px solid var(--line)",
             }}
           >
-            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-              Approved Members
+            <div style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, letterSpacing: "0.04em" }}>
+              Approved Members / स्वीकृत
             </div>
-            <div style={{ fontSize: "20px", fontWeight: 800, color: BRAND.colors.green }}>
+            <div style={{ fontSize: "20px", fontWeight: 800, color: BRAND.colors.green, fontFamily: "monospace" }}>
               {approvedCount}
             </div>
           </div>
@@ -232,7 +235,7 @@ export function AdminExportsView() {
             type="button"
             onClick={loadData}
             className="button"
-            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px", minHeight: "44px", borderRadius: "3px" }}
           >
             <RefreshCw size={15} /> Refresh
           </button>
@@ -245,7 +248,7 @@ export function AdminExportsView() {
             padding: "14px 18px",
             backgroundColor: "#fff2f0",
             border: "1px solid #ffccc7",
-            borderRadius: "10px",
+            borderRadius: "3px",
             color: "#cf1322",
             fontSize: "14px",
             display: "flex",
@@ -264,7 +267,7 @@ export function AdminExportsView() {
             padding: "14px 18px",
             backgroundColor: "#f6ffed",
             border: "1px solid #b7eb8f",
-            borderRadius: "10px",
+            borderRadius: "3px",
             color: "#389e0d",
             fontSize: "14px",
             display: "flex",
@@ -281,23 +284,24 @@ export function AdminExportsView() {
       <div
         className="card"
         style={{
-          background: "#fff",
+          background: "var(--paper-card)",
           padding: "24px 28px",
-          borderRadius: "16px",
+          borderRadius: "4px",
           border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
         }}
       >
-        <h3 style={{ fontSize: "17px", fontWeight: 800, margin: "0 0 16px" }}>
-          Generate New Regulatory Bundle
+        <h3 style={{ fontSize: "17px", fontWeight: 700, margin: "0 0 16px", fontFamily: "var(--font-serif)" }}>
+          Generate New Regulatory Bundle / नया विनियामक दस्तावेज़ संकलन
         </h3>
 
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "20px", alignItems: "end" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px", alignItems: "end" }}>
           <div>
             <label
               htmlFor="template-select"
               style={{ display: "block", fontSize: "13px", fontWeight: 700, marginBottom: "8px" }}
             >
-              Select Submission Dossier Template
+              Select Submission Dossier Template / दस्तावेज़ टेम्पलेट चुनें
             </label>
             <select
               id="template-select"
@@ -306,10 +310,11 @@ export function AdminExportsView() {
               style={{
                 width: "100%",
                 padding: "12px 14px",
-                borderRadius: "8px",
+                borderRadius: "3px",
                 border: "1px solid var(--line)",
                 fontSize: "14px",
                 background: "var(--paper)",
+                minHeight: "44px",
               }}
             >
               {templates.map((tmpl) => (
@@ -329,6 +334,8 @@ export function AdminExportsView() {
               style={{
                 width: "100%",
                 padding: "12px",
+                minHeight: "46px",
+                borderRadius: "3px",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -353,8 +360,9 @@ export function AdminExportsView() {
           style={{
             marginTop: "16px",
             padding: "12px 16px",
-            background: "var(--paper)",
-            borderRadius: "8px",
+            background: "var(--paper-subtle)",
+            borderRadius: "3px",
+            border: "1px solid var(--line)",
             fontSize: "12px",
             color: "var(--muted)",
             display: "flex",
@@ -362,7 +370,7 @@ export function AdminExportsView() {
             gap: "8px",
           }}
         >
-          <ShieldCheck size={16} style={{ color: BRAND.colors.green }} />
+          <ShieldCheck size={16} style={{ color: BRAND.colors.green, flexShrink: 0 }} />
           <span>
             Complies with Rule 19: generates single continuous page numbers (1..N), cover page, master register,
             and annexure schedule with SHA-256 cryptographic verification.
@@ -374,9 +382,10 @@ export function AdminExportsView() {
       <div
         className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
           border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
           overflow: "hidden",
         }}
       >
@@ -387,17 +396,19 @@ export function AdminExportsView() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
           }}
         >
           <div>
-            <h3 style={{ fontSize: "16px", fontWeight: 800, margin: 0 }}>
-              Generated Submission Exports Archive
+            <h3 style={{ fontSize: "16px", fontWeight: 700, margin: 0, fontFamily: "var(--font-serif)" }}>
+              Generated Submission Exports Archive / उत्पन्न अभिलेखागार
             </h3>
             <span style={{ fontSize: "12px", color: "var(--muted)" }}>
               Official immutable bundles ready for physical stamping, filing, and audit
             </span>
           </div>
-          <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--muted)" }}>
+          <span style={{ fontSize: "12px", fontWeight: 700, fontFamily: "monospace", color: "var(--muted)", background: "var(--paper-subtle)", padding: "4px 8px", borderRadius: "2px", border: "1px solid var(--line)" }}>
             {exports.length} Total Dossiers
           </span>
         </div>
@@ -405,79 +416,84 @@ export function AdminExportsView() {
         {exports.length === 0 ? (
           <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--muted)" }}>
             <FileText size={40} style={{ margin: "0 auto 12px", opacity: 0.5 }} />
-            <p style={{ margin: 0 }}>No submission dossiers generated yet.</p>
+            <p style={{ margin: 0 }}>No submission dossiers generated yet. / कोई दस्तावेज़ अभी उत्पन्न नहीं हुआ।</p>
           </div>
         ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
-            <thead>
-              <tr style={{ background: "var(--paper)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
-                <th style={{ padding: "12px 20px" }}>Export Number</th>
-                <th style={{ padding: "12px 20px" }}>Template / Dossier</th>
-                <th style={{ padding: "12px 20px" }}>Total Pages</th>
-                <th style={{ padding: "12px 20px" }}>Generated Date</th>
-                <th style={{ padding: "12px 20px" }}>SHA-256 Checksum</th>
-                <th style={{ padding: "12px 20px", textAlign: "right" }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exports.map((item) => (
-                <tr key={item.id} style={{ borderBottom: "1px solid var(--line)" }}>
-                  <td style={{ padding: "14px 20px", fontWeight: 700, fontFamily: "monospace" }}>
-                    {item.export_number}
-                  </td>
-                  <td style={{ padding: "14px 20px" }}>
-                    <div style={{ fontWeight: 600 }}>
-                      {item.submission_templates?.title || "Founding Member Dossier"}
-                    </div>
-                    <div style={{ fontSize: "11px", color: "var(--muted)" }}>
-                      {item.submission_templates?.code || "ECI-REG-01"}
-                    </div>
-                  </td>
-                  <td style={{ padding: "14px 20px" }}>
-                    <span
-                      style={{
-                        padding: "3px 8px",
-                        borderRadius: "6px",
-                        background: "var(--paper)",
-                        fontWeight: 700,
-                        fontSize: "12px",
-                      }}
-                    >
-                      {item.total_pages} Pages
-                    </span>
-                  </td>
-                  <td style={{ padding: "14px 20px", color: "var(--muted)" }}>
-                    {new Date(item.generated_at).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </td>
-                  <td style={{ padding: "14px 20px", fontFamily: "monospace", fontSize: "11px", color: "var(--muted)" }}>
-                    {item.file_sha256 ? `${item.file_sha256.slice(0, 10)}...${item.file_sha256.slice(-8)}` : "Verified"}
-                  </td>
-                  <td style={{ padding: "14px 20px", textAlign: "right" }}>
-                    <button
-                      type="button"
-                      onClick={() => handleDownload(item.id, item.export_number)}
-                      className="button"
-                      style={{
-                        padding: "6px 14px",
-                        fontSize: "12px",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                    >
-                      <Download size={14} /> Download PDF
-                    </button>
-                  </td>
+          <div className="table-responsive">
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+              <thead>
+                <tr style={{ background: "var(--paper-subtle)", borderBottom: "1px solid var(--line)", textAlign: "left" }}>
+                  <th style={{ padding: "12px 20px" }}>Export Number</th>
+                  <th style={{ padding: "12px 20px" }}>Template / Dossier</th>
+                  <th style={{ padding: "12px 20px" }}>Total Pages</th>
+                  <th style={{ padding: "12px 20px" }}>Generated Date</th>
+                  <th style={{ padding: "12px 20px" }}>SHA-256 Checksum</th>
+                  <th style={{ padding: "12px 20px", textAlign: "right" }}>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {exports.map((item) => (
+                  <tr key={item.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                    <td style={{ padding: "14px 20px", fontWeight: 700, fontFamily: "monospace" }}>
+                      {item.export_number}
+                    </td>
+                    <td style={{ padding: "14px 20px" }}>
+                      <div style={{ fontWeight: 600 }}>
+                        {item.submission_templates?.title || "Founding Member Dossier"}
+                      </div>
+                      <div style={{ fontSize: "11px", color: "var(--muted)" }}>
+                        {item.submission_templates?.code || "ECI-REG-01"}
+                      </div>
+                    </td>
+                    <td style={{ padding: "14px 20px" }}>
+                      <span
+                        style={{
+                          padding: "3px 8px",
+                          borderRadius: "2px",
+                          background: "var(--paper-subtle)",
+                          border: "1px solid var(--line)",
+                          fontWeight: 700,
+                          fontSize: "12px",
+                        }}
+                      >
+                        {item.total_pages} Pages
+                      </span>
+                    </td>
+                    <td style={{ padding: "14px 20px", color: "var(--muted)" }}>
+                      {new Date(item.generated_at).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td style={{ padding: "14px 20px", fontFamily: "monospace", fontSize: "11px", color: "var(--muted)" }}>
+                      {item.file_sha256 ? `${item.file_sha256.slice(0, 10)}...${item.file_sha256.slice(-8)}` : "Verified"}
+                    </td>
+                    <td style={{ padding: "14px 20px", textAlign: "right" }}>
+                      <button
+                        type="button"
+                        onClick={() => handleDownload(item.id, item.export_number)}
+                        className="button"
+                        style={{
+                          padding: "8px 14px",
+                          fontSize: "12px",
+                          minHeight: "44px",
+                          borderRadius: "3px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                        }}
+                      >
+                        <Download size={14} /> Download PDF
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

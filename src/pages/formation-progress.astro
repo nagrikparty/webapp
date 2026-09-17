@@ -2,7 +2,6 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Bilingual from "@/components/Bilingual.astro";
 import { CheckCircle2, Clock, ArrowRight, AlertCircle } from "lucide-react";
-import { BRAND } from "@/lib/brand";
 
 const stages = [
   {
@@ -105,92 +104,95 @@ const stages = [
     <div class="container" style="max-width: 900px;">
       
       <!-- Statutory Transparency Alert -->
-      <div class="card" style="background: #fff; border: 1px solid #ffd591; padding: 20px 24px; border-radius: 14px; margin-bottom: 32px; display: flex; gap: 14px; align-items: flex-start;">
-        <AlertCircle size={22} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
+      <div class="card" style="background: var(--paper-card); border: 1px solid var(--line-strong); border-left: 3px solid var(--saffron); padding: 18px 22px; border-radius: 3px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow);">
+        <AlertCircle size={20} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
         <div>
-          <strong style="font-size: 15px; color: var(--ink);">Strict Statutory Disclosure</strong>
-          <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.5;">
+          <strong style="font-size: 14.5px; color: var(--ink); font-family: var(--font-serif);">Strict Statutory Disclosure</strong>
+          <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.55;">
             Nagrik Party is currently in <strong>Stage 3 of Phase 1 (Formation Phase)</strong>. We do not claim registered-party status, official government recognition, or an allotted election symbol until final Gazette notification by the Election Commission of India.
           </p>
         </div>
       </div>
 
       <!-- Roadmap Timeline -->
-      <div style="display: grid; gap: 20px;">
+      <div style="display: grid; gap: 16px;">
         {stages.map((st) => (
           <div
             class="card"
             style={{
-              background: "#fff",
-              borderRadius: "16px",
-              padding: "24px 28px",
-              border: st.status === "ACTIVE" ? `2px solid ${BRAND.colors.saffron}` : "1px solid var(--line)",
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              padding: "20px 24px",
+              border: st.status === "ACTIVE" ? `1.5px solid var(--saffron)` : "1px solid var(--line)",
+              boxShadow: "var(--shadow)",
               position: "relative",
             }}
           >
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <span
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: "28px",
-                    height: "28px",
-                    borderRadius: "50%",
-                    fontSize: "13px",
-                    fontWeight: 800,
+                    width: "26px",
+                    height: "26px",
+                    borderRadius: "2px",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    fontFamily: "var(--font-mono)",
                     background:
                       st.status === "COMPLETED"
-                        ? "rgba(0, 135, 62, 0.1)"
+                        ? "rgba(29, 86, 53, 0.1)"
                         : st.status === "ACTIVE"
-                        ? "rgba(245, 130, 32, 0.15)"
-                        : "var(--paper)",
+                        ? "rgba(179, 74, 21, 0.15)"
+                        : "var(--paper-subtle)",
                     color:
                       st.status === "COMPLETED"
-                        ? BRAND.colors.green
+                        ? "var(--green)"
                         : st.status === "ACTIVE"
-                        ? BRAND.colors.saffron
+                        ? "var(--saffron)"
                         : "var(--muted)",
+                    border: "1px solid var(--line)",
                   }}
                 >
                   {st.stage}
                 </span>
 
-                <h3 style="font-size: 17px; font-weight: 800; margin: 0;">
+                <h3 style="font-size: 16.5px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
                   <Bilingual en={st.titleEn} hi={st.titleHi} />
                 </h3>
               </div>
 
               <div>
                 {st.status === "COMPLETED" && (
-                  <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--green); background: rgba(0, 135, 62, 0.1); padding: 4px 10px; border-radius: 100px;">
-                    <CheckCircle2 size={14} /> Completed
+                  <span class="badge-verified" style={{ fontSize: "11px" }}>
+                    <CheckCircle2 size={12} /> Completed
                   </span>
                 )}
                 {st.status === "ACTIVE" && (
-                  <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; color: var(--saffron); background: rgba(245, 130, 32, 0.1); padding: 4px 10px; border-radius: 100px;">
-                    <Clock size={14} /> Current Stage
+                  <span class="badge-citation" style={{ background: "rgba(179, 74, 21, 0.1)", color: "var(--saffron)", borderColor: "rgba(179, 74, 21, 0.3)" }}>
+                    <Clock size={12} /> Current Stage
                   </span>
                 )}
                 {st.status === "UPCOMING" && (
-                  <span style="font-size: 12px; font-weight: 600; color: var(--muted); background: var(--paper); padding: 4px 10px; border-radius: 100px;">
+                  <span class="badge-citation" style={{ color: "var(--muted)" }}>
                     Upcoming
                   </span>
                 )}
               </div>
             </div>
 
-            <p style="font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0;">
+            <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0;">
               <Bilingual en={st.descEn} hi={st.descHi} />
             </p>
 
             {st.status === "ACTIVE" && (
-              <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <span style="font-size: 13px; font-weight: 600; color: var(--ink);">
                   Help Delhi cross the founding threshold:
                 </span>
-                <a href="/member/induction" class="button primary" style="font-size: 13px; padding: 6px 16px; display: inline-flex; align-items: center; gap: 6px;">
+                <a href="/member/induction" class="button primary" style="font-size: 13px; min-height: 38px; padding: 0 16px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px;">
                   Complete Member Induction <ArrowRight size={14} />
                 </a>
               </div>

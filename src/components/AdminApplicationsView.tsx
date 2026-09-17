@@ -92,41 +92,43 @@ export function AdminApplicationsView() {
   return (
     <div>
       {/* Summary Cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "12px", marginBottom: "24px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "10px", marginBottom: "20px" }}>
         {[
-          { label: "Total", value: counts.total, icon: FileText, color: BRAND.colors.ink },
-          { label: "Submitted", value: counts.submitted, icon: Clock, color: "#1890ff" },
-          { label: "In Review", value: counts.pending, icon: AlertTriangle, color: "#d48806" },
-          { label: "Approved", value: counts.approved, icon: CheckCircle, color: "#389e0d" },
-          { label: "Rejected", value: counts.rejected, icon: XCircle, color: "#cf1322" },
+          { label: "Total", value: counts.total, icon: FileText, color: "var(--ink)" },
+          { label: "Submitted", value: counts.submitted, icon: Clock, color: "var(--blue)" },
+          { label: "In Review", value: counts.pending, icon: AlertTriangle, color: "var(--saffron)" },
+          { label: "Approved", value: counts.approved, icon: CheckCircle, color: "var(--green)" },
+          { label: "Rejected", value: counts.rejected, icon: XCircle, color: "var(--red)" },
         ].map((card) => (
           <div
             key={card.label}
+            className="card"
             style={{
-              padding: "16px",
-              backgroundColor: "#fff",
-              borderRadius: "12px",
-              border: "1px solid var(--line)",
+              padding: "14px 16px",
+              backgroundColor: "var(--paper-card)",
+              borderRadius: "4px",
+              border: "1px solid var(--line-strong)",
+              boxShadow: "var(--shadow)",
               textAlign: "center",
             }}
           >
-            <card.icon size={20} style={{ color: card.color, marginBottom: "6px" }} />
-            <div style={{ fontSize: "24px", fontWeight: 800 }}>{card.value}</div>
-            <div style={{ fontSize: "12px", color: "var(--muted)" }}>{card.label}</div>
+            <card.icon size={18} style={{ color: card.color, marginBottom: "4px" }} />
+            <div style={{ fontSize: "22px", fontWeight: 800, fontFamily: "var(--font-mono)" }}>{card.value}</div>
+            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>{card.label}</div>
           </div>
         ))}
       </div>
 
       {/* Search & Filter */}
       <div style={{ display: "flex", gap: "12px", marginBottom: "20px", flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: "200px", position: "relative" }}>
-          <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "var(--muted)" }} />
+        <div style={{ flex: 1, minWidth: "220px", position: "relative" }}>
+          <Search size={16} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "var(--muted)" }} />
           <input
             type="text"
             placeholder="Search by name, email, or application #..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: "100%", padding: "10px 12px 10px 36px", borderRadius: "8px", border: "1px solid var(--line)", fontSize: "14px" }}
+            style={{ width: "100%", padding: "10px 14px 10px 38px", borderRadius: "3px", border: "1px solid var(--line-strong)", fontSize: "14px", background: "var(--paper)", color: "var(--ink)" }}
           />
         </div>
         <div style={{ position: "relative", display: "flex", alignItems: "center", gap: "6px" }}>
@@ -134,7 +136,7 @@ export function AdminApplicationsView() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ padding: "10px 12px", borderRadius: "8px", border: "1px solid var(--line)", fontSize: "14px", backgroundColor: "#fff" }}
+            style={{ padding: "10px 14px", borderRadius: "3px", border: "1px solid var(--line-strong)", fontSize: "13.5px", backgroundColor: "var(--paper-card)", color: "var(--ink)" }}
           >
             <option value="ALL">All Statuses</option>
             {Object.entries(STATUS_STYLES).map(([key, val]) => (
@@ -146,11 +148,11 @@ export function AdminApplicationsView() {
 
       {/* Applications Table */}
       {filtered.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "48px 20px", backgroundColor: "#fff", borderRadius: "12px", border: "1px solid var(--line)" }}>
-          <FileText size={32} style={{ color: "var(--muted)", marginBottom: "12px" }} />
-          <h3 style={{ fontSize: "18px", fontWeight: 700 }}>No Applications Found</h3>
-          <p style={{ fontSize: "14px", color: "var(--muted)" }}>
-            {search || statusFilter !== "ALL" ? "Try adjusting your filters." : "No applications have been submitted yet."}
+        <div className="card" style={{ textAlign: "center", padding: "48px 20px", backgroundColor: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)" }}>
+          <FileText size={36} style={{ color: "var(--muted)", marginBottom: "12px" }} />
+          <h3 style={{ fontSize: "17px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>No Applications Found</h3>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0 }}>
+            {search || statusFilter !== "ALL" ? "Try adjusting your filters or search keywords." : "No applications have been submitted yet."}
           </p>
         </div>
       ) : (
@@ -160,11 +162,13 @@ export function AdminApplicationsView() {
             return (
               <div
                 key={app.id}
+                className="card"
                 style={{
                   padding: "16px 20px",
-                  backgroundColor: "#fff",
-                  borderRadius: "10px",
-                  border: "1px solid var(--line)",
+                  backgroundColor: "var(--paper-card)",
+                  borderRadius: "4px",
+                  border: "1px solid var(--line-strong)",
+                  boxShadow: "var(--shadow)",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
@@ -172,38 +176,41 @@ export function AdminApplicationsView() {
                   flexWrap: "wrap",
                 }}
               >
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "15px", fontWeight: 700, marginBottom: "4px" }}>
+                <div style={{ flex: 1, minWidth: "220px" }}>
+                  <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--ink)", marginBottom: "4px", fontFamily: "var(--font-serif)" }}>
                     {app.profiles?.full_name || "—"}
                   </div>
                   <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "var(--muted)", flexWrap: "wrap" }}>
-                    <span>{app.application_number || "No App #"}</span>
+                    <span style={{ fontFamily: "var(--font-mono)" }}>{app.application_number || "No App #"}</span>
                     <span>{app.profiles?.email || "—"}</span>
                     <span>{app.membership_category || "—"}</span>
-                    <span>{new Date(app.submitted_at || app.created_at).toLocaleDateString("en-IN")}</span>
+                    <span style={{ fontFamily: "var(--font-mono)" }}>{new Date(app.submitted_at || app.created_at).toLocaleDateString("en-IN")}</span>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                   <span
                     style={{
-                      padding: "3px 10px",
-                      borderRadius: "100px",
-                      fontSize: "11px",
+                      padding: "2px 8px",
+                      borderRadius: "2px",
+                      fontSize: "10.5px",
                       fontWeight: 700,
+                      fontFamily: "var(--font-mono)",
+                      letterSpacing: "0.03em",
                       textTransform: "uppercase",
                       backgroundColor: style.bg,
                       color: style.color,
+                      border: `1px solid ${style.color}40`,
                     }}
                   >
                     {style.label}
                   </span>
                   <a
                     href={`/admin/verifications?app=${app.id}`}
-                    style={{ color: BRAND.colors.ink, display: "flex", alignItems: "center" }}
-                    title="Review"
+                    className="button"
+                    style={{ minHeight: "36px", padding: "6px 12px", fontSize: "12.5px", borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                    title="Review application"
                   >
-                    <Eye size={16} />
-                    <ChevronRight size={14} />
+                    <Eye size={14} /> Review <ChevronRight size={13} />
                   </a>
                 </div>
               </div>

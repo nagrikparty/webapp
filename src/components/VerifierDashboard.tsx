@@ -142,12 +142,14 @@ export function VerifierDashboard() {
     <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
       {/* Header */}
       <div
+        className="card"
         style={{
-          background: "#fff",
-          borderRadius: "16px",
-          padding: "24px",
-          border: "1px solid var(--line)",
-          marginBottom: "24px",
+          background: "var(--paper-card)",
+          borderRadius: "4px",
+          padding: "20px 24px",
+          border: "1px solid var(--line-strong)",
+          boxShadow: "var(--shadow)",
+          marginBottom: "20px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -156,15 +158,32 @@ export function VerifierDashboard() {
         }}
       >
         <div>
-          <h2 style={{ fontSize: "22px", fontWeight: 800, margin: "0 0 4px" }}>
-            Verification Desk & Scrutiny Portal
-          </h2>
-          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
-            Audit applicant declarations, verify uploaded evidence, and approve membership enrollments.
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+            <h2 style={{ fontSize: "21px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>
+              Verification Desk & Scrutiny Portal
+            </h2>
+            <span
+              style={{
+                fontSize: "10.5px",
+                fontFamily: "var(--font-mono)",
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: "2px",
+                background: "rgba(179, 74, 21, 0.08)",
+                border: "1px solid rgba(179, 74, 21, 0.25)",
+                color: "var(--saffron)",
+                textTransform: "uppercase",
+              }}
+            >
+              Audited Desk
+            </span>
+          </div>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0 }}>
+            दस्तावेज़ संवीक्षा और सत्यापन पीठ • Audit applicant declarations, inspect evidence hashes, and approve enrollments.
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {["ALL", "SUBMITTED", "APPROVED", "NEEDS_CORRECTION", "REJECTED"].map((st) => (
             <button
               key={st}
@@ -172,10 +191,13 @@ export function VerifierDashboard() {
               onClick={() => setFilterStatus(st)}
               className="button"
               style={{
-                fontSize: "12px",
+                fontSize: "11px",
+                fontFamily: "var(--font-mono)",
                 padding: "6px 12px",
-                background: filterStatus === st ? "var(--ink)" : "#fff",
+                borderRadius: "3px",
+                background: filterStatus === st ? "var(--ink)" : "var(--paper-card)",
                 color: filterStatus === st ? "#fff" : "var(--ink)",
+                border: "1px solid var(--line-strong)",
               }}
             >
               {st.replace(/_/g, " ")}
@@ -187,13 +209,13 @@ export function VerifierDashboard() {
       {feedback && (
         <div
           style={{
-            padding: "14px 18px",
-            borderRadius: "10px",
+            padding: "12px 16px",
+            borderRadius: "3px",
             marginBottom: "20px",
-            background: feedback.type === "success" ? "#f6ffed" : "#fff2f0",
-            border: feedback.type === "success" ? "1px solid #b7eb8f" : "1px solid #ffccc7",
-            color: feedback.type === "success" ? "#389e0d" : "#cf1322",
-            fontSize: "14px",
+            background: feedback.type === "success" ? "rgba(29, 86, 53, 0.08)" : "rgba(142, 38, 23, 0.08)",
+            border: feedback.type === "success" ? "1px solid rgba(29, 86, 53, 0.3)" : "1px solid rgba(142, 38, 23, 0.3)",
+            color: feedback.type === "success" ? "var(--green)" : "var(--red)",
+            fontSize: "13.5px",
             display: "flex",
             alignItems: "center",
             gap: "10px",
@@ -204,26 +226,28 @@ export function VerifierDashboard() {
         </div>
       )}
 
-      {/* Main Split Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "360px 1fr", gap: "24px" }}>
+      {/* Main Split Grid - Mobile First Responsive */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
         {/* Left Queue List */}
         <div
           className="card"
           style={{
-            background: "#fff",
-            borderRadius: "16px",
-            border: "1px solid var(--line)",
+            background: "var(--paper-card)",
+            borderRadius: "4px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
             padding: "16px",
             maxHeight: "750px",
             overflowY: "auto",
           }}
         >
-          <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--muted)", textTransform: "uppercase", marginBottom: "12px" }}>
-            Queue ({filteredApps.length})
+          <div style={{ fontSize: "11px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--muted)", textTransform: "uppercase", marginBottom: "12px", display: "flex", justifyContent: "space-between" }}>
+            <span>Queue / कतार ({filteredApps.length})</span>
+            <span>FILTER: {filterStatus}</span>
           </div>
 
           {filteredApps.length === 0 ? (
-            <div style={{ padding: "32px 16px", textAlign: "center", color: "var(--muted)", fontSize: "14px" }}>
+            <div style={{ padding: "32px 16px", textAlign: "center", color: "var(--muted)", fontSize: "13.5px" }}>
               No applications match this filter.
             </div>
           ) : (
@@ -239,40 +263,48 @@ export function VerifierDashboard() {
                       setFeedback(null);
                     }}
                     style={{
-                      padding: "14px",
-                      borderRadius: "10px",
-                      border: isSelected ? `2px solid ${BRAND.colors.saffron}` : "1px solid var(--line)",
-                      background: isSelected ? "rgba(245, 130, 32, 0.04)" : "#fff",
+                      padding: "12px 14px",
+                      borderRadius: "3px",
+                      border: isSelected ? "2px solid var(--saffron)" : "1px solid var(--line)",
+                      background: isSelected ? "rgba(179, 74, 21, 0.05)" : "var(--paper-card)",
                       cursor: "pointer",
+                      transition: "border-color 0.15s ease",
                     }}
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "4px" }}>
-                      <strong style={{ fontSize: "14px" }}>{addr?.full_legal_name || "Applicant"}</strong>
+                      <strong style={{ fontSize: "14px", color: "var(--ink)", fontFamily: "var(--font-serif)" }}>{addr?.full_legal_name || "Applicant"}</strong>
                       <span
                         style={{
                           fontSize: "10px",
+                          fontFamily: "var(--font-mono)",
                           fontWeight: 700,
                           padding: "2px 6px",
-                          borderRadius: "100px",
+                          borderRadius: "2px",
                           background:
                             app.status === "APPROVED"
-                              ? "rgba(0, 135, 62, 0.1)"
+                              ? "rgba(29, 86, 53, 0.08)"
                               : app.status === "REJECTED"
-                              ? "rgba(255, 59, 48, 0.1)"
-                              : "rgba(245, 130, 32, 0.1)",
+                              ? "rgba(142, 38, 23, 0.08)"
+                              : "rgba(179, 74, 21, 0.08)",
+                          border:
+                            app.status === "APPROVED"
+                              ? "1px solid rgba(29, 86, 53, 0.25)"
+                              : app.status === "REJECTED"
+                              ? "1px solid rgba(142, 38, 23, 0.25)"
+                              : "1px solid rgba(179, 74, 21, 0.25)",
                           color:
                             app.status === "APPROVED"
-                              ? BRAND.colors.green
+                              ? "var(--green)"
                               : app.status === "REJECTED"
                               ? "var(--red)"
-                              : BRAND.colors.saffron,
+                              : "var(--saffron)",
                         }}
                       >
                         {app.status}
                       </span>
                     </div>
-                    <div style={{ fontSize: "12px", color: "var(--muted)" }}>
-                      {app.application_number} • {addr?.vidhan_sabha || "Delhi"}
+                    <div style={{ fontSize: "11.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+                      {app.application_number} • {addr?.vidhan_sabha || "Delhi"} AC
                     </div>
                   </div>
                 );
@@ -286,19 +318,20 @@ export function VerifierDashboard() {
           <div
             className="card"
             style={{
-              background: "#fff",
-              borderRadius: "16px",
-              border: "1px solid var(--line)",
-              padding: "28px",
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              border: "1px solid var(--line-strong)",
+              boxShadow: "var(--shadow)",
+              padding: "24px",
             }}
           >
             {/* Header of Detail */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px", flexWrap: "wrap", gap: "12px" }}>
               <div>
-                <span style={{ fontSize: "12px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700 }}>
-                  Application {selectedApp.application_number}
+                <span style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
+                  Docket: {selectedApp.application_number}
                 </span>
-                <h3 style={{ fontSize: "22px", fontWeight: 800, margin: "4px 0 0" }}>
+                <h3 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "4px 0 0", color: "var(--ink)" }}>
                   {(() => {
                     const a = Array.isArray(selectedApp.member_addresses)
                       ? selectedApp.member_addresses[0]
@@ -308,9 +341,9 @@ export function VerifierDashboard() {
                 </h3>
               </div>
 
-              <div style={{ fontSize: "12px", color: "var(--muted)", textAlign: "right" }}>
+              <div style={{ fontSize: "12px", color: "var(--muted)", textAlign: "right", fontFamily: "var(--font-mono)" }}>
                 <div>Applied: {selectedApp.submitted_at ? new Date(selectedApp.submitted_at).toLocaleDateString("en-IN") : "Draft"}</div>
-                <div>Category: <strong>{selectedApp.membership_category}</strong></div>
+                <div>Category: <strong style={{ color: "var(--ink)" }}>{selectedApp.membership_category}</strong></div>
               </div>
             </div>
 
@@ -326,75 +359,79 @@ export function VerifierDashboard() {
               return (
                 <div
                   style={{
-                    background: "var(--paper)",
-                    padding: "20px",
-                    borderRadius: "12px",
+                    background: "var(--paper-subtle)",
+                    padding: "16px 18px",
+                    borderRadius: "3px",
+                    border: "1px solid var(--line-strong)",
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "14px",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                    gap: "12px",
                     fontSize: "13px",
-                    marginBottom: "24px",
+                    marginBottom: "20px",
                   }}
                 >
                   <div>
-                    <span style={{ color: "var(--muted)" }}>Guardian / Parent:</span>{" "}
-                    <strong>{addr?.parent_or_guardian_name || "N/A"}</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>Guardian / Parent:</span>{" "}
+                    <div style={{ fontWeight: 700, color: "var(--ink)" }}>{addr?.parent_or_guardian_name || "N/A"}</div>
                   </div>
                   <div>
-                    <span style={{ color: "var(--muted)" }}>DOB / Gender:</span>{" "}
-                    <strong>{addr?.date_of_birth} ({addr?.gender})</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>DOB / Gender:</span>{" "}
+                    <div style={{ fontWeight: 700, color: "var(--ink)" }}>{addr?.date_of_birth} ({addr?.gender})</div>
                   </div>
                   <div>
-                    <span style={{ color: "var(--muted)" }}>Vidhan Sabha:</span>{" "}
-                    <strong>{addr?.vidhan_sabha} AC, Ward: {addr?.ward || "N/A"}</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>Vidhan Sabha / Ward:</span>{" "}
+                    <div style={{ fontWeight: 700, color: "var(--ink)" }}>{addr?.vidhan_sabha} AC, Ward {addr?.ward || "N/A"}</div>
                   </div>
                   <div>
-                    <span style={{ color: "var(--muted)" }}>PIN Code:</span>{" "}
-                    <strong>{addr?.pincode}</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>PIN Code:</span>{" "}
+                    <div style={{ fontWeight: 700, color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{addr?.pincode}</div>
                   </div>
                   <div>
-                    <span style={{ color: "var(--muted)" }}>EPIC / Voter ID:</span>{" "}
-                    <strong>{elec?.epic_number || "None provided"}</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>EPIC / Voter ID:</span>{" "}
+                    <div style={{ fontWeight: 700, color: "var(--saffron)", fontFamily: "var(--font-mono)" }}>{elec?.epic_number || "None provided"}</div>
                   </div>
                   <div>
-                    <span style={{ color: "var(--muted)" }}>Proof Type:</span>{" "}
-                    <strong>{elec?.identity_proof_type || "Voter ID"}</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>Proof Type:</span>{" "}
+                    <div style={{ fontWeight: 700, color: "var(--ink)" }}>{elec?.identity_proof_type || "Voter ID"}</div>
                   </div>
                   <div style={{ gridColumn: "1 / -1" }}>
-                    <span style={{ color: "var(--muted)" }}>Address:</span>{" "}
-                    <strong>{addr?.address_line1}, {addr?.district}, Delhi</strong>
+                    <span style={{ color: "var(--muted)", fontSize: "11.5px" }}>Address:</span>{" "}
+                    <div style={{ fontWeight: 600, color: "var(--ink)" }}>{addr?.address_line1}, {addr?.district}, Delhi</div>
                   </div>
                 </div>
               );
             })()}
 
             {/* Document Evidence & OCR Extraction */}
-            <div style={{ marginBottom: "24px" }}>
-              <h4 style={{ fontSize: "15px", fontWeight: 700, margin: "0 0 12px" }}>
+            <div style={{ marginBottom: "20px" }}>
+              <h4 style={{ fontSize: "14.5px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 10px", color: "var(--ink)" }}>
                 Uploaded Evidence & OCR Extraction
               </h4>
 
               {selectedApp.documents && selectedApp.documents.length > 0 ? (
-                <div style={{ display: "grid", gap: "12px" }}>
+                <div style={{ display: "grid", gap: "10px" }}>
                   {selectedApp.documents.map((doc) => (
                     <div
                       key={doc.id}
                       style={{
-                        border: "1px solid var(--line)",
-                        borderRadius: "10px",
-                        padding: "16px",
+                        border: "1px solid var(--line-strong)",
+                        borderRadius: "3px",
+                        padding: "14px",
+                        background: "var(--paper)",
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: "10px",
                       }}
                     >
                       <div>
-                        <div style={{ fontWeight: 600, fontSize: "14px" }}>{doc.original_filename}</div>
-                        <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px", fontFamily: "monospace" }}>
+                        <div style={{ fontWeight: 700, fontSize: "13.5px", color: "var(--ink)" }}>{doc.original_filename}</div>
+                        <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px", fontFamily: "var(--font-mono)" }}>
                           SHA-256: {doc.sha256_hash.slice(0, 16)}...
                         </div>
                         {doc.extractions && doc.extractions.length > 0 && (
-                          <div style={{ marginTop: "8px", fontSize: "12px", background: "var(--paper)", padding: "6px 10px", borderRadius: "6px" }}>
+                          <div style={{ marginTop: "6px", fontSize: "11.5px", background: "var(--paper-subtle)", padding: "4px 8px", borderRadius: "2px", border: "1px solid var(--line)", fontFamily: "var(--font-mono)" }}>
                             <strong>OCR Extracted:</strong>{" "}
                             {doc.extractions.map((ex) => `${ex.field_name}: ${ex.extracted_value}`).join(" | ")}
                           </div>
@@ -405,7 +442,7 @@ export function VerifierDashboard() {
                         type="button"
                         onClick={() => viewDocument(doc.id)}
                         className="button"
-                        style={{ fontSize: "12px", display: "flex", alignItems: "center", gap: "4px" }}
+                        style={{ minHeight: "36px", padding: "6px 12px", fontSize: "12px", borderRadius: "3px", display: "flex", alignItems: "center", gap: "4px" }}
                       >
                         <Eye size={14} /> View Document
                       </button>
@@ -413,15 +450,15 @@ export function VerifierDashboard() {
                   ))}
                 </div>
               ) : (
-                <div style={{ padding: "16px", background: "var(--paper)", borderRadius: "8px", color: "var(--muted)", fontSize: "13px" }}>
+                <div style={{ padding: "14px", background: "var(--paper-subtle)", borderRadius: "3px", color: "var(--muted)", fontSize: "13px", border: "1px solid var(--line)" }}>
                   No documents linked to this application.
                 </div>
               )}
             </div>
 
             {/* Notes & Actions */}
-            <div style={{ borderTop: "1px solid var(--line)", paddingTop: "20px" }}>
-              <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+            <div style={{ borderTop: "1px solid var(--line)", paddingTop: "18px" }}>
+              <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, fontFamily: "var(--font-mono)", textTransform: "uppercase", color: "var(--muted)", marginBottom: "6px" }}>
                 Verification Notes / Scrutiny Remarks
               </label>
               <textarea
@@ -431,23 +468,25 @@ export function VerifierDashboard() {
                 rows={3}
                 style={{
                   width: "100%",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--line)",
-                  fontSize: "13px",
+                  padding: "10px 12px",
+                  borderRadius: "3px",
+                  border: "1px solid var(--line-strong)",
+                  fontSize: "13.5px",
+                  background: "var(--paper)",
+                  color: "var(--ink)",
                   marginBottom: "16px",
                 }}
               />
 
-              <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+              <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end", flexWrap: "wrap" }}>
                 <button
                   type="button"
                   disabled={actionLoading}
                   onClick={() => handleAction("REJECT")}
                   className="button"
-                  style={{ color: "var(--red)", borderColor: "#ffccc7", background: "#fff" }}
+                  style={{ minHeight: "42px", padding: "8px 16px", color: "var(--red)", borderColor: "rgba(142, 38, 23, 0.3)", background: "var(--paper-card)", borderRadius: "3px", fontSize: "13px", fontWeight: 700 }}
                 >
-                  <XCircle size={16} /> Reject
+                  <XCircle size={15} /> Reject
                 </button>
 
                 <button
@@ -455,9 +494,9 @@ export function VerifierDashboard() {
                   disabled={actionLoading}
                   onClick={() => handleAction("REQUEST_CORRECTION")}
                   className="button"
-                  style={{ color: BRAND.colors.saffron, borderColor: "#ffe7ba", background: "#fff" }}
+                  style={{ minHeight: "42px", padding: "8px 16px", color: "var(--saffron)", borderColor: "rgba(179, 74, 21, 0.3)", background: "var(--paper-card)", borderRadius: "3px", fontSize: "13px", fontWeight: 700 }}
                 >
-                  <AlertCircle size={16} /> Request Correction
+                  <AlertCircle size={15} /> Request Correction
                 </button>
 
                 <button
@@ -466,7 +505,12 @@ export function VerifierDashboard() {
                   onClick={() => handleAction("APPROVE")}
                   className="button primary"
                   style={{
-                    background: BRAND.colors.green,
+                    minHeight: "42px",
+                    padding: "8px 20px",
+                    background: "var(--green)",
+                    borderRadius: "3px",
+                    fontSize: "13.5px",
+                    fontWeight: 700,
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
@@ -479,7 +523,7 @@ export function VerifierDashboard() {
             </div>
           </div>
         ) : (
-          <div className="card" style={{ padding: "60px", textAlign: "center", background: "#fff", borderRadius: "16px" }}>
+          <div className="card" style={{ padding: "60px 24px", textAlign: "center", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)" }}>
             Select an application to begin scrutiny.
           </div>
         )}
