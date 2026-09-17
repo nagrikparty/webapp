@@ -1,11 +1,31 @@
 ---
 // src/components/Logo.astro
-const { width = 18, height = 18, className = "" } = Astro.props;
+// Renders the canonical Nagrik Party logo
+interface Props {
+  width?: number;
+  height?: number;
+  className?: string;
+  variant?: "full" | "icon" | "stacked";
+}
+
+const { width = 160, height, className = "", variant = "full" } = Astro.props;
 ---
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width={width} height={height} class={className} aria-label="Nagrik Party Logo">
-  <circle cx="12" cy="4" r="2"/>
-  <path d="M10.5 5.5 L6 20"/>
-  <path d="M13.5 5.5 L18 20"/>
-  <path d="M5 20h2"/>
-  <path d="M17 20h2"/>
-</svg>
+
+<img
+  src="/nagrikpartylogo.svg"
+  alt="Nagrik Party"
+  width={width}
+  height={height}
+  class={`nagrik-logo ${className}`}
+  data-variant={variant}
+  loading="eager"
+  decoding="async"
+  style={{
+    maxWidth: "100%",
+    height: height ? `${height}px` : "auto",
+    aspectRatio: "1/1",
+    objectFit: "contain",
+    display: "inline-block",
+    verticalAlign: "middle",
+  }}
+/>

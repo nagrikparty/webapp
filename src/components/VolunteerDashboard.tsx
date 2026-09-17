@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { supabase, hasSupabaseConfig } from "@/lib/supabase";
-import { Loader2, CheckCircle, ShieldAlert, User, MapPin, Megaphone } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { Loader2, CheckCircle, ShieldAlert, MapPin, Megaphone } from "lucide-react";
 import type { Profile, Task, Issue, Announcement } from "@/lib/types";
 
 export function VolunteerDashboard() {

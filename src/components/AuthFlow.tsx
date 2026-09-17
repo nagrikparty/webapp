@@ -1,44 +1,38 @@
-import React, { useState } from "react";
-import { Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Loader2, AlertCircle, CheckCircle, ArrowRight, ShieldCheck } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { Logo } from "./Logo";
+import { BRAND } from "@/lib/brand";
 
 export interface AuthFlowProps {
-  initialMode?: "email" | "login" | "signup";
+  initialMode?: "login" | "signup" | "forgot-password";
 }
 
-export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
-  const [mode, setMode] = useState<"email" | "login" | "signup">(initialMode);
+export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
+  const [mode, setMode] = useState<"login" | "signup" | "forgot-password">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("volunteer");
+  const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const [hydrated, setHydrated] = useState(false);
 
   async function syncSession(session: import("@supabase/supabase-js").Session): Promise<void> {
     setLoading(true);
     setErrorMsg("");
 
-    const storedReferrer = localStorage.getItem("referrer_id");
-    const loggedInUser = session.user;
-
-    if (loggedInUser && storedReferrer && loggedInUser.id === storedReferrer) {
-      setErrorMsg("You cannot refer yourself.");
-      setLoading(false);
-      return;
-    }
+    const storedReferrer = typeof window !== "undefined" ? localStorage.getItem("referrer_id") : null;
 
     try {
       const res = await fetch("/api/v1/sync-profile", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${session.access_token}`,
-          "Content-Type": "application/json"
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          referred_by: storedReferrer || undefined
-        })
+          referred_by: storedReferrer || undefined,
+        }),
       });
 
       if (!res.ok) {
@@ -46,8 +40,12 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
         throw new Error(resData.error || "Failed to sync profile.");
       }
 
-      const body = await res.json() as { role: string };
-      window.location.href = `/dashboard/${body.role}`;
+      const body = (await res.json()) as { role: string };
+      if (body.role === "ADMIN" || body.role === "SUPER_ADMIN" || body.role === "VERIFIER") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/member";
+      }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "An error occurred during profile sync.";
       setErrorMsg(message);
@@ -55,60 +53,27 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
     }
   }
 
-  React.useEffect(() => {
-    setHydrated(true);
-
+  useEffect(() => {
     if (!supabase) return;
 
-    // Check hash for invalid or expired OTP/link
-    const hash = window.location.hash;
+    const hash = typeof window !== "undefined" ? window.location.hash : "";
     if (hash) {
       const hashParams = new URLSearchParams(hash.substring(1));
-      const errorMsgParam = hashParams.get("error_description");
-      if (errorMsgParam) {
-        setErrorMsg(decodeURIComponent(errorMsgParam));
-      } else if (hashParams.get("access_token") === "expired_token" || hash.includes("expired")) {
-        setErrorMsg("Invalid or expired OTP/link");
+      const errorParam = hashParams.get("error_description");
+      if (errorParam) {
+        setErrorMsg(decodeURIComponent(errorParam));
       }
     }
 
-    // Check search params for referrer and validate
-    const searchParams = new URLSearchParams(window.location.search);
-    const ref = searchParams.get("ref");
-    if (ref) {
-      const validateReferrer = async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user && user.id === ref) {
-          setErrorMsg("You cannot refer yourself.");
-          localStorage.removeItem("referrer_id");
-          return;
-        }
-
-        const { data, error } = await supabase.from("profiles").select("id").eq("id", ref).maybeSingle();
-        if (error || !data) {
-          setErrorMsg("Invalid or malformed referrer link.");
-          localStorage.removeItem("referrer_id");
-        } else {
-          localStorage.setItem("referrer_id", ref);
-        }
-      };
-      validateReferrer();
-    }
-
-    // Subscribe to auth state changes and check existing session
-    let isSyncing = false;
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session && !isSyncing) {
-        isSyncing = true;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_, session) => {
+      if (session) {
         await syncSession(session);
-        isSyncing = false;
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session && !isSyncing) {
-        isSyncing = true;
-        syncSession(session).finally(() => { isSyncing = false; });
+      if (session) {
+        syncSession(session);
       }
     });
 
@@ -117,160 +82,339 @@ export function AuthFlow({ initialMode = "email" }: AuthFlowProps) {
     };
   }, []);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement> | React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!supabase) {
-      setErrorMsg("Authentication service is not configured.");
+      setErrorMsg("Authentication service is currently unavailable.");
       return;
     }
-    
+
     setLoading(true);
     setErrorMsg("");
     setSuccessMsg("");
 
     const normalizedEmail = email.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!normalizedEmail || !emailRegex.test(normalizedEmail)) {
+      setErrorMsg("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      if (mode === "email") {
-        if (!normalizedEmail) {
-          throw new Error("Email is required");
-        }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(normalizedEmail)) {
-          throw new Error("Invalid email format");
-        }
-
-        const { error } = await supabase.auth.signInWithOtp({
-          email: normalizedEmail,
-          options: {
-            emailRedirectTo: `${window.location.origin}/auth`
-          }
+      if (mode === "forgot-password") {
+        const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+          redirectTo: `${window.location.origin}/reset-password`,
         });
         if (error) throw error;
-        setSuccessMsg("Magic Link sent successfully! Please check your email.");
+        setSuccessMsg("Password reset link has been sent to your email.");
+      } else if (mode === "signup") {
+        if (!password || password.length < 8) {
+          throw new Error("Password must be at least 8 characters long.");
+        }
+        const { data, error } = await supabase.auth.signUp({
+          email: normalizedEmail,
+          password,
+          options: {
+            data: {
+              full_name: fullName.trim() || undefined,
+            },
+          },
+        });
+        if (error) throw error;
+        if (data.session) {
+          await syncSession(data.session);
+        } else {
+          setSuccessMsg("Account created! Please check your email to confirm your registration.");
+        }
       } else {
-        if (!normalizedEmail) {
-          throw new Error("Email is required");
-        }
+        // Login
         if (!password) {
-          throw new Error("Password is required");
+          throw new Error("Password is required.");
         }
-        if (password.length < 6) {
-          throw new Error("Password is too short");
-        }
-        if (mode === "signup" && role === "member" && password.length < 8) {
-          throw new Error("Members require a stronger password");
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(normalizedEmail)) {
-          throw new Error("Invalid email format");
-        }
-
-        if (mode === "signup") {
-          const res = await supabase.auth.signUp({ 
-            email: normalizedEmail, 
-            password,
-            options: {
-              data: { role }
-            }
-          });
-          if (res.error) {
-            throw res.error;
-          }
-          if (res.data?.user) {
-            setSuccessMsg("Account created successfully. Redirecting...");
-          }
-        } else if (mode === "login") {
-          const res = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
-          if (res.error) {
-             throw res.error;
-          }
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: normalizedEmail,
+          password,
+        });
+        if (error) throw error;
+        if (data.session) {
+          await syncSession(data.session);
         }
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "An error occurred.";
-      setErrorMsg(msg);
+      setErrorMsg(err instanceof Error ? err.message : "Authentication failed.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="auth-flow-container">
-      <div className="form-surface">
-        <form action="javascript:void(0);" onSubmit={handleSubmit} className="auth-flow-form">
-          <div className="field">
-            <label htmlFor="email">Email</label>
-            <input 
-              id="email"
-              type="email" 
-              data-testid="email-input"
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              placeholder="name@example.com" 
-              disabled={loading || (mode !== "email" && initialMode === "email")}
-              autoFocus
-              required
-              autoComplete="email"
-            />
+    <div className="auth-card-wrapper" style={{ maxWidth: "440px", margin: "0 auto", padding: "16px" }}>
+      <div
+        className="card auth-card"
+        style={{
+          background: "#ffffff",
+          borderRadius: "16px",
+          padding: "32px 28px",
+          boxShadow: "0 12px 36px rgba(0, 0, 0, 0.08)",
+          border: "1px solid var(--line)",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <Logo width={180} />
+          <div
+            style={{
+              display: "inline-block",
+              marginTop: "12px",
+              padding: "4px 10px",
+              borderRadius: "100px",
+              backgroundColor: "rgba(245, 130, 32, 0.1)",
+              color: BRAND.colors.saffron,
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+            }}
+          >
+            {BRAND.status.phaseLabel}
           </div>
+          <h2 style={{ fontSize: "22px", fontWeight: 800, marginTop: "12px", marginBottom: "6px" }}>
+            {mode === "login" && "Sign In to Your Account"}
+            {mode === "signup" && "Create Supporter Account"}
+            {mode === "forgot-password" && "Reset Your Password"}
+          </h2>
+          <p style={{ fontSize: "14px", color: "var(--muted)", margin: 0 }}>
+            {mode === "login" && "Access your digital induction, member vault, and dashboard."}
+            {mode === "signup" && "Create an account to begin digital membership induction."}
+            {mode === "forgot-password" && "Enter your registered email to receive reset instructions."}
+          </p>
+        </div>
 
-          {(mode === "login" || mode === "signup") && (
-            <div className="field">
-              <label htmlFor="password">Password</label>
-              <input 
-                id="password"
-                type="password" 
-                data-testid="password-input"
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                placeholder="••••••••" 
-                disabled={loading}
+        {errorMsg && (
+          <div
+            style={{
+              padding: "12px 14px",
+              backgroundColor: "#fff2f0",
+              border: "1px solid #ffccc7",
+              borderRadius: "8px",
+              color: "#cf1322",
+              fontSize: "13px",
+              marginBottom: "18px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <AlertCircle size={16} />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        {successMsg && (
+          <div
+            style={{
+              padding: "12px 14px",
+              backgroundColor: "#f6ffed",
+              border: "1px solid #b7eb8f",
+              borderRadius: "8px",
+              color: "#389e0d",
+              fontSize: "13px",
+              marginBottom: "18px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <CheckCircle size={16} />
+            <span>{successMsg}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          {mode === "signup" && (
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+                Full Name
+              </label>
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Enter your legal name"
                 required
-                minLength={6}
-                autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--line)",
+                  fontSize: "14px",
+                }}
               />
             </div>
           )}
 
-          {mode === "signup" && (
-            <div className="field">
-              <label htmlFor="role">Role</label>
-              <select 
-                id="role"
-                data-testid="role-select"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                disabled={loading}
-                className="auth-flow-select"
-              >
-                <option value="volunteer">Volunteer</option>
-                <option value="member">Member</option>
-              </select>
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+              Email Address
+            </label>
+            <div style={{ position: "relative" }}>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                required
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--line)",
+                  fontSize: "14px",
+                }}
+              />
+            </div>
+          </div>
+
+          {mode !== "forgot-password" && (
+            <div style={{ marginBottom: "20px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                <label style={{ fontSize: "13px", fontWeight: 600 }}>Password</label>
+                {mode === "login" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode("forgot-password");
+                      setErrorMsg("");
+                      setSuccessMsg("");
+                    }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "var(--blue)",
+                      fontSize: "12px",
+                      cursor: "pointer",
+                      padding: 0,
+                    }}
+                  >
+                    Forgot password?
+                  </button>
+                )}
+              </div>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={mode === "signup" ? "At least 8 characters" : "Enter password"}
+                required
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: "8px",
+                  border: "1px solid var(--line)",
+                  fontSize: "14px",
+                }}
+              />
             </div>
           )}
 
-          {errorMsg && (
-            <div data-testid="error-message" className="auth-message error">
-              <AlertCircle size={14} />
-              {errorMsg}
-            </div>
-          )}
-
-          {successMsg && (
-            <div data-testid="success-message" className="auth-message success">
-              <CheckCircle size={14} />
-              {successMsg}
-            </div>
-          )}
-
-          <button data-testid="submit-button" className="button primary auth-submit" type="submit" disabled={!hydrated || loading}>
-            {loading ? <Loader2 size={18} className="spin" /> : (
-              mode === "email" ? "Continue" : (mode === "login" ? "Sign In" : "Sign Up")
+          <button
+            type="submit"
+            disabled={loading}
+            className="button primary"
+            style={{
+              width: "100%",
+              padding: "12px",
+              fontSize: "15px",
+              fontWeight: 700,
+              backgroundColor: "var(--ink)",
+              color: "#ffffff",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "8px",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            {loading ? (
+              <Loader2 className="animate-spin" size={18} />
+            ) : (
+              <>
+                {mode === "login" && "Sign In"}
+                {mode === "signup" && "Create Account"}
+                {mode === "forgot-password" && "Send Reset Link"}
+                <ArrowRight size={16} />
+              </>
             )}
           </button>
         </form>
+
+        <div style={{ marginTop: "24px", textAlign: "center", fontSize: "13px", color: "var(--muted)" }}>
+          {mode === "login" ? (
+            <>
+              Don't have an account?{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("signup");
+                  setErrorMsg("");
+                  setSuccessMsg("");
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--blue)",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Sign up
+              </button>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("login");
+                  setErrorMsg("");
+                  setSuccessMsg("");
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--blue)",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              >
+                Sign in
+              </button>
+            </>
+          )}
+        </div>
+
+        <div
+          style={{
+            marginTop: "20px",
+            paddingTop: "16px",
+            borderTop: "1px solid var(--line)",
+            fontSize: "11px",
+            color: "var(--muted)",
+            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6px",
+          }}
+        >
+          <ShieldCheck size={14} style={{ color: BRAND.colors.green }} />
+          <span>256-bit encrypted • Supabase Auth source of truth</span>
+        </div>
       </div>
     </div>
   );

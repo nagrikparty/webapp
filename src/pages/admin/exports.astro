@@ -1,0 +1,41 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { AdminExportsView } from "@/components/AdminExportsView";
+---
+
+<BaseLayout
+  title="Submission Exports - Nagrik Party"
+  description="Generate and manage continuous regulatory submission packs for party registration."
+>
+  <section class="page-hero" style="padding-bottom: 24px;">
+    <div class="container">
+      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+        <a href="/admin" class="mini-label">Overview</a>
+        <a href="/admin/applications" class="mini-label">Applications</a>
+        <a href="/admin/verifications" class="mini-label">Verifications Desk</a>
+        <a href="/admin/members" class="mini-label">Members</a>
+        <a href="/admin/cards" class="mini-label">Card Console</a>
+        <a href="/admin/exports" class="mini-label" style="background: var(--ink); color: #fff;">Submission Exports</a>
+        <a href="/admin/finance" class="mini-label">Finance</a>
+        <a href="/admin/audit" class="mini-label">Audit Trail</a>
+        <a href="/admin/settings" class="mini-label">Settings</a>
+      </div>
+      <h1>
+        <Bilingual en="Government Submission Exports" hi="सरकारी प्रस्तुति निर्यात" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Compile continuous page-numbered PDF submissions for official registration and statutory archives."
+          hi="आधिकारिक पंजीकरण और वैधानिक अभिलेखागार के लिए निरंतर पृष्ठ-संख्यांकित पीडीएफ दस्तावेज संकलित करें।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 12px;">
+    <div class="container">
+      <AdminExportsView client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

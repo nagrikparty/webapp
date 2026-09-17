@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 async function authenticateMember(page: any, userId = 'user-123', email = 'test@example.com', role = 'member') {
-  await page.addInitScript(({ id, emailAddress, userRole }) => {
+  await page.addInitScript(({ id, emailAddress, userRole }: { id: string; emailAddress: string; userRole: string }) => {
     const key = 'sb-xlxanliztdzonbdrrriw-auth-token';
     const session = {
       access_token: 'token-123',

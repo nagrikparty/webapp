@@ -1,0 +1,38 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { MemberContributions } from "@/components/MemberContributions";
+---
+
+<BaseLayout
+  title="Contributions - Nagrik Party"
+  description="Track your formation-phase support and contributions to Nagrik Party."
+>
+  <section class="page-hero" style="padding-bottom: 24px;">
+    <div class="container">
+      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+        <a href="/member" class="mini-label">Overview</a>
+        <a href="/member/profile" class="mini-label">My Profile</a>
+        <a href="/member/membership-card" class="mini-label">Membership Card</a>
+        <a href="/member/documents" class="mini-label">Document Vault</a>
+        <a href="/member/status" class="mini-label">Status</a>
+        <a href="/member/contributions" class="mini-label" style="background: var(--ink); color: #fff;">Contributions</a>
+      </div>
+      <h1>
+        <Bilingual en="Formation Support" hi="गठन सहयोग" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Track your contributions and support to the formation of Nagrik Party."
+          hi="नागरिक पार्टी के गठन में आपके योगदान और समर्थन को ट्रैक करें।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 12px;">
+    <div class="container">
+      <MemberContributions client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

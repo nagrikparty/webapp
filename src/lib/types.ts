@@ -1,14 +1,367 @@
+// Nagrik Party - Phase 1 Complete Type Definitions
+
+export type UserRole = "PUBLIC" | "MEMBER" | "VERIFIER" | "ADMIN" | "SUPER_ADMIN";
+
+export type MembershipStatus =
+  | "DRAFT"
+  | "SUBMITTED"
+  | "DOCUMENTS_PENDING"
+  | "UNDER_REVIEW"
+  | "NEEDS_CORRECTION"
+  | "APPROVED"
+  | "REJECTED"
+  | "SUSPENDED"
+  | "RESIGNED"
+  | "ARCHIVED";
+
+export type MembershipCategory =
+  | "Primary Member"
+  | "Active Member"
+  | "Volunteer"
+  | "Organisational Worker"
+  | "Digital Volunteer";
+
 export interface Profile {
   id: string;
   email: string;
   full_name: string | null;
-  role: "volunteer" | "member" | "admin";
+  phone: string | null;
+  role: UserRole;
   ward: string | null;
-  referred_by: string | null;
+  vidhan_sabha: string | null;
+  lok_sabha: string | null;
   epic: string | null;
+  avatar_url: string | null;
+  referred_by: string | null;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface MembershipApplication {
+  id: string;
+  application_number: string;
+  user_id: string;
+  status: MembershipStatus;
+  membership_category: MembershipCategory;
+  form_version: string;
+  declaration_version: string;
+  consent_version: string;
+  submitted_at: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  rejection_reason: string | null;
+  correction_notes: string | null;
+  created_at: string;
+  updated_at: string;
+  // Joins & Details
+  member_addresses?: MemberAddress;
+  electoral_details?: ElectoralDetails;
+  member_participation?: MemberParticipation;
+  membership_declarations?: MembershipDeclaration;
+  membership_consents?: MembershipConsent;
+  documents?: DocumentRecord[];
+  signatures?: SignatureRecord[];
+}
+
+export interface Member {
+  id: string;
+  user_id: string;
+  application_id: string | null;
+  membership_id: string; // NAG-000001
+  full_name: string;
+  category: MembershipCategory;
+  status: "APPROVED" | "SUSPENDED" | "RESIGNED" | "ARCHIVED";
+  approved_at: string;
+  approved_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MemberAddress {
+  id: string;
+  user_id: string;
+  application_id: string;
+  full_legal_name: string;
+  parent_or_guardian_name: string;
+  date_of_birth: string;
+  gender: string;
+  occupation: string | null;
+  phone: string;
+  email: string;
+  address_line1: string;
+  address_line2: string | null;
+  state: string;
+  district: string;
+  lok_sabha: string | null;
+  vidhan_sabha: string;
+  ward: string | null;
+  pincode: string;
   created_at: string;
 }
 
+export interface ElectoralDetails {
+  id: string;
+  user_id: string;
+  application_id: string;
+  identity_proof_type: string;
+  epic_number: string | null;
+  vidhan_sabha: string | null;
+  part_number: string | null;
+  serial_number: string | null;
+  polling_station: string | null;
+  is_verified: boolean;
+  created_at: string;
+}
+
+export interface MemberParticipation {
+  id: string;
+  user_id: string;
+  application_id: string;
+  interest_areas: string[];
+  skills: string | null;
+  availability: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface MembershipDeclaration {
+  id: string;
+  user_id: string;
+  application_id: string;
+  declaration_text: string;
+  declaration_version: string;
+  bears_true_faith: boolean;
+  upholds_sovereignty: boolean;
+  accepts_constitution: boolean;
+  no_other_party_membership: boolean;
+  no_prohibited_conduct: boolean;
+  agreed_at: string;
+  ip_address: string | null;
+  user_agent: string | null;
+}
+
+export interface MembershipConsent {
+  id: string;
+  user_id: string;
+  application_id: string;
+  consent_text: string;
+  consent_version: string;
+  agreed_at: string;
+  ip_address: string | null;
+  user_agent: string | null;
+}
+
+export type DocumentType =
+  | "identity_proof"
+  | "electoral_evidence"
+  | "address_evidence"
+  | "membership_declaration"
+  | "constitutional_declaration"
+  | "affidavit"
+  | "photograph"
+  | "signature"
+  | "other";
+
+export type OcrStatus =
+  | "PENDING"
+  | "EXTRACTED"
+  | "CONFIRMED_BY_MEMBER"
+  | "FAILED"
+  | "NOT_APPLICABLE";
+
+export type VerificationStatus =
+  | "UPLOADED"
+  | "OCR_COMPLETE"
+  | "MEMBER_CONFIRMED"
+  | "UNDER_REVIEW"
+  | "VERIFIED"
+  | "REJECTED"
+  | "NEEDS_CORRECTION";
+
+export interface DocumentRecord {
+  id: string;
+  user_id: string;
+  application_id: string | null;
+  member_id: string | null;
+  document_type: DocumentType;
+  original_filename: string;
+  mime_type: string;
+  file_size: number;
+  storage_path: string;
+  sha256_hash: string;
+  current_version: number;
+  ocr_status: OcrStatus;
+  verification_status: VerificationStatus;
+  verified_by: string | null;
+  verified_at: string | null;
+  rejection_reason: string | null;
+  created_at: string;
+  updated_at: string;
+  extractions?: DocumentExtraction[];
+  signed_url?: string;
+}
+
+export interface DocumentVersion {
+  id: string;
+  document_id: string;
+  version_number: number;
+  storage_path: string;
+  sha256_hash: string;
+  file_size: number;
+  uploaded_by: string;
+  reason_for_replacement: string | null;
+  created_at: string;
+}
+
+export interface DocumentExtraction {
+  id: string;
+  document_id: string;
+  field_name: string;
+  extracted_value: string | null;
+  confidence: number | null;
+  source: string;
+  confirmed_value: string | null;
+  confirmed_by: string | null;
+  confirmed_at: string | null;
+  created_at: string;
+}
+
+export interface DocumentVerification {
+  id: string;
+  document_id: string;
+  verifier_id: string;
+  action: "APPROVE" | "REJECT" | "REQUEST_CORRECTION";
+  notes: string | null;
+  created_at: string;
+}
+
+export interface SignatureRecord {
+  id: string;
+  user_id: string;
+  application_id: string;
+  signature_type: "TYPED_CONFIRMATION" | "DIGITAL_DRAWING" | "UPLOADED_DOCUMENT";
+  typed_name: string | null;
+  document_id: string | null;
+  signed_at: string;
+  ip_address: string | null;
+  user_agent: string | null;
+}
+
+export interface MembershipCard {
+  id: string;
+  member_id: string;
+  card_number: string;
+  card_version: number;
+  issue_date: string;
+  status: "ACTIVE" | "REVOKED" | "SUPERSEDED";
+  qr_token: string;
+  verification_slug: string;
+  front_document_id: string | null;
+  back_document_id: string | null;
+  print_document_id: string | null;
+  generated_at: string;
+  revoked_at: string | null;
+  revocation_reason: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AuditLog {
+  id: string;
+  actor_user_id: string | null;
+  actor_role: string;
+  action: string;
+  entity_type: string;
+  entity_id: string;
+  metadata: Record<string, unknown>;
+  ip_address: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
+export interface PublicDocument {
+  id: string;
+  category: "FORMATION" | "GOVERNANCE" | "FINANCE" | "POLICY";
+  slug: string;
+  title: string;
+  title_hi: string | null;
+  description: string | null;
+  description_hi: string | null;
+  file_path: string | null;
+  content_markdown: string | null;
+  content_markdown_hi: string | null;
+  version: string;
+  is_published: boolean;
+  published_at: string;
+  created_at: string;
+}
+
+export interface FinancialStatement {
+  id: string;
+  reporting_period: string;
+  period_start: string;
+  period_end: string;
+  opening_balance: number;
+  total_contributions: number;
+  total_expenses: number;
+  closing_balance: number;
+  statement_document_url: string | null;
+  notes: string | null;
+  is_published: boolean;
+  published_at: string;
+  created_at: string;
+}
+
+export interface FinancialTransaction {
+  id: string;
+  statement_id: string | null;
+  transaction_date: string;
+  transaction_type: "CONTRIBUTION" | "EXPENSE";
+  category: string;
+  amount: number;
+  description: string;
+  is_public: boolean;
+  created_at: string;
+}
+
+export interface SubmissionTemplate {
+  id: string;
+  title: string;
+  description: string | null;
+  version: string;
+  is_active: boolean;
+  config: Record<string, unknown>;
+  created_at: string;
+  requirements?: SubmissionRequirement[];
+}
+
+export interface SubmissionRequirement {
+  id: string;
+  template_id: string;
+  code: string;
+  title: string;
+  field_mappings: Record<string, unknown>;
+  required_document_types: string[];
+  annexure_label: string | null;
+  sort_order: number;
+  is_mandatory: boolean;
+  created_at: string;
+}
+
+export interface SubmissionExport {
+  id: string;
+  template_id: string;
+  export_number: string;
+  status: "GENERATING" | "COMPLETED" | "FAILED";
+  total_pages: number;
+  file_storage_path: string | null;
+  file_sha256: string | null;
+  generated_by: string | null;
+  generated_at: string;
+  metadata: Record<string, unknown>;
+}
+
+// Retained legacy interfaces for compatibility
 export interface Task {
   id: string;
   title: string;
@@ -35,6 +388,7 @@ export interface Transaction {
   amount: number;
   transaction_id: string;
   payment_status?: string;
+  currency?: string;
   created_at: string;
 }
 
@@ -46,21 +400,6 @@ export interface Issue {
   ward: string;
   lok_sabha?: string;
   vidhan_sabha?: string;
-  status: string;
-  created_at: string;
-}
-
-export interface MembershipApplication {
-  id: string;
-  full_name: string;
-  email: string;
-  date_of_birth?: string;
-  ward?: string;
-  vidhan_sabha?: string;
-  voter_id?: string;
-  identity_doc_url?: string;
-  vision_extracted_text?: string;
-  vision_validation_status?: string;
   status: string;
   created_at: string;
 }

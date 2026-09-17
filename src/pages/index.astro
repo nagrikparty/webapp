@@ -33,7 +33,39 @@ const stats = await fetchPublicStats(Astro.url.origin);
     </div>
   </section>
 
-  <section class="section" style="padding-top: 40px; padding-bottom: 0;">
+  <section class="section" style="padding-top: 32px; padding-bottom: 12px;">
+    <div class="container" style="max-width: 1000px;">
+      <div class="card" style="background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div style="max-width: 620px;">
+          <div style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 100px; background: rgba(245, 130, 32, 0.1); color: var(--saffron); font-size: 11px; font-weight: 700; margin-bottom: 8px;">
+            PHASE 1 • FORMATION PHASE
+          </div>
+          <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 6px;">
+            <Bilingual en="Building Delhi's New Political Alternative" hi="दिल्ली का नया राजनीतिक विकल्प तैयार कर रहे हैं" />
+          </h2>
+          <p style="font-size: 13px; color: var(--muted); margin: 0; line-height: 1.5;">
+            <Bilingual
+              en="Nagrik Party — Formation Phase: An independent political initiative working toward the formation and registration of a political party. Join our founding roll across Delhi's 70 Assembly constituencies."
+              hi="नागरिक पार्टी — गठन चरण: एक राजनीतिक पार्टी के गठन और पंजीकरण की दिशा में काम करने वाली एक स्वतंत्र राजनीतिक पहल। दिल्ली के 70 विधानसभा क्षेत्रों में हमारे संस्थापक रोल में शामिल हों।"
+            />
+          </p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="/formation-progress" class="button" style="font-size: 13px;">
+            <Bilingual en="Roadmap" hi="कार्ययोजना" />
+          </a>
+          <a href="/transparency" class="button" style="font-size: 13px;">
+            <Bilingual en="Transparency" hi="पारदर्शिता" />
+          </a>
+          <a href="/member/induction" class="button primary" style="font-size: 13px;">
+            <Bilingual en="Join Induction" hi="प्रेरण में शामिल हों" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 24px; padding-bottom: 0;">
     <div class="container">
       <CrimeDashboard client:only="react" />
     </div>

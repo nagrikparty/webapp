@@ -1,0 +1,219 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import Logo from "@/components/Logo.astro";
+import { supabase } from "@/lib/supabase";
+import { BRAND } from "@/lib/brand";
+import { AlertOctagon, CheckCircle2, Calendar, User, Tag, Hash, ShieldAlert } from "lucide-react";
+
+const { id } = Astro.params;
+
+let verificationRecord: {
+  card_number: string;
+  member_name: string;
+  category: string;
+  card_status: string;
+  issue_date: string;
+  revoked_at: string | null;
+  revocation_reason: string | null;
+} | null = null;
+
+let isFound = false;
+
+if (id && supabase) {
+  try {
+    const rpcPromise = supabase.rpc("verify_membership_card", {
+      p_card_number: id.toUpperCase().trim(),
+    });
+    const timeoutPromise = new Promise<{ data: null; error: Error }>((resolve) =>
+      setTimeout(() => resolve({ data: null, error: new Error("RPC timeout") }), 3000)
+    );
+    const { data, error } = await Promise.race([rpcPromise, timeoutPromise]);
+
+    if (!error && data && data.length > 0) {
+      verificationRecord = data[0];
+      isFound = true;
+    }
+  } catch {
+    // Graceful fallback to not-found
+  }
+}
+---
+
+<BaseLayout
+  title={`Membership Verification - ${id || "Nagrik Party"}`}
+  description="Public verification portal for Nagrik Party membership cards."
+>
+  <div style="min-height: 75vh; display: flex; align-items: center; justify-content: center; padding: 32px 16px;">
+    <div
+      class="card"
+      style={{
+        maxWidth: "480px",
+        width: "100%",
+        background: "#ffffff",
+        borderRadius: "20px",
+        padding: "36px 28px",
+        border: "1px solid var(--line)",
+        boxShadow: "0 16px 48px rgba(0, 0, 0, 0.08)",
+        textAlign: "center",
+      }}
+    >
+      <div style="margin-bottom: 20px;">
+        <Logo width={180} />
+        <div
+          style={{
+            display: "inline-block",
+            marginTop: "12px",
+            padding: "4px 12px",
+            borderRadius: "100px",
+            backgroundColor: "rgba(245, 130, 32, 0.1)",
+            color: BRAND.colors.saffron,
+            fontSize: "11px",
+            fontWeight: 700,
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+          }}
+        >
+          {BRAND.status.phaseLabel}
+        </div>
+      </div>
+
+      <h1 style="font-size: 22px; font-weight: 800; margin: 0 0 4px;">
+        <Bilingual en="Membership Verification" hi="सदस्यता सत्यापन" />
+      </h1>
+      <p style="font-size: 13px; color: var(--muted); margin: 0 0 24px;">
+        <Bilingual
+          en="Official digital registry record verification."
+          hi="आधिकारिक डिजिटल रजिस्टर रिकॉर्ड सत्यापन।"
+        />
+      </p>
+
+      {isFound && verificationRecord ? (
+        <div>
+          {verificationRecord.card_status === "ACTIVE" ? (
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "8px 18px",
+                borderRadius: "100px",
+                background: "rgba(0, 135, 62, 0.1)",
+                color: BRAND.colors.green,
+                fontWeight: 700,
+                fontSize: "14px",
+                marginBottom: "24px",
+              }}
+            >
+              <CheckCircle2 size={18} />
+              <span>VERIFIED ACTIVE MEMBER</span>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "8px 18px",
+                borderRadius: "100px",
+                background: "rgba(255, 59, 48, 0.1)",
+                color: "var(--red)",
+                fontWeight: 700,
+                fontSize: "14px",
+                marginBottom: "24px",
+              }}
+            >
+              <AlertOctagon size={18} />
+              <span>CARD {verificationRecord.card_status}</span>
+            </div>
+          )}
+
+          <div
+            style={{
+              background: "var(--paper)",
+              borderRadius: "12px",
+              padding: "20px",
+              textAlign: "left",
+              display: "grid",
+              gap: "14px",
+              fontSize: "14px",
+              marginBottom: "24px",
+            }}
+          >
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+              <span style="color: var(--muted); display: flex; align-items: center; gap: 6px;">
+                <Hash size={15} /> Member ID
+              </span>
+              <strong style="font-family: monospace; font-size: 15px; color: var(--ink);">
+                {verificationRecord.card_number}
+              </strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+              <span style="color: var(--muted); display: flex; align-items: center; gap: 6px;">
+                <User size={15} /> Full Name
+              </span>
+              <strong style="color: var(--ink);">{verificationRecord.member_name}</strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px;">
+              <span style="color: var(--muted); display: flex; align-items: center; gap: 6px;">
+                <Tag size={15} /> Category
+              </span>
+              <strong style="color: var(--ink);">{verificationRecord.category}</strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--muted); display: flex; align-items: center; gap: 6px;">
+                <Calendar size={15} /> Date Issued
+              </span>
+              <strong style="color: var(--ink);">{verificationRecord.issue_date}</strong>
+            </div>
+
+            {verificationRecord.card_status === "REVOKED" && (
+              <div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); color: var(--red); font-size: 12px;">
+                <strong>Revocation Reason:</strong> {verificationRecord.revocation_reason || "Card superseded or membership withdrawn."}
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div style="padding: 20px 0;">
+          <div
+            style={{
+              width: "64px",
+              height: "64px",
+              borderRadius: "50%",
+              background: "rgba(255, 59, 48, 0.1)",
+              color: "var(--red)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 16px",
+            }}
+          >
+            <ShieldAlert size={32} />
+          </div>
+          <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px;">Record Not Found</h2>
+          <p style="font-size: 14px; color: var(--muted); margin: 0 0 24px;">
+            The membership identifier <strong>"{id}"</strong> could not be verified in our public formation register.
+          </p>
+        </div>
+      )}
+
+      {/* Statutory Privacy & Non-Government Disclaimer */}
+      <div
+        style={{
+          borderTop: "1px solid var(--line)",
+          paddingTop: "16px",
+          fontSize: "11px",
+          color: "var(--muted)",
+          lineHeight: 1.5,
+          textAlign: "justify",
+        }}
+      >
+        <strong>Legal Notice:</strong> This digital verification certifies enrollment in the Nagrik Party register (Phase 1 — Formation Phase). It is an organisational record and NOT a government-issued identity card or electoral registration document. In accordance with privacy safeguards, sensitive personal documents and contact details are not exposed.
+      </div>
+    </div>
+  </div>
+</BaseLayout>

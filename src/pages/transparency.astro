@@ -1,0 +1,33 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { TransparencyLedger } from "@/components/TransparencyLedger";
+---
+
+<BaseLayout
+  title="Financial Transparency - Nagrik Party"
+  description="Public disclosures, formation-phase financial accounts, and cashless audit ledger of Nagrik Party"
+>
+  <section class="page-hero">
+    <div class="container">
+      <div class="mini-label" style="background: rgba(0, 135, 62, 0.1); color: var(--green);">
+        Phase 1 • Radical Transparency
+      </div>
+      <h1>
+        <Bilingual en="Financial Transparency" hi="वित्तीय पारदर्शिता" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Clean politics begins with clean funding. We publish our complete formation accounts, receipts, and expenditures for full public accountability."
+          hi="स्वच्छ राजनीति की शुरुआत स्वच्छ धन से होती है। हम पूर्ण सार्वजनिक जवाबदेही के लिए अपने संपूर्ण गठन खाते, प्राप्तियां और खर्च प्रकाशित करते हैं।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 24px;">
+    <div class="container">
+      <TransparencyLedger client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

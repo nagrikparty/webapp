@@ -5,6 +5,9 @@ import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
+  devToolbar: {
+    enabled: false,
+  },
   site: "https://nagrik.party",
   integrations: [react(), sitemap()],
   output: "server",

@@ -1,0 +1,41 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { AdminSettingsView } from "@/components/AdminSettingsView";
+---
+
+<BaseLayout
+  title="Settings - Nagrik Party Admin"
+  description="Configure organization phase, system settings, and operational parameters."
+>
+  <section class="page-hero" style="padding-bottom: 24px;">
+    <div class="container">
+      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+        <a href="/admin" class="mini-label">Overview</a>
+        <a href="/admin/applications" class="mini-label">Applications</a>
+        <a href="/admin/verifications" class="mini-label">Verifications Desk</a>
+        <a href="/admin/members" class="mini-label">Members</a>
+        <a href="/admin/cards" class="mini-label">Card Console</a>
+        <a href="/admin/exports" class="mini-label">Submission Exports</a>
+        <a href="/admin/finance" class="mini-label">Finance</a>
+        <a href="/admin/audit" class="mini-label">Audit Trail</a>
+        <a href="/admin/settings" class="mini-label" style="background: var(--ink); color: #fff;">Settings</a>
+      </div>
+      <h1>
+        <Bilingual en="Organisation Settings" hi="संगठन सेटिंग्स" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Configure organization phase, operational parameters, and system-wide settings."
+          hi="संगठन चरण, परिचालन मापदंड और सिस्टम-व्यापी सेटिंग्स कॉन्फ़िगर करें।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 12px;">
+    <div class="container">
+      <AdminSettingsView client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

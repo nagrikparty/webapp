@@ -1,0 +1,36 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { InductionWizard } from "@/components/InductionWizard";
+---
+
+<BaseLayout
+  title="Digital Induction - Nagrik Party"
+  description="Complete the 10-step digital induction to apply for party membership."
+>
+  <section class="page-hero" style="padding-bottom: 24px;">
+    <div class="container">
+      <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+        <a href="/member" class="mini-label">Overview</a>
+        <a href="/member/induction" class="mini-label" style="background: var(--ink); color: #fff;">Digital Induction</a>
+        <a href="/member/membership-card" class="mini-label">Membership Card</a>
+        <a href="/member/documents" class="mini-label">Document Vault</a>
+      </div>
+      <h1>
+        <Bilingual en="Digital Membership Induction" hi="डिजिटल सदस्यता प्रेरण" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="A 10-step verified induction flow: personal details, electoral evidence, declarations, and consent."
+          hi="एक 10-चरणीय सत्यापित प्रेरण प्रवाह: व्यक्तिगत विवरण, चुनावी साक्ष्य, घोषणाएं और सहमति।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 12px;">
+    <div class="container">
+      <InductionWizard client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

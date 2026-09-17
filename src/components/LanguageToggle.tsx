@@ -1,4 +1,4 @@
-import { Languages, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function LanguageToggle() {

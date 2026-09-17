@@ -62,6 +62,18 @@ export function SmartIsland() {
             <ChevronDown size={14} />
           </a>
           <div className="island-dropdown-menu">
+            <a href="/formation-progress">
+              <span className="lang-en">Formation Roadmap</span>
+              <span className="lang-hi">गठन कार्ययोजना</span>
+            </a>
+            <a href="/transparency">
+              <span className="lang-en">Financial Transparency</span>
+              <span className="lang-hi">वित्तीय पारदर्शिता</span>
+            </a>
+            <a href="/documents">
+              <span className="lang-en">Public Documents</span>
+              <span className="lang-hi">सार्वजनिक दस्तावेज़</span>
+            </a>
             <a href="/about">
               <span className="lang-en">The History</span>
               <span className="lang-hi">इतिहास</span>
@@ -74,12 +86,18 @@ export function SmartIsland() {
               <span className="lang-en">Events</span>
               <span className="lang-hi">कार्यक्रम</span>
             </a>
-            <a href="/press">
-              <span className="lang-en">Press Releases</span>
-              <span className="lang-hi">प्रेस विज्ञप्ति</span>
-            </a>
           </div>
         </div>
+
+        <a href="/formation-progress" className="island-nav-link">
+          <span className="lang-en">Roadmap</span>
+          <span className="lang-hi">कार्ययोजना</span>
+        </a>
+
+        <a href="/membership" className="island-nav-link">
+          <span className="lang-en">Join</span>
+          <span className="lang-hi">जुड़ें</span>
+        </a>
 
         <div className="island-action-buttons">
           <a href="/issues" className="button yellow island-action-btn">
@@ -103,37 +121,26 @@ export function SmartIsland() {
           </a>
         ) : (
           <>
-            {import.meta.env.DEV && (
-              <select 
-                data-testid="role-switcher"
-                onChange={async (e) => {
-                  const newRole = e.target.value;
-                  if (!newRole) return;
-                  
-                  if (import.meta.env.DEV) {
-                    localStorage.setItem("dev_role", newRole);
-                  }
-                  
-                  if (window.location.pathname.startsWith('/dashboard')) {
-                    window.location.href = `/dashboard/${newRole}`;
-                  }
-                }}
-                className="island-role-switcher"
-              >
-                <option value="">Switch Role</option>
-                <option value="volunteer">Volunteer</option>
-                <option value="member">Member</option>
-                <option value="admin">Admin</option>
-              </select>
-            )}
             <div data-testid="user-profile-menu" className="island-dropdown-container">
               <button className="icon-button island-user-btn" aria-label="Account Menu" type="button">
                 <User size={18} />
               </button>
               <div className="island-dropdown-menu island-user-menu">
-                <a href="/dashboard">
-                  <span className="lang-en">Dashboard</span>
-                  <span className="lang-hi">डैशबोर्ड</span>
+                <a href="/member">
+                  <span className="lang-en">Member Portal</span>
+                  <span className="lang-hi">सदस्य पोर्टल</span>
+                </a>
+                <a href="/member/induction">
+                  <span className="lang-en">Digital Induction</span>
+                  <span className="lang-hi">डिजिटल प्रेरण</span>
+                </a>
+                <a href="/member/membership-card">
+                  <span className="lang-en">Membership Card</span>
+                  <span className="lang-hi">सदस्यता कार्ड</span>
+                </a>
+                <a href="/admin">
+                  <span className="lang-en">Admin Console</span>
+                  <span className="lang-hi">प्रशासन कंसोल</span>
                 </a>
                 <a data-testid="logout-button" href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }}>
                   <LogOut size={14} className="island-logout-icon" />

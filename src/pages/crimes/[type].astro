@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 
 export const prerender = false;
 
@@ -25,13 +24,14 @@ const dbType = typeMap[type as string];
 import { supabase } from "@/lib/supabase";
 
 // Fetch data directly from DB to avoid SSR fetch issues
-const { data: incidents = [] } = supabase 
+const { data: rawIncidents } = supabase 
   ? await supabase
       .from('crimes')
       .select('*')
       .eq('crime_type', dbType)
       .order('incident_date', { ascending: false })
   : { data: [] };
+const incidents = rawIncidents ?? [];
 ---
 
 <BaseLayout

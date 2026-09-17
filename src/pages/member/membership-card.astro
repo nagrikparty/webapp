@@ -1,0 +1,36 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { MemberCardView } from "@/components/MemberCardView";
+---
+
+<BaseLayout
+  title="Membership Card - Nagrik Party"
+  description="Printable CR80 membership card and QR verification code."
+>
+  <section class="page-hero" style="padding-bottom: 24px;">
+    <div class="container">
+      <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+        <a href="/member" class="mini-label">Overview</a>
+        <a href="/member/induction" class="mini-label">Digital Induction</a>
+        <a href="/member/membership-card" class="mini-label" style="background: var(--ink); color: #fff;">Membership Card</a>
+        <a href="/member/documents" class="mini-label">Document Vault</a>
+      </div>
+      <h1>
+        <Bilingual en="Membership Card" hi="सदस्यता कार्ड" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="CR80 standard dual-sided printable card for approved members with QR verification."
+          hi="QR सत्यापन के साथ स्वीकृत सदस्यों के लिए CR80 मानक दोनों तरफ मुद्रण योग्य कार्ड।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 12px;">
+    <div class="container">
+      <MemberCardView client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

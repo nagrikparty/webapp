@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "html2canvas": "^1.4.1",
     "lucide-react": "^1.17.0",
     "node-fetch": "^3.3.2",
+    "pdf-lib": "^1.17.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-qr-code": "^2.2.0",

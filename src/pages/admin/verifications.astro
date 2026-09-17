@@ -1,0 +1,41 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+import { VerifierDashboard } from "@/components/VerifierDashboard";
+---
+
+<BaseLayout
+  title="Verification Desk - Nagrik Party"
+  description="Audit and verify membership applications and documents."
+>
+  <section class="page-hero" style="padding-bottom: 24px;">
+    <div class="container">
+      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+        <a href="/admin" class="mini-label">Overview</a>
+        <a href="/admin/applications" class="mini-label">Applications</a>
+        <a href="/admin/verifications" class="mini-label" style="background: var(--ink); color: #fff;">Verifications Desk</a>
+        <a href="/admin/members" class="mini-label">Members</a>
+        <a href="/admin/cards" class="mini-label">Card Console</a>
+        <a href="/admin/exports" class="mini-label">Submission Exports</a>
+        <a href="/admin/finance" class="mini-label">Finance</a>
+        <a href="/admin/audit" class="mini-label">Audit Trail</a>
+        <a href="/admin/settings" class="mini-label">Settings</a>
+      </div>
+      <h1>
+        <Bilingual en="Verification Desk" hi="सत्यापन डेस्क" />
+      </h1>
+      <p class="page-copy">
+        <Bilingual
+          en="Review submitted identity documents, verify declarations, and approve verified members."
+          hi="जमा किए गए पहचान दस्तावेजों की समीक्षा करें, घोषणाओं का सत्यापन करें और सत्यापित सदस्यों को स्वीकृति दें।"
+        />
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 12px;">
+    <div class="container">
+      <VerifierDashboard client:only="react" />
+    </div>
+  </section>
+</BaseLayout>
