@@ -58,13 +58,12 @@ const {
       <div class="nav-wrapper">
         <header class="nav">
           <div class="nav-inner">
-          <a class="brand" href="/">
-            <span class="brand-mark" aria-hidden="true">
-              <Logo width={18} height={18} />
-            </span>
-            <span class="brand-word">
-              <Bilingual en="Nagrik Party" hi="नागरिक पार्टी" />
-            </span>
+          <a class="brand" href="/" aria-label="Nagrik Party Home">
+            <Logo height={38} className="brand-logo" />
+            <div class="brand-word">
+              <span class="brand-word-title"><Bilingual en="Nagrik Party" hi="नागरिक पार्टी" /></span>
+              <small><Bilingual en="Formation Phase" hi="गठन चरण" /></small>
+            </div>
           </a>
             <SmartIsland client:load />
           </div>
@@ -76,14 +75,12 @@ const {
       <footer class="footer">
         <div class="container footer-grid">
           <div>
-            <a class="brand" href="/">
-              <span class="brand-mark footer-brand-mark" aria-hidden="true">
-                <Logo width={18} height={18} />
-              </span>
-              <span class="brand-word">
-                <span><Bilingual en="Nagrik Party" hi="नागरिक पार्टी" /></span>
+            <a class="brand footer-brand" href="/" aria-label="Nagrik Party Home">
+              <Logo height={42} className="brand-logo footer-logo" />
+              <div class="brand-word">
+                <span class="brand-word-title"><Bilingual en="Nagrik Party" hi="नागरिक पार्टी" /></span>
                 <small><Bilingual en="Under Registration" hi="पंजीकरण के अधीन" /></small>
-              </span>
+              </div>
             </a>
             <p>
               <Bilingual

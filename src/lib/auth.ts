@@ -20,14 +20,19 @@ export async function getAuthContext(request: Request): Promise<AuthContext | nu
     // Try cookie fallback
     const cookieHeader = request.headers.get("Cookie") || request.headers.get("cookie");
     if (cookieHeader) {
-      const match = cookieHeader.match(/sb-[a-z0-9]+-auth-token=([^;]+)/i);
-      if (match) {
-        try {
-          const decoded = decodeURIComponent(match[1]);
-          const parsed = JSON.parse(decoded);
-          token = Array.isArray(parsed) ? parsed[0] : parsed.access_token;
-        } catch {
-          // ignore error
+      const matchAccessToken = cookieHeader.match(/sb-access-token=([^;]+)/i);
+      if (matchAccessToken) {
+        token = decodeURIComponent(matchAccessToken[1]).trim();
+      } else {
+        const match = cookieHeader.match(/sb-[a-z0-9]+-auth-token=([^;]+)/i);
+        if (match) {
+          try {
+            const decoded = decodeURIComponent(match[1]);
+            const parsed = JSON.parse(decoded);
+            token = Array.isArray(parsed) ? parsed[0] : parsed.access_token;
+          } catch {
+            // ignore error
+          }
         }
       }
     }
@@ -129,16 +134,29 @@ export async function logAuditEvent(
   }
 
   try {
-    await supabase.from("audit_logs").insert({
-      actor_user_id: actorUserId,
-      actor_role: actorRole,
-      action,
-      entity_type: entityType,
-      entity_id: entityId,
-      metadata,
-      ip_address: ipAddress,
-      user_agent: userAgent,
+    const { error: rpcError } = await supabase.rpc("record_audit_log", {
+      p_actor_user_id: actorUserId,
+      p_actor_role: actorRole,
+      p_action: action,
+      p_entity_type: entityType,
+      p_entity_id: entityId,
+      p_metadata: metadata,
+      p_ip_address: ipAddress,
+      p_user_agent: userAgent,
     });
+
+    if (rpcError) {
+      await supabase.from("audit_logs").insert({
+        actor_user_id: actorUserId,
+        actor_role: actorRole,
+        action,
+        entity_type: entityType,
+        entity_id: entityId,
+        metadata,
+        ip_address: ipAddress,
+        user_agent: userAgent,
+      });
+    }
   } catch (err) {
     console.error("Failed to write audit log:", err);
   }

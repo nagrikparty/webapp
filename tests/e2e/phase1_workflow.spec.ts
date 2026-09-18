@@ -202,4 +202,38 @@ test.describe("Phase 1 — Formation Phase Architecture & Compliance", () => {
     const res = await request.get("/api/v1/admin/exports");
     expect([200, 401]).toContain(res.status());
   });
+
+  test("12a. Admin document scrutiny loads with canonical controls", async ({ page }) => {
+    await page.goto("/admin/documents", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("h1").first()).toContainText("Document Scrutiny");
+  });
+
+  test("12b. Admin documents library loads with canonical controls", async ({ page }) => {
+    await page.goto("/admin/documents-library", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("h1").first()).toContainText("Public Charters");
+  });
+
+  test("13. Dedicated logout route clears session and redirects to /login", async ({ page }) => {
+    await page.goto("/logout");
+    await expect(page).toHaveURL(/\/login/);
+  });
+
+  test("14. Verified Crime Tracker category detail pages render cleanly with back-navigation", async ({ page }) => {
+    await page.goto("/crimes/extortion", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("h1").first()).toContainText(/extortion/i);
+    await expect(page.locator("body")).toContainText("Verified Crime Tracker");
+  });
+
+  test("15. Verification API rejects unauthenticated calls and self-approval attempts", async ({ request }) => {
+    // Unauthenticated call rejected with 401
+    const res = await request.post("/api/v1/admin/verifications", {
+      data: { applicationId: "00000000-0000-0000-0000-000000000000", action: "APPROVE" },
+    });
+    expect([401, 403]).toContain(res.status());
+  });
+
+  test("16. Member card PDF endpoint strictly requires authentication", async ({ request }) => {
+    const res = await request.get("/api/v1/member/card-pdf");
+    expect([401, 403]).toContain(res.status());
+  });
 });

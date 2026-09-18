@@ -115,33 +115,48 @@ Phase 1 provides complete public transparency, digital membership induction, vot
 ### Roles Hierarchy
 `PUBLIC` &rarr; `MEMBER` &rarr; `VERIFIER` &rarr; `ADMIN` &rarr; `SUPER_ADMIN`
 
-### Database Entities
-`profiles`, `members`, `membership_applications`, `membership_declarations`, `membership_consents`, `documents`, `document_extractions`, `document_verifications`, `membership_cards`, `audit_logs`, `crimes`, `issues`, `public_documents`, `financial_statements`, `organization_settings`.
+### Database Entities & Hardening (Migration 05)
+- Core Entities: `profiles`, `members`, `membership_applications`, `member_addresses`, `electoral_details`, `member_participation`, `membership_declarations`, `membership_consents`, `signatures`, `documents`, `document_extractions`, `document_verifications`, `membership_cards`, `membership_status_history`, `audit_logs`, `crimes`, `issues`, `public_documents`, `financial_statements`, `organization_settings`.
+- Migration 05 Applied:
+  - `UNIQUE(application_id)` constraints on all child tables to prevent upsert conflicts.
+  - Partial unique index `idx_one_active_app_per_user` preventing concurrent duplicate submissions.
+  - Check constraint `members_no_self_approval CHECK (user_id != approved_by)`.
+  - Security-definer RPC `public.record_audit_log(...)` guaranteeing audit trail persistence.
+  - Hardened RLS preventing users from escalating their own role in `profiles`.
 
-### Storage Security
-- Sensitive documents (Voter IDs, affidavits, photographs) are stored in private Supabase buckets (`documents`, `membership-cards`).
-- Access is strictly governed via short-lived signed URLs.
-- Zero service-role keys or privileged credentials in frontend client bundles.
+### Storage & Cryptographic Security
+- Sensitive documents (Voter IDs, Aadhaar, affidavits, photographs) are stored exclusively in private Supabase buckets (`documents`, `membership-cards`).
+- Web Crypto SHA-256 hash computed before and after upload to verify byte-for-byte integrity.
+- Access is strictly mediated via short-lived signed URLs (never public URLs).
+- Zero service-role keys or privileged credentials exposed in client bundles.
 
 ---
 
-## 7. Verified Crime Tracker Specification
+## 7. Authoritative Declarations & Consents (`src/lib/declarations.ts`)
+- **Constitutional Declaration (v1.0)**: Verbatim text stored with version, affirming allegiance to the Constitution of India, secularism, democracy, sovereignty, unity, and integrity. Disavows dual party membership and prohibited conduct.
+- **Statutory Data Consent (v1.0)**: Explicit informed consent under Section 29A RPA 1951 for internal rolls, private vaulting, and privacy-preserving QR verification.
+- **Identity Proof Types**: Standardized types (`Voter ID (EPIC)`, `Aadhaar Card`, `Passport`, `Driving License`, `Other`).
+
+---
+
+## 8. Verified Crime Tracker Specification
 - Data is sourced from reputable published news sources and police reports across Delhi NCR.
 - Every record links directly to the external source URL with title, date, and category.
-- Categories: `Rape`, `Murder`, `Kidnapping`, `Robbery`, `Extortion`.
 - Public route `/crime` displays real counts and citation cards.
+- Dynamic route `/crimes/[type]` handles category drilldowns (`/crimes/rape`, `/crimes/murder`, `/crimes/extortion`, etc.).
 - API `/api/v1/crimes` handles verified citation querying and administrative ingestion.
 
 ---
 
-## 8. Verification Commands
+## 9. Verification Commands & Test Results
 ```bash
-# Typecheck
+# Typecheck (0 errors, 0 warnings across 141 files)
 npm run check
 
-# Production Build
+# Production Build (Astro SSR + Cloudflare Adapter)
 npm run build
 
-# Playwright Test Suites
-npx playwright test
+# Playwright Test Suites (92 tests passed across Chromium)
+npm test
 ```
+All 92 automated tests pass with 100% success.

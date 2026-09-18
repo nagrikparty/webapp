@@ -16,7 +16,7 @@ export const GET: APIRoute = async ({ request }) => {
     // 1. Fetch latest application
     const { data: application } = await scopedSupabase
       .from("membership_applications")
-      .select("*, member_addresses(*), electoral_details(*), member_participation(*), documents(*)")
+      .select("*, member_addresses(*), electoral_details(*), member_participation(*), membership_declarations(*), membership_consents(*), signatures(*), documents(*, document_extractions(*))")
       .eq("user_id", ctx.user.id)
       .order("created_at", { ascending: false })
       .limit(1)

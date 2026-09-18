@@ -63,6 +63,14 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Application not found" }), { status: 404 });
     }
 
+    // Integrity enforcement: Verifiers cannot approve their own application
+    if (action === "APPROVE" && app.user_id === ctx.user.id) {
+      return new Response(
+        JSON.stringify({ error: "Integrity violation: Self-approval is strictly prohibited under organizational rules." }),
+        { status: 403, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const now = new Date().toISOString();
 
     if (action === "APPROVE") {

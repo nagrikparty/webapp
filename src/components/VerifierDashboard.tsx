@@ -18,6 +18,7 @@ export function VerifierDashboard() {
   const [actionLoading, setActionLoading] = useState(false);
   const [notes, setNotes] = useState("");
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
     loadApplications();
@@ -31,6 +32,7 @@ export function VerifierDashboard() {
       window.location.href = "/auth";
       return;
     }
+    setCurrentUserId(session.user.id);
 
     try {
       const res = await fetch("/api/v1/admin/verifications", {
@@ -500,25 +502,32 @@ export function VerifierDashboard() {
 
                 <button
                   type="button"
-                  disabled={actionLoading || selectedApp.status === "APPROVED"}
+                  disabled={actionLoading || selectedApp.status === "APPROVED" || (Boolean(currentUserId) && selectedApp.user_id === currentUserId)}
                   onClick={() => handleAction("APPROVE")}
                   className="button primary"
+                  title={currentUserId && selectedApp.user_id === currentUserId ? "Self-approval is prohibited" : ""}
                   style={{
                     minHeight: "42px",
                     padding: "8px 20px",
-                    background: "var(--green)",
+                    background: (Boolean(currentUserId) && selectedApp.user_id === currentUserId) ? "var(--muted)" : "var(--green)",
                     borderRadius: "3px",
                     fontSize: "13.5px",
                     fontWeight: 700,
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
+                    cursor: (Boolean(currentUserId) && selectedApp.user_id === currentUserId) ? "not-allowed" : "pointer",
                   }}
                 >
                   {actionLoading ? <Loader2 className="animate-spin" size={16} /> : <Check size={16} />}
                   Approve Membership & Issue Card
                 </button>
               </div>
+              {Boolean(currentUserId) && selectedApp.user_id === currentUserId && (
+                <div style={{ marginTop: "8px", textAlign: "right", fontSize: "12px", color: "var(--red)", fontWeight: 600 }}>
+                  Self-approval prohibited: Another verifier must scrutinize your application.
+                </div>
+              )}
             </div>
           </div>
         ) : (

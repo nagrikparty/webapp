@@ -4,22 +4,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 export const prerender = false;
 
 const { type } = Astro.params;
-
-// Ensure valid type
-const validTypes = ['rape', 'murder', 'kidnapping', 'robbery', 'extortion'];
-if (!validTypes.includes(type as string)) {
-  return Astro.redirect('/');
+if (!type) {
+  return Astro.redirect('/crime');
 }
 
-// Convert url param back to DB format
-const typeMap: Record<string, string> = {
-  'rape': 'Rape',
-  'murder': 'Murder',
-  'kidnapping': 'Kidnapping',
-  'robbery': 'Robbery',
-  'extortion': 'Extortion'
-};
-const dbType = typeMap[type as string];
+const fallbackType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
 
 import { supabase } from "@/lib/supabase";
 
@@ -28,10 +17,11 @@ const { data: rawIncidents } = supabase
   ? await supabase
       .from('crimes')
       .select('*')
-      .eq('crime_type', dbType)
+      .ilike('crime_type', type)
       .order('incident_date', { ascending: false })
   : { data: [] };
 const incidents = rawIncidents ?? [];
+const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
 ---
 
 <BaseLayout

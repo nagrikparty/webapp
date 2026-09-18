@@ -6,7 +6,7 @@ interface LogoProps {
   className?: string;
 }
 
-export function Logo({ width = 160, height, className = "" }: LogoProps) {
+export function Logo({ width, height, className = "" }: LogoProps) {
   return (
     <img
       src="/nagrikpartylogo.svg"
@@ -19,7 +19,8 @@ export function Logo({ width = 160, height, className = "" }: LogoProps) {
       style={{
         maxWidth: "100%",
         height: height ? `${height}px` : "auto",
-        aspectRatio: "1/1",
+        width: width ? `${width}px` : "auto",
+        aspectRatio: "1150 / 700",
         objectFit: "contain",
         display: "inline-block",
         verticalAlign: "middle",

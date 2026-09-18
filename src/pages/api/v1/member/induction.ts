@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { requireAuth, logAuditEvent } from "@/lib/auth";
 import { createApiSupabase } from "@/lib/supabase";
+import { CONSTITUTIONAL_DECLARATION_V1, DATA_CONSENT_V1 } from "@/lib/declarations";
 
 export const POST: APIRoute = async ({ request }) => {
   const authResult = await requireAuth(request);
@@ -37,7 +38,17 @@ export const POST: APIRoute = async ({ request }) => {
     let applicationId = existingApp?.id;
     let applicationNumber = existingApp?.application_number;
 
-    const newStatus = action === "draft" ? "DRAFT" : "SUBMITTED";
+    if (existingApp && existingApp.status === "APPROVED") {
+      return new Response(JSON.stringify({ error: "You are already an approved member." }), { status: 400 });
+    }
+
+    if (existingApp && existingApp.status === "SUBMITTED" && action === "submit") {
+      return new Response(JSON.stringify({ error: "Your application is already submitted and under review." }), { status: 400 });
+    }
+
+    const newStatus = action === "draft" 
+      ? (existingApp?.status === "NEEDS_CORRECTION" ? "NEEDS_CORRECTION" : "DRAFT")
+      : "SUBMITTED";
 
     if (!applicationId) {
       // Create new application
@@ -48,8 +59,8 @@ export const POST: APIRoute = async ({ request }) => {
           status: newStatus,
           membership_category: membershipCategory,
           form_version: "1.0",
-          declaration_version: declaration?.declaration_version || "1.0",
-          consent_version: consent?.consent_version || "1.0",
+          declaration_version: declaration?.declaration_version || CONSTITUTIONAL_DECLARATION_V1.version,
+          consent_version: consent?.consent_version || DATA_CONSENT_V1.version,
           submitted_at: action === "submit" ? new Date().toISOString() : null,
         })
         .select("id, application_number, status")
@@ -62,6 +73,16 @@ export const POST: APIRoute = async ({ request }) => {
 
       applicationId = newApp.id;
       applicationNumber = newApp.application_number;
+
+      await logAuditEvent(
+        ctx.user.id,
+        ctx.profile.role,
+        "APPLICATION_CREATED",
+        "membership_applications",
+        applicationId,
+        { application_number: applicationNumber, status: newStatus },
+        request
+      );
     } else {
       // Update existing application
       const updatePayload: Record<string, unknown> = {
@@ -71,6 +92,7 @@ export const POST: APIRoute = async ({ request }) => {
       if (action === "submit") {
         updatePayload.status = "SUBMITTED";
         updatePayload.submitted_at = new Date().toISOString();
+        updatePayload.correction_notes = null;
       }
 
       await scopedSupabase
@@ -162,12 +184,16 @@ export const POST: APIRoute = async ({ request }) => {
       const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for");
       const ua = request.headers.get("user-agent");
 
+      const declarationText = declaration.declaration_text && declaration.declaration_text.length > 50
+        ? declaration.declaration_text
+        : CONSTITUTIONAL_DECLARATION_V1.text;
+
       await scopedSupabase.from("membership_declarations").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
-          declaration_text: declaration.declaration_text || "Official Nagrik Party Constitutional Declaration",
-          declaration_version: declaration.declaration_version || "1.0",
+          declaration_text: declarationText,
+          declaration_version: declaration.declaration_version || CONSTITUTIONAL_DECLARATION_V1.version,
           bears_true_faith: declaration.bears_true_faith !== false,
           upholds_sovereignty: declaration.upholds_sovereignty !== false,
           accepts_constitution: declaration.accepts_constitution !== false,
@@ -186,12 +212,16 @@ export const POST: APIRoute = async ({ request }) => {
       const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for");
       const ua = request.headers.get("user-agent");
 
+      const consentText = consent.consent_text && consent.consent_text.length > 50
+        ? consent.consent_text
+        : DATA_CONSENT_V1.text;
+
       await scopedSupabase.from("membership_consents").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
-          consent_text: consent.consent_text || "Official Nagrik Party Data Consent",
-          consent_version: consent.consent_version || "1.0",
+          consent_text: consentText,
+          consent_version: consent.consent_version || DATA_CONSENT_V1.version,
           agreed_at: new Date().toISOString(),
           ip_address: ip,
           user_agent: ua,

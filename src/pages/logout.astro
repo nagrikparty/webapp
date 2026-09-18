@@ -1,0 +1,46 @@
+﻿---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Bilingual from "@/components/Bilingual.astro";
+
+Astro.cookies.delete("sb-access-token", { path: "/" });
+Astro.cookies.delete("sb-refresh-token", { path: "/" });
+---
+
+<BaseLayout title="Logging Out - Nagrik Party" description="Logging out of your account.">
+  <div style="min-height: 50vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 16px;">
+    <div class="card" style="max-width: 420px; padding: 32px 24px; background: var(--paper-card); border-radius: 4px; border: 1px solid var(--line-strong);">
+      <h2 style="font-family: var(--font-serif); font-weight: 700; margin-bottom: 8px;">
+        <Bilingual en="Signing Out..." hi="लॉग आउट हो रहा है..." />
+      </h2>
+      <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">
+        <Bilingual en="Clearing your session securely." hi="आपका सत्र सुरक्षित रूप से समाप्त किया जा रहा है।" />
+      </p>
+      <div id="logout-spinner" style="font-size: 13px; color: var(--muted); font-family: var(--font-mono);">
+        Redirecting to login...
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { supabase } from "@/lib/supabase";
+
+    async function handleSignOut() {
+      try {
+        if (supabase) {
+          await supabase.auth.signOut();
+        }
+        for (const key of Object.keys(localStorage)) {
+          if (key.startsWith("sb-")) {
+            localStorage.removeItem(key);
+          }
+        }
+      } catch (err) {
+        console.error("Sign out error:", err);
+      } finally {
+        window.location.href = "/login";
+      }
+    }
+
+    handleSignOut();
+  </script>
+</BaseLayout>

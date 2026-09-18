@@ -8,7 +8,7 @@ interface Props {
   variant?: "full" | "icon" | "stacked";
 }
 
-const { width = 160, height, className = "", variant = "full" } = Astro.props;
+const { width, height, className = "", variant = "full" } = Astro.props;
 ---
 
 <img
@@ -23,7 +23,8 @@ const { width = 160, height, className = "", variant = "full" } = Astro.props;
   style={{
     maxWidth: "100%",
     height: height ? `${height}px` : "auto",
-    aspectRatio: "1/1",
+    width: width ? `${width}px` : "auto",
+    aspectRatio: "1150 / 700",
     objectFit: "contain",
     display: "inline-block",
     verticalAlign: "middle",

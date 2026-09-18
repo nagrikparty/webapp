@@ -191,40 +191,47 @@ html[data-lang="en"] .lang-en {
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   min-width: 0;
-  font-weight: 700;
   color: var(--ink);
   text-decoration: none;
 }
 
-.brand-mark {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-  place-items: center;
-  border-radius: 2px;
-  background: var(--paper-subtle);
-  border: 1px solid var(--line);
-  color: var(--ink);
+.brand .nagrik-logo {
+  height: 38px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
 }
 
 .brand-word {
-  display: grid;
-  line-height: 1.15;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid var(--line);
+  padding-left: 10px;
+  line-height: 1.2;
+}
+
+.brand-word-title {
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
 
 .brand-word small {
   color: var(--muted);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   font-family: var(--font-mono);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.footer-brand .nagrik-logo {
+  height: 44px;
 }
 
 .nav-links {
@@ -1329,6 +1336,18 @@ body.auth-page {
   .hero h1,
   .page-hero h1 {
     font-size: clamp(28px, 8.5vw, 42px);
+  }
+
+  .brand .nagrik-logo {
+    height: 32px;
+  }
+
+  .brand-word-title {
+    font-size: 13px;
+  }
+
+  .brand-word small {
+    font-size: 9px;
   }
 
   .hero-copy,

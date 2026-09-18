@@ -23,6 +23,10 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
 
     const storedReferrer = typeof window !== "undefined" ? localStorage.getItem("referrer_id") : null;
 
+    if (typeof document !== "undefined") {
+      document.cookie = `sb-access-token=${encodeURIComponent(session.access_token)}; path=/; max-age=86400; SameSite=Lax`;
+    }
+
     try {
       const res = await fetch("/api/v1/sync-profile", {
         method: "POST",
@@ -41,7 +45,12 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
       }
 
       const body = (await res.json()) as { role: string };
-      if (body.role === "ADMIN" || body.role === "SUPER_ADMIN" || body.role === "VERIFIER") {
+      const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+      const redirectUrl = urlParams?.get("redirect");
+
+      if (redirectUrl && redirectUrl.startsWith("/") && !redirectUrl.startsWith("//")) {
+        window.location.href = redirectUrl;
+      } else if (body.role === "ADMIN" || body.role === "SUPER_ADMIN" || body.role === "VERIFIER") {
         window.location.href = "/admin";
       } else {
         window.location.href = "/member";
@@ -196,6 +205,22 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
             {mode === "signup" && "Join as an enrolled citizen supporter to complete digital induction."}
             {mode === "forgot-password" && "Enter your registered email address to receive secure reset credentials."}
           </p>
+
+          <div
+            style={{
+              marginTop: "14px",
+              padding: "10px 12px",
+              background: "rgba(245, 130, 32, 0.06)",
+              border: "1px solid rgba(245, 130, 32, 0.2)",
+              borderRadius: "3px",
+              fontSize: "12px",
+              lineHeight: 1.45,
+              color: "var(--ink-body)",
+              textAlign: "left",
+            }}
+          >
+            <strong>Account ≠ Party Membership:</strong> Creating an account registers your authenticated profile. Official party membership requires completing the 10-step induction, submitting identity evidence, and receiving verification approval.
+          </div>
         </div>
 
         {errorMsg && (

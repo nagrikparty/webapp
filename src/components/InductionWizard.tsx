@@ -14,29 +14,13 @@ import { supabase } from "@/lib/supabase";
 import { delhiConstituenciesAndWards } from "@/lib/delhi_data";
 import { BRAND } from "@/lib/brand";
 
-const PARTICIPATION_AREAS = [
-  "Public Grievance Support",
-  "Infrastructure Accountability",
-  "Women Safety Initiatives",
-  "Youth Programs",
-  "Legal Aid Support",
-  "Healthcare Initiatives",
-  "Environmental Work",
-  "Digital Governance",
-  "Media & Communications",
-  "Policy Research",
-  "Community Outreach",
-  "Election Operations",
-  "Volunteer Coordination",
-];
-
-const MEMBERSHIP_CATEGORIES = [
-  { id: "Primary Member", desc: "Basic party member affirming the constitution and civic principles." },
-  { id: "Active Member", desc: "Engaged in grassroots initiatives, public grievance reporting, and local units." },
-  { id: "Volunteer", desc: "Support civic work, translations, research, and outreach without legal obligations." },
-  { id: "Organisational Worker", desc: "Dedicated coordinator for ward/constituency level administration." },
-  { id: "Digital Volunteer", desc: "Assists with technical systems, digital governance, and verified media." },
-];
+import {
+  CONSTITUTIONAL_DECLARATION_V1,
+  DATA_CONSENT_V1,
+  MEMBERSHIP_CATEGORIES,
+  PARTICIPATION_AREAS,
+  IDENTITY_PROOF_TYPES,
+} from "@/lib/declarations";
 
 export function InductionWizard() {
   const [step, setStep] = useState(1);
@@ -93,6 +77,10 @@ export function InductionWizard() {
       personalDetails.vidhan_sabha as keyof typeof delhiConstituenciesAndWards
     ] || [];
 
+  const [savingDraft, setSavingDraft] = useState(false);
+  const [draftSavedMsg, setDraftSavedMsg] = useState("");
+  const [correctionNotes, setCorrectionNotes] = useState<string | null>(null);
+
   useEffect(() => {
     async function loadUserData() {
       if (!supabase) return;
@@ -117,11 +105,82 @@ export function InductionWizard() {
       if (res.ok) {
         const data = await res.json();
         if (data.application) {
-          if (data.application.status === "APPROVED" || data.application.status === "SUBMITTED") {
+          const app = data.application;
+          if (app.status === "APPROVED" || app.status === "SUBMITTED" || app.status === "UNDER_REVIEW") {
             setSubmittedApp({
-              id: data.application.id,
-              number: data.application.application_number,
+              id: app.id,
+              number: app.application_number,
             });
+          } else {
+            // DRAFT or NEEDS_CORRECTION
+            if (app.status === "NEEDS_CORRECTION") {
+              setCorrectionNotes(app.correction_notes);
+            }
+            if (app.membership_category) {
+              setMembershipCategory(app.membership_category);
+            }
+            const addr = Array.isArray(app.member_addresses) ? app.member_addresses[0] : app.member_addresses;
+            if (addr) {
+              setPersonalDetails((prev) => ({
+                ...prev,
+                full_legal_name: addr.full_legal_name || prev.full_legal_name,
+                parent_or_guardian_name: addr.parent_or_guardian_name || prev.parent_or_guardian_name,
+                date_of_birth: addr.date_of_birth || prev.date_of_birth,
+                gender: addr.gender || prev.gender,
+                occupation: addr.occupation || prev.occupation,
+                phone: addr.phone || prev.phone,
+                email: addr.email || prev.email,
+                address_line1: addr.address_line1 || prev.address_line1,
+                address_line2: addr.address_line2 || prev.address_line2,
+                state: addr.state || prev.state,
+                district: addr.district || prev.district,
+                vidhan_sabha: addr.vidhan_sabha || prev.vidhan_sabha,
+                ward: addr.ward || prev.ward,
+                pincode: addr.pincode || prev.pincode,
+              }));
+            }
+            const elec = Array.isArray(app.electoral_details) ? app.electoral_details[0] : app.electoral_details;
+            if (elec) {
+              setElectoralDetails((prev) => ({
+                ...prev,
+                identity_proof_type: elec.identity_proof_type || prev.identity_proof_type,
+                epic_number: elec.epic_number || prev.epic_number,
+                vidhan_sabha: elec.vidhan_sabha || prev.vidhan_sabha,
+                part_number: elec.part_number || prev.part_number,
+                serial_number: elec.serial_number || prev.serial_number,
+                polling_station: elec.polling_station || prev.polling_station,
+              }));
+            }
+            const part = Array.isArray(app.member_participation) ? app.member_participation[0] : app.member_participation;
+            if (part && Array.isArray(part.interest_areas)) {
+              setSelectedInterests(part.interest_areas);
+            }
+            const docs = Array.isArray(app.documents) ? app.documents : [];
+            if (docs.length > 0) {
+              const lastDoc = docs[docs.length - 1];
+              setUploadedDoc({
+                id: lastDoc.id,
+                filename: lastDoc.original_filename,
+                sha256: lastDoc.sha256_hash,
+              });
+            }
+            const decl = Array.isArray(app.membership_declarations) ? app.membership_declarations[0] : app.membership_declarations;
+            if (decl) {
+              setDeclarationAgreed(decl.accepts_constitution !== false);
+            }
+            const cons = Array.isArray(app.membership_consents) ? app.membership_consents[0] : app.membership_consents;
+            if (cons) {
+              setConsentAgreed(true);
+            }
+            const sig = Array.isArray(app.signatures) ? app.signatures[0] : app.signatures;
+            if (sig && sig.typed_name) {
+              setTypedSignature(sig.typed_name);
+            }
+            // Step resumption
+            if (!addr?.full_legal_name) setStep(2);
+            else if (!docs.length) setStep(3);
+            else if (!decl) setStep(6);
+            else setStep(8);
           }
         }
       }
@@ -129,6 +188,65 @@ export function InductionWizard() {
     }
     loadUserData();
   }, []);
+
+  async function saveDraft(silent = false) {
+    if (!supabase) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+
+    if (!silent) setSavingDraft(true);
+    setDraftSavedMsg("");
+
+    try {
+      const payload = {
+        action: "draft",
+        membershipCategory,
+        personalDetails,
+        electoralDetails,
+        participation: {
+          interest_areas: selectedInterests,
+        },
+        declaration: {
+          declaration_text: CONSTITUTIONAL_DECLARATION_V1.text,
+          declaration_version: CONSTITUTIONAL_DECLARATION_V1.version,
+          bears_true_faith: declarationAgreed,
+          upholds_sovereignty: declarationAgreed,
+          accepts_constitution: declarationAgreed,
+          no_other_party_membership: declarationAgreed,
+          no_prohibited_conduct: declarationAgreed,
+        },
+        consent: {
+          consent_text: DATA_CONSENT_V1.text,
+          consent_version: DATA_CONSENT_V1.version,
+        },
+        signature: {
+          signature_type: "TYPED_CONFIRMATION",
+          typed_name: typedSignature.trim(),
+          document_id: uploadedDoc?.id || null,
+        },
+      };
+
+      const res = await fetch("/api/v1/member/induction", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        if (!silent) {
+          setDraftSavedMsg("Progress saved securely to Supabase draft.");
+          setTimeout(() => setDraftSavedMsg(""), 4000);
+        }
+      }
+    } catch {
+      // ignore silent error
+    } finally {
+      if (!silent) setSavingDraft(false);
+    }
+  }
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -224,8 +342,8 @@ export function InductionWizard() {
           interest_areas: selectedInterests,
         },
         declaration: {
-          declaration_text: "Official Nagrik Party Constitutional Declaration",
-          declaration_version: "1.0",
+          declaration_text: CONSTITUTIONAL_DECLARATION_V1.text,
+          declaration_version: CONSTITUTIONAL_DECLARATION_V1.version,
           bears_true_faith: true,
           upholds_sovereignty: true,
           accepts_constitution: true,
@@ -233,8 +351,8 @@ export function InductionWizard() {
           no_prohibited_conduct: true,
         },
         consent: {
-          consent_text: "Official Nagrik Party Data Consent",
-          consent_version: "1.0",
+          consent_text: DATA_CONSENT_V1.text,
+          consent_version: DATA_CONSENT_V1.version,
         },
         signature: {
           signature_type: "TYPED_CONFIRMATION",
@@ -413,6 +531,28 @@ export function InductionWizard() {
           />
         </div>
       </div>
+
+      {correctionNotes && (
+        <div
+          style={{
+            padding: "14px 18px",
+            backgroundColor: "rgba(245, 130, 32, 0.08)",
+            border: "1px solid rgba(245, 130, 32, 0.35)",
+            borderRadius: "4px",
+            color: "var(--ink)",
+            fontSize: "13.5px",
+            marginBottom: "20px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 700, color: "var(--saffron)", marginBottom: "4px" }}>
+            <AlertCircle size={16} />
+            <span>Verification Desk Action Required (Needs Correction)</span>
+          </div>
+          <div style={{ fontSize: "13px", color: "var(--ink)", lineHeight: 1.5 }}>
+            {correctionNotes}
+          </div>
+        </div>
+      )}
 
       {error && (
         <div
@@ -633,23 +773,28 @@ export function InductionWizard() {
                 value={electoralDetails.identity_proof_type}
                 onChange={(e) => setElectoralDetails({ ...electoralDetails, identity_proof_type: e.target.value })}
               >
-                <option value="Voter ID (EPIC)">Voter ID (EPIC)</option>
-                <option value="Aadhaar Card">Aadhaar Card</option>
-                <option value="Passport">Passport</option>
-                <option value="Driving License">Driving License</option>
+                {IDENTITY_PROOF_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div style={{ marginBottom: "20px" }}>
               <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
-                Voter ID / EPIC Number (if available)
+                Document / ID Number *
               </label>
               <input
                 type="text"
                 value={electoralDetails.epic_number || ""}
                 onChange={(e) => setElectoralDetails({ ...electoralDetails, epic_number: e.target.value })}
-                placeholder="e.g. DL/01/001/000000"
+                placeholder="e.g. EPIC / ID / Document Number"
+                required
               />
+              <span style={{ fontSize: "12px", color: "var(--muted)", marginTop: "4px", display: "block" }}>
+                Enter the identification number corresponding to your uploaded document.
+              </span>
             </div>
 
             <div
@@ -801,38 +946,33 @@ export function InductionWizard() {
         {/* STEP 6: Constitutional Declaration */}
         {step === 6 && (
           <div>
-            <h3 style={{ fontSize: "20px", fontWeight: 800, margin: "0 0 8px" }}>
-              Step 6: Constitutional Declaration
-            </h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 800, margin: 0 }}>
+                Step 6: Constitutional Declaration
+              </h3>
+              <span style={{ fontSize: "12px", background: "var(--paper-subtle)", border: "1px solid var(--line)", padding: "2px 8px", borderRadius: "4px", fontFamily: "var(--font-mono)" }}>
+                v{CONSTITUTIONAL_DECLARATION_V1.version}
+              </span>
+            </div>
             <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "16px" }}>
-              Official Nagrik Party Declaration of Allegiance and Democratic Functioning.
+              {CONSTITUTIONAL_DECLARATION_V1.title} ({CONSTITUTIONAL_DECLARATION_V1.titleHi})
             </p>
 
             <div
               style={{
                 background: "var(--paper)",
                 padding: "20px",
-                borderRadius: "12px",
-                maxHeight: "220px",
+                borderRadius: "8px",
+                maxHeight: "260px",
                 overflowY: "auto",
                 fontSize: "13px",
                 lineHeight: 1.6,
                 marginBottom: "20px",
                 border: "1px solid var(--line)",
+                whiteSpace: "pre-line",
               }}
             >
-              <p>
-                <strong>Declaration:</strong> I hereby declare that I am an Indian citizen, at least 18 years of age. I voluntarily seek membership in Nagrik Party.
-              </p>
-              <p>
-                I affirm my true faith and allegiance to the Constitution of India as by law established, and to the principles of socialism, secularism, and democracy, and would uphold the sovereignty, unity, and integrity of India.
-              </p>
-              <p>
-                I agree to abide by the Party Constitution, rules, and disciplinary codes. I solemnly declare that I am not a member of any other political party registered with the Election Commission of India.
-              </p>
-              <p>
-                I commit to non-violent, constitutional, and peaceful political participation and will never participate in any corrupt, communal, or criminal activity.
-              </p>
+              {CONSTITUTIONAL_DECLARATION_V1.text}
             </div>
 
             <label style={{ display: "flex", gap: "10px", alignItems: "flex-start", cursor: "pointer" }}>
@@ -843,7 +983,7 @@ export function InductionWizard() {
                 style={{ marginTop: "3px" }}
               />
               <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                I have read, understood, and solemnly accept the Constitutional Declaration in its entirety.
+                I have read, understood, and solemnly accept the Constitutional Declaration (v{CONSTITUTIONAL_DECLARATION_V1.version}) in its entirety.
               </span>
             </label>
           </div>
@@ -852,30 +992,33 @@ export function InductionWizard() {
         {/* STEP 7: Data Consent */}
         {step === 7 && (
           <div>
-            <h3 style={{ fontSize: "20px", fontWeight: 800, margin: "0 0 8px" }}>
-              Step 7: Data Consent Framework
-            </h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 800, margin: 0 }}>
+                Step 7: Data Consent Framework
+              </h3>
+              <span style={{ fontSize: "12px", background: "var(--paper-subtle)", border: "1px solid var(--line)", padding: "2px 8px", borderRadius: "4px", fontFamily: "var(--font-mono)" }}>
+                v{DATA_CONSENT_V1.version}
+              </span>
+            </div>
             <p style={{ color: "var(--muted)", fontSize: "14px", marginBottom: "16px" }}>
-              Consent framework for legal compliance and administrative processing.
+              {DATA_CONSENT_V1.title} ({DATA_CONSENT_V1.titleHi})
             </p>
 
             <div
               style={{
                 background: "var(--paper)",
                 padding: "20px",
-                borderRadius: "12px",
+                borderRadius: "8px",
+                maxHeight: "260px",
+                overflowY: "auto",
                 fontSize: "13px",
                 lineHeight: 1.6,
                 marginBottom: "20px",
                 border: "1px solid var(--line)",
+                whiteSpace: "pre-line",
               }}
             >
-              <p>
-                I voluntarily consent to Nagrik Party collecting, verifying, and maintaining my personal and electoral information for lawful political administration, membership roll preparation, official filings, and internal communications, subject to reasonable privacy safeguards and applicable Indian laws.
-              </p>
-              <p style={{ margin: 0 }}>
-                Sensitive identity documents will remain strictly in private vaults and will never be exposed in public directories or QR verification scans.
-              </p>
+              {DATA_CONSENT_V1.text}
             </div>
 
             <label style={{ display: "flex", gap: "10px", alignItems: "flex-start", cursor: "pointer" }}>
@@ -886,7 +1029,7 @@ export function InductionWizard() {
                 style={{ marginTop: "3px" }}
               />
               <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                I voluntarily give my consent for data processing under this framework.
+                I voluntarily give my informed consent under the Statutory Data Consent Framework (v{DATA_CONSENT_V1.version}).
               </span>
             </label>
           </div>
@@ -984,58 +1127,84 @@ export function InductionWizard() {
         )}
 
         {/* Navigation Buttons */}
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "32px", paddingTop: "20px", borderTop: "1px solid var(--line)" }}>
-          {step > 1 ? (
-            <button
-              type="button"
-              onClick={() => setStep((s) => s - 1)}
-              className="button"
-              style={{ display: "flex", alignItems: "center", gap: "6px" }}
-            >
-              <ChevronLeft size={16} /> Back
-            </button>
-          ) : <div />}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "32px", paddingTop: "20px", borderTop: "1px solid var(--line)" }}>
+          <div>
+            {step > 1 ? (
+              <button
+                type="button"
+                onClick={() => setStep((s) => s - 1)}
+                className="button"
+                style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+              >
+                <ChevronLeft size={16} /> Back
+              </button>
+            ) : <div />}
+          </div>
 
-          {step < 10 ? (
-            <button
-              type="button"
-              onClick={() => {
-                if (step === 2 && !personalDetails.full_legal_name) {
-                  setError("Please fill in your legal name.");
-                  return;
-                }
-                if (step === 3 && !uploadedDoc) {
-                  setError("Please upload an identity document before continuing.");
-                  return;
-                }
-                setError("");
-                setStep((s) => s + 1);
-              }}
-              className="button primary"
-              style={{ display: "flex", alignItems: "center", gap: "6px" }}
-            >
-              Continue <ChevronRight size={16} />
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled={submitting}
-              onClick={handleFinalSubmit}
-              className="button primary"
-              style={{
-                background: BRAND.colors.green,
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "12px 24px",
-                fontSize: "15px",
-              }}
-            >
-              {submitting ? <Loader2 className="animate-spin" size={18} /> : <CheckCircle2 size={18} />}
-              Complete & Submit Application
-            </button>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {step < 10 && (
+              <button
+                type="button"
+                onClick={() => saveDraft(false)}
+                disabled={savingDraft}
+                className="button"
+                style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px" }}
+                title="Save application progress as draft"
+              >
+                {savingDraft ? <Loader2 size={14} className="animate-spin" /> : null}
+                Save Draft
+              </button>
+            )}
+
+            {step < 10 ? (
+              <button
+                type="button"
+                onClick={() => {
+                  if (step === 2 && !personalDetails.full_legal_name) {
+                    setError("Please fill in your legal name.");
+                    return;
+                  }
+                  if (step === 3 && !uploadedDoc) {
+                    setError("Please upload an identity document before continuing.");
+                    return;
+                  }
+                  setError("");
+                  // Auto-save silently on continue
+                  saveDraft(true);
+                  setStep((s) => s + 1);
+                }}
+                className="button primary"
+                style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+              >
+                Continue <ChevronRight size={16} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={submitting}
+                onClick={handleFinalSubmit}
+                className="button primary"
+                style={{
+                  background: BRAND.colors.green,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "12px 24px",
+                  fontSize: "15px",
+                }}
+              >
+                {submitting ? <Loader2 className="animate-spin" size={18} /> : <CheckCircle2 size={18} />}
+                Complete & Submit Application
+              </button>
+            )}
+          </div>
         </div>
+
+        {draftSavedMsg && (
+          <div style={{ marginTop: "12px", textAlign: "right", color: "var(--green)", fontSize: "12.5px", fontWeight: 600 }}>
+            {draftSavedMsg}
+          </div>
+        )}
       </div>
     </div>
   );
