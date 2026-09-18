@@ -73,7 +73,8 @@ export const POST: APIRoute = async ({ request }) => {
       "profiles",
       userId,
       { old_role: oldRole, new_role: normalizedRole },
-      request
+      request,
+      scopedSupabase
     );
 
     return new Response(JSON.stringify({ success: true, oldRole, newRole: normalizedRole }), {

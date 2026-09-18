@@ -120,11 +120,20 @@ export const POST: APIRoute = async ({ request }) => {
       // B. Identity Evidence Document: Require actual persisted documents in vault
       const rawDocs = Array.isArray(app.documents) ? app.documents : [];
       const validDocs = rawDocs.filter((d: { storage_path?: string; sha256_hash?: string; verification_status?: string }) =>
-        Boolean(d.storage_path && d.sha256_hash && d.verification_status !== "REJECTED")
+        Boolean(d.storage_path && d.sha256_hash && (d.verification_status === "MEMBER_CONFIRMED" || d.verification_status === "VERIFIED"))
       );
 
       if (validDocs.length === 0) {
-        missing.push("Identity Evidence Document (persisted document record in vault required)");
+        missing.push("Identity Evidence Document (persisted document record in vault with member confirmation MEMBER_CONFIRMED required)");
+      }
+
+      // Strictly verify document provenance: unconfirmed or non-MEMBER_CONFIRMED documents must not be accepted
+      const unconfirmedDocs = rawDocs.filter((d: { verification_status?: string }) =>
+        d.verification_status !== "MEMBER_CONFIRMED" && d.verification_status !== "VERIFIED"
+      );
+
+      if (unconfirmedDocs.length > 0) {
+        missing.push(`Unconfirmed documents detected (${unconfirmedDocs.length}). All uploaded documents must be member-confirmed (MEMBER_CONFIRMED) prior to verification.`);
       }
 
       // C. Constitutional Declaration: Require actual affirmative declaration state from database
@@ -171,195 +180,264 @@ export const POST: APIRoute = async ({ request }) => {
         );
       }
 
-      // 3. Authoritative Membership ID Resolution:
-      // Re-use existing assigned ID on retry; otherwise allocate from database sequence (No Date.now() fallback)
-      let membershipId: string;
-      const { data: existingUserMem } = await scopedSupabase
-        .from("members")
-        .select("*")
-        .or(`user_id.eq.${app.user_id},application_id.eq.${app.id}`)
-        .maybeSingle();
+      const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for") || null;
+      const ua = request.headers.get("user-agent") || null;
 
-      if (existingUserMem?.membership_id) {
-        membershipId = existingUserMem.membership_id;
-      } else {
-        const { data: seqData, error: seqError } = await scopedSupabase.rpc("generate_membership_id");
-        if (seqError || !seqData || typeof seqData !== "string" || !seqData.startsWith("NAG-")) {
-          console.error("Failed to generate membership ID sequence:", seqError);
-          return new Response(
-            JSON.stringify({ error: "System failure: Unable to allocate authoritative membership sequence ID." }),
-            { status: 500, headers: { "Content-Type": "application/json" } }
-          );
-        }
-        membershipId = seqData;
-      }
-
-      const memberName = addressData.full_legal_name;
-
-      // 4. Transactionally Safe Execution Pipeline:
-      // Perform dependent operations first; application status is updated to APPROVED ONLY if all operations succeed.
-
-      // Step 4.1: Upsert / Insert Member Record
-      let memberRecord: { id: string; membership_id: string } | null = null;
-      if (existingUserMem) {
-        const { data: updatedMem, error: memUpError } = await scopedSupabase
-          .from("members")
-          .update({
-            application_id: app.id,
-            full_name: memberName,
-            category: app.membership_category || "Primary Member",
-            status: "APPROVED",
-            approved_at: now,
-            approved_by: ctx.user.id,
-          })
-          .eq("id", existingUserMem.id)
-          .select()
-          .single();
-
-        if (memUpError || !updatedMem) {
-          console.error("Member update error:", memUpError);
-          throw memUpError || new Error("Failed to update member record");
-        }
-        memberRecord = updatedMem;
-      } else {
-        const { data: newMem, error: memInsertError } = await scopedSupabase
-          .from("members")
-          .insert({
-            user_id: app.user_id,
-            application_id: app.id,
-            membership_id: membershipId,
-            full_name: memberName,
-            category: app.membership_category || "Primary Member",
-            status: "APPROVED",
-            approved_at: now,
-            approved_by: ctx.user.id,
-          })
-          .select()
-          .single();
-
-        if (memInsertError || !newMem) {
-          console.error("Member insert error:", memInsertError);
-          throw memInsertError || new Error("Failed to create member record");
-        }
-        memberRecord = newMem;
-      }
-
-      if (!memberRecord) {
-        throw new Error("Failed to resolve member record");
-      }
-
-      const assignedId = memberRecord.membership_id || membershipId;
-
-      // Step 4.2: Ensure exactly one Active Card exists (card_version = 1 on initial approval)
-      const { data: existingActiveCard } = await scopedSupabase
-        .from("membership_cards")
-        .select("id")
-        .eq("member_id", memberRecord.id)
-        .eq("status", "ACTIVE")
-        .maybeSingle();
-
-      if (!existingActiveCard) {
-        const qrToken = crypto.randomUUID();
-        const { error: cardError } = await scopedSupabase.from("membership_cards").insert({
-          member_id: memberRecord.id,
-          card_number: assignedId,
-          card_version: 1,
-          status: "ACTIVE",
-          qr_token: qrToken,
-          verification_slug: assignedId,
-          issue_date: now.split("T")[0],
-        });
-        if (cardError) {
-          console.error("Card creation error:", cardError);
-          throw cardError;
-        }
-      }
-
-      // Step 4.3: Transition Document Provenance to ORGANISATION VERIFIED
-      for (const doc of validDocs) {
-        await scopedSupabase
-          .from("documents")
-          .update({
-            verification_status: "VERIFIED",
-            verified_by: ctx.user.id,
-            verified_at: now,
-            member_id: memberRecord.id,
-          })
-          .eq("id", doc.id);
-
-        await scopedSupabase.from("document_verifications").insert({
-          document_id: doc.id,
-          verifier_id: ctx.user.id,
-          action: "APPROVE",
-          notes: notes || "Verified during statutory scrutiny and approval",
-        });
-      }
-
-      // Step 4.4: Update user profile role to MEMBER if currently PUBLIC
-      const { data: userProfile } = await scopedSupabase
-        .from("profiles")
-        .select("role")
-        .eq("id", app.user_id)
-        .single();
-
-      if (userProfile && userProfile.role === "PUBLIC") {
-        const { error: profileErr } = await scopedSupabase
-          .from("profiles")
-          .update({ role: "MEMBER" })
-          .eq("id", app.user_id);
-        if (profileErr) {
-          console.error("Profile role update error:", profileErr);
-          throw profileErr;
-        }
-      }
-
-      // Step 4.5: Record Status History
-      await scopedSupabase.from("membership_status_history").insert({
-        application_id: app.id,
-        member_id: memberRecord.id,
-        previous_status: app.status,
-        new_status: "APPROVED",
-        changed_by: ctx.user.id,
-        reason: notes || "Application verified and approved by staff.",
-      });
-
-      // Step 4.6: ONLY NOW update application status to APPROVED
-      const { error: appUpdateErr } = await scopedSupabase
-        .from("membership_applications")
-        .update({
-          status: "APPROVED",
-          reviewed_by: ctx.user.id,
-          reviewed_at: now,
-          correction_notes: notes || null,
-        })
-        .eq("id", applicationId);
-
-      if (appUpdateErr) {
-        console.error("Application status update error:", appUpdateErr);
-        throw appUpdateErr;
-      }
-
-      // Step 4.7: Audit Log
-      await logAuditEvent(
-        ctx.user.id,
-        ctx.profile.role,
-        "MEMBERSHIP_APPROVED",
-        "members",
-        memberRecord.id,
+      // 4. Atomic Execution Pipeline via Stored Procedure
+      const { data: rpcResult, error: rpcError } = await scopedSupabase.rpc(
+        "approve_membership_application",
         {
-          membership_id: assignedId,
-          application_id: applicationId,
-          notes,
-        },
-        request
+          p_application_id: applicationId,
+          p_verifier_id: ctx.user.id,
+          p_notes: notes || null,
+          p_ip_address: ip,
+          p_user_agent: ua,
+        }
       );
 
-      return new Response(
-        JSON.stringify({ success: true, membership_id: assignedId }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      );
+      if (!rpcError && rpcResult?.success) {
+        return new Response(
+          JSON.stringify({ success: true, membership_id: rpcResult.membership_id }),
+          { status: 200, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
+      if (rpcError) {
+        const errMsg = rpcError.message || "Approval failed";
+        const isProcMissing = rpcError.code === "PGRST202" || errMsg.includes("does not exist");
+
+        if (!isProcMissing) {
+          console.error("Atomic approval error from stored procedure:", rpcError);
+          if (errMsg.includes("Unauthorized") || errMsg.includes("Integrity violation")) {
+            return new Response(JSON.stringify({ error: errMsg }), { status: 403, headers: { "Content-Type": "application/json" } });
+          }
+          if (errMsg.includes("Statutory scrutiny failed") || errMsg.includes("Cannot approve application")) {
+            return new Response(JSON.stringify({ error: errMsg }), { status: 400, headers: { "Content-Type": "application/json" } });
+          }
+          return new Response(JSON.stringify({ error: errMsg }), { status: 500, headers: { "Content-Type": "application/json" } });
+        }
+      }
+
+      // Fallback compensating transaction in TypeScript if stored procedure is not yet registered
+      let createdMemberId: string | null = null;
+      let createdCardId: string | null = null;
+      let newMemberInserted = false;
+      const initialAppStatus = app.status;
+
+      try {
+        let membershipId: string;
+        const { data: existingUserMem } = await scopedSupabase
+          .from("members")
+          .select("*")
+          .or(`user_id.eq.${app.user_id},application_id.eq.${app.id}`)
+          .maybeSingle();
+
+        if (existingUserMem?.membership_id) {
+          membershipId = existingUserMem.membership_id;
+        } else {
+          const { data: seqData, error: seqError } = await scopedSupabase.rpc("generate_membership_id");
+          if (seqError || !seqData || typeof seqData !== "string" || !seqData.startsWith("NAG-")) {
+            console.error("Failed to generate membership ID sequence:", seqError);
+            return new Response(
+              JSON.stringify({ error: "System failure: Unable to allocate authoritative membership sequence ID." }),
+              { status: 500, headers: { "Content-Type": "application/json" } }
+            );
+          }
+          membershipId = seqData;
+        }
+
+        const memberName = addressData.full_legal_name;
+
+        // Step 4.1: Upsert / Insert Member Record
+        let memberRecord: { id: string; membership_id: string } | null = null;
+        if (existingUserMem) {
+          const { data: updatedMem, error: memUpError } = await scopedSupabase
+            .from("members")
+            .update({
+              application_id: app.id,
+              full_name: memberName,
+              category: app.membership_category || "Primary Member",
+              status: "APPROVED",
+              approved_at: now,
+              approved_by: ctx.user.id,
+            })
+            .eq("id", existingUserMem.id)
+            .select()
+            .single();
+
+          if (memUpError || !updatedMem) {
+            throw memUpError || new Error("Failed to update member record");
+          }
+          memberRecord = updatedMem;
+        } else {
+          const { data: newMem, error: memInsertError } = await scopedSupabase
+            .from("members")
+            .insert({
+              user_id: app.user_id,
+              application_id: app.id,
+              membership_id: membershipId,
+              full_name: memberName,
+              category: app.membership_category || "Primary Member",
+              status: "APPROVED",
+              approved_at: now,
+              approved_by: ctx.user.id,
+            })
+            .select()
+            .single();
+
+          if (memInsertError || !newMem) {
+            throw memInsertError || new Error("Failed to create member record");
+          }
+          memberRecord = newMem;
+          createdMemberId = newMem.id;
+          newMemberInserted = true;
+        }
+
+        if (!memberRecord) {
+          throw new Error("Failed to resolve member record");
+        }
+
+        const assignedId = memberRecord.membership_id || membershipId;
+
+        // Step 4.2: Ensure exactly one Active Card exists
+        const { data: existingActiveCard } = await scopedSupabase
+          .from("membership_cards")
+          .select("id")
+          .eq("member_id", memberRecord.id)
+          .eq("status", "ACTIVE")
+          .maybeSingle();
+
+        if (!existingActiveCard) {
+          const qrToken = crypto.randomUUID();
+          const { data: newCard, error: cardError } = await scopedSupabase
+            .from("membership_cards")
+            .insert({
+              member_id: memberRecord.id,
+              card_number: assignedId,
+              card_version: 1,
+              status: "ACTIVE",
+              qr_token: qrToken,
+              verification_slug: assignedId,
+              issue_date: now.split("T")[0],
+            })
+            .select("id")
+            .single();
+
+          if (cardError || !newCard) {
+            throw cardError || new Error("Failed to create membership card");
+          }
+          createdCardId = newCard.id;
+        }
+
+        // Step 4.3: Transition Document Provenance to ORGANISATION VERIFIED
+        for (const doc of validDocs) {
+          const { error: docUpdateErr } = await scopedSupabase
+            .from("documents")
+            .update({
+              verification_status: "VERIFIED",
+              verified_by: ctx.user.id,
+              verified_at: now,
+              member_id: memberRecord.id,
+            })
+            .eq("id", doc.id);
+
+          if (docUpdateErr) throw docUpdateErr;
+
+          const { error: docVerErr } = await scopedSupabase.from("document_verifications").insert({
+            document_id: doc.id,
+            verifier_id: ctx.user.id,
+            action: "APPROVE",
+            notes: notes || "Verified during statutory scrutiny and approval",
+          });
+
+          if (docVerErr) throw docVerErr;
+        }
+
+        // Step 4.4: Update user profile role to MEMBER if currently PUBLIC
+        const { data: userProfile } = await scopedSupabase
+          .from("profiles")
+          .select("role")
+          .eq("id", app.user_id)
+          .single();
+
+        if (userProfile && userProfile.role === "PUBLIC") {
+          const { error: profileErr } = await scopedSupabase
+            .from("profiles")
+            .update({ role: "MEMBER" })
+            .eq("id", app.user_id);
+          if (profileErr) throw profileErr;
+        }
+
+        // Step 4.5: Record Status History
+        const { error: histErr } = await scopedSupabase.from("membership_status_history").insert({
+          application_id: app.id,
+          member_id: memberRecord.id,
+          previous_status: app.status,
+          new_status: "APPROVED",
+          changed_by: ctx.user.id,
+          reason: notes || "Application verified and approved by staff.",
+        });
+        if (histErr) throw histErr;
+
+        // Step 4.6: Update application status to APPROVED
+        const { error: appUpdateErr } = await scopedSupabase
+          .from("membership_applications")
+          .update({
+            status: "APPROVED",
+            reviewed_by: ctx.user.id,
+            reviewed_at: now,
+            correction_notes: notes || null,
+          })
+          .eq("id", applicationId);
+
+        if (appUpdateErr) throw appUpdateErr;
+
+        // Step 4.7: Mandatory Statutory Audit Log (will throw on failure to persist)
+        await logAuditEvent(
+          ctx.user.id,
+          ctx.profile.role,
+          "MEMBERSHIP_APPROVED",
+          "members",
+          memberRecord.id,
+          {
+            membership_id: assignedId,
+            application_id: applicationId,
+            notes,
+          },
+          request,
+          scopedSupabase
+        );
+
+        return new Response(
+          JSON.stringify({ success: true, membership_id: assignedId }),
+          { status: 200, headers: { "Content-Type": "application/json" } }
+        );
+      } catch (pipelineErr) {
+        console.error("Pipeline failure in approval fallback, executing rollback compensation:", pipelineErr);
+        if (createdCardId) {
+          await scopedSupabase.from("membership_cards").delete().eq("id", createdCardId);
+        }
+        if (newMemberInserted && createdMemberId) {
+          await scopedSupabase.from("members").delete().eq("id", createdMemberId);
+        }
+        await scopedSupabase.from("membership_applications").update({ status: initialAppStatus }).eq("id", applicationId);
+        for (const doc of validDocs) {
+          await scopedSupabase.from("documents").update({ verification_status: doc.verification_status }).eq("id", doc.id);
+        }
+        throw pipelineErr;
+      }
     } else if (action === "REJECT") {
-      await scopedSupabase
+      const REVIEWABLE_STATES = ["SUBMITTED", "UNDER_REVIEW", "NEEDS_CORRECTION"];
+      if (!REVIEWABLE_STATES.includes(app.status)) {
+        return new Response(
+          JSON.stringify({
+            error: `Cannot reject application from status "${app.status}". Only reviewable applications (${REVIEWABLE_STATES.join(", ")}) may be rejected.`,
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
+      const { error: rejectUpdateErr } = await scopedSupabase
         .from("membership_applications")
         .update({
           status: "REJECTED",
@@ -369,13 +447,21 @@ export const POST: APIRoute = async ({ request }) => {
         })
         .eq("id", applicationId);
 
-      await scopedSupabase.from("membership_status_history").insert({
+      if (rejectUpdateErr) {
+        throw rejectUpdateErr;
+      }
+
+      const { error: histErr } = await scopedSupabase.from("membership_status_history").insert({
         application_id: app.id,
         previous_status: app.status,
         new_status: "REJECTED",
         changed_by: ctx.user.id,
         reason: rejectionReason || notes || "Rejected",
       });
+
+      if (histErr) {
+        throw histErr;
+      }
 
       await logAuditEvent(
         ctx.user.id,
@@ -384,7 +470,8 @@ export const POST: APIRoute = async ({ request }) => {
         "membership_applications",
         applicationId,
         { reason: rejectionReason || notes },
-        request
+        request,
+        scopedSupabase
       );
 
       return new Response(JSON.stringify({ success: true }), {
@@ -392,7 +479,17 @@ export const POST: APIRoute = async ({ request }) => {
         headers: { "Content-Type": "application/json" },
       });
     } else if (action === "REQUEST_CORRECTION") {
-      await scopedSupabase
+      const REVIEWABLE_STATES = ["SUBMITTED", "UNDER_REVIEW", "NEEDS_CORRECTION"];
+      if (!REVIEWABLE_STATES.includes(app.status)) {
+        return new Response(
+          JSON.stringify({
+            error: `Cannot request correction for application from status "${app.status}". Only reviewable applications (${REVIEWABLE_STATES.join(", ")}) may be updated.`,
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
+      const { error: updateErr } = await scopedSupabase
         .from("membership_applications")
         .update({
           status: "NEEDS_CORRECTION",
@@ -402,13 +499,21 @@ export const POST: APIRoute = async ({ request }) => {
         })
         .eq("id", applicationId);
 
-      await scopedSupabase.from("membership_status_history").insert({
+      if (updateErr) {
+        throw updateErr;
+      }
+
+      const { error: histErr } = await scopedSupabase.from("membership_status_history").insert({
         application_id: app.id,
         previous_status: app.status,
         new_status: "NEEDS_CORRECTION",
         changed_by: ctx.user.id,
         reason: notes || "Correction requested",
       });
+
+      if (histErr) {
+        throw histErr;
+      }
 
       await logAuditEvent(
         ctx.user.id,
@@ -417,7 +522,8 @@ export const POST: APIRoute = async ({ request }) => {
         "membership_applications",
         applicationId,
         { notes },
-        request
+        request,
+        scopedSupabase
       );
 
       return new Response(JSON.stringify({ success: true }), {

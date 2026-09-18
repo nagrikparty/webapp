@@ -702,4 +702,111 @@ test.describe("Production Security & Lifecycle Integration Suite", () => {
     await page.goto("/");
     await expect(page.locator("body")).toBeVisible();
   });
+
+  test("11. Document Provenance & Transactional Integrity: Rejects unconfirmed documents and enforces atomic approval", async ({ request }) => {
+    const verifier = await getSession(PERSONAS.VERIFIER);
+    const memberB = await getSession(PERSONAS.MEMBER_B);
+
+    // Create an application for Member B with an unconfirmed document (status = 'UPLOADED')
+    const { data: testApp } = await memberB.client
+      .from("membership_applications")
+      .insert({
+        user_id: memberB.user.id,
+        membership_category: "Primary Member",
+        status: "SUBMITTED",
+        application_number: "APP-TEST-UNCONFIRMED",
+      })
+      .select()
+      .single();
+
+    if (testApp) {
+      // Add valid address
+      await memberB.client.from("member_addresses").insert({
+        user_id: memberB.user.id,
+        application_id: testApp.id,
+        full_legal_name: "Unconfirmed Member",
+        parent_or_guardian_name: "Guardian",
+        date_of_birth: "1995-05-15",
+        gender: "Female",
+        phone: "+919876543210",
+        email: "unconfirmed@example.com",
+        address_line1: "42 Rajpath",
+        state: "Delhi",
+        district: "New Delhi",
+        vidhan_sabha: "New Delhi",
+        pincode: "110001",
+      });
+
+      // Add document with verification_status = 'UPLOADED' (NOT MEMBER_CONFIRMED)
+      await memberB.client.from("documents").insert({
+        user_id: memberB.user.id,
+        application_id: testApp.id,
+        document_type: "identity_proof",
+        original_filename: "unconfirmed_doc.pdf",
+        mime_type: "application/pdf",
+        file_size: 102400,
+        storage_path: `${memberB.user.id}/${testApp.id}/unconfirmed_doc.pdf`,
+        sha256_hash: "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234",
+        current_version: 1,
+        ocr_status: "PENDING",
+        verification_status: "UPLOADED",
+      });
+
+      // Add declaration, consent, signature
+      await memberB.client.from("membership_declarations").insert({
+        user_id: memberB.user.id,
+        application_id: testApp.id,
+        declaration_text: "Constitutional declaration text",
+        bears_true_faith: true,
+        upholds_sovereignty: true,
+        accepts_constitution: true,
+        no_other_party_membership: true,
+        agreed_at: new Date().toISOString(),
+      });
+
+      await memberB.client.from("membership_consents").insert({
+        user_id: memberB.user.id,
+        application_id: testApp.id,
+        consent_text: "DPDP consent",
+        agreed_at: new Date().toISOString(),
+      });
+
+      await memberB.client.from("signatures").insert({
+        user_id: memberB.user.id,
+        application_id: testApp.id,
+        typed_name: "Unconfirmed Member",
+        signed_at: new Date().toISOString(),
+      });
+
+      // Attempt to APPROVE -> MUST return 400 because document is not MEMBER_CONFIRMED
+      const res = await request.post("/api/v1/admin/verifications", {
+        headers: {
+          Authorization: `Bearer ${verifier.token}`,
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          application_id: testApp.id,
+          action: "APPROVE",
+          notes: "Attempt to approve unconfirmed document",
+        }),
+      });
+
+      expect(res.status()).toBe(400);
+      const body = await res.json();
+      expect(body.error).toMatch(/unconfirmed|MEMBER_CONFIRMED/i);
+
+      // Verify no member record was created (transactional 0-residue rollback)
+      const { data: orphanedMember } = await verifier.client
+        .from("members")
+        .select("id")
+        .eq("application_id", testApp.id)
+        .maybeSingle();
+
+      expect(orphanedMember).toBeNull();
+
+      // Clean up test application
+      await memberB.client.from("membership_applications").delete().eq("id", testApp.id);
+    }
+  });
 });
+

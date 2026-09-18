@@ -121,9 +121,14 @@ export async function logAuditEvent(
   entityType: string,
   entityId: string,
   metadata: Record<string, unknown> = {},
-  request?: Request
-): Promise<void> {
-  if (!supabase) return;
+  request?: Request,
+  customClient?: unknown
+): Promise<{ success: boolean; logId?: string }> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const client = (customClient as any) || supabase;
+  if (!client) {
+    throw new Error("Audit logging failed: Database client unavailable");
+  }
 
   let ipAddress: string | null = null;
   let userAgent: string | null = null;
@@ -133,31 +138,41 @@ export async function logAuditEvent(
     userAgent = request.headers.get("user-agent");
   }
 
-  try {
-    const { error: rpcError } = await supabase.rpc("record_audit_log", {
-      p_actor_user_id: actorUserId,
-      p_actor_role: actorRole,
-      p_action: action,
-      p_entity_type: entityType,
-      p_entity_id: entityId,
-      p_metadata: metadata,
-      p_ip_address: ipAddress,
-      p_user_agent: userAgent,
-    });
+  const { data: rpcData, error: rpcError } = await client.rpc("record_audit_log", {
+    p_actor_user_id: actorUserId,
+    p_actor_role: actorRole,
+    p_action: action,
+    p_entity_type: entityType,
+    p_entity_id: entityId,
+    p_metadata: metadata,
+    p_ip_address: ipAddress,
+    p_user_agent: userAgent,
+  });
 
-    if (rpcError) {
-      await supabase.from("audit_logs").insert({
-        actor_user_id: actorUserId,
-        actor_role: actorRole,
-        action,
-        entity_type: entityType,
-        entity_id: entityId,
-        metadata,
-        ip_address: ipAddress,
-        user_agent: userAgent,
-      });
-    }
-  } catch (err) {
-    console.error("Failed to write audit log:", err);
+  if (!rpcError && rpcData) {
+    return { success: true, logId: rpcData };
   }
+
+  // Fallback direct insert into audit_logs table
+  const { data: insertData, error: insertError } = await client
+    .from("audit_logs")
+    .insert({
+      actor_user_id: actorUserId,
+      actor_role: actorRole,
+      action,
+      entity_type: entityType,
+      entity_id: entityId,
+      metadata,
+      ip_address: ipAddress,
+      user_agent: userAgent,
+    })
+    .select("id")
+    .maybeSingle();
+
+  if (insertError) {
+    console.error("Audit log persistence failed:", { rpcError, insertError });
+    throw new Error(`Audit log persistence failed: ${insertError.message || rpcError?.message || "Unknown error"}`);
+  }
+
+  return { success: true, logId: insertData?.id };
 }

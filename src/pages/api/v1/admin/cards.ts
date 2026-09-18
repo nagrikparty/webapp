@@ -109,7 +109,8 @@ export const POST: APIRoute = async ({ request }) => {
           member_id: card.member_id,
           reason: revocationReason,
         },
-        request
+        request,
+        scopedSupabase
       );
 
       return new Response(JSON.stringify({ success: true, message: "Card successfully revoked" }), {
@@ -221,7 +222,8 @@ export const POST: APIRoute = async ({ request }) => {
           new_version: nextVersion,
           reason: reissueReason,
         },
-        request
+        request,
+        scopedSupabase
       );
 
       return new Response(JSON.stringify({ success: true, card: newCard }), {
