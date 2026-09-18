@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { supabase } from "@/lib/supabase";
 import { ShieldAlert, ExternalLink, Calendar, CheckCircle2, ChevronRight, Info } from "lucide-react";
 
@@ -48,7 +47,7 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
 ---
 
 <BaseLayout
-  title="Verified Crime Tracker - Nagrik Party"
+  title="Verified Crime Tracker | Nagrik Party"
   description="Publicly documented crime citations in Delhi NCR, verified and linked directly to published sources. Zero statistical guesswork."
 >
   <section class="page-hero" style="padding-bottom: 32px;">
@@ -57,14 +56,9 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
         <ShieldAlert size={14} color="#c45500" />
         Civic Evidence & Public Accountability
       </div>
-      <h1>
-        <Bilingual en="Verified Crime Tracker" hi="सत्यापित अपराध ट्रैकर" />
-      </h1>
+      <h1>Verified Crime Tracker</h1>
       <p class="page-copy" style="max-width: 760px;">
-        <Bilingual
-          en="Publicly documented information, organised for civic understanding. Every incident count is verified and directly linked to public news citations and official reports. We do not use statistical estimates."
-          hi="सार्वजनिक रूप से प्रलेखित जानकारी, जो नागरिक समझ के लिए व्यवस्थित है। हर घटना की पुष्टि की गई है और वह सीधे समाचार लेखों या आधिकारिक रिपोर्टों से जुड़ी है।"
-        />
+        Publicly documented information, organised for civic understanding. Every incident count is verified and directly linked to public news citations and official reports. We do not use statistical estimates.
       </p>
       
       <div style="display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; align-items: center;">

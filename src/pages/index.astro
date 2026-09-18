@@ -1,83 +1,102 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
-import { ManifestoVoting } from "@/components/ManifestoVoting";
-import { CrimeDashboard } from "@/components/CrimeDashboard";
-import { delhiAreas } from "@/lib/content";
-import { ShieldCheck, FileText, Scale, Landmark } from "lucide-react";
+import { FOUNDER_DATA } from "@/lib/founder";
+import { getFormationProgress } from "@/lib/progress-service";
+import {
+  CheckCircle2,
+  ArrowRight,
+  ShieldAlert,
+  TrendingUp,
+  AlertCircle,
+} from "lucide-react";
 
 export const prerender = false;
+
+const progressData = await getFormationProgress();
 ---
 
 <BaseLayout
   title="Nagrik Party | Formation Phase | Kaam dikhna chahiye"
-  description="An independent political initiative working toward the formation and registration of a political party under Section 29A RPA 1951."
+  description="A political party is being built. Nagrik Party is an independent political initiative working toward formation and registration under Section 29A RPA 1951."
 >
-  <!-- First Viewport Hero: Institutional Civic Header -->
-  <section class="page-hero" style="padding-top: 48px; padding-bottom: 40px; border-bottom: 1px solid var(--line-strong); background: var(--paper-card);">
+  <!-- =========================================================================
+       SECTION 1: HERO VIEWPORT
+       ========================================================================= -->
+  <section class="page-hero" style="padding-top: 36px; padding-bottom: 40px; border-bottom: 1px solid var(--line-strong); background: var(--paper-card);">
     <div class="container" style="max-width: 1080px;">
       
-      <!-- Phase 1 Formation Badge -->
-      <div style="margin-bottom: 18px;">
-        <span class="civic-hero-badge">
-          PHASE 1 • FORMATION PHASE
+      <!-- Small Phase Label -->
+      <div style="margin-bottom: 14px;">
+        <span class="founding-progress-badge" style="font-size: 11px; padding: 4px 10px;">
+          PHASE 1 · FORMATION PHASE
         </span>
       </div>
 
-      <!-- Main Slogan & Title -->
       <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; flex-wrap: wrap;">
         <div style="flex: 1; min-width: 320px;">
-          <h1 style="font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 16px; line-height: 1.08; font-family: var(--font-serif);">
-            Nagrik Party
+          <h1 style="font-size: clamp(2.6rem, 5.5vw, 4.2rem); font-weight: 800; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 12px; line-height: 1.05; font-family: var(--font-serif);">
+            A political party is being built.
           </h1>
 
-          <div style="display: inline-flex; align-items: center; background: var(--paper-subtle); border-left: 3px solid var(--saffron); padding: 8px 16px; border-radius: 2px; margin-bottom: 20px; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);">
-            <span style="font-size: 18px; font-weight: 700; color: var(--saffron); font-family: var(--font-hindi);">
-              काम दिखना चाहिए
+          <div style="font-size: clamp(1.4rem, 2.8vw, 1.9rem); font-weight: 600; color: var(--muted); margin-bottom: 16px; font-family: var(--font-serif);">
+            Nagrik Party
+          </div>
+
+          <div style="display: inline-flex; align-items: center; background: var(--paper-subtle); border-left: 3px solid var(--saffron); padding: 6px 14px; border-radius: 2px; margin-bottom: 24px; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+            <span style="font-size: 16px; font-weight: 700; color: var(--saffron);">
+              Kaam dikhna chahiye.
             </span>
-            <span style="font-size: 13px; color: var(--muted); margin-left: 8px; font-weight: 500;">
-              • Governance before power
+            <span style="font-size: 13px; color: var(--muted); margin-left: 8px;">
+              · Work must be visible
             </span>
           </div>
 
-          <p style="font-size: clamp(15.5px, 1.8vw, 18px); color: var(--ink-body); line-height: 1.6; margin: 0 0 28px; max-width: 680px; font-weight: 400;">
-            <strong>Nagrik Party (Formation Phase): An independent political initiative working toward the formation and registration of a political party.</strong>
-            Building a verifiable, citizen-driven public accountability system across Delhi's 70 Assembly constituencies.
+          <p style="font-size: clamp(15px, 1.7vw, 17.5px); color: var(--ink-body); line-height: 1.6; margin: 0 0 28px; max-width: 660px;">
+            Nagrik Party (Formation Phase): An independent political initiative working toward the formation and registration of a political party under Section 29A RPA 1951. Built on real evidence, 100% cashless accounts, and direct citizen participation.
           </p>
 
-          <!-- Primary & Secondary Action Cluster -->
+          <!-- Primary, Secondary, Tertiary Actions -->
           <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-            <a href="/membership" class="button button-primary" style="padding: 12px 28px; font-size: 14.5px; font-weight: 600; background: var(--saffron); border-color: var(--saffron); color: #fff; box-shadow: var(--shadow); border-radius: 3px;">
-              <Bilingual en="Become a Member" hi="सदस्य बनें" /> &rarr;
+            <a
+              href="/membership"
+              class="button button-primary"
+              style="padding: 13px 28px; font-size: 15px; font-weight: 600; background: var(--saffron); border-color: var(--saffron); color: #fff; box-shadow: var(--shadow); border-radius: 3px;"
+            >
+              Become a Member &rarr;
             </a>
-            <a href="/crime" class="button" style="padding: 12px 22px; font-size: 14px; font-weight: 600;">
-              <Bilingual en="Explore Our Work" hi="हमारा काम देखें" />
+            <a
+              href="/volunteer"
+              class="button"
+              style="padding: 13px 22px; font-size: 14.5px; font-weight: 600;"
+            >
+              Become a Volunteer
             </a>
-            <a href="/transparency" class="button" style="padding: 12px 22px; font-size: 14px; font-weight: 600;">
-              <Bilingual en="View Transparency" hi="पारदर्शिता" />
-            </a>
-            <a href="/documents" class="button" style="padding: 12px 22px; font-size: 14px; font-weight: 600;">
-              <Bilingual en="Read the Constitution" hi="संविधान पढ़ें" />
+            <a
+              href="#explore"
+              class="button"
+              style="padding: 13px 20px; font-size: 14px; color: var(--muted);"
+            >
+              Explore
             </a>
           </div>
         </div>
 
-        <!-- Stage 3 Live Status Card -->
+        <!-- Live Formation Snapshot Box -->
         <div style="width: 320px; background: var(--paper-subtle); border: 1px solid var(--line-strong); border-radius: 4px; padding: 22px; box-shadow: var(--shadow);">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
             <span style="font-size: 11px; font-weight: 700; color: var(--saffron); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono);">
-              Formation Roadmap
+              Formation Status
             </span>
-            <span class="badge-verified">
-              Stage 3 Active
+            <span class="founding-progress-badge">
+              {progressData.percentage}% Completed
             </span>
           </div>
 
-          <h3 style="font-size: 16px; font-weight: 800; color: var(--ink); margin: 0 0 8px;">
-            Founding Member Induction
-          </h3>
-          <p style="font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0 0 16px;">
-            Currently enrolling 100+ verified voter members with valid EPIC IDs across Delhi to fulfill Section 29A RPA 1951 statutory criteria.
+          <h2 style="font-size: 17px; font-weight: 800; color: var(--ink); margin: 0 0 8px; font-family: var(--font-serif);">
+            Building the Foundation
+          </h2>
+          <p style="font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0 0 16px;">
+            We are currently onboarding founding voters across Delhi's 70 Assembly constituencies with verified voter IDs to fulfill statutory criteria under Section 29A RPA 1951.
           </p>
 
           <div style="border-top: 1px solid var(--line); padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
@@ -94,248 +113,588 @@ export const prerender = false;
     </div>
   </section>
 
-  <!-- Institutional Metrics Bar -->
-  <section style="background: var(--paper-subtle); border-bottom: 1px solid var(--line-strong); padding: 18px 0;">
+  <!-- =========================================================================
+       SECTION 2: FOUNDER INTRODUCTION & PHOTO
+       ========================================================================= -->
+  <section class="section" style="padding-top: 36px; padding-bottom: 36px; background: var(--paper); border-bottom: 1px solid var(--line);">
     <div class="container" style="max-width: 1080px;">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-        <div style="display: flex; align-items: center; gap: 12px; background: var(--paper-card); padding: 12px 16px; border-radius: 3px; border: 1px solid var(--line);">
-          <div style="width: 34px; height: 34px; border-radius: 2px; background: rgba(29, 86, 53, 0.1); display: flex; align-items: center; justify-content: center; color: var(--green); flex-shrink: 0; border: 1px solid rgba(29, 86, 53, 0.2);">
-            <ShieldCheck size={18} />
-          </div>
-          <div>
-            <div style="font-size: 16px; font-weight: 700; color: var(--ink); font-family: var(--font-mono);">Zero Cash</div>
-            <div style="font-size: 11.5px; color: var(--muted);">100% Cashless Ledger</div>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 12px; background: var(--paper-card); padding: 12px 16px; border-radius: 3px; border: 1px solid var(--line);">
-          <div style="width: 34px; height: 34px; border-radius: 2px; background: rgba(179, 74, 21, 0.1); display: flex; align-items: center; justify-content: center; color: var(--saffron); flex-shrink: 0; border: 1px solid rgba(179, 74, 21, 0.2);">
-            <Landmark size={18} />
-          </div>
-          <div>
-            <div style="font-size: 16px; font-weight: 700; color: var(--ink); font-family: var(--font-mono);">70 ACs</div>
-            <div style="font-size: 11.5px; color: var(--muted);">Delhi-Wide Roll Mapping</div>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 12px; background: var(--paper-card); padding: 12px 16px; border-radius: 3px; border: 1px solid var(--line);">
-          <div style="width: 34px; height: 34px; border-radius: 2px; background: rgba(142, 38, 23, 0.1); display: flex; align-items: center; justify-content: center; color: var(--red); flex-shrink: 0; border: 1px solid rgba(142, 38, 23, 0.2);">
-            <Scale size={18} />
-          </div>
-          <div>
-            <div style="font-size: 16px; font-weight: 700; color: var(--ink); font-family: var(--font-mono);">Real Citations</div>
-            <div style="font-size: 11.5px; color: var(--muted);">Verified Crime Tracker</div>
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 12px; background: var(--paper-card); padding: 12px 16px; border-radius: 3px; border: 1px solid var(--line);">
-          <div style="width: 34px; height: 34px; border-radius: 2px; background: rgba(22, 53, 92, 0.1); display: flex; align-items: center; justify-content: center; color: var(--blue); flex-shrink: 0; border: 1px solid rgba(22, 53, 92, 0.2);">
-            <FileText size={18} />
-          </div>
-          <div>
-            <div style="font-size: 16px; font-weight: 700; color: var(--ink); font-family: var(--font-mono);">SHA-256</div>
-            <div style="font-size: 11.5px; color: var(--muted);">Open Public Charters</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 2: Verified Crime Tracker Elevation -->
-  <section class="section" style="padding-top: 36px; padding-bottom: 24px;">
-    <div class="container" style="max-width: 1080px;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-        <div>
-          <div class="civic-hero-badge" style="color: var(--red); border-color: rgba(142, 38, 23, 0.3);">
-            Civic Accountability & Evidence
-          </div>
-          <h2 style="font-size: 24px; font-weight: 700; margin: 4px 0 0; font-family: var(--font-serif);">
-            <Bilingual en="Verified Crime Tracker" hi="सत्यापित अपराध ट्रैकर" />
-          </h2>
-          <p style="font-size: 14px; color: var(--muted); margin: 4px 0 0;">
-            Publicly documented offenses in Delhi NCR, verified against published news reports.
-          </p>
-        </div>
-        <a href="/crime" class="button" style="font-size: 13px; font-weight: 600; color: var(--red); border-color: var(--red);">
-          Open Full Tracker & Citations &rarr;
-        </a>
-      </div>
-
-      <CrimeDashboard client:only="react" />
-    </div>
-  </section>
-
-  <!-- Section 3: The Civic Lifecycle -->
-  <section class="section band-soft" style="padding-top: 48px; padding-bottom: 48px;">
-    <div class="container" style="max-width: 1080px;">
-      <div class="section-head" style="margin-bottom: 32px;">
-        <div class="mini-label">The Civic Operating Doctrine</div>
-        <h2 style="font-size: 26px; font-weight: 700; font-family: var(--font-serif);">
-          <Bilingual en="How Public Grievance Tracking Works" hi="नागरिक शिकायत समाधान प्रक्रिया" />
-        </h2>
-        <p style="max-width: 680px; margin: 0 auto; color: var(--muted); font-size: 14.5px;">
-          <Bilingual
-            en="From the moment a citizen identifies an issue to its resolution or elevation into our living manifesto."
-            hi="नागरिक द्वारा मुद्दा रिपोर्ट करने से लेकर उसके समाधान या घोषणापत्र में शामिल होने तक की प्रक्रिया।"
+      <div
+        class="card"
+        style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: clamp(20px, 3vw, 32px); box-shadow: var(--shadow); display: flex; gap: 28px; align-items: center; flex-wrap: wrap;"
+      >
+        <div style="width: 110px; height: 110px; border-radius: 3px; overflow: hidden; background: var(--paper-subtle); border: 1px solid var(--line); flex-shrink: 0;">
+          <img
+            src={FOUNDER_DATA.imageSlot}
+            alt="Sheikh Arsalanullah Chishti"
+            style="width: 100%; height: 100%; object-fit: cover;"
+            onerror="this.onerror=null; this.src='/nagrikpartylogo.svg'; this.style.padding='18px';"
           />
-        </p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px;">
-        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
-          <div style="width: 30px; height: 30px; border-radius: 2px; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 14px; font-size: 13px;">
-            1
-          </div>
-          <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Citizen Reports Issue</h3>
-          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
-            Upload photo, location, and description. Complainant identity is strictly protected and never shown on public pages.
-          </p>
         </div>
 
-        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
-          <div style="width: 30px; height: 30px; border-radius: 2px; background: var(--saffron); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 14px; font-size: 13px;">
-            2
+        <div style="flex: 1; min-width: 260px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--saffron); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;">
+            FOUNDER & FOUNDING CONVENER
           </div>
-          <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Volunteer Verifies</h3>
-          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
-            Ground check by local coordinators, ward classification, and verification against Delhi governance standards.
+          <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif); color: var(--ink);">
+            {FOUNDER_DATA.legalName}
+          </h2>
+          <p style="font-size: 13.5px; color: var(--ink-body); line-height: 1.55; margin: 0 0 10px;">
+            Contested the 2025 Delhi Assembly election independently. Initiating the formation of Nagrik Party to build a durable, accountable citizen-led political organization.
           </p>
-        </div>
-
-        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
-          <div style="width: 30px; height: 30px; border-radius: 2px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 14px; font-size: 13px;">
-            3
+          <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+            <a href="/founder" style="font-size: 12.5px; font-weight: 600; color: var(--saffron); text-decoration: none;">
+              Read Full Founder Profile &rarr;
+            </a>
+            <span style="font-size: 12px; color: var(--muted);">·</span>
+            <a href="/why-nagrik" style="font-size: 12.5px; font-weight: 600; color: var(--ink); text-decoration: none;">
+              The Founding Story &rarr;
+            </a>
           </div>
-          <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Official Complaint Filed</h3>
-          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
-            Lawful submission to municipal and state departments with tracking numbers, dates, and response logs.
-          </p>
         </div>
-
-        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
-          <div style="width: 30px; height: 30px; border-radius: 2px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 14px; font-size: 13px;">
-            4
-          </div>
-          <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Manifesto Commitment</h3>
-          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
-            If authorities leave the issue unresolved, it is codified as an official constituency manifesto priority.
-          </p>
-        </div>
-      </div>
-      
-      <div style="text-align: center; margin-top: 24px;">
-        <a href="/issues" class="button" style="font-size: 13px; font-weight: 600;">
-          View Public Issues & Escalate &rarr;
-        </a>
       </div>
     </div>
   </section>
 
-  <!-- Section 4: Living Manifesto Priorities -->
+  <!-- =========================================================================
+       SECTION 3: TWO PRIMARY ENTRY PATHS
+       ========================================================================= -->
   <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
     <div class="container" style="max-width: 1080px;">
-      <div class="section-head">
-        <div class="mini-label">Direct Democratic Consultation</div>
-        <h2 style="font-size: 28px; font-weight: 800;">
-          <Bilingual en="Living Manifesto Priorities" hi="घोषणापत्र प्राथमिकताएं" />
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div class="mini-label">Take Part</div>
+        <h2 style="font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 700; font-family: var(--font-serif);">
+          How do you want to participate?
         </h2>
-        <p style="max-width: 680px; margin: 0 auto; color: var(--muted); font-size: 15px;">
-          <Bilingual
-            en="Supporters and verified members vote on top issues to shape our legislative program. Kaam dikhna chahiye."
-            hi="समर्थक और सदस्य प्राथमिक मुद्दों पर मतदान करते हैं। काम दिखना चाहिए।"
-          />
+        <p style="max-width: 600px; margin: 0 auto; color: var(--muted); font-size: 14.5px;">
+          Choose your level of involvement in building Nagrik Party.
         </p>
       </div>
-      <ManifestoVoting client:load />
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+        
+        <!-- Path 1: Member -->
+        <a
+          href="/membership"
+          class="card"
+          style="background: var(--paper-card); border: 2px solid var(--saffron); border-radius: 4px; padding: 32px 28px; text-decoration: none; color: inherit; box-shadow: var(--shadow-elevated); display: flex; flex-direction: column; justify-content: space-between;"
+        >
+          <div>
+            <span style="font-size: 11px; font-weight: 700; color: var(--saffron); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;">
+              PRIMARY PATH
+            </span>
+            <h3 style="font-size: 22px; font-weight: 800; margin: 8px 0 10px; font-family: var(--font-serif); color: var(--ink);">
+              Become a Member
+            </h3>
+            <p style="font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 20px;">
+              "I want to formally join Nagrik Party."
+              Complete the digital induction, verify your voter details, and receive your organizational Nagrik ID record.
+            </p>
+          </div>
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--saffron);">
+            Join as Founding Member <ArrowRight size={16} />
+          </div>
+        </a>
+
+        <!-- Path 2: Volunteer -->
+        <a
+          href="/volunteer"
+          class="card"
+          style="background: var(--paper-card); border: 1px solid var(--line-strong); border-radius: 4px; padding: 32px 28px; text-decoration: none; color: inherit; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between;"
+        >
+          <div>
+            <span style="font-size: 11px; font-weight: 700; color: var(--green); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;">
+              ACTION PATH
+            </span>
+            <h3 style="font-size: 22px; font-weight: 800; margin: 8px 0 10px; font-family: var(--font-serif); color: var(--ink);">
+              Become a Volunteer
+            </h3>
+            <p style="font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 20px;">
+              "I want to contribute my time or skills."
+              Help with constituency ground checks, research, design, software, video, or community outreach.
+            </p>
+          </div>
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--green);">
+            Join as Volunteer <ArrowRight size={16} />
+          </div>
+        </a>
+
+        <!-- Path 3: Explore -->
+        <a
+          href="/explore"
+          class="card"
+          style="background: var(--paper-subtle); border: 1px solid var(--line); border-radius: 4px; padding: 32px 28px; text-decoration: none; color: inherit; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between;"
+        >
+          <div>
+            <span style="font-size: 11px; font-weight: 700; color: var(--blue); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;">
+              CIVIC INTELLIGENCE
+            </span>
+            <h3 style="font-size: 22px; font-weight: 800; margin: 8px 0 10px; font-family: var(--font-serif); color: var(--ink);">
+              Explore Our Work
+            </h3>
+            <p style="font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 20px;">
+              "I want to understand what Nagrik Party is building."
+              Inspect verified crime records, civic grievance tracking, topic monitors, and transparent financial ledgers.
+            </p>
+          </div>
+          <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; color: var(--blue);">
+            Open Civic Explorer <ArrowRight size={16} />
+          </div>
+        </a>
+
+      </div>
     </div>
   </section>
 
-  <!-- Section 5: Public Charters & Transparency Preview -->
-  <section class="section band-white" style="padding-top: 48px; padding-bottom: 48px; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong);">
+  <!-- =========================================================================
+       SECTION 4: WHY ARE WE BUILDING THIS? (FOUNDER STORY)
+       ========================================================================= -->
+  <section class="section band-soft" style="padding-top: 48px; padding-bottom: 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div class="container" style="max-width: 900px;">
+      <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+        FOUNDING PRINCIPLES
+      </div>
+      <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 700; font-family: var(--font-serif); margin: 6px 0 16px;">
+        Why are we building this?
+      </h2>
+
+      <div style="font-size: 16px; line-height: 1.7; color: var(--ink-body); display: grid; gap: 16px;">
+        <p>
+          Sheikh Arsalanullah Chishti contested the 2025 Delhi Legislative Assembly election independently in Okhla. The campaign revealed a clear truth: while an independent candidate can raise voice for a neighborhood, individual campaigns cannot permanently change how decisions are made.
+        </p>
+
+        <p>
+          Coming from a family where both parents served as government teachers, the everyday reality of public work is unmistakable. Honest public service, education, and years of duty do not automatically guarantee security in later life.
+        </p>
+
+        <blockquote
+          style="margin: 8px 0; padding: 16px 20px; background: var(--paper-card); border-left: 3px solid var(--saffron); border-radius: 2px; font-family: var(--font-serif); font-size: 17px; color: var(--ink); line-height: 1.5; border: 1px solid var(--line); border-left: 3px solid var(--saffron);"
+        >
+          "If people can spend their lives serving society and still feel insecure about healthcare, inflation and everyday life, what future are we building?"
+        </blockquote>
+
+        <p>
+          We do not believe in complaining about other political parties. Our focus is straightforward:
+          <strong>We are trying to build an organisation that works.</strong>
+        </p>
+
+        <p style="font-weight: 600; color: var(--ink); font-size: 17px;">
+          The goal isn't to complain about what is broken. The goal is to build what should work.
+        </p>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <a href="/why-nagrik" class="button" style="font-size: 13.5px; font-weight: 600;">
+          Read the Full Story & Principles &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 5: FROM VOTER TO PARTICIPANT (CIVIC LIFECYCLE)
+       ========================================================================= -->
+  <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
     <div class="container" style="max-width: 1080px;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
-        <div>
-          <div class="mini-label">Governance & Legal Foundations</div>
-          <h2 style="font-size: 24px; font-weight: 700; margin: 4px 0 0; font-family: var(--font-serif);">
-            <Bilingual en="Public Documents & Charters" hi="सार्वजनिक दस्तावेज़ और घोषणापत्र" />
-          </h2>
-          <p style="font-size: 14px; color: var(--muted); margin: 4px 0 0;">
-            Auditable foundational charters, draft constitution, and compliance records with SHA-256 integrity verification.
+      <div class="section-head" style="margin-bottom: 32px;">
+        <div class="mini-label">Operating Doctrine</div>
+        <h2 style="font-size: 26px; font-weight: 700; font-family: var(--font-serif);">
+          From voter to participant.
+        </h2>
+        <p style="max-width: 660px; margin: 0 auto; color: var(--muted); font-size: 14.5px;">
+          How a citizen grievance moves through verification and becomes an official policy priority.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px;">
+        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
+          <div style="width: 28px; height: 28px; border-radius: 2px; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 12px; font-size: 12px;">
+            1
+          </div>
+          <h3 style="font-size: 15.5px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Citizen Reports Issue</h3>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
+            Report a local water, road, sanitation or lighting hazard. Complainant identity is strictly protected.
           </p>
         </div>
-        <a href="/documents" class="button" style="font-size: 13px; font-weight: 600;">
-          Open Document Archive &rarr;
+
+        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
+          <div style="width: 28px; height: 28px; border-radius: 2px; background: var(--saffron); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 12px; font-size: 12px;">
+            2
+          </div>
+          <h3 style="font-size: 15.5px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Volunteer Verifies</h3>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
+            A local ward coordinator performs a physical ground check to confirm the problem and location.
+          </p>
+        </div>
+
+        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
+          <div style="width: 28px; height: 28px; border-radius: 2px; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 12px; font-size: 12px;">
+            3
+          </div>
+          <h3 style="font-size: 15.5px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Lawful Submission</h3>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
+            Escalation to PWD, MCD, or Delhi Jal Board with tracked complaint IDs and response logs.
+          </p>
+        </div>
+
+        <div class="card" style="background: var(--paper-card); padding: 22px; border-radius: 4px; border: 1px solid var(--line);">
+          <div style="width: 28px; height: 28px; border-radius: 2px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); margin-bottom: 12px; font-size: 12px;">
+            4
+          </div>
+          <h3 style="font-size: 15.5px; font-weight: 700; margin: 0 0 6px; font-family: var(--font-serif);">Manifesto Commitment</h3>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
+            Unresolved civic neglect is codified into our binding constituency priorities.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 6: FORMATION PROGRESS (LIVE PERCENTAGE)
+       ========================================================================= -->
+  <section class="section band-soft" style="padding-top: 48px; padding-bottom: 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div class="container" style="max-width: 1080px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+            Statutory Milestone Audit
+          </div>
+          <h2 style="font-size: 24px; font-weight: 700; font-family: var(--font-serif); margin: 4px 0 0;">
+            Formation Progress: {progressData.percentage}%
+          </h2>
+          <p style="font-size: 13.5px; color: var(--muted); margin: 4px 0 0;">
+            Weighted calculation across Phase 1 foundation, membership, organisation, and compliance milestones.
+          </p>
+        </div>
+        <a href="/formation-progress" class="button" style="font-size: 13px; font-weight: 600;">
+          Inspect 9-Stage Roadmap &rarr;
         </a>
+      </div>
+
+      <div style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 22px; box-shadow: var(--shadow);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 12.5px;">
+          <span style="font-weight: 600; color: var(--ink);">
+            Phase 1 Completion ({progressData.completedCount} of {progressData.totalMilestones} Milestones Completed)
+          </span>
+          <span style="font-family: var(--font-mono); font-weight: 800; color: var(--saffron);">
+            {progressData.percentage}%
+          </span>
+        </div>
+        <div style="width: 100%; height: 8px; background: var(--paper-subtle); border-radius: 4px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 18px;">
+          <div style={`width: ${progressData.percentage}%; height: 100%; background: var(--saffron); border-radius: 3px;`} />
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+          {progressData.milestones.slice(0, 3).map((m) => (
+            <div style="background: var(--paper-subtle); border: 1px solid var(--line); border-radius: 3px; padding: 12px 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 11px; font-weight: 700; font-family: var(--font-mono); color: var(--muted); text-transform: uppercase;">
+                  {m.category}
+                </span>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    color: m.status === "COMPLETED" ? "var(--green)" : m.status === "IN_PROGRESS" ? "var(--saffron)" : "var(--muted)",
+                  }}
+                >
+                  {m.status === "COMPLETED" ? "Completed" : m.status === "IN_PROGRESS" ? "In Progress" : "Upcoming"}
+                </span>
+              </div>
+              <strong style="font-size: 13.5px; color: var(--ink); display: block;">{m.title}</strong>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 7: WHAT ARE WE BUILDING? (PUBLIC OUTCOMES)
+       ========================================================================= -->
+  <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
+    <div class="container" style="max-width: 1080px;">
+      <div class="section-head" style="margin-bottom: 32px;">
+        <div class="mini-label">Substantive Goals</div>
+        <h2 style="font-size: 26px; font-weight: 700; font-family: var(--font-serif);">
+          What are we building?
+        </h2>
+        <p style="max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 14.5px;">
+          A focus on tangible civic outcomes that protect ordinary families and uphold human dignity.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        {FOUNDER_DATA.publicOutcomes.map((item) => (
+          <div class="card" style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 20px; box-shadow: var(--shadow);">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <CheckCircle2 size={16} style={{ color: "var(--green)", flexShrink: 0 }} />
+              <h3 style="font-size: 15px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
+                {item.title}
+              </h3>
+            </div>
+            <p style="font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 0;">
+              {item.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 8: EXPLORE (CIVIC ISSUES, CRIME, TOPIC TRACKER)
+       ========================================================================= -->
+  <section class="section band-soft" id="explore" style="padding-top: 48px; padding-bottom: 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div class="container" style="max-width: 1080px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div class="mini-label" style="background: rgba(22, 53, 92, 0.08); color: var(--blue);">
+            Civic Explorer
+          </div>
+          <h2 style="font-size: 24px; font-weight: 700; font-family: var(--font-serif); margin: 4px 0 0;">
+            Explore Public Evidence
+          </h2>
+          <p style="font-size: 14px; color: var(--muted); margin: 4px 0 0;">
+            Documented civic issues, verified crime citations, and news topic monitors across Delhi NCR.
+          </p>
+        </div>
+        <a href="/explore" class="button" style="font-size: 13px; font-weight: 600;">
+          Open Complete Explorer &rarr;
+        </a>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px;">
+        
+        <div class="card" style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 22px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <ShieldAlert size={18} style={{ color: "var(--red)" }} />
+            <h3 style="font-size: 16px; font-weight: 700; margin: 0; font-family: var(--font-serif);">
+              Verified Crime Tracker
+            </h3>
+          </div>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 14px;">
+            Every documented offense is verified against published news reports. No invented claims.
+          </p>
+          <a href="/crime" style="font-size: 13px; font-weight: 600; color: var(--red); text-decoration: none;">
+            Search Crime Records &rarr;
+          </a>
+        </div>
+
+        <div class="card" style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 22px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <AlertCircle size={18} style={{ color: "var(--saffron)" }} />
+            <h3 style="font-size: 16px; font-weight: 700; margin: 0; font-family: var(--font-serif);">
+              Civic Issues Registry
+            </h3>
+          </div>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 14px;">
+            Local problems filed by citizens across Delhi ACs with municipal complaint tracking.
+          </p>
+          <a href="/issues" style="font-size: 13px; font-weight: 600; color: var(--saffron); text-decoration: none;">
+            Browse Issues &rarr;
+          </a>
+        </div>
+
+        <div class="card" style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 22px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <TrendingUp size={18} style={{ color: "var(--blue)" }} />
+            <h3 style="font-size: 16px; font-weight: 700; margin: 0; font-family: var(--font-serif);">
+              Topic Tracker
+            </h3>
+          </div>
+          <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 14px;">
+            Air pollution, garbage, roads, water supply, and public services tracked with source provenance.
+          </p>
+          <a href="/explore#topics" style="font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none;">
+            View Topic Monitors &rarr;
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 9: BUILD WITH US
+       ========================================================================= -->
+  <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
+    <div class="container" style="max-width: 1080px;">
+      <div
+        class="card"
+        style="background: var(--paper-card); border: 1px solid var(--line-strong); border-radius: 4px; padding: clamp(24px, 4vw, 36px); box-shadow: var(--shadow-elevated);"
+      >
+        <div style="max-width: 700px; margin-bottom: 24px;">
+          <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+            Participate
+          </div>
+          <h2 style="font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; font-family: var(--font-serif); margin: 6px 0 12px; color: var(--ink);">
+            Don't just follow politics. Help build the organisation.
+          </h2>
+          <p style="font-size: 14.5px; color: var(--muted); line-height: 1.6; margin: 0;">
+            Contribute your skills: community organizing, research, legal review, technology, writing, visual design, video documentation, translation, and policy work.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="/build-with-us" class="button button-primary" style="padding: 12px 24px; font-size: 14px; font-weight: 600;">
+            Choose Your Skills & Work &rarr;
+          </a>
+          <a href="/volunteer" class="button" style="padding: 12px 20px; font-size: 14px;">
+            Volunteer in Your Area
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 10: TRANSPARENCY (CONSTITUTION, FINANCE, DOCUMENTS)
+       ========================================================================= -->
+  <section class="section band-soft" style="padding-top: 48px; padding-bottom: 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div class="container" style="max-width: 1080px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <div class="mini-label" style="background: rgba(29, 86, 53, 0.08); color: var(--green);">
+            Radical Transparency
+          </div>
+          <h2 style="font-size: 24px; font-weight: 700; font-family: var(--font-serif); margin: 4px 0 0;">
+            Public Charters & Financial Ledger
+          </h2>
+          <p style="font-size: 14px; color: var(--muted); margin: 4px 0 0;">
+            100% digital bank accounts, zero cash accepted, and SHA-256 verifiable legal documents.
+          </p>
+        </div>
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px;">
         <div class="card" style="padding: 22px; background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px;">
           <span style="font-size: 11px; font-weight: 700; color: var(--saffron); text-transform: uppercase; font-family: var(--font-mono);">GOVERNANCE</span>
-          <h4 style="font-size: 16px; font-weight: 700; margin: 8px 0 6px; font-family: var(--font-serif);">Draft Constitution of Nagrik Party</h4>
+          <h3 style="font-size: 16px; font-weight: 700; margin: 8px 0 6px; font-family: var(--font-serif);">Draft Constitution</h3>
           <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 14px;">
-            Inner-party democracy, non-violence pledge, allegiance to Constitution of India, and executive elections.
+            Inner-party democracy, non-violence pledge, and allegiance to the Constitution of India.
           </p>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="badge-citation">v1.0 • SHA-256</span>
-            <a href="/legal/constitution" style="font-size: 13px; font-weight: 600; color: var(--saffron); text-decoration: none;">Read &rarr;</a>
-          </div>
+          <a href="/legal/constitution" style="font-size: 13px; font-weight: 600; color: var(--saffron); text-decoration: none;">
+            Read Constitution &rarr;
+          </a>
         </div>
 
         <div class="card" style="padding: 22px; background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px;">
           <span style="font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; font-family: var(--font-mono);">FINANCE</span>
-          <h4 style="font-size: 16px; font-weight: 700; margin: 8px 0 6px; font-family: var(--font-serif);">Zero-Cash Transparency Framework</h4>
+          <h3 style="font-size: 16px; font-weight: 700; margin: 8px 0 6px; font-family: var(--font-serif);">Cashless Accounts Ledger</h3>
           <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 14px;">
-            100% digital bank accounts, zero cash accepted, public monthly contribution lists, and annual audit disclosure.
+            Published formation-stage financial receipts and expenditures with full source provenance.
           </p>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="badge-citation">Audited • Public</span>
-            <a href="/transparency" style="font-size: 13px; font-weight: 600; color: var(--green); text-decoration: none;">Inspect &rarr;</a>
-          </div>
+          <a href="/transparency" style="font-size: 13px; font-weight: 600; color: var(--green); text-decoration: none;">
+            Inspect Ledger &rarr;
+          </a>
         </div>
 
         <div class="card" style="padding: 22px; background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px;">
           <span style="font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; font-family: var(--font-mono);">STATUTORY</span>
-          <h4 style="font-size: 16px; font-weight: 700; margin: 8px 0 6px; font-family: var(--font-serif);">RPA 1951 Section 29A Dossier</h4>
+          <h3 style="font-size: 16px; font-weight: 700; margin: 8px 0 6px; font-family: var(--font-serif);">Section 29A Dossier Vault</h3>
           <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 14px;">
-            Continuous page-numbered submission framework preparing the official registration dossier for Nirvachan Sadan.
+            Continuous page-numbered regulatory dossier for submission to Nirvachan Sadan.
           </p>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="badge-citation">Stage 3 &rarr; 7</span>
-            <a href="/formation-progress" style="font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none;">Roadmap &rarr;</a>
-          </div>
+          <a href="/documents" style="font-size: 13px; font-weight: 600; color: var(--blue); text-decoration: none;">
+            Open Document Vault &rarr;
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 6: Delhi 70 AC Ground Coverage -->
-  <section class="section" id="coverage" style="padding-top: 48px; padding-bottom: 48px;">
-    <div class="container" style="max-width: 1080px;">
-      <div class="section-head">
-        <div class="mini-label">Constituency Network</div>
+  <!-- =========================================================================
+       SECTION 11: FORMATION ROADMAP
+       ========================================================================= -->
+  <section class="section" style="padding-top: 48px; padding-bottom: 48px;">
+    <div class="container" style="max-width: 900px;">
+      <div class="section-head" style="margin-bottom: 28px;">
+        <div class="mini-label">Roadmap</div>
         <h2 style="font-size: 26px; font-weight: 700; font-family: var(--font-serif);">
-          <Bilingual en="Delhi 70 Assembly Constituencies" hi="दिल्ली 70 विधानसभा क्षेत्र" />
+          The 9-Stage Formation Journey
         </h2>
-        <p style="max-width: 680px; margin: 0 auto; color: var(--muted); font-size: 14.5px;">
-          <Bilingual
-            en="Founding membership induction and civic issue tracking active across all 70 constituencies."
-            hi="सभी 70 विधानसभा क्षेत्रों में संस्थापक सदस्यता प्रेरण और नागरिक समस्या ट्रैकिंग जारी।"
-          />
+        <p style="max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 14.5px;">
+          Auditable progress toward registration under Section 29A RPA 1951.
         </p>
       </div>
 
-      <div class="map-strip" style="max-height: 240px; overflow-y: auto; padding: 12px; background: var(--paper-card); border: 1px solid var(--line-strong); border-radius: 4px;">
-        {delhiAreas.map((area) => (
-          <div class="area-chip" style="font-size: 12px; padding: 8px 12px;">
-            <strong>{area}</strong>
-            <span style="font-size: 10.5px; color: var(--muted); font-family: var(--font-mono);">Delhi AC</span>
+      <div style="display: grid; gap: 12px;">
+        {progressData.milestones.slice(0, 5).map((st) => (
+          <div
+            class="card"
+            style={{
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              padding: "16px 20px",
+              border: st.status === "IN_PROGRESS" ? "1.5px solid var(--saffron)" : "1px solid var(--line)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "12px",
+            }}
+          >
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "10.5px",
+                    fontWeight: 700,
+                    padding: "2px 6px",
+                    borderRadius: "2px",
+                    background: st.status === "COMPLETED" ? "rgba(29, 86, 53, 0.1)" : st.status === "IN_PROGRESS" ? "rgba(179, 74, 21, 0.1)" : "var(--paper-subtle)",
+                    color: st.status === "COMPLETED" ? "var(--green)" : st.status === "IN_PROGRESS" ? "var(--saffron)" : "var(--muted)",
+                  }}
+                >
+                  Stage {st.sort_order}
+                </span>
+                <span style="font-size: 11px; color: var(--muted); font-family: var(--font-mono); text-transform: uppercase;">
+                  {st.category}
+                </span>
+              </div>
+              <h3 style="font-size: 15px; font-weight: 700; margin: 0; color: var(--ink);">
+                {st.title}
+              </h3>
+            </div>
+
+            <div style="font-size: 12.5px; font-weight: 600; color: st.status === 'COMPLETED' ? 'var(--green)' : st.status === 'IN_PROGRESS' ? 'var(--saffron)' : 'var(--muted)';">
+              {st.status === "COMPLETED" ? "Completed" : st.status === "IN_PROGRESS" ? "Active Stage" : "Upcoming"}
+            </div>
           </div>
         ))}
       </div>
 
-      <div style="margin-top: 24px; text-align: center;">
-        <a href="/membership" class="button button-primary" style="padding: 10px 24px; font-size: 14px; font-weight: 600;">
-          Join Induction in Your Constituency &rarr;
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="/formation-progress" class="button" style="font-size: 13.5px; font-weight: 600;">
+          View Full 9-Stage Roadmap &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SECTION 12: FINAL CTA
+       ========================================================================= -->
+  <section class="section" style="padding-top: 40px; padding-bottom: 64px; background: var(--paper-card); border-top: 1px solid var(--line-strong);">
+    <div class="container" style="max-width: 800px; text-align: center;">
+      <div class="founding-progress-badge" style="margin-bottom: 12px;">
+        PHASE 1 · FORMATION PHASE
+      </div>
+      <h2 style="font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; font-family: var(--font-serif); margin: 0 0 14px; color: var(--ink);">
+        Join the founding network.
+      </h2>
+      <p style="font-size: 16px; color: var(--muted); line-height: 1.6; max-width: 580px; margin: 0 auto 24px;">
+        We are building Nagrik Party constituency by constituency. Whether as a registered founding voter member or as a volunteer contributor, help establish a transparent political foundation.
+      </p>
+
+      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+        <a href="/membership" class="button button-primary" style="padding: 13px 28px; font-size: 15px; font-weight: 600;">
+          Become a Founding Member &rarr;
+        </a>
+        <a href="/volunteer" class="button" style="padding: 13px 24px; font-size: 14.5px;">
+          Become a Volunteer
         </a>
       </div>
     </div>

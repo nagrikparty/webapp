@@ -1,204 +1,183 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
-import { CheckCircle2, Clock, ArrowRight, AlertCircle } from "lucide-react";
+import { getFormationProgress } from "@/lib/progress-service";
+import { AlertCircle } from "lucide-react";
 
-const stages = [
-  {
-    stage: 1,
-    titleEn: "Platform Architecture & Privacy Vault",
-    titleHi: "प्लेटफॉर्म आर्किटेक्चर और गोपनीयता वॉल्ट",
-    status: "COMPLETED",
-    descEn: "Built production-grade digital induction system, SHA-256 document hashing, zero-leak member card QR verification, and continuous regulatory export engine.",
-    descHi: "उत्पादन-स्तरीय डिजिटल प्रेरण प्रणाली, SHA-256 दस्तावेज़ हैशिंग और नियामक निर्यात इंजन तैयार किया गया।",
-  },
-  {
-    stage: 2,
-    titleEn: "Party Constitution & Democratic By-laws",
-    titleHi: "पार्टी संविधान और लोकतांत्रिक उपनियम",
-    status: "COMPLETED",
-    descEn: "Formulated democratic party constitution with mandatory periodic inner elections, non-violence pledge, and allegiance to the Constitution of India.",
-    descHi: "अनिवार्य आंतरिक चुनावों और भारतीय संविधान के प्रति निष्ठा के साथ पार्टी संविधान का प्रारूप तैयार किया गया।",
-  },
-  {
-    stage: 3,
-    titleEn: "Founding Member Induction (100+ Verified Voters)",
-    titleHi: "संस्थापक सदस्य प्रेरण (100+ सत्यापित मतदाता)",
-    status: "ACTIVE",
-    descEn: "Currently enrolling and verifying founding members with valid EPIC voter IDs across Delhi's 70 Assembly Constituencies. Individual affidavits and declarations collected.",
-    descHi: "वर्तमान में दिल्ली के 70 विधानसभा क्षेत्रों में वैध मतदाता पहचान पत्र के साथ संस्थापक सदस्यों का नामांकन और सत्यापन जारी है।",
-  },
-  {
-    stage: 4,
-    titleEn: "General Body Convention & Executive Election",
-    titleHi: "साधारण सभा सम्मेलन और कार्यकारी चुनाव",
-    status: "UPCOMING",
-    descEn: "Formal convention of all verified founding members to ratify party constitution and confirm office bearers including Party President Arsalan Azad.",
-    descHi: "पार्टी संविधान की पुष्टि और पार्टी अध्यक्ष अरसलान आज़ाद सहित पदाधिकारियों की पुष्टि के लिए औपचारिक सम्मेलन।",
-  },
-  {
-    stage: 5,
-    titleEn: "Cashless Formation Accounts & Audit",
-    titleHi: "कैशलेस गठन खाते और ऑडिट",
-    status: "ACTIVE",
-    descEn: "Maintenance of 100% digital bank accounts, audited voluntary contribution registers, and public transparency disclosures.",
-    descHi: "100% डिजिटल बैंक खातों का रखरखाव, ऑडिटेड स्वैच्छिक योगदान रजिस्टर और सार्वजनिक प्रकटीकरण।",
-  },
-  {
-    stage: 6,
-    titleEn: "Public Statutory Notice in Daily Newspapers",
-    titleHi: "दैनिक समाचार पत्रों में सार्वजनिक वैधानिक सूचना",
-    status: "UPCOMING",
-    descEn: "Publication of formal public notice in one national English daily and one national Hindi daily inviting public feedback as per ECI guidelines.",
-    descHi: "ईसीआई दिशानिर्देशों के अनुसार अंग्रेजी और हिंदी के प्रमुख दैनिक समाचार पत्रों में सार्वजनिक सूचना का प्रकाशन।",
-  },
-  {
-    stage: 7,
-    titleEn: "Section 29A Application Filing at Nirvachan Sadan",
-    titleHi: "निर्वाचन सदन में धारा 29A आवेदन दाखिल करना",
-    status: "UPCOMING",
-    descEn: "Physical submission of compiled, continuous page-numbered dossier (1..N) to the Election Commission of India within statutory time limits.",
-    descHi: "निर्धारित समय सीमा के भीतर भारत के चुनाव आयोग को निरंतर पृष्ठ-संख्यांकित डोजियर प्रस्तुत करना।",
-  },
-  {
-    stage: 8,
-    titleEn: "ECI Scrutiny & Regulatory Due Diligence",
-    titleHi: "ईसीआई जांच और नियामक समीक्षा",
-    status: "UPCOMING",
-    descEn: "Clarification rounds, document verification, and compliance scrutiny by the Election Commission of India Secretariat.",
-    descHi: "भारत के चुनाव आयोग सचिवालय द्वारा दस्तावेज सत्यापन और अनुपालन जांच।",
-  },
-  {
-    stage: 9,
-    titleEn: "Gazette Notification & Registered Party Status",
-    titleHi: "राजपत्र अधिसूचना और पंजीकृत पार्टी का दर्जा",
-    status: "UPCOMING",
-    descEn: "Official notification of party registration under Section 29A of the Representation of the People Act, 1951.",
-    descHi: "लोक प्रतिनिधित्व अधिनियम, 1951 की धारा 29A के तहत पार्टी पंजीकरण की आधिकारिक अधिसूचना।",
-  },
-];
+export const prerender = false;
+
+const progress = await getFormationProgress();
 ---
 
 <BaseLayout
-  title="Formation Progress & Roadmap - Nagrik Party"
-  description="Transparent 9-stage roadmap towards formal political party registration under RPA 1951"
+  title="Formation Progress & Roadmap | Nagrik Party"
+  description="A transparent, step-by-step account of our legal and organisational journey toward registration under Section 29A RPA 1951."
 >
   <section class="page-hero">
-    <div class="container">
-      <div class="mini-label" style="background: rgba(245, 130, 32, 0.1); color: var(--saffron);">
-        Phase 1 • Formation Milestone Tracker
+    <div class="container" style="max-width: 960px;">
+      <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+        PHASE 1 · FORMATION PHASE
       </div>
-      <h1>
-        <Bilingual en="Formation Roadmap" hi="गठन कार्ययोजना" />
+      <h1 style="font-size: clamp(2.2rem, 4vw, 3.2rem); margin: 8px 0 12px; font-family: var(--font-serif);">
+        Formation Progress & Roadmap
       </h1>
-      <p class="page-copy">
-        <Bilingual
-          en="A transparent, step-by-step account of our legal and organisational journey toward registration under Section 29A of the Representation of the People Act, 1951."
-          hi="लोक प्रतिनिधित्व अधिनियम, 1951 की धारा 29A के तहत पंजीकरण की हमारी कानूनी और संगठनात्मक यात्रा का पारदर्शी विवरण।"
-        />
+      <p style="font-size: 16px; color: var(--ink-body); max-width: 700px; margin: 0; line-height: 1.6;">
+        A transparent account of our organizational and statutory milestones toward registration under Section 29A of the Representation of the People Act, 1951.
       </p>
     </div>
   </section>
 
-  <section class="section" style="padding-top: 24px;">
-    <div class="container" style="max-width: 900px;">
+  <section class="section" style="padding-top: 32px; padding-bottom: 60px;">
+    <div class="container" style="max-width: 960px;">
       
-      <!-- Statutory Transparency Alert -->
-      <div class="card" style="background: var(--paper-card); border: 1px solid var(--line-strong); border-left: 3px solid var(--saffron); padding: 18px 22px; border-radius: 3px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow);">
+      <!-- Strict Statutory Disclosure -->
+      <div
+        class="card"
+        style="background: var(--paper-card); border: 1px solid var(--line-strong); border-left: 3px solid var(--saffron); padding: 18px 22px; border-radius: 4px; margin-bottom: 28px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow);"
+      >
         <AlertCircle size={20} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
         <div>
-          <strong style="font-size: 14.5px; color: var(--ink); font-family: var(--font-serif);">Strict Statutory Disclosure</strong>
+          <strong style="font-size: 14.5px; color: var(--ink); font-family: var(--font-serif);">Statutory Disclosure</strong>
           <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.55;">
-            Nagrik Party is currently in <strong>Stage 3 of Phase 1 (Formation Phase)</strong>. We do not claim registered-party status, official government recognition, or an allotted election symbol until final Gazette notification by the Election Commission of India.
+            Nagrik Party is in <strong>Phase 1, Formation Phase</strong>. We do not claim registered-party status, official recognition, or an allotted election symbol until final Gazette notification by the Election Commission of India under Section 29A RPA 1951.
           </p>
         </div>
       </div>
 
-      <!-- Roadmap Timeline -->
+      <!-- Weighted Progress Summary Card -->
+      <div
+        class="card"
+        style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 24px 28px; box-shadow: var(--shadow); margin-bottom: 32px;"
+      >
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: var(--muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;">
+              OVERALL FORMATION PROGRESS
+            </div>
+            <div style="font-size: 28px; font-weight: 800; font-family: var(--font-mono); color: var(--saffron); line-height: 1.1; margin-top: 2px;">
+              {progress.percentage}%
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 13px; font-weight: 600; color: var(--ink);">
+              {progress.completedCount} Completed · {progress.inProgressCount} In Progress · {progress.totalMilestones - progress.completedCount - progress.inProgressCount} Upcoming
+            </div>
+            <small style="color: var(--muted); font-size: 11.5px;">
+              {progress.isOverride ? "Audited progress override active" : "Computed from weighted statutory milestones"}
+            </small>
+          </div>
+        </div>
+
+        <div style="width: 100%; height: 10px; background: var(--paper-subtle); border-radius: 5px; overflow: hidden; border: 1px solid var(--line);">
+          <div style={`width: ${progress.percentage}%; height: 100%; background: linear-gradient(90deg, var(--saffron), #d4631f); border-radius: 4px;`} />
+        </div>
+      </div>
+
+      <!-- Milestone Timeline List -->
       <div style="display: grid; gap: 16px;">
-        {stages.map((st) => (
+        {progress.milestones.map((st) => (
           <div
             class="card"
             style={{
               background: "var(--paper-card)",
               borderRadius: "4px",
-              padding: "20px 24px",
-              border: st.status === "ACTIVE" ? `1.5px solid var(--saffron)` : "1px solid var(--line)",
+              padding: "22px 24px",
+              border: st.status === "IN_PROGRESS" ? "1.5px solid var(--saffron)" : "1px solid var(--line)",
               boxShadow: "var(--shadow)",
-              position: "relative",
             }}
           >
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <span
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: "26px",
-                    height: "26px",
+                    width: "28px",
+                    height: "28px",
                     borderRadius: "2px",
                     fontSize: "12px",
                     fontWeight: 700,
                     fontFamily: "var(--font-mono)",
-                    background:
-                      st.status === "COMPLETED"
-                        ? "rgba(29, 86, 53, 0.1)"
-                        : st.status === "ACTIVE"
-                        ? "rgba(179, 74, 21, 0.15)"
-                        : "var(--paper-subtle)",
-                    color:
-                      st.status === "COMPLETED"
-                        ? "var(--green)"
-                        : st.status === "ACTIVE"
-                        ? "var(--saffron)"
-                        : "var(--muted)",
+                    background: st.status === "COMPLETED" ? "rgba(29, 86, 53, 0.1)" : st.status === "IN_PROGRESS" ? "rgba(179, 74, 21, 0.1)" : "var(--paper-subtle)",
+                    color: st.status === "COMPLETED" ? "var(--green)" : st.status === "IN_PROGRESS" ? "var(--saffron)" : "var(--muted)",
                     border: "1px solid var(--line)",
                   }}
                 >
-                  {st.stage}
+                  {st.sort_order}
                 </span>
 
-                <h3 style="font-size: 16.5px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
-                  <Bilingual en={st.titleEn} hi={st.titleHi} />
-                </h3>
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 11px; font-weight: 700; color: var(--muted); font-family: var(--font-mono); text-transform: uppercase;">
+                      {st.category}
+                    </span>
+                    <span style="font-size: 11px; color: var(--ink-faint); font-family: var(--font-mono);">
+                      · Weight: {st.weight}x
+                    </span>
+                  </div>
+                  <h3 style="font-size: 17px; font-weight: 700; margin: 2px 0 0; font-family: var(--font-serif); color: var(--ink);">
+                    {st.title}
+                  </h3>
+                </div>
               </div>
 
-              <div>
-                {st.status === "COMPLETED" && (
-                  <span class="badge-verified" style={{ fontSize: "11px" }}>
-                    <CheckCircle2 size={12} /> Completed
-                  </span>
-                )}
-                {st.status === "ACTIVE" && (
-                  <span class="badge-citation" style={{ background: "rgba(179, 74, 21, 0.1)", color: "var(--saffron)", borderColor: "rgba(179, 74, 21, 0.3)" }}>
-                    <Clock size={12} /> Current Stage
-                  </span>
-                )}
-                {st.status === "UPCOMING" && (
-                  <span class="badge-citation" style={{ color: "var(--muted)" }}>
-                    Upcoming
-                  </span>
-                )}
-              </div>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11.5px",
+                  fontWeight: 700,
+                  padding: "3px 8px",
+                  borderRadius: "2px",
+                  textTransform: "uppercase",
+                  background: st.status === "COMPLETED" ? "rgba(29, 86, 53, 0.08)" : st.status === "IN_PROGRESS" ? "rgba(179, 74, 21, 0.08)" : "var(--paper-subtle)",
+                  color: st.status === "COMPLETED" ? "var(--green)" : st.status === "IN_PROGRESS" ? "var(--saffron)" : "var(--muted)",
+                  border: "1px solid var(--line)",
+                }}
+              >
+                {st.status === "COMPLETED" ? "Completed" : st.status === "IN_PROGRESS" ? "In Progress" : "Upcoming"}
+              </span>
             </div>
 
-            <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0;">
-              <Bilingual en={st.descEn} hi={st.descHi} />
+            <p style="font-size: 13.5px; color: var(--ink-body); line-height: 1.55; margin: 10px 0 12px; max-width: 760px;">
+              {st.description}
             </p>
 
-            {st.status === "ACTIVE" && (
-              <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <span style="font-size: 13px; font-weight: 600; color: var(--ink);">
-                  Help Delhi cross the founding threshold:
-                </span>
-                <a href="/member/induction" class="button primary" style="font-size: 13px; min-height: 38px; padding: 0 16px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px;">
-                  Complete Member Induction <ArrowRight size={14} />
+            {st.public_note && (
+              <div style="font-size: 12.5px; color: var(--muted); background: var(--paper-subtle); padding: 8px 12px; border-radius: 2px; border-left: 2px solid var(--line-strong); margin-bottom: 10px;">
+                <strong>Public Note:</strong> {st.public_note}
+              </div>
+            )}
+
+            {st.evidence_url && (
+              <div style="display: flex; justify-content: flex-end;">
+                <a
+                  href={st.evidence_url}
+                  style="font-size: 12px; font-weight: 600; color: var(--saffron); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;"
+                >
+                  View Evidence / Charters &rarr;
                 </a>
               </div>
             )}
           </div>
         ))}
+      </div>
+
+      <!-- Action Footer -->
+      <div style="text-align: center; margin-top: 40px; padding: 32px; background: var(--paper-card); border: 1px solid var(--line-strong); border-radius: 4px;">
+        <h3 style="font-size: 18px; font-weight: 700; font-family: var(--font-serif); margin: 0 0 8px;">
+          Participate in Reaching the Next Milestone
+        </h3>
+        <p style="font-size: 14px; color: var(--muted); max-width: 520px; margin: 0 auto 20px;">
+          Founding member verification and constituency meetings are currently underway.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <a href="/membership" class="button button-primary">
+            Join as Founding Member &rarr;
+          </a>
+          <a href="/build-with-us" class="button">
+            Build With Us
+          </a>
+        </div>
       </div>
 
     </div>

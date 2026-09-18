@@ -19,9 +19,37 @@ export function AdminSettingsView() {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  const [runningPipeline, setRunningPipeline] = useState(false);
+  const [pipelineMsg, setPipelineMsg] = useState("");
+
   useEffect(() => {
     loadSettings();
   }, []);
+
+  async function triggerTopicPipeline() {
+    if (!supabase) return;
+    setRunningPipeline(true);
+    setPipelineMsg("");
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const res = await fetch("/api/v1/admin/run-topic-pipeline", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPipelineMsg("Topic data pipeline ran successfully. Aggregates updated.");
+      } else {
+        setPipelineMsg(`Pipeline error: ${data.error || "Failed"}`);
+      }
+    } catch (err: unknown) {
+      setPipelineMsg(err instanceof Error ? err.message : "Pipeline execution failed");
+    } finally {
+      setRunningPipeline(false);
+      setTimeout(() => setPipelineMsg(""), 5000);
+    }
+  }
 
   async function loadSettings() {
     if (!supabase) { setLoading(false); return; }
@@ -42,7 +70,12 @@ export function AdminSettingsView() {
         // Show default formation-phase settings
         setSettings([
           { key: "organization_phase", value: "formation", description: "Current organizational phase (formation | registered_party)" },
+          { key: "public_progress_override", value: "", description: "Auditable public formation progress percentage override (leave empty for weighted calculation)" },
+          { key: "public_founder_image", value: "/assets/leader.png", description: "Founder photograph path or public URL" },
+          { key: "hero_headline", value: "A political party is being built.", description: "Homepage primary hero title" },
           { key: "registration_open", value: "true", description: "Whether new membership applications are accepted" },
+          { key: "donations_enabled", value: "false", description: "Enable or disable public donation / UPI acceptance widget" },
+          { key: "donation_upi_id", value: "", description: "Admin-configured UPI ID for formation support" },
           { key: "ocr_provider", value: "gemini-flash", description: "OCR/Document extraction provider" },
           { key: "max_upload_size_mb", value: "5", description: "Maximum document upload size in megabytes" },
           { key: "card_auto_issue", value: "false", description: "Automatically issue membership cards upon approval" },
@@ -149,10 +182,51 @@ export function AdminSettingsView() {
         </p>
       </div>
 
+      {/* Topic Data Pipeline Card */}
+      <div
+        className="card"
+        style={{
+          padding: "20px 24px",
+          backgroundColor: "var(--paper-card)",
+          borderRadius: "4px",
+          border: "1px solid var(--line)",
+          boxShadow: "var(--shadow)",
+          marginBottom: "24px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "16px",
+        }}
+      >
+        <div>
+          <h4 style={{ fontSize: "15px", fontWeight: 700, margin: "0 0 4px", fontFamily: "var(--font-serif)", color: "var(--ink)" }}>
+            Civic Topic Data Pipeline
+          </h4>
+          <p style={{ fontSize: "12.5px", color: "var(--muted)", margin: 0 }}>
+            Run the aggregation job manually to recalculate indexed mentions and source counts from stored records.
+          </p>
+          {pipelineMsg && (
+            <div style={{ marginTop: "8px", fontSize: "12px", color: pipelineMsg.includes("error") ? "var(--red)" : "var(--green)", fontWeight: 600 }}>
+              {pipelineMsg}
+            </div>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={triggerTopicPipeline}
+          disabled={runningPipeline}
+          className="button primary"
+          style={{ padding: "8px 18px", fontSize: "12.5px", fontWeight: 700 }}
+        >
+          {runningPipeline ? "Running Pipeline..." : "Run Topic Pipeline Now"}
+        </button>
+      </div>
+
       {/* Settings Grid */}
       <h3 style={{ fontSize: "16px", fontWeight: 700, marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-serif)" }}>
         <Settings size={18} />
-        System Configuration / प्रणाली विन्यास
+        System Configuration
       </h3>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>

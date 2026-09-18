@@ -1,44 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, ChevronRight, Shield } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import { publicNavLinks, memberNavLinks } from "@/lib/navigation";
 
 export function SmartIsland() {
-  const [lang, setLang] = useState<"en" | "hi">("en");
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [userRole, setUserRole] = useState<string>("PUBLIC");
 
   useEffect(() => {
-    if (supabase) {
-      supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
-      const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => {
-        setUser(session?.user ?? null);
-      });
-      return () => {
-        authListener.subscription.unsubscribe();
-      };
+    if (!supabase) return;
+
+    supabase.auth.getSession().then(({ data }) => {
+      const sessionUser = data.session?.user ?? null;
+      setUser(sessionUser);
+      if (sessionUser) {
+        fetchUserRole(sessionUser.id);
+      }
+    });
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_, session) => {
+      const sessionUser = session?.user ?? null;
+      setUser(sessionUser);
+      if (sessionUser) {
+        fetchUserRole(sessionUser.id);
+      } else {
+        setUserRole("PUBLIC");
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  async function fetchUserRole(userId: string) {
+    if (!supabase) return;
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .maybeSingle();
+      if (data?.role) {
+        setUserRole(data.role);
+      }
+    } catch {
+      // Keep default
     }
-  }, []);
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("nagrik-lang");
-    const next = saved === "hi" ? "hi" : "en";
-    setLang(next);
-    document.documentElement.dataset.lang = next;
-  }, []);
+  }
 
   useEffect(() => {
     document.body.classList.toggle("nav-open", open);
     return () => document.body.classList.remove("nav-open");
   }, [open]);
-
-  function toggleLang() {
-    const next = lang === "en" ? "hi" : "en";
-    setLang(next);
-    document.documentElement.dataset.lang = next;
-    window.localStorage.setItem("nagrik-lang", next);
-  }
 
   async function handleLogout() {
     if (supabase) {
@@ -47,102 +63,26 @@ export function SmartIsland() {
     }
   }
 
+  const navLinks = user ? memberNavLinks : publicNavLinks;
+  const isAdminOrStaff = userRole === "ADMIN" || userRole === "SUPER_ADMIN" || userRole === "VERIFIER";
+
   return (
     <>
       <nav className="nav-links" aria-label="Primary navigation">
-        <div className="island-dropdown-container">
-          <a href="/crime" className="island-nav-link">
-            <span className="lang-en">Our Work</span>
-            <span className="lang-hi">हमारा काम</span>
-            <ChevronDown size={14} />
+        {navLinks.map((item) => (
+          <a key={item.href} href={item.href} className="island-nav-link">
+            <span>{item.label}</span>
           </a>
-          <div className="island-dropdown-menu">
-            <a href="/crime">
-              <span className="lang-en">Verified Crime Tracker</span>
-              <span className="lang-hi">सत्यापित अपराध ट्रैकर</span>
-            </a>
-            <a href="/issues">
-              <span className="lang-en">Civic Issues & Grievances</span>
-              <span className="lang-hi">नागरिक समस्याएं व शिकायतें</span>
-            </a>
-            <a href="/manifesto">
-              <span className="lang-en">Living Manifesto Priorities</span>
-              <span className="lang-hi">घोषणापत्र प्राथमिकताएं</span>
-            </a>
-            <a href="/#coverage">
-              <span className="lang-en">Delhi 70 AC Ground Coverage</span>
-              <span className="lang-hi">दिल्ली 70 विधानसभा कवरेज</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="island-dropdown-container">
-          <a href="/documents" className="island-nav-link">
-            <span className="lang-en">Documents</span>
-            <span className="lang-hi">दस्तावेज़</span>
-            <ChevronDown size={14} />
-          </a>
-          <div className="island-dropdown-menu">
-            <a href="/documents">
-              <span className="lang-en">Public Document Library</span>
-              <span className="lang-hi">सार्वजनिक दस्तावेज़ लाइब्रेरी</span>
-            </a>
-            <a href="/legal/constitution">
-              <span className="lang-en">Draft Constitution</span>
-              <span className="lang-hi">संविधान मसौदा</span>
-            </a>
-            <a href="/legal/ethics">
-              <span className="lang-en">Code of Ethics & Conduct</span>
-              <span className="lang-hi">आचार संहिता व आचरण</span>
-            </a>
-            <a href="/legal/digital-governance">
-              <span className="lang-en">Digital Governance & Privacy</span>
-              <span className="lang-hi">डिजिटल शासन व गोपनीयता</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="island-dropdown-container">
-          <a href="/formation-progress" className="island-nav-link">
-            <span className="lang-en">Formation</span>
-            <span className="lang-hi">गठन</span>
-            <ChevronDown size={14} />
-          </a>
-          <div className="island-dropdown-menu">
-            <a href="/formation-progress">
-              <span className="lang-en">9-Stage Roadmap (Stage 3 Active)</span>
-              <span className="lang-hi">9-चरणीय रोडमैप (चरण 3 सक्रिय)</span>
-            </a>
-            <a href="/transparency">
-              <span className="lang-en">Financial Transparency Ledger</span>
-              <span className="lang-hi">वित्तीय पारदर्शिता लेजर</span>
-            </a>
-            <a href="/about">
-              <span className="lang-en">About Nagrik Party</span>
-              <span className="lang-hi">नागरिक पार्टी परिचय</span>
-            </a>
-            <a href="/president">
-              <span className="lang-en">Party Leadership</span>
-              <span className="lang-hi">पार्टी नेतृत्व</span>
-            </a>
-          </div>
-        </div>
-
-        <a href="/membership" className="island-nav-link">
-          <span className="lang-en">Join Induction</span>
-          <span className="lang-hi">सदस्यता लें</span>
-        </a>
+        ))}
 
         <div className="island-action-buttons">
-          <a href="/crime" className="button yellow island-action-btn" style={{ fontWeight: 700 }}>
-            <span className="lang-en">Crime Tracker</span>
-            <span className="lang-hi">अपराध ट्रैकर</span>
-          </a>
-
-          {!user && (
-            <a href="/membership" className="button red island-action-btn">
-              <span className="lang-en">Become Member</span>
-              <span className="lang-hi">सदस्य बनें</span>
+          {!user ? (
+            <a href="/membership" className="button button-primary island-action-btn" style={{ fontWeight: 600 }}>
+              Become a Member
+            </a>
+          ) : (
+            <a href="/member" className="button yellow island-action-btn" style={{ fontWeight: 600 }}>
+              Member Portal
             </a>
           )}
         </div>
@@ -150,56 +90,154 @@ export function SmartIsland() {
 
       <div className="nav-actions">
         {!user ? (
-          <a href="/login" className="icon-button island-icon-btn" aria-label="Sign In" title="Log In / Member Portal">
+          <a
+            href="/login"
+            className="icon-button island-icon-btn"
+            aria-label="Sign In"
+            title="Sign In / Member Access"
+          >
             <User size={18} />
           </a>
         ) : (
-          <>
-            <div data-testid="user-profile-menu" className="island-dropdown-container">
-              <button className="icon-button island-user-btn" aria-label="Account Menu" type="button">
-                <User size={18} />
-              </button>
-              <div className="island-dropdown-menu island-user-menu">
-                <a href="/member">
-                  <span className="lang-en">Member Portal</span>
-                  <span className="lang-hi">सदस्य पोर्टल</span>
+          <div data-testid="user-profile-menu" className="island-dropdown-container">
+            <button
+              className="icon-button island-user-btn"
+              aria-label="Account Menu"
+              type="button"
+            >
+              <User size={18} />
+            </button>
+            <div className="island-dropdown-menu island-user-menu">
+              <a href="/member">Member Portal</a>
+              <a href="/member/induction">Digital Induction</a>
+              <a href="/member/membership-card">Membership Card</a>
+              {isAdminOrStaff && (
+                <a href="/admin" style={{ color: "var(--saffron)", fontWeight: 600 }}>
+                  <Shield size={14} style={{ marginRight: 6 }} />
+                  Admin Console
                 </a>
-                <a href="/member/induction">
-                  <span className="lang-en">Digital Induction</span>
-                  <span className="lang-hi">डिजिटल प्रेरण</span>
-                </a>
-                <a href="/member/membership-card">
-                  <span className="lang-en">Membership Card</span>
-                  <span className="lang-hi">सदस्यता कार्ड</span>
-                </a>
-                <a href="/admin">
-                  <span className="lang-en">Admin Console</span>
-                  <span className="lang-hi">प्रशासन कंसोल</span>
-                </a>
-                <a data-testid="logout-button" href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }}>
-                  <LogOut size={14} className="island-logout-icon" />
-                  <span className="lang-en">Sign Out</span>
-                  <span className="lang-hi">साइन आउट</span>
-                </a>
-              </div>
+              )}
+              <a
+                data-testid="logout-button"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
+              >
+                <LogOut size={14} className="island-logout-icon" />
+                Sign Out
+              </a>
             </div>
-          </>
+          </div>
         )}
 
-        <button className="language-toggle" onClick={toggleLang} type="button" aria-label="Switch language">
-          <span className="lang-toggle-text">{lang === "en" ? "अ" : "A"}</span>
-          <span>{lang === "en" ? "हिन्दी" : "English"}</span>
-        </button>
-        
         <button
           className="icon-button mobile-menu"
           onClick={() => setOpen((value) => !value)}
           type="button"
-          aria-label="Open navigation"
+          aria-label="Open mobile navigation"
         >
-          {open ? <X size={19} /> : <Menu size={19} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
+
+      {/* Mobile Drawer Navigation */}
+      {open && (
+        <div className="mobile-drawer-overlay" onClick={() => setOpen(false)}>
+          <div className="mobile-drawer-sheet" onClick={(e) => e.stopPropagation()}>
+            <div className="mobile-drawer-header">
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <strong style={{ fontSize: 16, fontFamily: "var(--font-serif)" }}>Nagrik Party</strong>
+                <small style={{ color: "var(--saffron)", fontWeight: 600, fontFamily: "var(--font-mono)", fontSize: 11 }}>
+                  PHASE 1 · FORMATION PHASE
+                </small>
+              </div>
+              <button
+                className="icon-button"
+                onClick={() => setOpen(false)}
+                type="button"
+                aria-label="Close navigation"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="mobile-drawer-body">
+              <div className="mobile-drawer-links">
+                {navLinks.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="mobile-drawer-link"
+                    onClick={() => setOpen(false)}
+                  >
+                    <span>{item.label}</span>
+                    <ChevronRight size={16} style={{ color: "var(--muted)" }} />
+                  </a>
+                ))}
+
+                {/* Additional Explore links on mobile */}
+                <div style={{ height: 1, background: "var(--line)", margin: "8px 0" }} />
+
+                <a href="/crime" className="mobile-drawer-link" onClick={() => setOpen(false)}>
+                  <span>Verified Crime Tracker</span>
+                  <ChevronRight size={16} style={{ color: "var(--muted)" }} />
+                </a>
+                <a href="/volunteer" className="mobile-drawer-link" onClick={() => setOpen(false)}>
+                  <span>Become a Volunteer</span>
+                  <ChevronRight size={16} style={{ color: "var(--muted)" }} />
+                </a>
+              </div>
+
+              <div className="mobile-drawer-footer">
+                {!user ? (
+                  <div style={{ display: "grid", gap: 10 }}>
+                    <a
+                      href="/membership"
+                      className="button button-primary"
+                      style={{ width: "100%", justifyContent: "center", padding: "12px" }}
+                      onClick={() => setOpen(false)}
+                    >
+                      Join Nagrik Party
+                    </a>
+                    <a
+                      href="/login"
+                      className="button"
+                      style={{ width: "100%", justifyContent: "center", padding: "10px" }}
+                      onClick={() => setOpen(false)}
+                    >
+                      Sign In
+                    </a>
+                  </div>
+                ) : (
+                  <div style={{ display: "grid", gap: 10 }}>
+                    <a
+                      href="/member"
+                      className="button yellow"
+                      style={{ width: "100%", justifyContent: "center", padding: "12px" }}
+                      onClick={() => setOpen(false)}
+                    >
+                      My Nagrik Dashboard
+                    </a>
+                    <button
+                      type="button"
+                      className="button"
+                      style={{ width: "100%", justifyContent: "center" }}
+                      onClick={() => {
+                        setOpen(false);
+                        handleLogout();
+                      }}
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

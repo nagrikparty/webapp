@@ -12,11 +12,11 @@ These rules apply to all AI-assisted work in this repository.
   - For parenthetical context: use actual parentheses `(Formation Phase)`
 - Do not use semicolons to join clauses. Use two sentences.
 
-### Tone
-- Direct, factual, first-person plural ("we", "our").
-- Write like a real party's internal operations manual, not a marketing site.
-- Short sentences. No filler words.
-- Hindi text should be natural Hindustani, not formal textbook Hindi or machine-translated.
+### Language System
+- The public product UI uses ONE consistent language: **Plain Indian English**.
+- Direct, simple English, short sentences, familiar Indian conversational vocabulary. Avoid bureaucratic and legalistic wording in public UI.
+- Legal documents (constitutional text, statutory declarations, formal filings) remain formal and accurate as source documents, accompanied by plain-English summaries.
+- Hindi text, when used in source charters or formal statutory documents, should be natural Hindustani, not formal textbook Hindi or machine-translated.
 
 ### Banned AI Patterns
 Never use any of these words/phrases in user-facing text:

@@ -1,35 +1,32 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { MemberProfileView } from "@/components/MemberProfileView";
 ---
 
 <BaseLayout
-  title="Member Portal - Nagrik Party"
-  description="Nagrik Party Formation Phase Member Portal."
+  title="Member Portal | Nagrik Party"
+  description="Nagrik Party Formation Phase Member Portal and participation records."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
-    <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+    <div class="container" style="max-width: 880px;">
+      <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
         <a href="/member" class="mini-label" style="background: var(--ink); color: #fff;">Overview</a>
         <a href="/member/induction" class="mini-label">Digital Induction</a>
         <a href="/member/membership-card" class="mini-label">Membership Card</a>
         <a href="/member/documents" class="mini-label">Document Vault</a>
+        <a href="/build-with-us" class="mini-label">Build With Us</a>
       </div>
-      <h1>
-        <Bilingual en="Member Portal" hi="सदस्य पोर्टल" />
+      <h1 style="font-size: clamp(2rem, 3.8vw, 2.8rem); font-family: var(--font-serif); margin: 4px 0 8px;">
+        Member Portal
       </h1>
-      <p class="page-copy">
-        <Bilingual
-          en="Phase 1, Formation Phase membership administration, verification, and digital record vault."
-          hi="चरण 1, गठन चरण सदस्यता प्रशासन, सत्यापन और डिजिटल रिकॉर्ड वॉल्ट।"
-        />
+      <p style="font-size: 15px; color: var(--muted); margin: 0; line-height: 1.55;">
+        Phase 1, Formation Phase membership administration, verification status, and digital participation record.
       </p>
     </div>
   </section>
 
-  <section class="section" style="padding-top: 12px;">
-    <div class="container">
+  <section class="section" style="padding-top: 20px; padding-bottom: 60px;">
+    <div class="container" style="max-width: 880px;">
       <MemberProfileView client:only="react" />
     </div>
   </section>

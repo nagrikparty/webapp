@@ -8,6 +8,9 @@ import {
   FileText,
   ShieldCheck,
   Download,
+  Sparkles,
+  Layers,
+  Compass
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Profile, Member, MembershipApplication, MembershipCard } from "@/lib/types";
@@ -18,10 +21,19 @@ export function MemberProfileView() {
   const [member, setMember] = useState<Member | null>(null);
   const [application, setApplication] = useState<MembershipApplication | null>(null);
   const [card, setCard] = useState<MembershipCard | null>(null);
+  const [formationPercentage, setFormationPercentage] = useState<number>(24);
   const [needsAuth, setNeedsAuth] = useState(false);
 
   useEffect(() => {
     async function loadData() {
+      // Fetch formation progress
+      fetch("/api/v1/formation-progress")
+        .then((res) => res.json())
+        .then((d) => {
+          if (d.percentage) setFormationPercentage(d.percentage);
+        })
+        .catch(() => {});
+
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -55,22 +67,21 @@ export function MemberProfileView() {
   if (loading) {
     return (
       <div style={{ padding: "60px", textAlign: "center", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
-        Loading member record & standing...
+        Loading member record...
       </div>
     );
   }
 
   if (needsAuth) {
     return (
-      <div className="card" style={{ padding: "40px 24px", textAlign: "center", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)", maxWidth: "580px", margin: "0 auto" }}>
+      <div className="card" style={{ padding: "40px 24px", textAlign: "center", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)", maxWidth: "560px", margin: "0 auto" }}>
         <Clock size={44} style={{ color: "var(--saffron)", margin: "0 auto 16px" }} />
-        <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "4px", color: "var(--ink)" }}>Sign In to View Status</h2>
-        <div style={{ fontSize: "12.5px", color: "var(--muted)", marginBottom: "12px" }}>स्थिति देखने के लिए लॉगिन करें</div>
-        <p style={{ color: "var(--muted)", fontSize: "13.5px", maxWidth: "460px", margin: "0 auto 24px", lineHeight: 1.5 }}>
-          Please sign in to view your verification status, induction docket, and membership application record.
+        <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "8px", color: "var(--ink)" }}>Sign In to View Portal</h2>
+        <p style={{ color: "var(--muted)", fontSize: "14px", maxWidth: "440px", margin: "0 auto 24px", lineHeight: 1.55 }}>
+          Please sign in to view your verification status, membership docket, and participation records.
         </p>
-        <a href="/login" className="button primary" style={{ minHeight: "44px", padding: "10px 24px", borderRadius: "3px", fontSize: "14px", fontWeight: 700 }}>
-          Log In / प्रवेश करें
+        <a href="/login" className="button button-primary" style={{ padding: "12px 28px", fontSize: "14.5px" }}>
+          Sign In &rarr;
         </a>
       </div>
     );
@@ -78,27 +89,36 @@ export function MemberProfileView() {
 
   const isApproved = Boolean(member && member.status === "APPROVED");
   const appStatus = application?.status || "NO_APPLICATION";
+  const firstName = profile?.full_name ? profile.full_name.trim().split(" ")[0] : "Member";
+  const nagrikId = member?.membership_id || (application ? application.application_number : "Pending Induction");
+
+  // Extract participation areas if available
+  const participationInterests: string[] = application?.member_participation
+    ? (Array.isArray(application.member_participation)
+        ? application.member_participation[0]?.interest_areas || []
+        : application.member_participation.interest_areas || [])
+    : [];
 
   return (
-    <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-      {/* Top Banner Status */}
+    <div style={{ maxWidth: "880px", margin: "0 auto", display: "grid", gap: "24px" }}>
+      
+      {/* Editorial Member Greeting Card */}
       <div
         className="card"
         style={{
           background: "var(--paper-card)",
           borderRadius: "4px",
-          padding: "24px",
+          padding: "clamp(20px, 3vw, 32px)",
           border: "1px solid var(--line-strong)",
           boxShadow: "var(--shadow)",
-          marginBottom: "24px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexWrap: "wrap",
-          gap: "16px",
+          gap: "20px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
           <div
             style={{
               width: "56px",
@@ -115,43 +135,48 @@ export function MemberProfileView() {
               color: "var(--saffron)",
             }}
           >
-            {profile?.full_name ? profile.full_name[0].toUpperCase() : "N"}
+            {firstName[0].toUpperCase()}
           </div>
           <div>
-            <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 4px", color: "var(--ink)" }}>
-              {profile?.full_name || "Supporter / Member"}
-            </h2>
-            <div style={{ fontSize: "12.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>{profile?.email}</div>
+            <div style={{ fontSize: "12px", fontFamily: "var(--font-mono)", color: "var(--muted)", textTransform: "uppercase" }}>
+              MEMBER PORTAL
+            </div>
+            <h1 style={{ fontSize: "22px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "2px 0 4px", color: "var(--ink)" }}>
+              Hello, {firstName}
+            </h1>
+            <div style={{ fontSize: "13px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+              Nagrik ID: <strong style={{ color: "var(--saffron)" }}>{nagrikId}</strong>
+            </div>
           </div>
         </div>
 
         <div>
           {isApproved ? (
-            <div
+            <span
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "6px 12px",
+                padding: "6px 14px",
                 borderRadius: "2px",
                 background: "rgba(29, 86, 53, 0.08)",
                 border: "1px solid rgba(29, 86, 53, 0.25)",
                 color: "var(--green)",
                 fontWeight: 700,
-                fontSize: "11px",
+                fontSize: "12px",
                 fontFamily: "var(--font-mono)",
                 letterSpacing: "0.04em",
               }}
             >
-              <CheckCircle2 size={14} /> APPROVED MEMBER / सत्यापित सदस्य
-            </div>
+              <CheckCircle2 size={15} /> ACTIVE MEMBER
+            </span>
           ) : (
-            <div
+            <span
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "6px 12px",
+                padding: "6px 14px",
                 borderRadius: "2px",
                 background:
                   appStatus === "NEEDS_CORRECTION"
@@ -162,29 +187,22 @@ export function MemberProfileView() {
                 border:
                   appStatus === "NEEDS_CORRECTION"
                     ? "1px solid rgba(179, 74, 21, 0.3)"
-                    : appStatus === "REJECTED"
-                    ? "1px solid rgba(142, 38, 23, 0.3)"
                     : "1px solid rgba(179, 74, 21, 0.25)",
-                color:
-                  appStatus === "NEEDS_CORRECTION"
-                    ? "var(--saffron)"
-                    : appStatus === "REJECTED"
-                    ? "var(--red)"
-                    : "var(--saffron)",
+                color: "var(--saffron)",
                 fontWeight: 700,
-                fontSize: "11px",
+                fontSize: "12px",
                 fontFamily: "var(--font-mono)",
                 letterSpacing: "0.04em",
               }}
             >
-              <Clock size={14} /> {appStatus.replace(/_/g, " ")}
-            </div>
+              <Clock size={15} /> STATUS: {appStatus.replace(/_/g, " ")}
+            </span>
           )}
         </div>
       </div>
 
-      {/* Dynamic "What Do I Need To Do Next?" Guidance Banner */}
-      <div style={{ marginBottom: "24px" }}>
+      {/* Next Step / Guidance Banner */}
+      <div>
         {appStatus === "NO_APPLICATION" && (
           <div
             className="card"
@@ -202,13 +220,13 @@ export function MemberProfileView() {
             }}
           >
             <div>
-              <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Step 1: Begin Digital Induction (डिजिटल इंडक्शन शुरू करें)</strong>
+              <strong style={{ fontSize: "15px", color: "var(--ink)" }}>Next Step: Complete Digital Induction</strong>
               <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
-                You have registered your supporter account. Complete the 10-step induction wizard to submit your identity proof and statutory affirmations.
+                You have registered your supporter account. Complete the progressive induction flow to submit your voter details and statutory affirmations.
               </div>
             </div>
-            <a href="/member/induction" className="button primary" style={{ minHeight: "38px", padding: "6px 16px", fontSize: "12.5px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              Start Induction <ArrowRight size={14} />
+            <a href="/member/induction" className="button button-primary" style={{ padding: "8px 18px", fontSize: "13px" }}>
+              Start Induction &rarr;
             </a>
           </div>
         )}
@@ -230,13 +248,13 @@ export function MemberProfileView() {
             }}
           >
             <div>
-              <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Induction In Progress: Resume Draft (इंडक्शन अधूरा है)</strong>
+              <strong style={{ fontSize: "15px", color: "var(--ink)" }}>Next Step: Resume Saved Induction Draft</strong>
               <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
-                Your membership application docket ({application?.application_number}) is in draft. Complete your required details and submit for verification.
+                Your membership application docket ({application?.application_number}) is saved in draft. Complete remaining sections to submit for verification.
               </div>
             </div>
-            <a href="/member/induction" className="button primary" style={{ minHeight: "38px", padding: "6px 16px", fontSize: "12.5px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              Resume Induction <ArrowRight size={14} />
+            <a href="/member/induction" className="button button-primary" style={{ padding: "8px 18px", fontSize: "13px" }}>
+              Resume Induction &rarr;
             </a>
           </div>
         )}
@@ -255,15 +273,15 @@ export function MemberProfileView() {
             <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "12px" }}>
               <AlertTriangle size={18} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
               <div>
-                <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Action Required: Scrutiny Desk Deficiency Notice (संशोधन आवश्यक)</strong>
+                <strong style={{ fontSize: "15px", color: "var(--ink)" }}>Next Step: Scrutiny Desk Correction Required</strong>
                 <div style={{ fontSize: "13px", color: "var(--ink)", marginTop: "6px", background: "var(--paper)", padding: "10px 14px", borderRadius: "3px", border: "1px solid var(--line)" }}>
                   {application?.correction_notes || application?.rejection_reason || "Please update your proof of residence or verify voter ID details."}
                 </div>
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <a href="/member/induction" className="button primary" style={{ minHeight: "38px", padding: "6px 16px", fontSize: "12.5px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                Edit & Resubmit Docket <ArrowRight size={14} />
+              <a href="/member/induction" className="button button-primary" style={{ padding: "8px 18px", fontSize: "13px" }}>
+                Edit & Resubmit Docket &rarr;
               </a>
             </div>
           </div>
@@ -286,13 +304,14 @@ export function MemberProfileView() {
             }}
           >
             <div>
-              <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Under Scrutiny by Verification Desk (संवीक्षाधीन)</strong>
+              <strong style={{ fontSize: "15px", color: "var(--ink)" }}>Next Step: Application Under Scrutiny</strong>
               <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
-                Your docket ({application?.application_number}) was submitted on{" "}
-                {application?.submitted_at ? new Date(application.submitted_at).toLocaleDateString("en-IN") : "today"} and is queued for verification against statutory criteria.
+                Your docket was submitted on{" "}
+                {application?.submitted_at ? new Date(application.submitted_at).toLocaleDateString("en-IN") : "recently"}.
+                Our verification desk is reviewing your voter details against Section 29A statutory criteria.
               </div>
             </div>
-            <a href="/member/status" className="button" style={{ minHeight: "38px", padding: "6px 14px", fontSize: "12.5px", borderRadius: "3px" }}>
+            <a href="/member/status" className="button" style={{ padding: "8px 16px", fontSize: "13px" }}>
               View Audit Status
             </a>
           </div>
@@ -315,108 +334,177 @@ export function MemberProfileView() {
             }}
           >
             <div>
-              <strong style={{ fontSize: "14.5px", color: "var(--ink)", display: "flex", alignItems: "center", gap: "6px" }}>
+              <strong style={{ fontSize: "15px", color: "var(--ink)", display: "flex", alignItems: "center", gap: "6px" }}>
                 <ShieldCheck size={18} style={{ color: "var(--green)" }} />
-                Active Member in Good Standing (सत्यापित सक्रिय सदस्यता)
+                Active Founding Member in Good Standing
               </strong>
               <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
-                Official Membership ID: <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{member?.membership_id}</strong> • Card v{card?.card_version || 1} issued on {card?.issue_date ? new Date(card.issue_date).toLocaleDateString("en-IN") : "Approval"}.
+                Official Membership ID: <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{member?.membership_id}</strong>. Your organizational membership record is verified.
               </div>
             </div>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-              <a href="/member/membership-card" className="button primary" style={{ minHeight: "38px", padding: "6px 14px", fontSize: "12px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                <CreditCard size={14} /> View Card
+              <a href="/member/membership-card" className="button button-primary" style={{ padding: "8px 16px", fontSize: "12.5px" }}>
+                <CreditCard size={14} style={{ marginRight: 6 }} /> View Card
               </a>
-              <a href="/api/v1/member/card-pdf" download="nagrik-party-membership-card.pdf" className="button" style={{ minHeight: "38px", padding: "6px 14px", fontSize: "12px", borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                <Download size={14} /> Download PDF
+              <a href="/api/v1/member/card-pdf" download="nagrik-party-membership-card.pdf" className="button" style={{ padding: "8px 16px", fontSize: "12.5px" }}>
+                <Download size={14} style={{ marginRight: 6 }} /> PDF
               </a>
             </div>
           </div>
         )}
       </div>
 
-      {/* Details Grid */}
+      {/* Two Columns: Participation & Formation Progress */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px" }}>
+        
+        {/* Left: Your Participation */}
+        <div
+          className="card"
+          style={{
+            background: "var(--paper-card)",
+            borderRadius: "4px",
+            padding: "22px 24px",
+            border: "1px solid var(--line)",
+            boxShadow: "var(--shadow)",
+          }}
+        >
+          <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "0 0 12px", color: "var(--ink)" }}>
+            Your Participation & Skills
+          </h3>
+          <p style={{ fontSize: "13px", color: "var(--muted)", margin: "0 0 14px", lineHeight: 1.5 }}>
+            Areas you indicated you can contribute to during Phase 1:
+          </p>
+
+          {participationInterests.length > 0 ? (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
+              {participationInterests.map((interest) => (
+                <span
+                  key={interest}
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    background: "var(--paper-subtle)",
+                    color: "var(--ink)",
+                    padding: "4px 10px",
+                    borderRadius: "3px",
+                    border: "1px solid var(--line)",
+                  }}
+                >
+                  {interest}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div style={{ fontSize: "13px", color: "var(--muted)", marginBottom: "16px" }}>
+              No specific skill areas recorded yet.
+            </div>
+          )}
+
+          <a
+            href="/build-with-us"
+            style={{ fontSize: "12.5px", fontWeight: 600, color: "var(--saffron)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}
+          >
+            Explore Available Tasks in Build With Us &rarr;
+          </a>
+        </div>
+
+        {/* Right: Formation Progress Tracker */}
+        <div
+          className="card"
+          style={{
+            background: "var(--paper-card)",
+            borderRadius: "4px",
+            padding: "22px 24px",
+            border: "1px solid var(--line)",
+            boxShadow: "var(--shadow)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: 0, color: "var(--ink)" }}>
+              Formation Progress
+            </h3>
+            <span style={{ fontSize: "14px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--saffron)" }}>
+              {formationPercentage}%
+            </span>
+          </div>
+
+          <div style={{ width: "100%", height: "8px", background: "var(--paper-subtle)", borderRadius: "4px", overflow: "hidden", border: "1px solid var(--line)", marginBottom: "14px" }}>
+            <div style={{ width: `${formationPercentage}%`, height: "100%", background: "var(--saffron)" }} />
+          </div>
+
+          <p style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.5, margin: "0 0 14px" }}>
+            Current stage: Founding Member Induction across Delhi's 70 Assembly constituencies.
+          </p>
+
+          <a
+            href="/formation-progress"
+            style={{ fontSize: "12.5px", fontWeight: 600, color: "var(--saffron)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}
+          >
+            Inspect 9-Stage Legal Roadmap &rarr;
+          </a>
+        </div>
+
+      </div>
+
+      {/* Record Details Summary */}
       <div
         className="card"
         style={{
           background: "var(--paper-card)",
           borderRadius: "4px",
-          padding: "24px 28px",
-          border: "1px solid var(--line-strong)",
+          padding: "22px 26px",
+          border: "1px solid var(--line)",
           boxShadow: "var(--shadow)",
-          marginBottom: "24px",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--line)", paddingBottom: "14px", marginBottom: "20px" }}>
-          <div>
-            <h3 style={{ fontSize: "16px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: 0, color: "var(--ink)" }}>
-              Organisational Record Details
-            </h3>
-            <div style={{ fontSize: "12px", color: "var(--muted)" }}>सांगठनिक पंजी विवरण</div>
-          </div>
-          <span style={{ fontSize: "10.5px", fontFamily: "var(--font-mono)", color: "var(--muted)", textTransform: "uppercase" }}>
-            CONFIDENTIAL DOCKET
-          </span>
-        </div>
+        <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "0 0 16px", color: "var(--ink)" }}>
+          Organisational Record Details
+        </h3>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", fontSize: "13.5px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", fontSize: "13px" }}>
           <div>
             <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-              Membership ID / संख्या
+              CONSTITUENCY
             </div>
-            <div style={{ fontSize: "15px", fontWeight: 800, color: "var(--saffron)", fontFamily: "var(--font-mono)", marginTop: "4px" }}>
-              {member?.membership_id || (application ? `App: ${application.application_number}` : "Not Assigned")}
+            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "2px" }}>
+              {profile?.vidhan_sabha || "Delhi AC"}
             </div>
           </div>
 
           <div>
             <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-              Category / श्रेणी
+              WARD / AREA
             </div>
-            <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--ink)", marginTop: "4px" }}>
-              {member?.category || application?.membership_category || "Public Supporter"}
-            </div>
-          </div>
-
-          <div>
-            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-              Constituency / विधान सभा
-            </div>
-            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "4px" }}>
-              {profile?.vidhan_sabha || "Not set"}
+            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "2px" }}>
+              {profile?.ward || "Local Ward"}
             </div>
           </div>
 
           <div>
             <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-              Ward / Locality / वार्ड
+              CATEGORY
             </div>
-            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "4px" }}>{profile?.ward || "Not set"}</div>
+            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "2px" }}>
+              {member?.category || application?.membership_category || "Primary Member"}
+            </div>
           </div>
 
           <div>
             <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-              Contact Phone / फोन
+              STATUS DATE
             </div>
-            <div style={{ fontSize: "14px", color: "var(--ink)", fontFamily: "var(--font-mono)", marginTop: "4px" }}>{profile?.phone || "Not set"}</div>
-          </div>
-
-          <div>
-            <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-              Enrolled Date / पंजीकरण तिथि
-            </div>
-            <div style={{ fontSize: "14px", color: "var(--ink)", fontFamily: "var(--font-mono)", marginTop: "4px" }}>
+            <div style={{ fontSize: "14px", color: "var(--ink)", marginTop: "2px" }}>
               {member?.approved_at
                 ? new Date(member.approved_at).toLocaleDateString("en-IN")
                 : application?.submitted_at
                 ? new Date(application.submitted_at).toLocaleDateString("en-IN")
-                : "In draft"}
+                : "Active"}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Action Navigation Tabs */}
+      {/* Quick Action Navigation */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "14px" }}>
         <a
           href="/member/membership-card"
@@ -427,14 +515,14 @@ export function MemberProfileView() {
             borderRadius: "4px",
             border: "1px solid var(--line-strong)",
             boxShadow: "var(--shadow)",
-            textAlign: "center",
-            display: "block",
             textDecoration: "none",
+            display: "block",
+            color: "inherit",
           }}
         >
-          <CreditCard size={22} style={{ color: "var(--saffron)", margin: "0 auto 6px" }} />
-          <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Membership Card</div>
-          <div style={{ fontSize: "12px", color: "var(--muted)" }}>CR80 Vector Layout & QR</div>
+          <CreditCard size={20} style={{ color: "var(--saffron)", marginBottom: "6px" }} />
+          <strong style={{ display: "block", fontSize: "15px", color: "var(--ink)" }}>Membership Card</strong>
+          <span style={{ fontSize: "12px", color: "var(--muted)" }}>CR80 digital organizational card & QR</span>
         </a>
 
         <a
@@ -446,18 +534,18 @@ export function MemberProfileView() {
             borderRadius: "4px",
             border: "1px solid var(--line-strong)",
             boxShadow: "var(--shadow)",
-            textAlign: "center",
-            display: "block",
             textDecoration: "none",
+            display: "block",
+            color: "inherit",
           }}
         >
-          <FileText size={22} style={{ color: "var(--blue)", margin: "0 auto 6px" }} />
-          <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Document Vault</div>
-          <div style={{ fontSize: "12px", color: "var(--muted)" }}>Encrypted Private Evidence</div>
+          <FileText size={20} style={{ color: "var(--blue)", marginBottom: "6px" }} />
+          <strong style={{ display: "block", fontSize: "15px", color: "var(--ink)" }}>Document Vault</strong>
+          <span style={{ fontSize: "12px", color: "var(--muted)" }}>Private encrypted member uploads</span>
         </a>
 
         <a
-          href="/member/status"
+          href="/issues"
           className="card"
           style={{
             background: "var(--paper-card)",
@@ -465,16 +553,17 @@ export function MemberProfileView() {
             borderRadius: "4px",
             border: "1px solid var(--line-strong)",
             boxShadow: "var(--shadow)",
-            textAlign: "center",
-            display: "block",
             textDecoration: "none",
+            display: "block",
+            color: "inherit",
           }}
         >
-          <Clock size={22} style={{ color: "var(--green)", margin: "0 auto 6px" }} />
-          <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Audit & Status</div>
-          <div style={{ fontSize: "12px", color: "var(--muted)" }}>Live Verification Trace</div>
+          <Compass size={20} style={{ color: "var(--green)", marginBottom: "6px" }} />
+          <strong style={{ display: "block", fontSize: "15px", color: "var(--ink)" }}>Report Civic Issue</strong>
+          <span style={{ fontSize: "12px", color: "var(--muted)" }}>File a local constituency problem</span>
         </a>
       </div>
+
     </div>
   );
 }

@@ -1,0 +1,171 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getAllTopics } from "@/lib/topic-service";
+import {
+  ShieldAlert,
+  FileText,
+  TrendingUp,
+  AlertCircle,
+  Wind,
+  Trash2,
+  Route,
+  Droplets,
+  Waves,
+  HeartPulse,
+  Home,
+  Briefcase,
+  GraduationCap,
+  ArrowRight
+} from "lucide-react";
+
+export const prerender = false;
+
+const topics = await getAllTopics();
+
+const iconMap: Record<string, any> = {
+  Wind,
+  Trash2,
+  Route,
+  Droplets,
+  Waves,
+  HeartPulse,
+  Home,
+  ShieldAlert,
+  Briefcase,
+  GraduationCap,
+};
+---
+
+<BaseLayout
+  title="Explore Hub | Civic Data & Evidence | Nagrik Party"
+  description="Explore Nagrik Party's public evidence layers: civic grievance records, verified crime tracking, news topic monitors, and transparent documents."
+>
+  <section class="page-hero">
+    <div class="container" style="max-width: 1040px;">
+      <div class="mini-label" style="background: rgba(22, 53, 92, 0.08); color: var(--blue);">
+        Civic Intelligence & Data
+      </div>
+      <h1 style="font-size: clamp(2.2rem, 4vw, 3.2rem); margin: 8px 0 14px; font-family: var(--font-serif);">
+        Civic Explorer
+      </h1>
+      <p style="font-size: 16px; color: var(--ink-body); max-width: 680px; margin: 0; line-height: 1.6;">
+        Every claim should be verified. Explore our public data systems, verified crime citations, neighborhood issues, and news topic monitors.
+      </p>
+    </div>
+  </section>
+
+  <!-- Primary Hub Navigation Cards -->
+  <section class="section" style="padding-top: 36px; padding-bottom: 24px;">
+    <div class="container" style="max-width: 1040px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 40px;">
+        
+        <a
+          href="/crime"
+          class="card"
+          style="background: var(--paper-card); border: 1px solid var(--line); border-left: 3px solid var(--red); padding: 22px; text-decoration: none; color: inherit; box-shadow: var(--shadow);"
+        >
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <ShieldAlert size={20} style={{ color: "var(--red)" }} />
+            <h2 style="font-size: 17px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
+              Verified Crime Tracker
+            </h2>
+          </div>
+          <p style="font-size: 13px; color: var(--muted); margin: 0 0 12px; line-height: 1.5;">
+            Publicly documented offenses in Delhi NCR, verified against published news reports and official citations.
+          </p>
+          <span style="font-size: 12.5px; font-weight: 600; color: var(--red);">
+            Open Crime Tracker &rarr;
+          </span>
+        </a>
+
+        <a
+          href="/issues"
+          class="card"
+          style="background: var(--paper-card); border: 1px solid var(--line); border-left: 3px solid var(--saffron); padding: 22px; text-decoration: none; color: inherit; box-shadow: var(--shadow);"
+        >
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <AlertCircle size={20} style={{ color: "var(--saffron)" }} />
+            <h2 style="font-size: 17px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
+              Civic Issues & Grievances
+            </h2>
+          </div>
+          <p style="font-size: 13px; color: var(--muted); margin: 0 0 12px; line-height: 1.5;">
+            Citizen-reported local problems across Delhi's 70 constituencies with verified field checks and municipal logs.
+          </p>
+          <span style="font-size: 12.5px; font-weight: 600; color: var(--saffron);">
+            Browse Issues &rarr;
+          </span>
+        </a>
+
+        <a
+          href="/documents"
+          class="card"
+          style="background: var(--paper-card); border: 1px solid var(--line); border-left: 3px solid var(--blue); padding: 22px; text-decoration: none; color: inherit; box-shadow: var(--shadow);"
+        >
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <FileText size={20} style={{ color: "var(--blue)" }} />
+            <h2 style="font-size: 17px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
+              Public Document Vault
+            </h2>
+          </div>
+          <p style="font-size: 13px; color: var(--muted); margin: 0 0 12px; line-height: 1.5;">
+            Foundational charters, draft constitution, Section 29A statutory records, and SHA-256 verified documents.
+          </p>
+          <span style="font-size: 12.5px; font-weight: 600; color: var(--blue);">
+            Inspect Vault &rarr;
+          </span>
+        </a>
+
+      </div>
+
+      <!-- Topic Tracker Grid -->
+      <div id="topics" style="margin-top: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+              Public Topic Tracker
+            </div>
+            <h2 style="font-size: 22px; font-weight: 700; font-family: var(--font-serif); margin: 4px 0 0;">
+              Civic & News Topic Monitors
+            </h2>
+            <p style="font-size: 13.5px; color: var(--muted); margin: 4px 0 0;">
+              Indexed mentions, article counts, and source provenance tracked from verified news publications.
+            </p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+          {topics.map((t) => {
+            const IconComponent = (t.icon && iconMap[t.icon]) || TrendingUp;
+            return (
+              <a
+                href={`/explore/topics/${t.slug}`}
+                class="card"
+                style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 20px; text-decoration: none; color: inherit; box-shadow: var(--shadow); transition: border-color 0.2s;"
+              >
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 32px; height: 32px; border-radius: 2px; background: var(--paper-subtle); display: flex; align-items: center; justify-content: center; color: var(--ink);">
+                      <IconComponent size={17} />
+                    </div>
+                    <h3 style="font-size: 16px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
+                      {t.name}
+                    </h3>
+                  </div>
+                  <ArrowRight size={15} style={{ color: "var(--saffron)" }} />
+                </div>
+                <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 12px;">
+                  {t.description}
+                </p>
+                <div style="font-size: 11.5px; color: var(--saffron); font-weight: 600; font-family: var(--font-mono);">
+                  View Provenance & Metrics &rarr;
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>

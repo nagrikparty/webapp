@@ -1,0 +1,141 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { FOUNDER_DATA } from "@/lib/founder";
+import { CheckCircle2 } from "lucide-react";
+---
+
+<BaseLayout
+  title="Why Nagrik | Founding Story & Purpose"
+  description="Why Nagrik Party is being built: from independent candidacy in Delhi 2025 to building a permanent, member-driven civic organisation."
+>
+  <section class="page-hero">
+    <div class="container" style="max-width: 900px;">
+      <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+        PHASE 1 · FORMATION PHASE
+      </div>
+      <h1 style="font-size: clamp(2.4rem, 4.5vw, 3.4rem); margin: 10px 0 16px; font-family: var(--font-serif); line-height: 1.12;">
+        Why We Are Building Nagrik Party
+      </h1>
+      <p style="font-size: clamp(16px, 1.8vw, 19px); color: var(--ink-body); line-height: 1.6; margin: 0; max-width: 720px;">
+        The goal isn't to complain about what is broken. The goal is to build what should work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 40px; padding-bottom: 56px;">
+    <div class="container" style="max-width: 900px;">
+      
+      <!-- Narrative Letter -->
+      <article
+        class="card"
+        style="background: var(--paper-card); border: 1px solid var(--line-strong); border-radius: 4px; padding: clamp(24px, 4vw, 44px); box-shadow: var(--shadow); margin-bottom: 40px;"
+      >
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--saffron); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 20px;">
+          FOUNDER'S NOTE · SHEIKH ARSALANULLAH CHISHTI
+        </div>
+
+        <div style="font-size: 16px; line-height: 1.75; color: var(--ink-body); display: grid; gap: 20px;">
+          <p>
+            In the 2025 Delhi Assembly election, I contested independently. It was a firsthand encounter with electoral politics, local administration, and the reality of how ordinary citizens interact with the state.
+          </p>
+
+          <p>
+            An independent candidate can highlight an issue, contest a seat, and speak truth to power. But individual candidacies cannot fix systemic institutional apathy. An election ends, the campaign tents fold, and citizens are left in the exact same position: waiting another five years for someone else to listen.
+          </p>
+
+          <p>
+            Real political power does not belong to single individuals or personality cults. It belongs in a durable, member-driven organisation that works continuously between elections.
+          </p>
+
+          <blockquote
+            style="margin: 12px 0; padding: 18px 22px; background: var(--paper-subtle); border-left: 3px solid var(--saffron); border-radius: 2px; font-family: var(--font-serif); font-size: 18px; color: var(--ink); line-height: 1.5;"
+          >
+            "If people can spend their lives serving society and still feel insecure about healthcare, inflation and everyday life, what future are we building?"
+          </blockquote>
+
+          <p>
+            I come from a family with decades of public service. Both of my parents worked as government school teachers. In an honest household, you witness the lived reality of public work: dedication, education, and years of service do not automatically guarantee security in later life.
+          </p>
+
+          <p>
+            When healthcare emergencies strike, when everyday inflation eats away pensions, and when basic public utilities fail, even retired civil servants and teachers are left feeling vulnerable. If citizens who devoted their productive lives to educating the next generation cannot count on dignity, what is the fate of daily wage workers, street vendors, and young families?
+          </p>
+
+          <p>
+            We are not building Nagrik Party to attack traditional parties or shout slogans about corruption. Our answer is practical:
+            <strong>We are trying to build an organisation that works.</strong>
+          </p>
+
+          <p>
+            This requires moving <strong>from voter to participant</strong>. Instead of being passive recipients of campaign promises, citizens must become the co-builders of their representation.
+          </p>
+        </div>
+
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <strong style="display: block; font-family: var(--font-serif); font-size: 16px; color: var(--ink);">
+              Sheikh Arsalanullah Chishti (Arsalan Azad)
+            </strong>
+            <small style="color: var(--muted); font-size: 13px;">
+              Founding Convener in Formation Phase
+            </small>
+          </div>
+          <a href="/membership" class="button button-primary" style="padding: 10px 22px; font-size: 14px;">
+            Join the Founding Network &rarr;
+          </a>
+        </div>
+      </article>
+
+      <!-- Public Outcomes Nagrik Cares About -->
+      <div style="margin-bottom: 48px;">
+        <div class="mini-label" style="background: rgba(29, 86, 53, 0.08); color: var(--green); margin-bottom: 8px;">
+          Public Priorities
+        </div>
+        <h2 style="font-size: 24px; font-weight: 700; font-family: var(--font-serif); margin: 0 0 20px;">
+          What Outcomes Are We Building For?
+        </h2>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+          {FOUNDER_DATA.publicOutcomes.map((item) => (
+            <div
+              class="card"
+              style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 20px;"
+            >
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <CheckCircle2 size={16} style={{ color: "var(--green)", flexShrink: 0 }} />
+                <h3 style="font-size: 15px; font-weight: 700; margin: 0; font-family: var(--font-serif); color: var(--ink);">
+                  {item.title}
+                </h3>
+              </div>
+              <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div
+        class="card"
+        style="background: var(--paper-subtle); border: 1px solid var(--line-strong); border-radius: 4px; padding: 28px; text-align: center;"
+      >
+        <h3 style="font-size: 20px; font-weight: 700; font-family: var(--font-serif); margin: 0 0 8px;">
+          Be Part of the Foundation
+        </h3>
+        <p style="font-size: 14px; color: var(--muted); max-width: 560px; margin: 0 auto 20px; line-height: 1.55;">
+          Nagrik Party is in Phase 1, Formation Phase. We are enrolling founding members across Delhi's 70 Assembly constituencies to complete statutory criteria under Section 29A RPA 1951.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <a href="/membership" class="button button-primary" style="padding: 12px 26px; font-size: 14.5px;">
+            Become a Founding Member
+          </a>
+          <a href="/volunteer" class="button" style="padding: 12px 22px; font-size: 14px;">
+            Become a Volunteer
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</BaseLayout>

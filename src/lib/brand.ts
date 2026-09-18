@@ -28,8 +28,10 @@ export const BRAND = {
   },
   founder: {
     publicName: "Arsalan Azad",
-    legalName: "Sheikh Arsalan Ullah Chishti",
-    role: "Founding Convener / Party President (Formation Stage)"
+    legalName: "Sheikh Arsalanullah Chishti",
+    role: "Founder / Founding Convener (Formation Phase)",
+    biography: "Contested the 2025 Delhi Assembly election independently. Initiating the formation of Nagrik Party to build a durable, accountable citizen-led political organization.",
+    imageSlot: import.meta.env.PUBLIC_FOUNDER_IMAGE || "/assets/leader.png"
   }
 } as const;
 

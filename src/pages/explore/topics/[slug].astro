@@ -1,0 +1,226 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getTopicDetails } from "@/lib/topic-service";
+import {
+  Info,
+  ExternalLink,
+  Layers,
+  Clock,
+  ArrowLeft,
+} from "lucide-react";
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+if (!slug) {
+  return Astro.redirect("/explore");
+}
+
+const data = await getTopicDetails(slug);
+if (!data) {
+  return Astro.redirect("/explore");
+}
+
+const { topic, currentAggregate, trend, sources, hasData, emptyNotice } = data;
+
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const currentMonthName = currentAggregate ? monthNames[(currentAggregate.month - 1) % 12] : "Current Period";
+const currentYear = currentAggregate ? currentAggregate.year : new Date().getFullYear();
+
+// Calculate max for SVG trend chart
+const maxMentions = trend.length > 0 ? Math.max(...trend.map((t) => t.mentions), 10) : 10;
+---
+
+<BaseLayout
+  title={`${topic.name} Topic Tracker | Nagrik Party`}
+  description={`Public verified topic intelligence and indexed mention counts for ${topic.name} in Delhi NCR.`}
+>
+  <section class="page-hero">
+    <div class="container" style="max-width: 960px;">
+      <a
+        href="/explore"
+        style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--saffron); text-decoration: none; margin-bottom: 14px;"
+      >
+        <ArrowLeft size={14} /> Back to Civic Explorer
+      </a>
+      <div class="mini-label" style="background: rgba(179, 74, 21, 0.08); color: var(--saffron);">
+        CIVIC TOPIC TRACKER · DELHI NCR
+      </div>
+      <h1 style="font-size: clamp(2.2rem, 4vw, 3.2rem); margin: 8px 0 12px; font-family: var(--font-serif); text-transform: uppercase;">
+        {topic.name}
+      </h1>
+      <p style="font-size: 16px; color: var(--ink-body); max-width: 680px; margin: 0; line-height: 1.55;">
+        {topic.description}
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 36px; padding-bottom: 56px;">
+    <div class="container" style="max-width: 960px;">
+      
+      {hasData && currentAggregate ? (
+        <div>
+          <!-- Metric Highlight Bar -->
+          <div
+            class="card"
+            style="background: var(--paper-card); border: 1px solid var(--line-strong); border-radius: 4px; padding: clamp(20px, 3vw, 32px); box-shadow: var(--shadow); margin-bottom: 32px;"
+          >
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;">
+                  REPORTING YEAR {currentYear}
+                </div>
+                <div style="font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 800; font-family: var(--font-mono); color: var(--ink); line-height: 1.1; margin: 4px 0;">
+                  {currentAggregate.indexed_mentions.toLocaleString()}
+                </div>
+                <div style="font-size: 14px; font-weight: 600; color: var(--saffron);">
+                  Indexed Mentions in {currentMonthName} {currentYear}
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(2, minmax(130px, 1fr)); gap: 14px;">
+                <div style="background: var(--paper-subtle); padding: 12px 14px; border-radius: 3px; border: 1px solid var(--line);">
+                  <div style="font-size: 11px; color: var(--muted); font-family: var(--font-mono);">UNIQUE ARTICLES</div>
+                  <div style="font-size: 18px; font-weight: 700; color: var(--ink); font-family: var(--font-mono);">
+                    {currentAggregate.unique_articles}
+                  </div>
+                </div>
+                <div style="background: var(--paper-subtle); padding: 12px 14px; border-radius: 3px; border: 1px solid var(--line);">
+                  <div style="font-size: 11px; color: var(--muted); font-family: var(--font-mono);">PUBLICATIONS</div>
+                  <div style="font-size: 18px; font-weight: 700; color: var(--ink); font-family: var(--font-mono);">
+                    {currentAggregate.unique_publications}
+                  </div>
+                </div>
+                <div style="background: var(--paper-subtle); padding: 12px 14px; border-radius: 3px; border: 1px solid var(--line); grid-column: span 2;">
+                  <div style="font-size: 11px; color: var(--muted); font-family: var(--font-mono); display: flex; align-items: center; gap: 4px;">
+                    <Clock size={12} /> DATA FRESHNESS
+                  </div>
+                  <div style="font-size: 12.5px; color: var(--ink); margin-top: 2px;">
+                    {new Date(currentAggregate.data_freshness).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trend Chart Visualization -->
+            {trend.length > 1 && (
+              <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line);">
+                <div style="font-size: 13px; font-weight: 700; font-family: var(--font-mono); color: var(--muted); margin-bottom: 12px; text-transform: uppercase;">
+                  12-Month Mention Trend
+                </div>
+                <div style="display: flex; align-items: flex-end; gap: 8px; height: 120px; background: var(--paper-subtle); padding: 16px 14px 10px; border-radius: 3px; border: 1px solid var(--line);">
+                  {trend.map((point) => {
+                    const heightPercent = Math.max(8, Math.round((point.mentions / maxMentions) * 100));
+                    return (
+                      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
+                        <div style="font-size: 10px; font-family: var(--font-mono); color: var(--muted); margin-bottom: 4px;">
+                          {point.mentions}
+                        </div>
+                        <div
+                          style={{
+                            width: "100%",
+                            maxWidth: "32px",
+                            height: `${heightPercent}%`,
+                            background: "var(--saffron)",
+                            borderRadius: "2px 2px 0 0",
+                            opacity: point.month === currentAggregate.month ? "1" : "0.7",
+                          }}
+                        />
+                        <div style="font-size: 10px; font-family: var(--font-mono); color: var(--muted); margin-top: 6px; white-space: nowrap;">
+                          {point.monthName.split(" ")[0]}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <!-- Honest Empty / Pending State -->
+        <div
+          class="card"
+          style="background: var(--paper-card); border: 1px dashed var(--line-strong); border-radius: 4px; padding: 40px 28px; text-align: center; margin-bottom: 32px;"
+        >
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--paper-subtle); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--muted);">
+            <Layers size={22} />
+          </div>
+          <h2 style="font-size: 18px; font-weight: 700; font-family: var(--font-serif); margin: 0 0 8px; color: var(--ink);">
+            No Verified Data Records Yet
+          </h2>
+          <p style="font-size: 14px; color: var(--muted); max-width: 540px; margin: 0 auto 16px; line-height: 1.55;">
+            {emptyNotice || "Nagrik Party does not invent statistics. Topic counts derive strictly from stored, verified publications and municipal logs. As data runs execute, verified aggregates will appear here."}
+          </p>
+          <span class="badge-citation" style="font-size: 11.5px;">
+            Pipeline Status: Ready for scheduled indexing
+          </span>
+        </div>
+      )}
+
+      <!-- Methodology Box -->
+      <div
+        class="card"
+        style="background: var(--paper-subtle); border: 1px solid var(--line-strong); border-left: 3px solid var(--blue); border-radius: 4px; padding: 22px 24px; margin-bottom: 32px;"
+      >
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          <Info size={16} style={{ color: "var(--blue)" }} />
+          <h3 style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-mono); margin: 0; color: var(--ink);">
+            How This Metric Is Calculated
+          </h3>
+        </div>
+        <p style="font-size: 13.5px; color: var(--ink-body); line-height: 1.6; margin: 0;">
+          {currentAggregate?.methodology || topic.methodology}
+        </p>
+        <div style="margin-top: 10px; font-size: 12px; color: var(--muted);">
+          Strict Rule: All counts derive from stored database records with verified URLs and published dates. AI models do not generate or guess metrics.
+        </div>
+      </div>
+
+      <!-- Source Citations / Provenance -->
+      {sources.length > 0 && (
+        <div>
+          <h3 style="font-size: 18px; font-weight: 700; font-family: var(--font-serif); margin: 0 0 16px;">
+            Verified Source Provenance ({sources.length})
+          </h3>
+          <div style="display: grid; gap: 12px;">
+            {sources.map((src) => (
+              <div
+                class="card"
+                style="background: var(--paper-card); border: 1px solid var(--line); border-radius: 4px; padding: 16px 18px;"
+              >
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                  <div>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--saffron); font-family: var(--font-mono); text-transform: uppercase;">
+                      {src.publication_name}
+                    </span>
+                    <h4 style="font-size: 15px; font-weight: 600; margin: 4px 0 6px; color: var(--ink);">
+                      {src.title}
+                    </h4>
+                    {src.raw_snippet && (
+                      <p style="font-size: 12.5px; color: var(--muted); margin: 0 0 8px; line-height: 1.45;">
+                        "{src.raw_snippet}"
+                      </p>
+                    )}
+                    <span style="font-size: 11px; color: var(--ink-faint);">
+                      Published: {new Date(src.published_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
+                    </span>
+                  </div>
+                  <a
+                    href={src.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--blue); text-decoration: none; white-space: nowrap;"
+                  >
+                    Source <ExternalLink size={13} />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+    </div>
+  </section>
+</BaseLayout>
