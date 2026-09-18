@@ -19,7 +19,25 @@ const {
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#faf8f5" />
+    <link rel="icon" type="image/svg+xml" href="/nagrikpartylogo.svg" />
+    <link rel="apple-touch-icon" href="/nagrikpartylogo.svg" />
+    <link rel="canonical" href={Astro.url.href} />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:site_name" content="Nagrik Party | नागरिक पार्टी" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL("/nagrikpartylogo.svg", Astro.url).href} />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL("/nagrikpartylogo.svg", Astro.url).href} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Devanagari:wght@400;600;700&family=Yantramanav:wght@500;700;900&display=swap" rel="stylesheet">
@@ -77,30 +95,35 @@ const {
           </div>
           <div class="footer-links">
             <div>
-              <strong>Platform</strong>
-              <a href="/manifesto">Manifesto Top 10</a>
-              <a href="/issues">Report an issue</a>
-              <a href="/volunteer">Volunteer</a>
-              <a href="/membership">Membership Induction</a>
+              <strong><Bilingual en="Platform" hi="मंच" /></strong>
+              <a href="/crime"><Bilingual en="Verified Crime Tracker" hi="सत्यापित अपराध ट्रैकर" /></a>
+              <a href="/manifesto"><Bilingual en="Manifesto Priorities" hi="घोषणापत्र प्राथमिकताएं" /></a>
+              <a href="/issues"><Bilingual en="Report Civic Issue" hi="नागरिक मुद्दा दर्ज करें" /></a>
+              <a href="/volunteer"><Bilingual en="Volunteer" hi="स्वयंसेवक बनें" /></a>
+              <a href="/membership"><Bilingual en="Membership Induction" hi="सदस्यता प्रेरण" /></a>
             </div>
             <div>
-              <strong>Formation & Governance</strong>
-              <a href="/formation-progress">Formation Roadmap</a>
-              <a href="/transparency">Financial Transparency</a>
-              <a href="/documents">Public Documents</a>
-              <a href="/member">Member Portal</a>
-              <a href="/admin">Admin Console</a>
+              <strong><Bilingual en="Formation & Governance" hi="गठन और शासन" /></strong>
+              <a href="/formation-progress"><Bilingual en="9-Stage Roadmap" hi="9-चरणीय रोडमैप" /></a>
+              <a href="/transparency"><Bilingual en="Financial Transparency" hi="वित्तीय पारदर्शिता" /></a>
+              <a href="/documents"><Bilingual en="Public Document Vault" hi="सार्वजनिक दस्तावेज़ वॉल्ट" /></a>
+              <a href="/member"><Bilingual en="Member Portal" hi="सदस्य पोर्टल" /></a>
+              <a href="/admin"><Bilingual en="Admin Console" hi="प्रशासन कंसोल" /></a>
             </div>
             <div>
-              <strong>Leadership</strong>
-              <a href="/president">Party President</a>
-              <a href="/president/delhi-2025">Delhi 2025</a>
-              <a href="/president/okhla">Okhla</a>
-              <a href="/about">About Nagrik Party</a>
+              <strong><Bilingual en="Leadership" hi="नेतृत्व" /></strong>
+              <a href="/president"><Bilingual en="Party President" hi="पार्टी अध्यक्ष" /></a>
+              <a href="/president/delhi-2025"><Bilingual en="Delhi 2025 Campaign" hi="दिल्ली 2025 अभियान" /></a>
+              <a href="/president/okhla"><Bilingual en="Okhla Anchor" hi="ओखला एंकर" /></a>
+              <a href="/about"><Bilingual en="About Nagrik Party" hi="नागरिक पार्टी परिचय" /></a>
             </div>
             <div>
-              <strong>Legal</strong>
-              {legalLinks.map((link) => <a href={`/legal/${link.slug}`}>{link.en}</a>)}
+              <strong><Bilingual en="Legal Charters" hi="कानूनी घोषणापत्र" /></strong>
+              {legalLinks.map((link) => (
+                <a href={`/legal/${link.slug}`}>
+                  <Bilingual en={link.en} hi={link.hi} />
+                </a>
+              ))}
             </div>
           </div>
         </div>

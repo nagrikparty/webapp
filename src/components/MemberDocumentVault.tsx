@@ -7,7 +7,6 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
-import { BRAND } from "@/lib/brand";
 import type { DocumentRecord } from "@/lib/types";
 
 export function MemberDocumentVault() {

@@ -8,7 +8,6 @@ import {
   Check,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { BRAND } from "@/lib/brand";
 import type { MembershipApplication } from "@/lib/types";
 
 export function VerifierDashboard() {

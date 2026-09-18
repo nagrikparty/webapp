@@ -4,7 +4,6 @@ import {
   AlertTriangle, Filter,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { BRAND } from "@/lib/brand";
 
 interface MembershipCard {
   id: string;

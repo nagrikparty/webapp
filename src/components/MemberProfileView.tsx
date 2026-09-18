@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Clock, CheckCircle2, ArrowRight } from "lucide-react";
-import { BRAND } from "@/lib/brand";
 import type { Profile, Member, MembershipApplication } from "@/lib/types";
 
 export function MemberProfileView() {

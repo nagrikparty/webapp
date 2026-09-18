@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Heart, Calendar, IndianRupee, FileText, Clock, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { BRAND } from "@/lib/brand";
 
 interface Contribution {
   id: string;

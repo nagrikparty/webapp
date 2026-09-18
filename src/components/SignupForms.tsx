@@ -84,56 +84,80 @@ export function VolunteerForm() {
     <form className="form-surface" onSubmit={submit}>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="vol-name">Name</label>
-          <input id="vol-name" name="name" required autoComplete="name" />
+          <label htmlFor="vol-name">
+            <span className="lang-en">Full Name</span>
+            <span className="lang-hi">पूरा नाम</span>
+          </label>
+          <input id="vol-name" name="name" required autoComplete="name" placeholder="E.g. Rajesh Kumar" />
         </div>
         <div className="field">
-          <label htmlFor="vol-email">Email signup</label>
-          <input id="vol-email" name="email" required type="email" autoComplete="email" />
+          <label htmlFor="vol-email">
+            <span className="lang-en">Email Address</span>
+            <span className="lang-hi">ईमेल पता</span>
+          </label>
+          <input id="vol-email" name="email" required type="email" autoComplete="email" placeholder="name@example.com" />
         </div>
         <div className="field">
-          <label htmlFor="vol-loksabha">Lok Sabha (Parliament)</label>
+          <label htmlFor="vol-loksabha">
+            <span className="lang-en">Lok Sabha (Parliament)</span>
+            <span className="lang-hi">लोकसभा</span>
+          </label>
           <select id="vol-loksabha" name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
-            <option value="">Select Lok Sabha</option>
+            <option value="">Select Lok Sabha / लोकसभा चुनें</option>
             {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
               <option key={ls} value={ls}>{ls}</option>
             ))}
           </select>
         </div>
         <div className="field">
-          <label htmlFor="vol-vidhansabha">Vidhan Sabha (Assembly)</label>
+          <label htmlFor="vol-vidhansabha">
+            <span className="lang-en">Vidhan Sabha (Assembly)</span>
+            <span className="lang-hi">विधानसभा</span>
+          </label>
           <select id="vol-vidhansabha" name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
-            <option value="">Select Assembly</option>
+            <option value="">Select Assembly / विधानसभा चुनें</option>
             {assemblies.map((ac) => (
               <option key={ac} value={ac}>{ac}</option>
             ))}
           </select>
         </div>
         <div className="field">
-          <label htmlFor="vol-ward">Ward</label>
+          <label htmlFor="vol-ward">
+            <span className="lang-en">Ward</span>
+            <span className="lang-hi">वार्ड</span>
+          </label>
           <select id="vol-ward" name="ward" required disabled={!vidhanSabha}>
-            <option value="">Select Ward</option>
+            <option value="">Select Ward / वार्ड चुनें</option>
             {wards.map((w) => (
               <option key={w} value={w}>{w}</option>
             ))}
           </select>
         </div>
         <div className="field">
-          <label htmlFor="vol-availability">Availability</label>
+          <label htmlFor="vol-availability">
+            <span className="lang-en">Availability</span>
+            <span className="lang-hi">उपलब्धता</span>
+          </label>
           <select id="vol-availability" name="availability">
-            <option>Weekends</option>
-            <option>Weekday evenings</option>
-            <option>Field visits</option>
-            <option>Remote digital work</option>
+            <option value="Weekends">Weekends / सप्ताहांत</option>
+            <option value="Weekday evenings">Weekday evenings / शाम के समय</option>
+            <option value="Field visits">Field visits / जमीनी दौरा</option>
+            <option value="Remote digital work">Remote digital work / डिजिटल कार्य</option>
           </select>
         </div>
         <div className="field full">
-          <label htmlFor="vol-skills">How can you help?</label>
+          <label htmlFor="vol-skills">
+            <span className="lang-en">How can you help?</span>
+            <span className="lang-hi">आप कैसे मदद कर सकते हैं?</span>
+          </label>
           <textarea id="vol-skills" name="skills" placeholder="Issue verification, translation, social media, legal research, data entry..." />
         </div>
         <label className="checkbox-row field full" htmlFor="vol-disclaimer">
           <input id="vol-disclaimer" required type="checkbox" />
-          <span>I understand this is a volunteer/supporter application and not legal party membership.</span>
+          <span>
+            <span className="lang-en">I understand this is a volunteer/supporter application and not legal party membership.</span>
+            <span className="lang-hi">मैं समझता/समझती हूँ कि यह एक स्वयंसेवक/समर्थक आवेदन है, कानूनी पार्टी सदस्यता नहीं।</span>
+          </span>
         </label>
       </div>
       <div className="form-submit-group">
@@ -144,7 +168,8 @@ export function VolunteerForm() {
         )}
         <button className="button green" type="submit" disabled={submitting}>
           {submitting ? <Loader2 className="spin" size={17} /> : <Mail size={17} />}
-          {submitting ? "Submitting..." : "Join volunteer list"}
+          <span className="lang-en">{submitting ? "Submitting..." : "Join volunteer list"}</span>
+          <span className="lang-hi">{submitting ? "जमा हो रहा है..." : "स्वयंसेवक सूची में शामिल हों"}</span>
         </button>
       </div>
     </form>
@@ -198,85 +223,127 @@ export function MembershipForm() {
   return (
     <form className="form-surface" onSubmit={submit}>
       <div className="step-indicator" style={{ marginBottom: "20px", fontSize: "14px", fontWeight: 600 }}>
-        Step {step} of 3: {step === 1 ? "Personal Details" : step === 2 ? "Location Details" : "Document & Declarations"}
+        <span className="lang-en">
+          Step {step} of 3: {step === 1 ? "Personal Details" : step === 2 ? "Location Details" : "Document & Declarations"}
+        </span>
+        <span className="lang-hi">
+          चरण {step}/3: {step === 1 ? "व्यक्तिगत विवरण" : step === 2 ? "स्थान विवरण" : "दस्तावेज़ और घोषणाएं"}
+        </span>
       </div>
 
       <div className="form-grid" style={{ display: step === 1 ? "grid" : "none" }}>
         <div className="field">
-          <label htmlFor="mem-name">Full legal name</label>
-          <input id="mem-name" name="name" required={step === 1} autoComplete="name" />
+          <label htmlFor="mem-name">
+            <span className="lang-en">Full Legal Name</span>
+            <span className="lang-hi">पूरा कानूनी नाम</span>
+          </label>
+          <input id="mem-name" name="name" required={step === 1} autoComplete="name" placeholder="As per Voter ID" />
         </div>
         <div className="field">
-          <label htmlFor="mem-email">Email signup</label>
-          <input id="mem-email" name="email" required={step === 1} type="email" autoComplete="email" />
+          <label htmlFor="mem-email">
+            <span className="lang-en">Email Address</span>
+            <span className="lang-hi">ईमेल पता</span>
+          </label>
+          <input id="mem-email" name="email" required={step === 1} type="email" autoComplete="email" placeholder="name@example.com" />
         </div>
         <div className="field">
-          <label htmlFor="mem-parent">Parent / spouse name</label>
+          <label htmlFor="mem-parent">
+            <span className="lang-en">Parent / Spouse Name</span>
+            <span className="lang-hi">माता/पिता/पति/पत्नी का नाम</span>
+          </label>
           <input id="mem-parent" name="parent" required={step === 1} />
         </div>
         <div className="field">
-          <label htmlFor="mem-dob">Date of birth</label>
+          <label htmlFor="mem-dob">
+            <span className="lang-en">Date of Birth</span>
+            <span className="lang-hi">जन्म तिथि</span>
+          </label>
           <input id="mem-dob" name="dob" required={step === 1} type="date" autoComplete="bday" />
         </div>
         <div className="field">
-          <label htmlFor="mem-voterid">EPIC / voter ID reference</label>
-          <input id="mem-voterid" name="voter_id" required={step === 1} />
+          <label htmlFor="mem-voterid">
+            <span className="lang-en">EPIC / Voter ID Reference</span>
+            <span className="lang-hi">मतदाता पहचान पत्र (EPIC) क्रमांक</span>
+          </label>
+          <input id="mem-voterid" name="voter_id" required={step === 1} placeholder="ABC1234567" />
         </div>
       </div>
 
       <div className="form-grid" style={{ display: step === 2 ? "grid" : "none" }}>
         <div className="field">
-          <label htmlFor="mem-loksabha">Lok Sabha (Parliament)</label>
+          <label htmlFor="mem-loksabha">
+            <span className="lang-en">Lok Sabha (Parliament)</span>
+            <span className="lang-hi">लोकसभा</span>
+          </label>
           <select id="mem-loksabha" name="lok_sabha" required={step === 2} value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
-            <option value="">Select Lok Sabha</option>
+            <option value="">Select Lok Sabha / लोकसभा चुनें</option>
             {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
               <option key={ls} value={ls}>{ls}</option>
             ))}
           </select>
         </div>
         <div className="field">
-          <label htmlFor="mem-vidhansabha">Vidhan Sabha (Assembly)</label>
+          <label htmlFor="mem-vidhansabha">
+            <span className="lang-en">Vidhan Sabha (Assembly)</span>
+            <span className="lang-hi">विधानसभा</span>
+          </label>
           <select id="mem-vidhansabha" name="vidhan_sabha" required={step === 2} disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
-            <option value="">Select Assembly</option>
+            <option value="">Select Assembly / विधानसभा चुनें</option>
             {assemblies.map((ac) => (
               <option key={ac} value={ac}>{ac}</option>
             ))}
           </select>
         </div>
         <div className="field">
-          <label htmlFor="mem-ward">Ward</label>
+          <label htmlFor="mem-ward">
+            <span className="lang-en">Ward</span>
+            <span className="lang-hi">वार्ड</span>
+          </label>
           <select id="mem-ward" name="ward" required={step === 2} disabled={!vidhanSabha}>
-            <option value="">Select Ward</option>
+            <option value="">Select Ward / वार्ड चुनें</option>
             {wards.map((w) => (
               <option key={w} value={w}>{w}</option>
             ))}
           </select>
         </div>
         <div className="field full">
-          <label htmlFor="mem-address">Residential address</label>
+          <label htmlFor="mem-address">
+            <span className="lang-en">Residential Address (Delhi)</span>
+            <span className="lang-hi">आवासीय पता (दिल्ली)</span>
+          </label>
           <textarea id="mem-address" name="address" required={step === 2} autoComplete="street-address" />
         </div>
       </div>
 
       <div className="form-grid" style={{ display: step === 3 ? "grid" : "none" }}>
-        <div className="field full" style={{ background: "rgba(0,0,0,0.02)", padding: "16px", borderRadius: "8px", border: "1px dashed var(--line)" }}>
-          <label htmlFor="mem-file" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            Upload Identity Document (Aadhaar or Voter ID)
+        <div className="field full" style={{ background: "var(--paper-subtle)", padding: "16px", borderRadius: "4px", border: "1px dashed var(--line)" }}>
+          <label htmlFor="mem-file" style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 700 }}>
+            <span className="lang-en">Upload Identity Document (Aadhaar or Voter ID)</span>
+            <span className="lang-hi">पहचान प्रमाण दस्तावेज़ अपलोड करें (आधार या वोटर आईडी)</span>
           </label>
-          <input id="mem-file" type="file" name="file" accept="image/*,.pdf" required={step === 3} />
+          <input id="mem-file" type="file" name="file" accept="image/*,.pdf" required={step === 3} style={{ marginTop: "8px" }} />
         </div>
 
         <label className="checkbox-row field full" htmlFor="mem-citizen">
           <input id="mem-citizen" required={step === 3} type="checkbox" />
-          <span>I am an Indian citizen, 18 years or older, and a registered elector.</span>
+          <span>
+            <span className="lang-en">I am an Indian citizen, 18 years or older, and a registered elector in Delhi.</span>
+            <span className="lang-hi">मैं एक भारतीय नागरिक हूँ, 18 वर्ष या उससे अधिक आयु का हूँ, और दिल्ली में पंजीकृत मतदाता हूँ।</span>
+          </span>
         </label>
         <label className="checkbox-row field full" htmlFor="mem-notmember">
           <input id="mem-notmember" required={step === 3} type="checkbox" />
-          <span>I am not currently a member of another ECI-registered political party.</span>
+          <span>
+            <span className="lang-en">I am not currently a member of another ECI-registered political party.</span>
+            <span className="lang-hi">मैं वर्तमान में किसी अन्य चुनाव आयोग-पंजीकृत राजनीतिक दल का सदस्य नहीं हूँ।</span>
+          </span>
         </label>
         <label className="checkbox-row field full" htmlFor="mem-accept">
           <input id="mem-accept" required={step === 3} type="checkbox" />
-          <span>I accept the proposed Party Constitution, Rulebook, Code of Ethics and verification process.</span>
+          <span>
+            <span className="lang-en">I accept the proposed Party Constitution, Rulebook, Code of Ethics and verification process.</span>
+            <span className="lang-hi">मैं प्रस्तावित पार्टी संविधान, नियमावली, आचार संहिता और सत्यापन प्रक्रिया को स्वीकार करता/करती हूँ।</span>
+          </span>
         </label>
       </div>
 
@@ -289,7 +356,8 @@ export function MembershipForm() {
       <div className="form-submit-group" style={{ marginTop: "24px" }}>
         {step > 1 && (
           <button type="button" className="button secondary" onClick={() => setStep(s => s - 1)} disabled={submitting}>
-            Back
+            <span className="lang-en">Back</span>
+            <span className="lang-hi">पीछे</span>
           </button>
         )}
         {step < 3 ? (
@@ -301,12 +369,14 @@ export function MembershipForm() {
               form?.reportValidity();
             }
           }}>
-            Next Step
+            <span className="lang-en">Next Step</span>
+            <span className="lang-hi">अगला चरण</span>
           </button>
         ) : (
           <button className="button primary" type="submit" disabled={submitting}>
             {submitting ? <Loader2 className="spin" size={17} /> : <Upload size={17} />}
-            {submitting ? "Submitting..." : "Submit membership application"}
+            <span className="lang-en">{submitting ? "Submitting..." : "Submit membership application"}</span>
+            <span className="lang-hi">{submitting ? "जमा हो रहा है..." : "सदस्यता आवेदन जमा करें"}</span>
           </button>
         )}
       </div>

@@ -87,37 +87,43 @@ export function RegistrationForm() {
     return (
       <div className="form-surface notice" style={{ textAlign: "center", padding: "40px 20px" }}>
         <CheckCircle2 size={48} style={{ color: "var(--green)", margin: "0 auto 16px" }} />
-        <h3>Application Received</h3>
-        <p>Your membership application is pending verification.</p>
+        <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "20px", color: "var(--ink)", margin: "0 0 8px" }}>
+          Application Received / आवेदन प्राप्त हुआ
+        </h3>
+        <p style={{ color: "var(--muted)", fontSize: "14px" }}>
+          Your membership application is pending administrative verification.
+          <br />
+          आपकी सदस्यता का आवेदन प्रशासनिक सत्यापन के लिए जमा कर लिया गया है।
+        </p>
       </div>
     );
   }
 
   return (
-    <form className="form-surface" onSubmit={submit}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "24px", fontSize: "14px", fontWeight: "bold" }}>
-        <span style={{ color: step >= 1 ? "var(--ink)" : "var(--line)" }}>1. Personal</span>
-        <span style={{ color: step >= 2 ? "var(--ink)" : "var(--line)" }}>2. Address</span>
-        <span style={{ color: step >= 3 ? "var(--ink)" : "var(--line)" }}>3. ID & Declarations</span>
+    <form className="form-surface" onSubmit={submit} style={{ background: "var(--paper-card)", border: "1px solid var(--line-strong)", borderRadius: "4px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "24px", fontSize: "13px", fontWeight: "bold", borderBottom: "1px solid var(--line)", paddingBottom: "12px" }}>
+        <span style={{ color: step >= 1 ? "var(--ink)" : "var(--muted)" }}>1. Personal / व्यक्तिगत</span>
+        <span style={{ color: step >= 2 ? "var(--ink)" : "var(--muted)" }}>2. Address / पता</span>
+        <span style={{ color: step >= 3 ? "var(--ink)" : "var(--muted)" }}>3. ID & Oath / पहचान व शपथ</span>
       </div>
 
       <div className="form-grid">
         {step === 1 && (
           <>
             <div className="field">
-              <label>Full legal name</label>
+              <label>Full Legal Name / पूरा वैधानिक नाम</label>
               <input name="name" value={formData.name} onChange={handleInputChange} required />
             </div>
             <div className="field">
-              <label>Email address</label>
+              <label>Email Address / ईमेल पता</label>
               <input name="email" type="email" value={formData.email} onChange={handleInputChange} required />
             </div>
             <div className="field">
-              <label>Parent / spouse name</label>
+              <label>Parent / Spouse Name / माता-पिता या जीवनसाथी का नाम</label>
               <input name="parent" value={formData.parent} onChange={handleInputChange} required />
             </div>
             <div className="field">
-              <label>Date of birth</label>
+              <label>Date of Birth / जन्म तिथि</label>
               <input name="dob" type="date" value={formData.dob} onChange={handleInputChange} required />
             </div>
           </>
@@ -126,31 +132,31 @@ export function RegistrationForm() {
         {step === 2 && (
           <>
             <div className="field full">
-              <label>Residential address</label>
+              <label>Residential Address / स्थायी निवास पता</label>
               <textarea name="address" value={formData.address} onChange={handleInputChange} required />
             </div>
             <div className="field">
-              <label>Lok Sabha (Parliament)</label>
+              <label>Lok Sabha (Parliament) / लोकसभा क्षेत्र</label>
               <select name="lok_sabha" required value={formData.lok_sabha} onChange={(e) => { handleInputChange(e); setFormData(f => ({...f, vidhan_sabha: "", ward: ""})) }}>
-                <option value="">Select Lok Sabha</option>
+                <option value="">Select Lok Sabha / लोकसभा चुनें</option>
                 {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
                   <option key={ls} value={ls}>{ls}</option>
                 ))}
               </select>
             </div>
             <div className="field">
-              <label>Vidhan Sabha (Assembly)</label>
+              <label>Vidhan Sabha (Assembly) / विधानसभा क्षेत्र</label>
               <select name="vidhan_sabha" required disabled={!formData.lok_sabha} value={formData.vidhan_sabha} onChange={(e) => { handleInputChange(e); setFormData(f => ({...f, ward: ""})) }}>
-                <option value="">Select Assembly</option>
+                <option value="">Select Assembly / विधानसभा चुनें</option>
                 {assemblies.map((ac) => (
                   <option key={ac} value={ac}>{ac}</option>
                 ))}
               </select>
             </div>
             <div className="field">
-              <label>Ward</label>
+              <label>Municipal Ward / निगम वार्ड</label>
               <select name="ward" required disabled={!formData.vidhan_sabha} value={formData.ward} onChange={handleInputChange}>
-                <option value="">Select Ward</option>
+                <option value="">Select Ward / वार्ड चुनें</option>
                 {wards.map((w) => (
                   <option key={w} value={w}>{w}</option>
                 ))}
@@ -162,21 +168,25 @@ export function RegistrationForm() {
         {step === 3 && (
           <>
             <div className="field full">
-              <label>EPIC / Voter ID Number</label>
+              <label>EPIC / Voter ID Number / मतदाता पहचान पत्र संख्या</label>
               <input name="voter_id" value={formData.voter_id} onChange={handleInputChange} required />
             </div>
-            <div className="field full" style={{ background: "rgba(0,0,0,0.02)", padding: "16px", borderRadius: "8px", border: "1px dashed var(--line)" }}>
-              <label>Upload Identity Document (Aadhaar or Voter ID)</label>
+            <div className="field full" style={{ background: "var(--paper-subtle)", padding: "16px", borderRadius: "4px", border: "1px dashed var(--line-strong)" }}>
+              <label>Upload Identity Document (Aadhaar or Voter ID) / पहचान पत्र अपलोड करें</label>
               <input type="file" accept="image/*,.pdf" required onChange={handleFileChange} />
             </div>
             
-            <label className="checkbox-row field full">
-              <input name="declaration_agreed" checked={formData.declaration_agreed} onChange={handleInputChange} required type="checkbox" />
-              <span>I confirm I am an Indian citizen (18+), not a member of another ECI-registered party, and accept the Party Constitution.</span>
+            <label className="checkbox-row field full" style={{ alignItems: "flex-start", gap: "10px" }}>
+              <input name="declaration_agreed" checked={formData.declaration_agreed} onChange={handleInputChange} required type="checkbox" style={{ marginTop: "3px" }} />
+              <span style={{ fontSize: "13px", lineHeight: "1.5" }}>
+                I confirm I am an Indian citizen (18+), not a member of another ECI-registered party, and accept the Party Constitution.
+                <br />
+                <span style={{ color: "var(--muted)" }}>मैं पुष्टि करता हूँ कि मैं एक भारतीय नागरिक (18+) हूँ, किसी अन्य राजनीतिक दल का सदस्य नहीं हूँ, और पार्टी संविधान को स्वीकार करता हूँ।</span>
+              </span>
             </label>
 
             {error && (
-              <div className="field full" style={{ color: "var(--red)", fontSize: "13px", display: "flex", alignItems: "center", gap: "4px" }}>
+              <div className="field full" style={{ color: "var(--red)", fontSize: "13px", display: "flex", alignItems: "center", gap: "6px" }}>
                 <AlertCircle size={14} /> {error}
               </div>
             )}
@@ -186,8 +196,8 @@ export function RegistrationForm() {
 
       <div className="form-submit-group" style={{ marginTop: "24px", display: "flex", justifyContent: "space-between" }}>
         {step > 1 ? (
-          <button type="button" className="button" onClick={prevStep} disabled={submitting}>
-            <ChevronLeft size={17} /> Back
+          <button type="button" className="button" onClick={prevStep} disabled={submitting} style={{ minHeight: "44px", borderRadius: "3px" }}>
+            <ChevronLeft size={17} /> Back / वापस
           </button>
         ) : <div />}
         
@@ -196,13 +206,13 @@ export function RegistrationForm() {
             const form = document.querySelector<HTMLFormElement>("form");
             if (form?.checkValidity()) nextStep();
             else form?.reportValidity();
-          }}>
-            Next <ChevronRight size={17} />
+          }} style={{ minHeight: "44px", borderRadius: "3px" }}>
+            Next / आगे बढ़ें <ChevronRight size={17} />
           </button>
         ) : (
-          <button type="submit" className="button primary" disabled={submitting}>
+          <button type="submit" className="button primary" disabled={submitting} style={{ minHeight: "44px", borderRadius: "3px" }}>
             {submitting ? <Loader2 className="spin" size={17} /> : <Upload size={17} />}
-            {submitting ? "Submitting..." : "Submit Application"}
+            {submitting ? "Submitting / जमा किया जा रहा है..." : "Submit Application / आवेदन जमा करें"}
           </button>
         )}
       </div>

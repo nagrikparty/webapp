@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import { Download, ShieldCheck, AlertCircle, AlertOctagon, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { BRAND } from "@/lib/brand";
 import { Logo } from "./Logo";
 import type { Member, MembershipCard, Profile } from "@/lib/types";
 
