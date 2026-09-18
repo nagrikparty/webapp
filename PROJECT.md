@@ -130,6 +130,13 @@ Phase 1 provides complete public transparency, digital membership induction, vot
   - Upgraded `verify_membership_card(p_card_number)` RPC function with multi-identifier lookup and priority ranking (`ACTIVE` > `SUPERSEDED` > `REVOKED`).
 - **Migration 07 Applied**:
   - Granted explicit `INSERT` and `UPDATE` policies to authorized staff (`VERIFIER`, `ADMIN`, `SUPER_ADMIN`) on `members`, `membership_cards`, `membership_status_history`, and `profiles`.
+- **Migration 09 Applied**:
+  - Resolved Postgres RLS recursion on `public.profiles` via `SECURITY DEFINER` function `public.get_auth_role()`.
+  - Added trigger `trg_check_profile_role_update` enforcing database-level role escalation prevention.
+  - Added database check constraint `chk_no_self_approval CHECK (reviewed_by IS NULL OR reviewed_by <> user_id)`.
+  - Configured default `application_number = public.generate_application_number()`.
+  - Added RLS manage policy on `crimes` table for administrators.
+  - Seeded 6 isolated demo personas in Supabase for testing (`PUBLIC`, `MEMBER` A & B, `VERIFIER`, `ADMIN`, `SUPER_ADMIN`).
 
 ### Storage & Cryptographic Security
 - Sensitive documents (Voter IDs, Aadhaar, affidavits, photographs) are stored exclusively in private Supabase buckets (`documents`, `membership-cards`).
@@ -157,14 +164,14 @@ Phase 1 provides complete public transparency, digital membership induction, vot
 
 ## 9. Verification Commands & Test Results
 ```bash
-# Typecheck (0 errors across 142 files)
+# Typecheck (0 errors across 144 files)
 npm run check
 
 # Production Build (Astro SSR + Cloudflare Adapter)
 npm run build
 
-# Playwright Test Suites (102 tests passed across Chromium)
+# Playwright Test Suites (112 tests passed across Chromium)
 npm test
-npx playwright test tests/e2e/phase1_lifecycle_e2e.spec.ts
+npx playwright test tests/e2e/security_matrix.spec.ts
 ```
-All 102 automated tests pass with 100% success.
+All 112 automated tests pass with 100% success across 9 comprehensive test suites (Tiers 1–4, Crime Tracker, Phase 1 Workflow, Phase 1 Lifecycle E2E, Security RLS, and Security Matrix).

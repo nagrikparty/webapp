@@ -43,7 +43,10 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const body = await request.json();
-    const { action, cardId, memberId, reason } = body;
+    const action = body.action;
+    const cardId = body.cardId || body.card_id;
+    const memberId = body.memberId || body.member_id;
+    const reason = body.reason;
 
     const scopedSupabase = createApiSupabase(ctx.token);
     if (!scopedSupabase) {
@@ -51,8 +54,19 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     if (action === "REVOKE") {
+      if (!["ADMIN", "SUPER_ADMIN"].includes(ctx.profile.role)) {
+        return new Response(
+          JSON.stringify({ error: "Forbidden: Card revocation requires ADMIN or SUPER_ADMIN role", code: "FORBIDDEN" }),
+          { status: 403 }
+        );
+      }
+
       if (!cardId) {
         return new Response(JSON.stringify({ error: "Missing cardId" }), { status: 400 });
+      }
+
+      if (!reason || !reason.trim()) {
+        return new Response(JSON.stringify({ error: "Revocation reason is required for statutory audit" }), { status: 400 });
       }
 
       const { data: card, error: fetchErr } = await scopedSupabase

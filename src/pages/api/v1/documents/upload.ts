@@ -61,77 +61,151 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Database client unavailable" }), { status: 500 });
     }
 
-    const documentId = crypto.randomUUID();
+    const replaceDocumentId = (formData.get("replace_document_id") as string) || null;
+    const replacementReason = (formData.get("reason") as string) || "Updated document version";
+
+    let documentId = replaceDocumentId || crypto.randomUUID();
     const extension = file.name.split(".").pop()?.toLowerCase() || "bin";
     const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const storagePath = `${ctx.user.id}/${documentId}/original.${extension}`;
 
-    // Upload to private bucket: member-documents
-    const { error: uploadError } = await scopedSupabase.storage
-      .from("member-documents")
-      .upload(storagePath, buffer, {
-        contentType: file.type,
-        upsert: false,
-      });
+    let storagePath = "";
+    let versionNumber = 1;
 
-    if (uploadError) {
-      console.error("Storage upload error:", uploadError);
-      return new Response(JSON.stringify({ error: "Failed to upload document to secure storage" }), {
-        status: 500,
-      });
-    }
+    if (replaceDocumentId) {
+      // Version replacement workflow
+      const { data: existingDoc, error: fetchErr } = await scopedSupabase
+        .from("documents")
+        .select("*")
+        .eq("id", replaceDocumentId)
+        .eq("user_id", ctx.user.id)
+        .single();
 
-    // Insert into documents table
-    const { data: docRecord, error: docError } = await scopedSupabase
-      .from("documents")
-      .insert({
-        id: documentId,
-        user_id: ctx.user.id,
-        application_id: applicationId,
-        document_type: documentType,
-        original_filename: sanitizedFilename,
-        mime_type: file.type,
-        file_size: file.size,
+      if (fetchErr || !existingDoc) {
+        return new Response(JSON.stringify({ error: "Existing document not found or access denied" }), { status: 404 });
+      }
+
+      versionNumber = (existingDoc.current_version || 1) + 1;
+      storagePath = `${ctx.user.id}/${replaceDocumentId}/v${versionNumber}.${extension}`;
+
+      const { error: uploadError } = await scopedSupabase.storage
+        .from("member-documents")
+        .upload(storagePath, buffer, {
+          contentType: file.type,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error("Storage upload error on replacement:", uploadError);
+        return new Response(JSON.stringify({ error: "Failed to upload document version" }), { status: 500 });
+      }
+
+      await scopedSupabase.from("document_versions").insert({
+        document_id: replaceDocumentId,
+        version_number: versionNumber,
         storage_path: storagePath,
         sha256_hash: sha256Hash,
-        current_version: 1,
-        ocr_status: file.type.startsWith("image/") ? "PENDING" : "NOT_APPLICABLE",
-        verification_status: "UPLOADED",
-      })
-      .select()
-      .single();
+        file_size: file.size,
+        uploaded_by: ctx.user.id,
+        reason_for_replacement: replacementReason,
+      });
 
-    if (docError || !docRecord) {
-      console.error("Document DB insert error:", docError);
-      return new Response(JSON.stringify({ error: "Failed to create document record" }), { status: 500 });
+      await scopedSupabase
+        .from("documents")
+        .update({
+          current_version: versionNumber,
+          storage_path: storagePath,
+          sha256_hash: sha256Hash,
+          file_size: file.size,
+          original_filename: sanitizedFilename,
+          mime_type: file.type,
+          ocr_status: file.type.startsWith("image/") ? "PENDING" : "NOT_APPLICABLE",
+          verification_status: "UPLOADED",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", replaceDocumentId);
+
+      await logAuditEvent(
+        ctx.user.id,
+        ctx.profile.role,
+        "DOCUMENT_VERSION_CREATED",
+        "documents",
+        replaceDocumentId,
+        {
+          version_number: versionNumber,
+          filename: sanitizedFilename,
+          sha256: sha256Hash,
+          size: file.size,
+          reason: replacementReason,
+        },
+        request
+      );
+    } else {
+      // Initial upload workflow
+      storagePath = `${ctx.user.id}/${documentId}/original.${extension}`;
+
+      const { error: uploadError } = await scopedSupabase.storage
+        .from("member-documents")
+        .upload(storagePath, buffer, {
+          contentType: file.type,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error("Storage upload error:", uploadError);
+        return new Response(JSON.stringify({ error: "Failed to upload document to secure storage" }), {
+          status: 500,
+        });
+      }
+
+      const { data: docRecord, error: docError } = await scopedSupabase
+        .from("documents")
+        .insert({
+          id: documentId,
+          user_id: ctx.user.id,
+          application_id: applicationId,
+          document_type: documentType,
+          original_filename: sanitizedFilename,
+          mime_type: file.type,
+          file_size: file.size,
+          storage_path: storagePath,
+          sha256_hash: sha256Hash,
+          current_version: 1,
+          ocr_status: file.type.startsWith("image/") ? "PENDING" : "NOT_APPLICABLE",
+          verification_status: "UPLOADED",
+        })
+        .select()
+        .single();
+
+      if (docError || !docRecord) {
+        console.error("Document DB insert error:", docError);
+        return new Response(JSON.stringify({ error: "Failed to create document record" }), { status: 500 });
+      }
+
+      await scopedSupabase.from("document_versions").insert({
+        document_id: documentId,
+        version_number: 1,
+        storage_path: storagePath,
+        sha256_hash: sha256Hash,
+        file_size: file.size,
+        uploaded_by: ctx.user.id,
+        reason_for_replacement: "Initial upload",
+      });
+
+      await logAuditEvent(
+        ctx.user.id,
+        ctx.profile.role,
+        "DOCUMENT_UPLOADED",
+        "documents",
+        documentId,
+        {
+          document_type: documentType,
+          filename: sanitizedFilename,
+          sha256: sha256Hash,
+          size: file.size,
+        },
+        request
+      );
     }
-
-    // Insert version 1 into document_versions
-    await scopedSupabase.from("document_versions").insert({
-      document_id: documentId,
-      version_number: 1,
-      storage_path: storagePath,
-      sha256_hash: sha256Hash,
-      file_size: file.size,
-      uploaded_by: ctx.user.id,
-      reason_for_replacement: "Initial upload",
-    });
-
-    // Log audit event
-    await logAuditEvent(
-      ctx.user.id,
-      ctx.profile.role,
-      "DOCUMENT_UPLOADED",
-      "documents",
-      documentId,
-      {
-        document_type: documentType,
-        filename: sanitizedFilename,
-        sha256: sha256Hash,
-        size: file.size,
-      },
-      request
-    );
 
     // Perform OCR extraction if image and Gemini API key is available
     const apiKey = import.meta.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;

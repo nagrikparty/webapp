@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
-
-import { supabase, hasSupabaseConfig } from '@/lib/supabase';
-
+import { supabase, hasSupabaseConfig, createApiSupabase } from '@/lib/supabase';
+import { requireRole, logAuditEvent } from '@/lib/auth';
 
 export const prerender = false;
 
@@ -52,8 +51,13 @@ export const GET: APIRoute = async ({ request }) => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const authResult = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
+  if ("response" in authResult) return authResult.response;
+  const { ctx } = authResult;
+
   try {
-    if (!hasSupabaseConfig || !supabase) {
+    const scopedSupabase = createApiSupabase(ctx.token);
+    if (!scopedSupabase) {
       return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
     }
     const contentType = request.headers.get('content-type') || '';
@@ -65,7 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
       
       const id = btoa(body.source_url).replace(/[/+=]/g, '');
-      const { error } = await supabase.from('crimes').upsert({
+      const { error } = await scopedSupabase.from('crimes').upsert({
         id,
         crime_type: body.crime_type,
         title: body.title,
@@ -74,6 +78,17 @@ export const POST: APIRoute = async ({ request }) => {
       }, { onConflict: 'id' });
       
       if (error) throw error;
+
+      await logAuditEvent(
+        ctx.user.id,
+        ctx.profile.role,
+        'CRIME_RECORD_CREATED',
+        'crimes',
+        id,
+        { crime_type: body.crime_type, title: body.title },
+        request
+      );
+
       return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
 
@@ -122,7 +137,7 @@ export const POST: APIRoute = async ({ request }) => {
         });
 
         if (inserts.length > 0) {
-          const { error, count } = await supabase.from('crimes').upsert(inserts, { onConflict: 'id', ignoreDuplicates: true });
+          const { error, count } = await scopedSupabase.from('crimes').upsert(inserts, { onConflict: 'id', ignoreDuplicates: true });
           if (!error && count) newRecords += count;
         }
       } catch {
@@ -142,16 +157,31 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 export const DELETE: APIRoute = async ({ request }) => {
+  const authResult = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
+  if ("response" in authResult) return authResult.response;
+  const { ctx } = authResult;
+
   try {
-    if (!hasSupabaseConfig || !supabase) {
+    const scopedSupabase = createApiSupabase(ctx.token);
+    if (!scopedSupabase) {
       return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
     }
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
     if (!id) return new Response(JSON.stringify({ error: 'Missing ID' }), { status: 400 });
 
-    const { error } = await supabase.from('crimes').delete().eq('id', id);
+    const { error } = await scopedSupabase.from('crimes').delete().eq('id', id);
     if (error) throw error;
+
+    await logAuditEvent(
+      ctx.user.id,
+      ctx.profile.role,
+      'CRIME_RECORD_DELETED',
+      'crimes',
+      id,
+      { id },
+      request
+    );
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error: unknown) {
