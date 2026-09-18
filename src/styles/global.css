@@ -56,6 +56,9 @@
 
   color-scheme: light;
   font-family: var(--font-sans);
+
+  /* Fixed Navigation Stack Clearance Offset */
+  --header-offset: 156px;
 }
 
 * {
@@ -599,6 +602,19 @@ a.button:active {
   transform: translateY(1px);
 }
 
+.button:focus-visible,
+a.button:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 2px;
+}
+
+.button:disabled,
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .button.primary {
   background: var(--ink);
   color: #ffffff;
@@ -660,9 +676,14 @@ a.button:active {
 }
 
 .hero, .page-hero {
-  padding-top: 124px; 
+  padding-top: var(--header-offset); 
   position: relative;
   background: var(--paper);
+}
+
+.page-offset,
+.page-top-pad {
+  padding-top: var(--header-offset) !important;
 }
 
 /* Reusable Section Headers */
@@ -900,6 +921,12 @@ a.button:active {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-family: var(--font-mono);
+}
+
+.page-hero .mini-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--saffron);
 }
 
 .worklist {
@@ -1175,7 +1202,7 @@ a.button:active {
 }
 
 .page-hero {
-  padding: 110px 20px 50px;
+  padding: var(--header-offset) 0 48px;
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
@@ -1593,6 +1620,10 @@ body.auth-page {
    MOBILE FIRST RESPONSIVE RULES (< 920px and < 640px)
    ========================================================================== */
 @media (max-width: 920px) {
+  :root {
+    --header-offset: 144px;
+  }
+
   .nav-wrapper {
     top: 10px;
     left: 10px;
@@ -1669,6 +1700,10 @@ body.auth-page {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --header-offset: clamp(134px, 18vw, 148px);
+  }
+
   html {
     font-size: 15px;
   }
@@ -1683,7 +1718,7 @@ body.auth-page {
 
   /* Keep sufficient top padding so hero NEVER collides with fixed top navigation */
   .hero, .page-hero {
-    padding-top: clamp(112px, 16vw, 126px); 
+    padding-top: var(--header-offset); 
   }
 
   .hero h1,

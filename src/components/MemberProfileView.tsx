@@ -76,7 +76,7 @@ export function MemberProfileView() {
     return (
       <div className="card" style={{ padding: "40px 24px", textAlign: "center", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line-strong)", boxShadow: "var(--shadow)", maxWidth: "560px", margin: "0 auto" }}>
         <Clock size={44} style={{ color: "var(--saffron)", margin: "0 auto 16px" }} />
-        <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "8px", color: "var(--ink)" }}>Sign In to View Portal</h2>
+        <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, marginBottom: "8px", color: "var(--ink)" }}>Sign In to View Status</h2>
         <p style={{ color: "var(--muted)", fontSize: "14px", maxWidth: "440px", margin: "0 auto 24px", lineHeight: 1.55 }}>
           Please sign in to view your verification status, membership docket, and participation records.
         </p>

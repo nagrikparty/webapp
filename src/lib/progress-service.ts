@@ -53,7 +53,7 @@ const FALLBACK_MILESTONES: MilestoneItem[] = [
   },
   {
     id: "m-3",
-    title: "Founding Member Induction",
+    title: "Founding Member Induction (100+ Verified Voters)",
     description: "Enrolling founding members with valid EPIC voter IDs across Delhi Assembly Constituencies.",
     category: "Membership",
     status: "IN_PROGRESS",

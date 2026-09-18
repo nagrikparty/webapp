@@ -56,17 +56,11 @@ export function IssueReporter() {
     <form className="form-surface" onSubmit={submit}>
       <div className="form-grid">
         <div className="field full">
-          <label htmlFor="issue-title">
-            <span className="lang-en">Issue title</span>
-            <span className="lang-hi">मुद्दे का शीर्षक</span>
-          </label>
+          <label htmlFor="issue-title">Issue title</label>
           <input id="issue-title" name="title" required placeholder="Broken drain cover, dark lane, waterlogging..." />
         </div>
         <div className="field">
-          <label htmlFor="issue-category">
-            <span className="lang-en">Issue type</span>
-            <span className="lang-hi">मुद्दे का प्रकार</span>
-          </label>
+          <label htmlFor="issue-category">Issue type</label>
           <select id="issue-category" name="category" required>
             <option>Roads & infrastructure</option>
             <option>Drainage / sewage</option>
@@ -79,10 +73,7 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field">
-          <label htmlFor="issue-loksabha">
-            <span className="lang-en">Lok Sabha (Parliament)</span>
-            <span className="lang-hi">लोकसभा</span>
-          </label>
+          <label htmlFor="issue-loksabha">Lok Sabha (Parliament)</label>
           <select id="issue-loksabha" name="lok_sabha" required value={lokSabha} onChange={(e) => { setLokSabha(e.target.value); setVidhanSabha(""); }}>
             <option value="">Select Lok Sabha</option>
             {Object.keys(lokSabhaToVidhanSabha).sort().map((ls) => (
@@ -91,10 +82,7 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field">
-          <label htmlFor="issue-vidhansabha">
-            <span className="lang-en">Vidhan Sabha (Assembly)</span>
-            <span className="lang-hi">विधानसभा</span>
-          </label>
+          <label htmlFor="issue-vidhansabha">Vidhan Sabha (Assembly)</label>
           <select id="issue-vidhansabha" name="vidhan_sabha" required disabled={!lokSabha} value={vidhanSabha} onChange={(e) => setVidhanSabha(e.target.value)}>
             <option value="">Select Assembly</option>
             {assemblies.map((ac) => (
@@ -103,10 +91,7 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field">
-          <label htmlFor="issue-ward">
-            <span className="lang-en">Ward</span>
-            <span className="lang-hi">वार्ड</span>
-          </label>
+          <label htmlFor="issue-ward">Ward</label>
           <select id="issue-ward" name="ward" required disabled={!vidhanSabha}>
             <option value="">Select Ward</option>
             {wards.map((w) => (
@@ -115,24 +100,15 @@ export function IssueReporter() {
           </select>
         </div>
         <div className="field full">
-          <label htmlFor="issue-description">
-            <span className="lang-en">Description</span>
-            <span className="lang-hi">विवरण</span>
-          </label>
+          <label htmlFor="issue-description">Description</label>
           <textarea id="issue-description" name="description" required placeholder="Describe what citizens are facing and since when." />
         </div>
         <div className="field">
-          <label htmlFor="issue-photo">
-            <span className="lang-en">Photo evidence</span>
-            <span className="lang-hi">फोटो प्रमाण</span>
-          </label>
+          <label htmlFor="issue-photo">Photo evidence</label>
           <input id="issue-photo" name="photo" accept="image/*" capture="environment" type="file" />
         </div>
         <div className="field">
-          <label htmlFor="issue-email">
-            <span className="lang-en">Optional email</span>
-            <span className="lang-hi">वैकल्पिक ईमेल</span>
-          </label>
+          <label htmlFor="issue-email">Optional email</label>
           <input id="issue-email" name="email" type="email" autoComplete="email" placeholder="For private follow-up only" />
         </div>
       </div>
@@ -140,27 +116,19 @@ export function IssueReporter() {
       <div className="form-submit-group">
         <button className="button" type="button" onClick={locate}>
           <LocateFixed size={17} />
-          <span className="lang-en">Use current location</span>
-          <span className="lang-hi">वर्तमान लोकेशन लें</span>
+          <span>Use current location</span>
         </button>
         <div className="notice">
-          <strong>
-            <span className="lang-en">Public privacy:</span>
-            <span className="lang-hi">सार्वजनिक गोपनीयता:</span>
-          </strong>{" "}
-          <span className="lang-en">
-            issue pages will show the work, not your name, email or personal identity.
-          </span>
-          <span className="lang-hi">
-            मुद्दा पेज काम दिखाएंगे, आपका नाम, ईमेल या निजी पहचान नहीं।
+          <strong>Public privacy:</strong>{" "}
+          <span>
+            Issue pages will show the civic work, not your name, email, or personal identity.
           </span>
           <br />
           <span>{location}</span> · <span>{detected}</span>
         </div>
         <button className="button primary" type="submit">
           {status === "saved" ? <Camera size={17} /> : <UploadCloud size={17} />}
-          <span className="lang-en">{status === "saved" ? "Issue saved locally" : "Submit issue"}</span>
-          <span className="lang-hi">{status === "saved" ? "मुद्दा सेव हुआ" : "मुद्दा जमा करें"}</span>
+          <span>{status === "saved" ? "Issue saved locally" : "Submit issue"}</span>
         </button>
       </div>
     </form>

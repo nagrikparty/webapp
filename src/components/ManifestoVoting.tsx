@@ -39,10 +39,7 @@ export function ManifestoVoting() {
     return (
       <div className="list-panel list-panel-state">
         <Loader2 size={28} className="spin" />
-        <p className="list-panel-msg">
-          <span className="lang-en">Loading manifesto priorities…</span>
-          <span className="lang-hi">घोषणापत्र प्राथमिकताएं लोड हो रही हैं…</span>
-        </p>
+        <p className="list-panel-msg">Loading manifesto priorities...</p>
       </div>
     );
   }
@@ -51,13 +48,9 @@ export function ManifestoVoting() {
     return (
       <div className="list-panel list-panel-state">
         <AlertCircle size={28} className="icon-danger" />
-        <p className="list-panel-msg">
-          <span className="lang-en">Could not load manifesto items. Please try again later.</span>
-          <span className="lang-hi">घोषणापत्र आइटम लोड नहीं हो सके। कृपया बाद में पुनः प्रयास करें।</span>
-        </p>
+        <p className="list-panel-msg">Could not load manifesto items. Please try again later.</p>
         <button className="button" onClick={() => window.location.reload()} type="button">
-          <span className="lang-en">Retry</span>
-          <span className="lang-hi">पुनः प्रयास</span>
+          Retry
         </button>
       </div>
     );
@@ -67,10 +60,7 @@ export function ManifestoVoting() {
     return (
       <div className="list-panel list-panel-state">
         <ListChecks size={28} className="icon-muted" />
-        <p className="list-panel-msg">
-          <span className="lang-en">No manifesto priorities yet. Priorities will appear here as the party programme is built.</span>
-          <span className="lang-hi">अभी कोई घोषणापत्र प्राथमिकता नहीं है। पार्टी कार्यक्रम बनने पर यहां दिखाई देंगी।</span>
-        </p>
+        <p className="list-panel-msg">No manifesto priorities yet. Priorities will appear here as the party programme is built.</p>
       </div>
     );
   }
@@ -81,10 +71,7 @@ export function ManifestoVoting() {
         <div className="rank-row" key={item.id}>
           <div className="rank-num">{index + 1}</div>
           <div>
-            <strong>
-              <span className="lang-en">{item.title}</span>
-              <span className="lang-hi">{item.title_hi}</span>
-            </strong>
+            <strong>{item.title}</strong>
             <div className="tag-group">
               {item.lok_sabha && <span className="tag">{item.lok_sabha}</span>}
               {item.vidhan_sabha && <span className="tag green">{item.vidhan_sabha}</span>}

@@ -53,7 +53,16 @@ export function SmartIsland() {
 
   useEffect(() => {
     document.body.classList.toggle("nav-open", open);
-    return () => document.body.classList.remove("nav-open");
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.classList.remove("nav-open");
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [open]);
 
   async function handleLogout() {
@@ -145,7 +154,13 @@ export function SmartIsland() {
       {/* Mobile Drawer Navigation */}
       {open && (
         <div className="mobile-drawer-overlay" onClick={() => setOpen(false)}>
-          <div className="mobile-drawer-sheet" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="mobile-drawer-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation Menu"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mobile-drawer-header">
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <strong style={{ fontSize: 16, fontFamily: "var(--font-serif)" }}>Nagrik Party</strong>

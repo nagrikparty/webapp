@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Phase 1 — Formation Phase Architecture & Compliance", () => {
+test.describe("Phase 1 · Formation Phase Architecture & Compliance", () => {
   test("1. Landing page displays canonical branding, logo, and strict Phase 1 formation badge", async ({
     page,
   }) => {
@@ -18,9 +18,9 @@ test.describe("Phase 1 — Formation Phase Architecture & Compliance", () => {
     expect(content).not.toContain("/brand/logo.png");
 
     // Strict Rule 4: Formation Phase badge and disclosure
-    await expect(page.locator("body")).toContainText("PHASE 1 • FORMATION PHASE");
+    await expect(page.locator("body")).toContainText(/PHASE 1 [·•] FORMATION PHASE/);
     await expect(page.locator("body")).toContainText(
-      "Nagrik Party — Formation Phase: An independent political initiative working toward the formation and registration of a political party."
+      /Nagrik Party (\(Formation Phase\)|[\u2014·] Formation Phase): An independent political initiative working toward the formation and registration of a political party/
     );
 
     // Ensure zero false claims
@@ -144,7 +144,7 @@ test.describe("Phase 1 — Formation Phase Architecture & Compliance", () => {
   test("9g. Member Contributions loads with Phase 1 voluntary support notice", async ({ page }) => {
     await page.goto("/member/contributions");
     await expect(page.locator("h1").first()).toContainText("Formation Support");
-    await expect(page.locator("body")).toContainText("Formation Phase — Voluntary Support Only");
+    await expect(page.locator("body")).toContainText(/Formation Phase[:\u2014] Voluntary Support Only/);
   });
 
   test("10a. Admin Overview loads with unified navigation breadcrumbs", async ({ page }) => {
@@ -194,7 +194,7 @@ test.describe("Phase 1 — Formation Phase Architecture & Compliance", () => {
   test("10i. Admin Organisation Settings loads with Phase 1 status", async ({ page }) => {
     await page.goto("/admin/settings");
     await expect(page.locator("h1").first()).toContainText("Organisation Settings");
-    await expect(page.locator("body")).toContainText("PHASE 1 — FORMATION PHASE");
+    await expect(page.locator("body")).toContainText(/PHASE 1 [·\u2014] FORMATION PHASE/);
   });
 
   test("11. Submission exports API is protected and responds cleanly", async ({ request }) => {

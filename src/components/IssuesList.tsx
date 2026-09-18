@@ -37,10 +37,7 @@ export function IssuesList() {
     return (
       <div className="list-panel list-panel-state">
         <Loader2 size={28} className="spin" />
-        <p className="list-panel-msg">
-          <span className="lang-en">Loading reported issues…</span>
-          <span className="lang-hi">दर्ज मुद्दे लोड हो रहे हैं…</span>
-        </p>
+        <p className="list-panel-msg">Loading reported issues...</p>
       </div>
     );
   }
@@ -49,13 +46,9 @@ export function IssuesList() {
     return (
       <div className="list-panel list-panel-state">
         <AlertCircle size={28} className="icon-danger" />
-        <p className="list-panel-msg">
-          <span className="lang-en">Could not load issues. Please try again later.</span>
-          <span className="lang-hi">मुद्दे लोड नहीं हो सके। कृपया बाद में पुनः प्रयास करें।</span>
-        </p>
+        <p className="list-panel-msg">Could not load issues. Please try again later.</p>
         <button className="button" onClick={() => window.location.reload()} type="button">
-          <span className="lang-en">Retry</span>
-          <span className="lang-hi">पुनः प्रयास</span>
+          Retry
         </button>
       </div>
     );
@@ -65,10 +58,7 @@ export function IssuesList() {
     return (
       <div className="list-panel list-panel-state">
         <Inbox size={28} className="icon-muted" />
-        <p className="list-panel-msg">
-          <span className="lang-en">No issues reported yet. Use the form above to report the first civic issue in your area.</span>
-          <span className="lang-hi">अभी कोई मुद्दा दर्ज नहीं हुआ। ऊपर के फॉर्म से अपने क्षेत्र का पहला नागरिक मुद्दा दर्ज करें।</span>
-        </p>
+        <p className="list-panel-msg">No issues reported yet. Use the form above to report the first civic issue in your area.</p>
       </div>
     );
   }
@@ -83,7 +73,7 @@ export function IssuesList() {
           <div>
             <strong>{issue.title}</strong>
             <div className="issue-meta">
-              {issue.lok_sabha ? `${issue.lok_sabha} - ` : ""}{issue.vidhan_sabha} - {issue.ward} · {issue.category}
+              {issue.lok_sabha ? `${issue.lok_sabha} · ` : ""}{issue.vidhan_sabha} · {issue.ward} · {issue.category}
             </div>
           </div>
           <span className={`tag ${statusStyle[issue.status.toLowerCase()] ?? ""}`}>

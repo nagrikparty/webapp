@@ -18,7 +18,7 @@ const progress = await getFormationProgress();
         PHASE 1 · FORMATION PHASE
       </div>
       <h1 style="font-size: clamp(2.2rem, 4vw, 3.2rem); margin: 8px 0 12px; font-family: var(--font-serif);">
-        Formation Progress & Roadmap
+        Formation Roadmap
       </h1>
       <p style="font-size: 16px; color: var(--ink-body); max-width: 700px; margin: 0; line-height: 1.6;">
         A transparent account of our organizational and statutory milestones toward registration under Section 29A of the Representation of the People Act, 1951.
@@ -36,7 +36,10 @@ const progress = await getFormationProgress();
       >
         <AlertCircle size={20} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
         <div>
-          <strong style="font-size: 14.5px; color: var(--ink); font-family: var(--font-serif);">Statutory Disclosure</strong>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <strong style="font-size: 14.5px; color: var(--ink); font-family: var(--font-serif);">Strict Statutory Disclosure</strong>
+            <span class="mini-label" style="font-size: 11px;">Stage 3 of Phase 1 (Formation Phase)</span>
+          </div>
           <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.55;">
             Nagrik Party is in <strong>Phase 1, Formation Phase</strong>. We do not claim registered-party status, official recognition, or an allotted election symbol until final Gazette notification by the Election Commission of India under Section 29A RPA 1951.
           </p>
@@ -134,7 +137,7 @@ const progress = await getFormationProgress();
                   border: "1px solid var(--line)",
                 }}
               >
-                {st.status === "COMPLETED" ? "Completed" : st.status === "IN_PROGRESS" ? "In Progress" : "Upcoming"}
+                {st.status === "COMPLETED" ? "Completed" : st.status === "IN_PROGRESS" ? "Current Stage · In Progress" : "Upcoming"}
               </span>
             </div>
 

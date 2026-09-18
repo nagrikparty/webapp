@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Bilingual from "@/components/Bilingual.astro";
 
@@ -7,7 +7,7 @@ Astro.cookies.delete("sb-refresh-token", { path: "/" });
 ---
 
 <BaseLayout title="Logging Out - Nagrik Party" description="Logging out of your account.">
-  <div style="min-height: 50vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 16px;">
+  <div class="page-offset" style="min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding-bottom: 40px; padding-left: 16px; padding-right: 16px;">
     <div class="card" style="max-width: 420px; padding: 32px 24px; background: var(--paper-card); border-radius: 4px; border: 1px solid var(--line-strong);">
       <h2 style="font-family: var(--font-serif); font-weight: 700; margin-bottom: 8px;">
         <Bilingual en="Signing Out..." hi="लॉग आउट हो रहा है..." />
