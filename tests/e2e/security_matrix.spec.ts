@@ -289,6 +289,66 @@ test.describe("Production Security & Lifecycle Integration Suite", () => {
     }
     expect(app.status).toBe("DRAFT");
 
+    // Populate actual persisted scrutiny child records (no synthetic fallbacks)
+    await memberA.client.from("member_addresses").upsert({
+      user_id: memberA.user.id,
+      application_id: app.id,
+      full_legal_name: "Workflow Member",
+      parent_or_guardian_name: "Guardian Name",
+      date_of_birth: "1990-01-01",
+      gender: "Female",
+      phone: "+919811122233",
+      email: memberA.user.email || "test-member-a@demo.nagrikparty.org",
+      address_line1: "12, Barakhamba Road",
+      state: "Delhi",
+      district: "New Delhi",
+      vidhan_sabha: "New Delhi",
+      pincode: "110001",
+    }, { onConflict: "application_id" });
+
+    await memberA.client.from("documents").upsert({
+      user_id: memberA.user.id,
+      application_id: app.id,
+      document_type: "identity_proof",
+      original_filename: "voter_card_scan.pdf",
+      mime_type: "application/pdf",
+      file_size: 204800,
+      storage_path: `${memberA.user.id}/${app.id}/voter_card_scan.pdf`,
+      sha256_hash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      current_version: 1,
+      ocr_status: "CONFIRMED_BY_MEMBER",
+      verification_status: "MEMBER_CONFIRMED",
+    });
+
+    await memberA.client.from("membership_declarations").upsert({
+      user_id: memberA.user.id,
+      application_id: app.id,
+      declaration_text: "Constitutional declaration text",
+      declaration_version: "1.0",
+      bears_true_faith: true,
+      upholds_sovereignty: true,
+      accepts_constitution: true,
+      no_other_party_membership: true,
+      no_prohibited_conduct: true,
+      agreed_at: new Date().toISOString(),
+    }, { onConflict: "application_id" });
+
+    await memberA.client.from("membership_consents").upsert({
+      user_id: memberA.user.id,
+      application_id: app.id,
+      consent_text: "DPDP consent text",
+      consent_version: "1.0",
+      agreed_at: new Date().toISOString(),
+    }, { onConflict: "application_id" });
+
+    await memberA.client.from("signatures").upsert({
+      user_id: memberA.user.id,
+      application_id: app.id,
+      signature_type: "TYPED_CONFIRMATION",
+      typed_name: "Workflow Member",
+      signed_at: new Date().toISOString(),
+    }, { onConflict: "application_id" });
+
     // 2. Member attempts direct jump to APPROVED -> MUST be rejected by RLS
     const { error: illegalJumpErr } = await memberA.client
       .from("membership_applications")

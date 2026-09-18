@@ -155,11 +155,15 @@ export const POST: APIRoute = async ({ request }) => {
         { onConflict: "application_id" }
       );
 
-      // Link uploaded document to application
+      // Link uploaded document to application and mark MEMBER_CONFIRMED
       if (electoralDetails.identity_document_id) {
         await scopedSupabase
           .from("documents")
-          .update({ application_id: applicationId })
+          .update({
+            application_id: applicationId,
+            verification_status: "MEMBER_CONFIRMED",
+            ocr_status: "CONFIRMED_BY_MEMBER",
+          })
           .eq("id", electoralDetails.identity_document_id);
       }
     }
@@ -252,6 +256,16 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 7. Status History & Audit Log
     if (action === "submit") {
+      // Transition all linked documents to MEMBER_CONFIRMED
+      await scopedSupabase
+        .from("documents")
+        .update({
+          verification_status: "MEMBER_CONFIRMED",
+          ocr_status: "CONFIRMED_BY_MEMBER",
+        })
+        .eq("application_id", applicationId)
+        .in("verification_status", ["UPLOADED", "OCR_COMPLETE"]);
+
       await scopedSupabase.from("membership_status_history").insert({
         application_id: applicationId,
         previous_status: existingApp?.status || "DRAFT",
