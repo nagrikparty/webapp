@@ -273,7 +273,7 @@ export function MemberCardView() {
                     NAGRIK PARTY
                   </div>
                   <div style={{ fontSize: "7.5px", fontWeight: 700, color: "var(--muted)", letterSpacing: "0.05em", fontFamily: "var(--font-mono)" }}>
-                    FORMATION PHASE — MEMBERSHIP CARD
+                    FORMATION PHASE · MEMBERSHIP CARD
                   </div>
                 </div>
                 <Logo width={32} />
@@ -383,7 +383,7 @@ export function MemberCardView() {
                 border: "1px solid var(--line)",
               }}
             >
-              <strong>ORGANISATIONAL MEMBERSHIP CARD • NOT A GOVERNMENT IDENTITY DOCUMENT.</strong> This card certifies enrollment in the Nagrik Party register (Phase 1 — Formation Phase). It does not substitute for any official government voter identity card.
+              <strong>ORGANISATIONAL MEMBERSHIP CARD • NOT A GOVERNMENT IDENTITY DOCUMENT.</strong> This card certifies enrollment in the Nagrik Party register (Phase 1, Formation Phase). It does not substitute for any official government voter identity card.
             </div>
           </div>
         </div>

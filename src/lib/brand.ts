@@ -20,8 +20,8 @@ export const BRAND = {
   },
   status: {
     phase: "formation" as const, // 'formation' | 'registered_party'
-    phaseLabel: "PHASE 1 — FORMATION PHASE",
-    phaseLabelHi: "चरण 1 — गठन चरण",
+    phaseLabel: "PHASE 1 · FORMATION PHASE",
+    phaseLabelHi: "चरण 1 · गठन चरण",
     phaseDescription: "An independent political initiative working toward the formation and registration of a political party.",
     phaseDescriptionHi: "एक स्वतंत्र राजनीतिक पहल जो राजनीतिक पार्टी के गठन और पंजीकरण की दिशा में काम कर रही है।",
     disclaimer: "Nagrik Party is currently in its formation phase. Not an ECI-registered political party. Membership cards and verification are organisational records and not government-issued documents."

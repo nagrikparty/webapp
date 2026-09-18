@@ -177,12 +177,12 @@ export function AdminApplicationsView() {
               >
                 <div style={{ flex: 1, minWidth: "220px" }}>
                   <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--ink)", marginBottom: "4px", fontFamily: "var(--font-serif)" }}>
-                    {app.profiles?.full_name || "—"}
+                    {app.profiles?.full_name || "–"}
                   </div>
                   <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "var(--muted)", flexWrap: "wrap" }}>
                     <span style={{ fontFamily: "var(--font-mono)" }}>{app.application_number || "No App #"}</span>
-                    <span>{app.profiles?.email || "—"}</span>
-                    <span>{app.membership_category || "—"}</span>
+                    <span>{app.profiles?.email || "–"}</span>
+                    <span>{app.membership_category || "–"}</span>
                     <span style={{ fontFamily: "var(--font-mono)" }}>{new Date(app.submitted_at || app.created_at).toLocaleDateString("en-IN")}</span>
                   </div>
                 </div>

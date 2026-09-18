@@ -22,6 +22,7 @@ const {
     <meta name="theme-color" content="#faf8f5" />
     <link rel="icon" type="image/svg+xml" href="/nagrikpartylogo.svg" />
     <link rel="apple-touch-icon" href="/nagrikpartylogo.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href={Astro.url.href} />
 
     <!-- Open Graph / Social Media -->
@@ -31,6 +32,7 @@ const {
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={new URL("/nagrikpartylogo.svg", Astro.url).href} />
+    <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary" />
@@ -84,8 +86,8 @@ const {
             </a>
             <p>
               <Bilingual
-                en="Nagrik Party — Formation Phase: An independent political initiative working toward the formation and registration of a political party."
-                hi="नागरिक पार्टी — गठन चरण: एक राजनीतिक पार्टी के गठन और पंजीकरण की दिशा में काम करने वाली एक स्वतंत्र राजनीतिक पहल।"
+                en="Nagrik Party (Formation Phase): An independent political initiative working toward the formation and registration of a political party."
+                hi="नागरिक पार्टी (गठन चरण): एक राजनीतिक पार्टी के गठन और पंजीकरण की दिशा में काम करने वाली एक स्वतंत्र राजनीतिक पहल।"
               />
             </p>
             <small>© 2026 Nagrik Party. Formation Phase (Proposed for registration under Section 29A RPA 1951).</small>

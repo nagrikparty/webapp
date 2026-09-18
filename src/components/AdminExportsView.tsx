@@ -319,7 +319,7 @@ export function AdminExportsView() {
             >
               {templates.map((tmpl) => (
                 <option key={tmpl.id} value={tmpl.id}>
-                  {tmpl.name} ({tmpl.code}) — {tmpl.target_authority}
+                  {tmpl.name} ({tmpl.code}) · {tmpl.target_authority}
                 </option>
               ))}
             </select>

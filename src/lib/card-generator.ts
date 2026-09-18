@@ -64,7 +64,7 @@ export async function generateCR80CardPdf(data: CardData): Promise<Uint8Array> {
   });
 
   // Phase Badge
-  frontPage.drawText("FORMATION PHASE — MEMBERSHIP CARD", {
+  frontPage.drawText("FORMATION PHASE · MEMBERSHIP CARD", {
     x: 14,
     y: CR80_HEIGHT - 32,
     size: 5.5,

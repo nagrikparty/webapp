@@ -235,14 +235,14 @@ export function AdminCardsView() {
               >
                 <div style={{ flex: 1, minWidth: "220px" }}>
                   <div style={{ fontSize: "15px", fontWeight: 700, color: "var(--ink)", marginBottom: "4px", fontFamily: "var(--font-serif)" }}>
-                    {card.members?.full_name || "—"}
+                    {card.members?.full_name || "–"}
                   </div>
                   <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "var(--muted)", flexWrap: "wrap" }}>
                     <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink)" }}>Card: <strong>{card.card_number}</strong></span>
-                    <span style={{ fontFamily: "var(--font-mono)" }}>Member: {card.members?.membership_id || "—"}</span>
+                    <span style={{ fontFamily: "var(--font-mono)" }}>Member: {card.members?.membership_id || "–"}</span>
                     <span style={{ fontFamily: "var(--font-mono)" }}>v{card.card_version}</span>
                     <span style={{ fontFamily: "var(--font-mono)" }}>Issued: {new Date(card.issue_date).toLocaleDateString("en-IN")}</span>
-                    <span>{card.members?.category || "—"}</span>
+                    <span>{card.members?.category || "–"}</span>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

@@ -78,7 +78,7 @@ export async function generateSubmissionBundle(
     color: rgb(29 / 255, 29 / 255, 31 / 255),
   });
 
-  coverPage.drawText("FORMATION PHASE — OFFICIAL RECORD BUNDLE", {
+  coverPage.drawText("FORMATION PHASE · OFFICIAL RECORD BUNDLE", {
     x: 50,
     y: A4_HEIGHT - 150,
     size: 11,
@@ -96,7 +96,7 @@ export async function generateSubmissionBundle(
   });
 
   coverPage.drawText(
-    `Export Reference: ${exportNumber}\nDate of Generation: ${new Date().toLocaleDateString("en-IN")}\nTotal Approved Members Included: ${members.length}\nInitiative Status: Phase 1 — Formation Phase (Proposed for registration)`,
+    `Export Reference: ${exportNumber}\nDate of Generation: ${new Date().toLocaleDateString("en-IN")}\nTotal Approved Members Included: ${members.length}\nInitiative Status: Phase 1, Formation Phase (Proposed for registration)`,
     {
       x: 50,
       y: A4_HEIGHT - 320,

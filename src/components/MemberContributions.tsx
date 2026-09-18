@@ -88,7 +88,7 @@ export function MemberContributions() {
       >
         <AlertCircle size={18} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
         <div style={{ fontSize: "13px", color: "var(--muted)", lineHeight: 1.5 }}>
-          <strong style={{ color: "var(--ink)", fontFamily: "var(--font-serif)" }}>Formation Phase — Voluntary Support Only / स्वैच्छिक गठन सहयोग</strong>
+          <strong style={{ color: "var(--ink)", fontFamily: "var(--font-serif)" }}>Formation Phase: Voluntary Support Only / स्वैच्छिक गठन सहयोग</strong>
           <br />
           Nagrik Party is in its formation phase. All contributions are strictly voluntary support towards organisational formation and statutory filings. Zero cash policy is enforced.
           Full financial disclosure is maintained at{" "}
