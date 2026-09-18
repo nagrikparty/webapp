@@ -71,7 +71,7 @@ export function AdminSettingsView() {
         setSettings([
           { key: "organization_phase", value: "formation", description: "Current organizational phase (formation | registered_party)" },
           { key: "public_progress_override", value: "", description: "Auditable public formation progress percentage override (leave empty for weighted calculation)" },
-          { key: "public_founder_image", value: "/assets/leader.png", description: "Founder photograph path or public URL" },
+          { key: "public_founder_image", value: "/images/arsalanazadheroimage.png", description: "Founder photograph path or public URL" },
           { key: "hero_headline", value: "A political party is being built.", description: "Homepage primary hero title" },
           { key: "registration_open", value: "true", description: "Whether new membership applications are accepted" },
           { key: "donations_enabled", value: "false", description: "Enable or disable public donation / UPI acceptance widget" },

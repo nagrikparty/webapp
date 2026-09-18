@@ -408,7 +408,7 @@ export function PublicDocumentsLibrary() {
           ))}
         </div>
 
-        <div style={{ position: "relative", minWidth: "240px" }}>
+        <div style={{ position: "relative", minWidth: "min(100%, 240px)", flex: "1 1 200px" }}>
           <Search size={14} style={{ position: "absolute", left: "12px", top: "12px", color: "var(--muted)" }} />
           <input
             type="text"
@@ -423,7 +423,7 @@ export function PublicDocumentsLibrary() {
               background: "#ffffff",
               color: "var(--ink)",
               width: "100%",
-              minHeight: "38px",
+              minHeight: "44px",
               boxSizing: "border-box",
             }}
           />
@@ -431,7 +431,7 @@ export function PublicDocumentsLibrary() {
       </div>
 
       {/* Grid of Documents */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "18px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "18px" }}>
         {filteredDocs.map((doc) => (
           <div
             key={doc.id}

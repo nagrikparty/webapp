@@ -7,7 +7,7 @@ export const FOUNDER_DATA = {
   role: "Founder / Founding Convener (Formation Phase)",
   electoralHistory: "Contested the 2025 Delhi Assembly election as an independent candidate.",
   familyBackground: "Comes from a family with decades of public service in education and government service.",
-  imageSlot: import.meta.env.PUBLIC_FOUNDER_IMAGE || "/assets/leader.png",
+  imageSlot: import.meta.env.PUBLIC_FOUNDER_IMAGE || "/images/arsalanazadheroimage.png",
   
   corePrinciples: [
     "From voter to participant: moving citizens from passive spectators to co-builders of their political representation.",

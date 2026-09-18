@@ -668,7 +668,7 @@ export function InductionWizard() {
             </p>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", marginBottom: "28px" }}>
-              <div className="field" style={{ gridColumn: "span 2" }}>
+              <div className="field" style={{ gridColumn: "1 / -1" }}>
                 <label style={{ fontSize: "13px", fontWeight: 600 }}>Full Legal Name *</label>
                 <input
                   type="text"
@@ -836,7 +836,7 @@ export function InductionWizard() {
                 />
               </div>
 
-              <div className="field" style={{ gridColumn: "span 2" }}>
+              <div className="field" style={{ gridColumn: "1 / -1" }}>
                 <label style={{ fontSize: "13px", fontWeight: 600 }}>Residential Address *</label>
                 <input
                   type="text"
@@ -1227,7 +1227,7 @@ export function InductionWizard() {
             {/* Application Summary Review */}
             <div style={{ background: "var(--paper-subtle)", padding: "16px 20px", borderRadius: "4px", border: "1px solid var(--line)", marginBottom: "28px", fontSize: "13px" }}>
               <div style={{ fontWeight: 700, marginBottom: "8px", color: "var(--ink)" }}>Application Summary:</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "8px" }}>
                 <div><strong>Name:</strong> {personalDetails.full_legal_name || "–"}</div>
                 <div><strong>Phone:</strong> {personalDetails.phone || "–"}</div>
                 <div><strong>Constituency:</strong> {personalDetails.vidhan_sabha} ({personalDetails.ward || "–"})</div>
@@ -1237,8 +1237,8 @@ export function InductionWizard() {
               </div>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <button type="button" className="button" onClick={() => setStep(7)} disabled={submitting}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+              <button type="button" className="button" onClick={() => setStep(7)} disabled={submitting} style={{ minHeight: "44px" }}>
                 &larr; Back
               </button>
               <button
@@ -1246,7 +1246,7 @@ export function InductionWizard() {
                 className="button button-primary"
                 onClick={handleFinalSubmit}
                 disabled={submitting}
-                style={{ padding: "12px 32px", fontSize: "15px" }}
+                style={{ padding: "12px 32px", fontSize: "15px", minHeight: "44px" }}
               >
                 {submitting ? "Submitting Application..." : "Join Nagrik Party &rarr;"}
               </button>

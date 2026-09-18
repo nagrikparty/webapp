@@ -134,7 +134,7 @@ const iconMap: Record<string, any> = {
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px;">
           {topics.map((t) => {
             const IconComponent = (t.icon && iconMap[t.icon]) || TrendingUp;
             return (

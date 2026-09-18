@@ -38,7 +38,10 @@ export function FoundingProgressBar({ initialData }: FoundingProgressBarProps) {
     <aside className="founding-progress-banner" aria-label="Formation Progress">
       <div className="container founding-progress-container">
         <div className="founding-progress-meta">
-          <span className="founding-progress-badge">{phaseLabel}</span>
+          <span className="founding-progress-badge">
+            <span className="badge-text-full">{phaseLabel}</span>
+            <span className="badge-text-short">PHASE 1</span>
+          </span>
           <span className="founding-progress-phase">
             Current phase: <strong>{phaseName}</strong>
           </span>
@@ -65,7 +68,8 @@ export function FoundingProgressBar({ initialData }: FoundingProgressBarProps) {
           </div>
 
           <a href="/formation-progress" className="founding-progress-link">
-            Track Roadmap &rarr;
+            <span className="progress-link-full">Track Roadmap &rarr;</span>
+            <span className="progress-link-short">Track &rarr;</span>
           </a>
         </div>
       </div>

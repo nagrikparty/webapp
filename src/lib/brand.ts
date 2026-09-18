@@ -31,7 +31,7 @@ export const BRAND = {
     legalName: "Sheikh Arsalanullah Chishti",
     role: "Founder / Founding Convener (Formation Phase)",
     biography: "Contested the 2025 Delhi Assembly election independently. Initiating the formation of Nagrik Party to build a durable, accountable citizen-led political organization.",
-    imageSlot: import.meta.env.PUBLIC_FOUNDER_IMAGE || "/assets/leader.png"
+    imageSlot: import.meta.env.PUBLIC_FOUNDER_IMAGE || "/images/arsalanazadheroimage.png"
   }
 } as const;
 

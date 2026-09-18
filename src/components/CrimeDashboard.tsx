@@ -20,7 +20,7 @@ export function CrimeDashboard() {
         }
       }
     } catch {
-      // Network error — stats unavailable
+      // Network error: stats unavailable
     } finally {
       setLoading(false);
     }

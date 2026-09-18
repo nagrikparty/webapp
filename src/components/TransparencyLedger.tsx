@@ -183,7 +183,7 @@ export function TransparencyLedger() {
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "20px" }}>
-            <div style={{ flex: 1, minWidth: "280px" }}>
+            <div style={{ flex: 1, minWidth: "min(100%, 240px)" }}>
               <span
                 style={{
                   fontSize: "11px",
@@ -249,7 +249,7 @@ export function TransparencyLedger() {
 
       {/* Reporting Period Statements Summary */}
       {statements.length > 0 ? (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
           {statements.map((st) => (
             <div
               key={st.id}

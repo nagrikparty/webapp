@@ -91,7 +91,7 @@ const maxMentions = trend.length > 0 ? Math.max(...trend.map((t) => t.mentions),
                     {currentAggregate.unique_publications}
                   </div>
                 </div>
-                <div style="background: var(--paper-subtle); padding: 12px 14px; border-radius: 3px; border: 1px solid var(--line); grid-column: span 2;">
+                <div style="background: var(--paper-subtle); padding: 12px 14px; border-radius: 3px; border: 1px solid var(--line); grid-column: 1 / -1;">
                   <div style="font-size: 11px; color: var(--muted); font-family: var(--font-mono); display: flex; align-items: center; gap: 4px;">
                     <Clock size={12} /> DATA FRESHNESS
                   </div>
@@ -108,7 +108,7 @@ const maxMentions = trend.length > 0 ? Math.max(...trend.map((t) => t.mentions),
                 <div style="font-size: 13px; font-weight: 700; font-family: var(--font-mono); color: var(--muted); margin-bottom: 12px; text-transform: uppercase;">
                   12-Month Mention Trend
                 </div>
-                <div style="display: flex; align-items: flex-end; gap: 8px; height: 120px; background: var(--paper-subtle); padding: 16px 14px 10px; border-radius: 3px; border: 1px solid var(--line);">
+                <div style="display: flex; align-items: flex-end; gap: 8px; height: 120px; background: var(--paper-subtle); padding: 16px 14px 10px; border-radius: 3px; border: 1px solid var(--line); overflow-x: auto;">
                   {trend.map((point) => {
                     const heightPercent = Math.max(8, Math.round((point.mentions / maxMentions) * 100));
                     return (
