@@ -61,6 +61,23 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Database client unavailable" }), { status: 500 });
     }
 
+    // Ownership Verification: Ensure application belongs to authenticated user
+    if (applicationId) {
+      const { data: appRecord, error: appFetchErr } = await scopedSupabase
+        .from("membership_applications")
+        .select("id, user_id")
+        .eq("id", applicationId)
+        .eq("user_id", ctx.user.id)
+        .maybeSingle();
+
+      if (appFetchErr || !appRecord) {
+        return new Response(
+          JSON.stringify({ error: "Access denied: Application not found or does not belong to authenticated user" }),
+          { status: 403, headers: { "Content-Type": "application/json" } }
+        );
+      }
+    }
+
     const replaceDocumentId = (formData.get("replace_document_id") as string) || null;
     const replacementReason = (formData.get("reason") as string) || "Updated document version";
 
@@ -72,7 +89,7 @@ export const POST: APIRoute = async ({ request }) => {
     let versionNumber = 1;
 
     if (replaceDocumentId) {
-      // Version replacement workflow
+      // Version replacement workflow: verify ownership server-side
       const { data: existingDoc, error: fetchErr } = await scopedSupabase
         .from("documents")
         .select("*")
@@ -99,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ error: "Failed to upload document version" }), { status: 500 });
       }
 
-      await scopedSupabase.from("document_versions").insert({
+      const { error: versionInsertError } = await scopedSupabase.from("document_versions").insert({
         document_id: replaceDocumentId,
         version_number: versionNumber,
         storage_path: storagePath,
@@ -109,7 +126,13 @@ export const POST: APIRoute = async ({ request }) => {
         reason_for_replacement: replacementReason,
       });
 
-      await scopedSupabase
+      if (versionInsertError) {
+        console.error("Document version insert error:", versionInsertError);
+        return new Response(JSON.stringify({ error: "Failed to record document version" }), { status: 500 });
+      }
+
+      // Reset verification status, removing any prior ORGANISATION VERIFIED state upon replacement
+      const { error: docUpdateError } = await scopedSupabase
         .from("documents")
         .update({
           current_version: versionNumber,
@@ -120,9 +143,17 @@ export const POST: APIRoute = async ({ request }) => {
           mime_type: file.type,
           ocr_status: file.type.startsWith("image/") ? "PENDING" : "NOT_APPLICABLE",
           verification_status: "UPLOADED",
+          verified_by: null,
+          verified_at: null,
+          rejection_reason: null,
           updated_at: new Date().toISOString(),
         })
         .eq("id", replaceDocumentId);
+
+      if (docUpdateError) {
+        console.error("Document update error on replacement:", docUpdateError);
+        return new Response(JSON.stringify({ error: "Failed to update document record" }), { status: 500 });
+      }
 
       await logAuditEvent(
         ctx.user.id,
@@ -181,7 +212,7 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ error: "Failed to create document record" }), { status: 500 });
       }
 
-      await scopedSupabase.from("document_versions").insert({
+      const { error: initialVersionError } = await scopedSupabase.from("document_versions").insert({
         document_id: documentId,
         version_number: 1,
         storage_path: storagePath,
@@ -190,6 +221,11 @@ export const POST: APIRoute = async ({ request }) => {
         uploaded_by: ctx.user.id,
         reason_for_replacement: "Initial upload",
       });
+
+      if (initialVersionError) {
+        console.error("Initial document version insert error:", initialVersionError);
+        return new Response(JSON.stringify({ error: "Failed to record initial document version" }), { status: 500 });
+      }
 
       await logAuditEvent(
         ctx.user.id,

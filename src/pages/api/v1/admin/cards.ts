@@ -174,10 +174,15 @@ export const POST: APIRoute = async ({ request }) => {
       // Mark any currently ACTIVE cards for this member as SUPERSEDED
       const activeCards = (existingCards || []).filter((c) => c.status === "ACTIVE");
       for (const ac of activeCards) {
-        await scopedSupabase
+        const { error: superErr } = await scopedSupabase
           .from("membership_cards")
           .update({ status: "SUPERSEDED" })
           .eq("id", ac.id);
+
+        if (superErr) {
+          console.error("Failed to supersede card:", superErr);
+          return new Response(JSON.stringify({ error: "Failed to supersede existing active card" }), { status: 500 });
+        }
       }
 
       // Issue new active card

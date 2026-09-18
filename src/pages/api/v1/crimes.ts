@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ request }) => {
     if (type) {
       const { data, error } = await supabase
         .from('crimes')
-        .select('*')
+        .select('id, crime_type, title, source_url, incident_date, created_at')
         .eq('crime_type', type)
         .order('incident_date', { ascending: false });
         
@@ -62,92 +62,54 @@ export const POST: APIRoute = async ({ request }) => {
     }
     const contentType = request.headers.get('content-type') || '';
     
-    if (contentType.includes('application/json')) {
-      const body = await request.json();
-      if (!body.crime_type || !body.title || !body.source_url || !body.incident_date) {
-         return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 });
-      }
-      
-      const id = btoa(body.source_url).replace(/[/+=]/g, '');
-      const { error } = await scopedSupabase.from('crimes').upsert({
-        id,
-        crime_type: body.crime_type,
-        title: body.title,
-        source_url: body.source_url,
-        incident_date: new Date(body.incident_date).toISOString()
-      }, { onConflict: 'id' });
-      
-      if (error) throw error;
-
-      await logAuditEvent(
-        ctx.user.id,
-        ctx.profile.role,
-        'CRIME_RECORD_CREATED',
-        'crimes',
-        id,
-        { crime_type: body.crime_type, title: body.title },
-        request
+    if (!contentType.includes('application/json')) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid Content-Type: Incident creation requires application/json with verified source data' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
-
-      return new Response(JSON.stringify({ success: true }), { status: 200 });
     }
 
-    const categories = ['rape', 'murder', 'kidnap', 'robbery', 'extortion'];
-    let newRecords = 0;
-
-    for (const cat of categories) {
-      try {
-        const query = encodeURIComponent(`Delhi ${cat}`);
-        const rssRes = await fetch(`https://news.google.com/rss/search?q=${query}&hl=en-IN&gl=IN&ceid=IN:en`);
-        const feedText = await rssRes.text();
-        
-        let mappedType = '';
-        if (cat === 'rape') mappedType = 'Rape';
-        if (cat === 'murder') mappedType = 'Murder';
-        if (cat === 'kidnap') mappedType = 'Kidnapping';
-        if (cat === 'robbery') mappedType = 'Robbery';
-        if (cat === 'extortion') mappedType = 'Extortion';
-
-        const inserts: Record<string, unknown>[] = [];
-        
-        // Lightweight RSS parsing to avoid Node.js dependency issues on Cloudflare
-        const items = [...feedText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
-        items.forEach((match) => {
-          const itemXml = match[1];
-          const titleMatch = itemXml.match(/<title>([\s\S]*?)<\/title>/);
-          const linkMatch = itemXml.match(/<link>([\s\S]*?)<\/link>/);
-          const pubDateMatch = itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
-          
-          const rawTitle = titleMatch ? titleMatch[1] : '';
-          const title = rawTitle.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1');
-          const titleLower = title.toLowerCase();
-          const link = linkMatch ? linkMatch[1] : '';
-          const pubDate = pubDateMatch ? pubDateMatch[1] : '';
-
-          if (titleLower.includes('delhi') || titleLower.includes('ncr') || titleLower.includes('noida') || titleLower.includes('gurugram')) {
-            const id = btoa(link || title).replace(/[/+=]/g, '');
-            inserts.push({
-              id,
-              crime_type: mappedType,
-              title: title,
-              source_url: link,
-              incident_date: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString()
-            });
-          }
-        });
-
-        if (inserts.length > 0) {
-          const { error, count } = await scopedSupabase.from('crimes').upsert(inserts, { onConflict: 'id', ignoreDuplicates: true });
-          if (!error && count) newRecords += count;
-        }
-      } catch {
-        // Skip on error
-      }
+    const body = await request.json();
+    if (!body.crime_type || !body.title || !body.source_url || !body.incident_date) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required verified fields (crime_type, title, source_url, incident_date)' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
-    return new Response(JSON.stringify({ success: true, newRecords }), {
+    // Verify incident_date is a valid date
+    const parsedDate = new Date(body.incident_date);
+    if (isNaN(parsedDate.getTime())) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid incident_date format' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const id = btoa(body.source_url).replace(/[/+=]/g, '');
+    const { error } = await scopedSupabase.from('crimes').upsert({
+      id,
+      crime_type: body.crime_type,
+      title: body.title,
+      source_url: body.source_url,
+      incident_date: parsedDate.toISOString(),
+    }, { onConflict: 'id' });
+    
+    if (error) throw error;
+
+    await logAuditEvent(
+      ctx.user.id,
+      ctx.profile.role,
+      'CRIME_RECORD_CREATED',
+      'crimes',
+      id,
+      { crime_type: body.crime_type, title: body.title, incident_date: parsedDate.toISOString() },
+      request
+    );
+
+    return new Response(JSON.stringify({ success: true, id }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     });
 
   } catch (error: unknown) {

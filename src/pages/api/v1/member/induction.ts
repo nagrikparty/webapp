@@ -38,8 +38,16 @@ export const POST: APIRoute = async ({ request }) => {
     let applicationId = existingApp?.id;
     let applicationNumber = existingApp?.application_number;
 
+    if (action !== "draft" && action !== "submit") {
+      return new Response(JSON.stringify({ error: "Invalid action. Allowed actions are 'draft' or 'submit'." }), { status: 400 });
+    }
+
     if (existingApp && existingApp.status === "APPROVED") {
       return new Response(JSON.stringify({ error: "You are already an approved member." }), { status: 400 });
+    }
+
+    if (existingApp && ["REJECTED", "SUSPENDED", "RESIGNED", "ARCHIVED"].includes(existingApp.status)) {
+      return new Response(JSON.stringify({ error: `Application in state ${existingApp.status} cannot be modified.` }), { status: 400 });
     }
 
     if (existingApp && existingApp.status === "SUBMITTED" && action === "submit") {
@@ -95,15 +103,20 @@ export const POST: APIRoute = async ({ request }) => {
         updatePayload.correction_notes = null;
       }
 
-      await scopedSupabase
+      const { error: updateAppErr } = await scopedSupabase
         .from("membership_applications")
         .update(updatePayload)
         .eq("id", applicationId);
+
+      if (updateAppErr) {
+        console.error("Failed to update application:", updateAppErr);
+        return new Response(JSON.stringify({ error: "Failed to update application record" }), { status: 500 });
+      }
     }
 
     // 1. Personal Details / Member Address
     if (personalDetails) {
-      await scopedSupabase.from("member_addresses").upsert(
+      const { error: addrErr } = await scopedSupabase.from("member_addresses").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
@@ -126,8 +139,13 @@ export const POST: APIRoute = async ({ request }) => {
         { onConflict: "application_id" }
       );
 
+      if (addrErr) {
+        console.error("Failed to save member address:", addrErr);
+        return new Response(JSON.stringify({ error: "Failed to save personal and address details" }), { status: 500 });
+      }
+
       // Sync basic details into profiles
-      await scopedSupabase
+      const { error: profErr } = await scopedSupabase
         .from("profiles")
         .update({
           full_name: personalDetails.full_legal_name,
@@ -136,11 +154,32 @@ export const POST: APIRoute = async ({ request }) => {
           ward: personalDetails.ward,
         })
         .eq("id", ctx.user.id);
+
+      if (profErr) {
+        console.warn("Notice: failed to update profile cache:", profErr);
+      }
     }
 
     // 2. Electoral Details
     if (electoralDetails) {
-      await scopedSupabase.from("electoral_details").upsert(
+      // If an identity document ID is provided, verify ownership first
+      if (electoralDetails.identity_document_id) {
+        const { data: docRecord, error: docFindErr } = await scopedSupabase
+          .from("documents")
+          .select("id, user_id")
+          .eq("id", electoralDetails.identity_document_id)
+          .eq("user_id", ctx.user.id)
+          .maybeSingle();
+
+        if (docFindErr || !docRecord) {
+          return new Response(
+            JSON.stringify({ error: "Invalid identity document or permission denied" }),
+            { status: 403 }
+          );
+        }
+      }
+
+      const { error: elecErr } = await scopedSupabase.from("electoral_details").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
@@ -155,22 +194,33 @@ export const POST: APIRoute = async ({ request }) => {
         { onConflict: "application_id" }
       );
 
+      if (elecErr) {
+        console.error("Failed to save electoral details:", elecErr);
+        return new Response(JSON.stringify({ error: "Failed to save electoral details" }), { status: 500 });
+      }
+
       // Link uploaded document to application and mark MEMBER_CONFIRMED
       if (electoralDetails.identity_document_id) {
-        await scopedSupabase
+        const { error: docUpdateErr } = await scopedSupabase
           .from("documents")
           .update({
             application_id: applicationId,
             verification_status: "MEMBER_CONFIRMED",
             ocr_status: "CONFIRMED_BY_MEMBER",
           })
-          .eq("id", electoralDetails.identity_document_id);
+          .eq("id", electoralDetails.identity_document_id)
+          .eq("user_id", ctx.user.id);
+
+        if (docUpdateErr) {
+          console.error("Failed to link document:", docUpdateErr);
+          return new Response(JSON.stringify({ error: "Failed to link identity document" }), { status: 500 });
+        }
       }
     }
 
     // 3. Member Participation
     if (participation) {
-      await scopedSupabase.from("member_participation").upsert(
+      const { error: partErr } = await scopedSupabase.from("member_participation").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
@@ -181,6 +231,11 @@ export const POST: APIRoute = async ({ request }) => {
         },
         { onConflict: "application_id" }
       );
+
+      if (partErr) {
+        console.error("Failed to save participation details:", partErr);
+        return new Response(JSON.stringify({ error: "Failed to save participation details" }), { status: 500 });
+      }
     }
 
     // 4. Constitutional Declaration
@@ -192,7 +247,7 @@ export const POST: APIRoute = async ({ request }) => {
         ? declaration.declaration_text
         : CONSTITUTIONAL_DECLARATION_V1.text;
 
-      await scopedSupabase.from("membership_declarations").upsert(
+      const { error: declErr } = await scopedSupabase.from("membership_declarations").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
@@ -209,6 +264,11 @@ export const POST: APIRoute = async ({ request }) => {
         },
         { onConflict: "application_id" }
       );
+
+      if (declErr) {
+        console.error("Failed to save declaration:", declErr);
+        return new Response(JSON.stringify({ error: "Failed to save membership declaration" }), { status: 500 });
+      }
     }
 
     // 5. Data Consent
@@ -220,7 +280,7 @@ export const POST: APIRoute = async ({ request }) => {
         ? consent.consent_text
         : DATA_CONSENT_V1.text;
 
-      await scopedSupabase.from("membership_consents").upsert(
+      const { error: consentErr } = await scopedSupabase.from("membership_consents").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
@@ -232,6 +292,11 @@ export const POST: APIRoute = async ({ request }) => {
         },
         { onConflict: "application_id" }
       );
+
+      if (consentErr) {
+        console.error("Failed to save consent:", consentErr);
+        return new Response(JSON.stringify({ error: "Failed to save data consent" }), { status: 500 });
+      }
     }
 
     // 6. Signature
@@ -239,7 +304,7 @@ export const POST: APIRoute = async ({ request }) => {
       const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for");
       const ua = request.headers.get("user-agent");
 
-      await scopedSupabase.from("signatures").upsert(
+      const { error: sigErr } = await scopedSupabase.from("signatures").upsert(
         {
           user_id: ctx.user.id,
           application_id: applicationId,
@@ -252,6 +317,11 @@ export const POST: APIRoute = async ({ request }) => {
         },
         { onConflict: "application_id" }
       );
+
+      if (sigErr) {
+        console.error("Failed to save signature:", sigErr);
+        return new Response(JSON.stringify({ error: "Failed to save signature" }), { status: 500 });
+      }
     }
 
     // 7. Status History & Audit Log
