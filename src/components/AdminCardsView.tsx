@@ -34,13 +34,23 @@ export function AdminCardsView() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { setLoading(false); return; }
 
-      const { data, error } = await supabase
-        .from("membership_cards")
-        .select("*, members:member_id(membership_id, full_name, category)")
-        .order("issue_date", { ascending: false });
+      const res = await fetch("/api/v1/admin/cards", {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
 
-      if (error) throw error;
-      setCards((data || []) as MembershipCard[]);
+      if (!res.ok) {
+        // Fallback to direct client query if endpoint issues
+        const { data, error } = await supabase
+          .from("membership_cards")
+          .select("*, members:member_id(membership_id, full_name, category)")
+          .order("issue_date", { ascending: false });
+        if (error) throw error;
+        setCards((data || []) as MembershipCard[]);
+        return;
+      }
+
+      const json = await res.json();
+      setCards(json.cards || []);
     } catch (err) {
       console.error("Failed to load cards:", err);
     } finally {
@@ -49,18 +59,61 @@ export function AdminCardsView() {
   }
 
   async function revokeCard(cardId: string) {
-    if (!supabase || !confirm("Are you sure you want to revoke this card? This action is audited.")) return;
+    const reason = prompt("Please enter the reason for revoking this card (required for statutory audit):");
+    if (!reason || !reason.trim()) return;
+
     setActionLoading(cardId);
     try {
-      const { error } = await supabase
-        .from("membership_cards")
-        .update({ status: "REVOKED" })
-        .eq("id", cardId);
-      if (error) throw error;
+      const { data: { session } } = await supabase!.auth.getSession();
+      if (!session) throw new Error("No active session");
+
+      const res = await fetch("/api/v1/admin/cards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ action: "REVOKE", cardId, reason: reason.trim() }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to revoke card");
+
       await loadCards();
     } catch (err) {
       console.error("Failed to revoke card:", err);
-      alert("Failed to revoke card.");
+      alert(err instanceof Error ? err.message : "Failed to revoke card.");
+    } finally {
+      setActionLoading(null);
+    }
+  }
+
+  async function reissueCard(cardId: string) {
+    const reason = prompt("Enter the reason for re-issuing this card (e.g. Card damaged, details updated, loss report):");
+    if (!reason || !reason.trim()) return;
+
+    setActionLoading(cardId);
+    try {
+      const { data: { session } } = await supabase!.auth.getSession();
+      if (!session) throw new Error("No active session");
+
+      const res = await fetch("/api/v1/admin/cards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ action: "REISSUE", cardId, reason: reason.trim() }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to reissue card");
+
+      alert(`Successfully re-issued card v${data.card?.card_version || "new"}! Previous card marked SUPERSEDED.`);
+      await loadCards();
+    } catch (err) {
+      console.error("Failed to reissue card:", err);
+      alert(err instanceof Error ? err.message : "Failed to reissue card.");
     } finally {
       setActionLoading(null);
     }
@@ -222,24 +275,49 @@ export function AdminCardsView() {
                     </a>
                   )}
                   {isActive && (
-                    <button
-                      onClick={() => revokeCard(card.id)}
-                      disabled={actionLoading === card.id}
-                      className="button"
-                      style={{
-                        minHeight: "32px",
-                        padding: "4px 10px",
-                        fontSize: "11px",
-                        fontWeight: 700,
-                        backgroundColor: "rgba(142, 38, 23, 0.06)",
-                        color: "var(--red)",
-                        border: "1px solid rgba(142, 38, 23, 0.25)",
-                        borderRadius: "3px",
-                        cursor: actionLoading === card.id ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      {actionLoading === card.id ? "..." : "Revoke"}
-                    </button>
+                    <>
+                      <button
+                        onClick={() => reissueCard(card.id)}
+                        disabled={actionLoading === card.id}
+                        className="button"
+                        style={{
+                          minHeight: "32px",
+                          padding: "4px 10px",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          backgroundColor: "rgba(179, 74, 21, 0.08)",
+                          color: "var(--saffron)",
+                          border: "1px solid rgba(179, 74, 21, 0.25)",
+                          borderRadius: "3px",
+                          cursor: actionLoading === card.id ? "not-allowed" : "pointer",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                        title="Issue replacement card (increments version and supersedes current card)"
+                      >
+                        <RefreshCw size={12} className={actionLoading === card.id ? "animate-spin" : ""} />
+                        {actionLoading === card.id ? "..." : "Reissue"}
+                      </button>
+                      <button
+                        onClick={() => revokeCard(card.id)}
+                        disabled={actionLoading === card.id}
+                        className="button"
+                        style={{
+                          minHeight: "32px",
+                          padding: "4px 10px",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          backgroundColor: "rgba(142, 38, 23, 0.06)",
+                          color: "var(--red)",
+                          border: "1px solid rgba(142, 38, 23, 0.25)",
+                          borderRadius: "3px",
+                          cursor: actionLoading === card.id ? "not-allowed" : "pointer",
+                        }}
+                      >
+                        {actionLoading === card.id ? "..." : "Revoke"}
+                      </button>
+                    </>
                   )}
                 </div>
               </div>

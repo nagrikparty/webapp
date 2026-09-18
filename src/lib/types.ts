@@ -54,13 +54,14 @@ export interface MembershipApplication {
   created_at: string;
   updated_at: string;
   // Joins & Details
-  member_addresses?: MemberAddress;
-  electoral_details?: ElectoralDetails;
-  member_participation?: MemberParticipation;
-  membership_declarations?: MembershipDeclaration;
-  membership_consents?: MembershipConsent;
+  member_addresses?: MemberAddress | MemberAddress[];
+  electoral_details?: ElectoralDetails | ElectoralDetails[];
+  member_participation?: MemberParticipation | MemberParticipation[];
+  membership_declarations?: MembershipDeclaration | MembershipDeclaration[];
+  membership_consents?: MembershipConsent | MembershipConsent[];
   documents?: DocumentRecord[];
-  signatures?: SignatureRecord[];
+  signatures?: SignatureRecord | SignatureRecord[];
+  membership_status_history?: MembershipStatusHistoryItem[];
 }
 
 export interface Member {
@@ -276,6 +277,17 @@ export interface AuditLog {
   metadata: Record<string, unknown>;
   ip_address: string | null;
   user_agent: string | null;
+  created_at: string;
+}
+
+export interface MembershipStatusHistoryItem {
+  id: string;
+  application_id: string;
+  member_id: string | null;
+  previous_status: string;
+  new_status: string;
+  changed_by: string | null;
+  reason: string | null;
   created_at: string;
 }
 

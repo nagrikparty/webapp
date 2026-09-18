@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Clock, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  Clock,
+  CheckCircle2,
+  ArrowRight,
+  AlertTriangle,
+  CreditCard,
+  FileText,
+  ShieldCheck,
+  Download,
+} from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import type { Profile, Member, MembershipApplication } from "@/lib/types";
+import type { Profile, Member, MembershipApplication, MembershipCard } from "@/lib/types";
 
 export function MemberProfileView() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [member, setMember] = useState<Member | null>(null);
   const [application, setApplication] = useState<MembershipApplication | null>(null);
-
+  const [card, setCard] = useState<MembershipCard | null>(null);
   const [needsAuth, setNeedsAuth] = useState(false);
 
   useEffect(() => {
@@ -22,23 +31,33 @@ export function MemberProfileView() {
       }
 
       const token = session.access_token;
-      const res = await fetch("/api/v1/member/status", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const res = await fetch("/api/v1/member/status", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      if (res.ok) {
-        const json = await res.json();
-        setProfile(json.profile);
-        setMember(json.member);
-        setApplication(json.application);
+        if (res.ok) {
+          const json = await res.json();
+          setProfile(json.profile);
+          setMember(json.member);
+          setApplication(json.application);
+          setCard(json.card);
+        }
+      } catch (err) {
+        console.error("Failed to load status:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     loadData();
   }, []);
 
   if (loading) {
-    return <div style={{ padding: "40px", textAlign: "center" }}>Loading member profile...</div>;
+    return (
+      <div style={{ padding: "60px", textAlign: "center", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+        Loading member record & standing...
+      </div>
+    );
   }
 
   if (needsAuth) {
@@ -57,7 +76,7 @@ export function MemberProfileView() {
     );
   }
 
-  const isApproved = member && member.status === "APPROVED";
+  const isApproved = Boolean(member && member.status === "APPROVED");
   const appStatus = application?.status || "NO_APPLICATION";
 
   return (
@@ -113,7 +132,7 @@ export function MemberProfileView() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "4px 10px",
+                padding: "6px 12px",
                 borderRadius: "2px",
                 background: "rgba(29, 86, 53, 0.08)",
                 border: "1px solid rgba(29, 86, 53, 0.25)",
@@ -132,11 +151,26 @@ export function MemberProfileView() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "4px 10px",
+                padding: "6px 12px",
                 borderRadius: "2px",
-                background: "rgba(179, 74, 21, 0.08)",
-                border: "1px solid rgba(179, 74, 21, 0.25)",
-                color: "var(--saffron)",
+                background:
+                  appStatus === "NEEDS_CORRECTION"
+                    ? "rgba(179, 74, 21, 0.12)"
+                    : appStatus === "REJECTED"
+                    ? "rgba(142, 38, 23, 0.08)"
+                    : "rgba(179, 74, 21, 0.08)",
+                border:
+                  appStatus === "NEEDS_CORRECTION"
+                    ? "1px solid rgba(179, 74, 21, 0.3)"
+                    : appStatus === "REJECTED"
+                    ? "1px solid rgba(142, 38, 23, 0.3)"
+                    : "1px solid rgba(179, 74, 21, 0.25)",
+                color:
+                  appStatus === "NEEDS_CORRECTION"
+                    ? "var(--saffron)"
+                    : appStatus === "REJECTED"
+                    ? "var(--red)"
+                    : "var(--saffron)",
                 fontWeight: 700,
                 fontSize: "11px",
                 fontFamily: "var(--font-mono)",
@@ -147,6 +181,158 @@ export function MemberProfileView() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Dynamic "What Do I Need To Do Next?" Guidance Banner */}
+      <div style={{ marginBottom: "24px" }}>
+        {appStatus === "NO_APPLICATION" && (
+          <div
+            className="card"
+            style={{
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              padding: "20px 24px",
+              border: "1px solid var(--line-strong)",
+              borderLeft: "4px solid var(--saffron)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "16px",
+            }}
+          >
+            <div>
+              <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Step 1: Begin Digital Induction (डिजिटल इंडक्शन शुरू करें)</strong>
+              <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
+                You have registered your supporter account. Complete the 10-step induction wizard to submit your identity proof and statutory affirmations.
+              </div>
+            </div>
+            <a href="/member/induction" className="button primary" style={{ minHeight: "38px", padding: "6px 16px", fontSize: "12.5px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              Start Induction <ArrowRight size={14} />
+            </a>
+          </div>
+        )}
+
+        {(appStatus === "DRAFT" || appStatus === "DOCUMENTS_PENDING") && (
+          <div
+            className="card"
+            style={{
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              padding: "20px 24px",
+              border: "1px solid var(--line-strong)",
+              borderLeft: "4px solid var(--saffron)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "16px",
+            }}
+          >
+            <div>
+              <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Induction In Progress: Resume Draft (इंडक्शन अधूरा है)</strong>
+              <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
+                Your membership application docket ({application?.application_number}) is in draft. Complete your required details and submit for verification.
+              </div>
+            </div>
+            <a href="/member/induction" className="button primary" style={{ minHeight: "38px", padding: "6px 16px", fontSize: "12.5px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              Resume Induction <ArrowRight size={14} />
+            </a>
+          </div>
+        )}
+
+        {appStatus === "NEEDS_CORRECTION" && (
+          <div
+            className="card"
+            style={{
+              background: "rgba(179, 74, 21, 0.04)",
+              borderRadius: "4px",
+              padding: "20px 24px",
+              border: "1px solid rgba(179, 74, 21, 0.3)",
+              borderLeft: "4px solid var(--saffron)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginBottom: "12px" }}>
+              <AlertTriangle size={18} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
+              <div>
+                <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Action Required: Scrutiny Desk Deficiency Notice (संशोधन आवश्यक)</strong>
+                <div style={{ fontSize: "13px", color: "var(--ink)", marginTop: "6px", background: "var(--paper)", padding: "10px 14px", borderRadius: "3px", border: "1px solid var(--line)" }}>
+                  {application?.correction_notes || application?.rejection_reason || "Please update your proof of residence or verify voter ID details."}
+                </div>
+              </div>
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <a href="/member/induction" className="button primary" style={{ minHeight: "38px", padding: "6px 16px", fontSize: "12.5px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                Edit & Resubmit Docket <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
+        )}
+
+        {(appStatus === "SUBMITTED" || appStatus === "UNDER_REVIEW") && (
+          <div
+            className="card"
+            style={{
+              background: "var(--paper-card)",
+              borderRadius: "4px",
+              padding: "20px 24px",
+              border: "1px solid var(--line-strong)",
+              borderLeft: "4px solid var(--blue)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "16px",
+            }}
+          >
+            <div>
+              <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Under Scrutiny by Verification Desk (संवीक्षाधीन)</strong>
+              <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
+                Your docket ({application?.application_number}) was submitted on{" "}
+                {application?.submitted_at ? new Date(application.submitted_at).toLocaleDateString("en-IN") : "today"} and is queued for verification against statutory criteria.
+              </div>
+            </div>
+            <a href="/member/status" className="button" style={{ minHeight: "38px", padding: "6px 14px", fontSize: "12.5px", borderRadius: "3px" }}>
+              View Audit Status
+            </a>
+          </div>
+        )}
+
+        {isApproved && (
+          <div
+            className="card"
+            style={{
+              background: "rgba(29, 86, 53, 0.04)",
+              borderRadius: "4px",
+              padding: "20px 24px",
+              border: "1px solid rgba(29, 86, 53, 0.25)",
+              borderLeft: "4px solid var(--green)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "16px",
+            }}
+          >
+            <div>
+              <strong style={{ fontSize: "14.5px", color: "var(--ink)", display: "flex", alignItems: "center", gap: "6px" }}>
+                <ShieldCheck size={18} style={{ color: "var(--green)" }} />
+                Active Member in Good Standing (सत्यापित सक्रिय सदस्यता)
+              </strong>
+              <div style={{ fontSize: "13px", color: "var(--muted)", marginTop: "4px" }}>
+                Official Membership ID: <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{member?.membership_id}</strong> • Card v{card?.card_version || 1} issued on {card?.issue_date ? new Date(card.issue_date).toLocaleDateString("en-IN") : "Approval"}.
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <a href="/member/membership-card" className="button primary" style={{ minHeight: "38px", padding: "6px 14px", fontSize: "12px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <CreditCard size={14} /> View Card
+              </a>
+              <a href="/api/v1/member/card-pdf" download="nagrik-party-membership-card.pdf" className="button" style={{ minHeight: "38px", padding: "6px 14px", fontSize: "12px", borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                <Download size={14} /> Download PDF
+              </a>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Details Grid */}
@@ -228,33 +414,6 @@ export function MemberProfileView() {
             </div>
           </div>
         </div>
-
-        {!isApproved && (
-          <div
-            style={{
-              marginTop: "24px",
-              padding: "16px 18px",
-              background: "var(--paper-subtle)",
-              borderRadius: "3px",
-              border: "1px solid var(--line-strong)",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "12px",
-            }}
-          >
-            <div>
-              <strong style={{ fontSize: "13.5px", color: "var(--ink)" }}>Complete Digital Induction / डिजिटल इंडक्शन पूर्ण करें</strong>
-              <div style={{ fontSize: "12.5px", color: "var(--muted)", marginTop: "2px" }}>
-                Submit required declarations and identity evidence for verification.
-              </div>
-            </div>
-            <a href="/member/induction" className="button primary" style={{ minHeight: "40px", padding: "8px 18px", fontSize: "13px", fontWeight: 700, borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-              Continue Induction <ArrowRight size={14} />
-            </a>
-          </div>
-        )}
       </div>
 
       {/* Quick Action Navigation Tabs */}
@@ -269,10 +428,13 @@ export function MemberProfileView() {
             border: "1px solid var(--line-strong)",
             boxShadow: "var(--shadow)",
             textAlign: "center",
+            display: "block",
+            textDecoration: "none",
           }}
         >
+          <CreditCard size={22} style={{ color: "var(--saffron)", margin: "0 auto 6px" }} />
           <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Membership Card</div>
-          <div style={{ fontSize: "12px", color: "var(--muted)" }}>Preview & CR80 Print PDF</div>
+          <div style={{ fontSize: "12px", color: "var(--muted)" }}>CR80 Vector Layout & QR</div>
         </a>
 
         <a
@@ -285,10 +447,13 @@ export function MemberProfileView() {
             border: "1px solid var(--line-strong)",
             boxShadow: "var(--shadow)",
             textAlign: "center",
+            display: "block",
+            textDecoration: "none",
           }}
         >
+          <FileText size={22} style={{ color: "var(--blue)", margin: "0 auto 6px" }} />
           <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Document Vault</div>
-          <div style={{ fontSize: "12px", color: "var(--muted)" }}>Encrypted Private Storage</div>
+          <div style={{ fontSize: "12px", color: "var(--muted)" }}>Encrypted Private Evidence</div>
         </a>
 
         <a
@@ -301,8 +466,11 @@ export function MemberProfileView() {
             border: "1px solid var(--line-strong)",
             boxShadow: "var(--shadow)",
             textAlign: "center",
+            display: "block",
+            textDecoration: "none",
           }}
         >
+          <Clock size={22} style={{ color: "var(--green)", margin: "0 auto 6px" }} />
           <div style={{ fontWeight: 700, fontFamily: "var(--font-serif)", fontSize: "15px", marginBottom: "4px", color: "var(--ink)" }}>Audit & Status</div>
           <div style={{ fontSize: "12px", color: "var(--muted)" }}>Live Verification Trace</div>
         </a>

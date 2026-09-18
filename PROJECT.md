@@ -115,14 +115,21 @@ Phase 1 provides complete public transparency, digital membership induction, vot
 ### Roles Hierarchy
 `PUBLIC` &rarr; `MEMBER` &rarr; `VERIFIER` &rarr; `ADMIN` &rarr; `SUPER_ADMIN`
 
-### Database Entities & Hardening (Migration 05)
+### Database Entities & Hardening (Migrations 04–07)
 - Core Entities: `profiles`, `members`, `membership_applications`, `member_addresses`, `electoral_details`, `member_participation`, `membership_declarations`, `membership_consents`, `signatures`, `documents`, `document_extractions`, `document_verifications`, `membership_cards`, `membership_status_history`, `audit_logs`, `crimes`, `issues`, `public_documents`, `financial_statements`, `organization_settings`.
-- Migration 05 Applied:
+- **Migration 05 Applied**:
   - `UNIQUE(application_id)` constraints on all child tables to prevent upsert conflicts.
   - Partial unique index `idx_one_active_app_per_user` preventing concurrent duplicate submissions.
   - Check constraint `members_no_self_approval CHECK (user_id != approved_by)`.
   - Security-definer RPC `public.record_audit_log(...)` guaranteeing audit trail persistence.
   - Hardened RLS preventing users from escalating their own role in `profiles`.
+- **Migration 06 Applied**:
+  - Replaced permissive policies on `membership_applications`.
+  - Added child table `UPDATE` policies to support seamless induction draft editing and resume flows.
+  - Card versioning: `UNIQUE(member_id, card_version)` replaces single-card constraint, supporting historical card audit trails.
+  - Upgraded `verify_membership_card(p_card_number)` RPC function with multi-identifier lookup and priority ranking (`ACTIVE` > `SUPERSEDED` > `REVOKED`).
+- **Migration 07 Applied**:
+  - Granted explicit `INSERT` and `UPDATE` policies to authorized staff (`VERIFIER`, `ADMIN`, `SUPER_ADMIN`) on `members`, `membership_cards`, `membership_status_history`, and `profiles`.
 
 ### Storage & Cryptographic Security
 - Sensitive documents (Voter IDs, Aadhaar, affidavits, photographs) are stored exclusively in private Supabase buckets (`documents`, `membership-cards`).
@@ -142,7 +149,7 @@ Phase 1 provides complete public transparency, digital membership induction, vot
 ## 8. Verified Crime Tracker Specification
 - Data is sourced from reputable published news sources and police reports across Delhi NCR.
 - Every record links directly to the external source URL with title, date, and category.
-- Public route `/crime` displays real counts and citation cards.
+- Public route `/crime` displays real counts and citation cards with explicit "Incident Date:" separation.
 - Dynamic route `/crimes/[type]` handles category drilldowns (`/crimes/rape`, `/crimes/murder`, `/crimes/extortion`, etc.).
 - API `/api/v1/crimes` handles verified citation querying and administrative ingestion.
 
@@ -150,13 +157,14 @@ Phase 1 provides complete public transparency, digital membership induction, vot
 
 ## 9. Verification Commands & Test Results
 ```bash
-# Typecheck (0 errors, 0 warnings across 141 files)
+# Typecheck (0 errors across 142 files)
 npm run check
 
 # Production Build (Astro SSR + Cloudflare Adapter)
 npm run build
 
-# Playwright Test Suites (92 tests passed across Chromium)
+# Playwright Test Suites (102 tests passed across Chromium)
 npm test
+npx playwright test tests/e2e/phase1_lifecycle_e2e.spec.ts
 ```
-All 92 automated tests pass with 100% success.
+All 102 automated tests pass with 100% success.

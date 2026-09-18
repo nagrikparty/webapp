@@ -82,7 +82,7 @@ const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
                         {domain}
                       </span>
                       <span style="color: var(--muted); font-size: 12px;">
-                        {new Date(incident.incident_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        Incident Date: {new Date(incident.incident_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </span>
                     </div>
 
