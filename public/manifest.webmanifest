@@ -1,9 +1,12 @@
 {
+  "id": "/",
   "name": "Nagrik Party",
   "short_name": "Nagrik Party",
   "description": "Delhi-first proposed political party under registration. Kaam dikhna chahiye.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "theme_color": "#faf8f5",
   "background_color": "#faf8f5",
   "lang": "en-IN",
@@ -14,7 +17,7 @@
       "src": "/nagrikpartylogo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

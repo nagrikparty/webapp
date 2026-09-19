@@ -65,11 +65,14 @@
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -80,6 +83,10 @@ body {
   position: relative;
   min-height: 100vh;
   line-height: 1.55;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
 }
 
 /* Authentic Featherweight SVG Paper Texture Overlay */
@@ -164,9 +171,9 @@ html[data-lang="en"] .lang-en {
    ========================================================================== */
 .nav-wrapper {
   position: fixed;
-  top: 12px;
-  left: 14px;
-  right: 14px;
+  top: max(12px, env(safe-area-inset-top, 12px));
+  left: max(14px, env(safe-area-inset-left, 14px));
+  right: max(14px, env(safe-area-inset-right, 14px));
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -1643,6 +1650,7 @@ body.auth-page {
     display: inline-grid;
   }
 
+  .hero-layout,
   .hero-inner,
   .split,
   .grid-2,
@@ -1721,10 +1729,74 @@ body.auth-page {
     padding-top: var(--header-offset); 
   }
 
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .hero-title,
   .hero h1,
   .page-hero h1 {
-    font-size: clamp(28px, 7.5vw, 38px);
+    font-size: clamp(26px, 7.5vw, 38px);
     line-height: 1.15;
+    margin: 10px 0 8px;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .hero-tagline-pill {
+    padding: 6px 12px;
+    margin-bottom: 14px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .hero-body,
+  .hero-copy,
+  .page-copy {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .hero-cta-group,
+  .hero-actions,
+  .action-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .hero-cta-group .button,
+  .hero-actions .button,
+  .action-row .button {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  .hero-formation-card {
+    margin-top: 10px;
+    padding: 16px;
+  }
+
+  .nav-wrapper {
+    top: max(8px, env(safe-area-inset-top, 8px));
+    left: max(8px, env(safe-area-inset-left, 8px));
+    right: max(8px, env(safe-area-inset-right, 8px));
+    gap: 4px;
+  }
+
+  .nav-inner {
+    padding: 6px 10px;
+    gap: 8px;
   }
 
   .brand .nagrik-logo {
@@ -1739,21 +1811,16 @@ body.auth-page {
     font-size: 9.5px;
   }
 
-  .hero-copy,
-  .page-copy {
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  .hero-actions,
-  .action-row {
-    flex-direction: column;
-  }
-
-  .hero-actions .button,
-  .action-row .button {
-    width: 100%;
-    min-height: 46px;
+  /* Prevent iOS Safari auto-zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="search"],
+  select,
+  textarea {
+    font-size: 16px !important;
   }
 
   .lifecycle-grid {
@@ -1846,6 +1913,8 @@ body.auth-page {
   display: flex;
   flex-direction: column;
   animation: slideInRight 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 @keyframes slideInRight {
@@ -1868,6 +1937,7 @@ body.auth-page {
   justify-content: space-between;
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobile-drawer-links {
@@ -1880,13 +1950,14 @@ body.auth-page {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 14px;
+  padding: 12px 14px;
   border-radius: 4px;
   color: var(--ink);
   text-decoration: none;
   font-size: 14.5px;
   font-weight: 600;
   border: 1px solid transparent;
+  min-height: 44px;
 }
 
 .mobile-drawer-link:hover, .mobile-drawer-link:active {

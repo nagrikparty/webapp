@@ -159,48 +159,24 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
   }
 
   return (
-    <div className="auth-card-wrapper" style={{ maxWidth: "460px", margin: "0 auto", padding: "12px 16px" }}>
+    <div className="auth-card-wrapper" style={{ maxWidth: "460px", margin: "0 auto", padding: "8px 12px" }}>
       <div
         className="card auth-card"
         style={{
           background: "var(--paper-card)",
           borderRadius: "4px",
-          padding: "32px 28px",
+          padding: "clamp(20px, 4vw, 32px)",
           boxShadow: "var(--shadow)",
           border: "1px solid var(--line-strong)",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
-          <Logo width={160} />
-          <div
-            style={{
-              display: "inline-block",
-              marginTop: "12px",
-              padding: "3px 8px",
-              borderRadius: "2px",
-              backgroundColor: "rgba(179, 74, 21, 0.08)",
-              border: "1px solid rgba(179, 74, 21, 0.25)",
-              color: "var(--saffron)",
-              fontSize: "10.5px",
-              fontWeight: 700,
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-            }}
-          >
-            {BRAND.status.phaseLabel}
-          </div>
-          <h2 style={{ fontSize: "21px", fontFamily: "var(--font-serif)", fontWeight: 700, marginTop: "10px", marginBottom: "4px", color: "var(--ink)" }}>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <h2 style={{ fontSize: "20px", fontFamily: "var(--font-serif)", fontWeight: 700, margin: "0 0 6px", color: "var(--ink)" }}>
             {mode === "login" && "Sign In to Your Account"}
             {mode === "signup" && "Create Supporter Account"}
             {mode === "forgot-password" && "Reset Your Password"}
           </h2>
-          <div style={{ fontSize: "12.5px", color: "var(--muted)", fontWeight: 500, marginBottom: "8px" }}>
-            {mode === "login" && "खाते में प्रवेश करें"}
-            {mode === "signup" && "समर्थक खाता बनाएं"}
-            {mode === "forgot-password" && "पासवर्ड रीसेट करें"}
-          </div>
-          <p style={{ fontSize: "13.5px", color: "var(--ink-body)", margin: 0, lineHeight: 1.45 }}>
+          <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>
             {mode === "login" && "Access your digital induction docket, membership card, and document vault."}
             {mode === "signup" && "Join as an enrolled citizen supporter to complete digital induction."}
             {mode === "forgot-password" && "Enter your registered email address to receive secure reset credentials."}
@@ -267,7 +243,7 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
           {mode === "signup" && (
             <div style={{ marginBottom: "16px" }}>
               <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, fontFamily: "var(--font-mono)", textTransform: "uppercase", color: "var(--muted)", marginBottom: "6px" }}>
-                Full Legal Name / पूरा नाम
+                Full Legal Name
               </label>
               <input
                 type="text"
@@ -277,12 +253,13 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
                 required
                 style={{
                   width: "100%",
-                  padding: "11px 12px",
-                  borderRadius: "3px",
+                  padding: "12px 14px",
+                  borderRadius: "4px",
                   border: "1px solid var(--line-strong)",
-                  fontSize: "14px",
+                  fontSize: "16px",
                   background: "var(--paper)",
                   color: "var(--ink)",
+                  boxSizing: "border-box",
                 }}
               />
             </div>
@@ -290,7 +267,7 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
 
           <div style={{ marginBottom: "16px" }}>
             <label style={{ display: "block", fontSize: "12.5px", fontWeight: 700, fontFamily: "var(--font-mono)", textTransform: "uppercase", color: "var(--muted)", marginBottom: "6px" }}>
-              Email Address / ईमेल पता
+              Email Address
             </label>
             <div style={{ position: "relative" }}>
               <input
@@ -301,12 +278,13 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
                 required
                 style={{
                   width: "100%",
-                  padding: "11px 12px",
-                  borderRadius: "3px",
+                  padding: "12px 14px",
+                  borderRadius: "4px",
                   border: "1px solid var(--line-strong)",
-                  fontSize: "14px",
+                  fontSize: "16px",
                   background: "var(--paper)",
                   color: "var(--ink)",
+                  boxSizing: "border-box",
                 }}
               />
             </div>
@@ -316,7 +294,7 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
             <div style={{ marginBottom: "20px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
                 <label style={{ fontSize: "12.5px", fontWeight: 700, fontFamily: "var(--font-mono)", textTransform: "uppercase", color: "var(--muted)" }}>
-                  Password / पासवर्ड
+                  Password
                 </label>
                 {mode === "login" && (
                   <button
@@ -330,7 +308,7 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
                       background: "none",
                       border: "none",
                       color: "var(--blue)",
-                      fontSize: "12px",
+                      fontSize: "12.5px",
                       fontWeight: 600,
                       cursor: "pointer",
                       padding: 0,
@@ -348,12 +326,13 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
                 required
                 style={{
                   width: "100%",
-                  padding: "11px 12px",
-                  borderRadius: "3px",
+                  padding: "12px 14px",
+                  borderRadius: "4px",
                   border: "1px solid var(--line-strong)",
-                  fontSize: "14px",
+                  fontSize: "16px",
                   background: "var(--paper)",
                   color: "var(--ink)",
+                  boxSizing: "border-box",
                 }}
               />
             </div>
@@ -365,13 +344,13 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
             className="button primary"
             style={{
               width: "100%",
-              minHeight: "46px",
+              minHeight: "48px",
               padding: "12px",
-              fontSize: "14.5px",
+              fontSize: "15px",
               fontWeight: 700,
               backgroundColor: "var(--ink)",
               color: "#ffffff",
-              borderRadius: "3px",
+              borderRadius: "4px",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -384,16 +363,16 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
               <Loader2 className="animate-spin" size={18} />
             ) : (
               <>
-                {mode === "login" && "Sign In / प्रवेश करें"}
-                {mode === "signup" && "Create Account / खाता बनाएं"}
-                {mode === "forgot-password" && "Send Reset Link / रीसेट लिंक भेजें"}
+                {mode === "login" && "Sign In"}
+                {mode === "signup" && "Create Account"}
+                {mode === "forgot-password" && "Send Reset Link"}
                 <ArrowRight size={16} />
               </>
             )}
           </button>
         </form>
 
-        <div style={{ marginTop: "24px", textAlign: "center", fontSize: "13px", color: "var(--muted)" }}>
+        <div style={{ marginTop: "22px", textAlign: "center", fontSize: "13.5px", color: "var(--muted)" }}>
           {mode === "login" ? (
             <>
               Don't have an account?{" "}
@@ -408,12 +387,12 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
                   background: "none",
                   border: "none",
                   color: "var(--blue)",
-                  fontWeight: 600,
+                  fontWeight: 700,
                   cursor: "pointer",
                   padding: 0,
                 }}
               >
-                Sign up / रजिस्टर करें
+                Sign up
               </button>
             </>
           ) : (
@@ -430,12 +409,12 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
                   background: "none",
                   border: "none",
                   color: "var(--blue)",
-                  fontWeight: 600,
+                  fontWeight: 700,
                   cursor: "pointer",
                   padding: 0,
                 }}
               >
-                Sign in / लॉगिन करें
+                Sign in
               </button>
             </>
           )}
@@ -457,7 +436,7 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
           }}
         >
           <ShieldCheck size={14} style={{ color: "var(--green)" }} />
-          <span>256-bit encrypted • Cryptographic verification</span>
+          <span>256-bit encrypted · Cryptographic verification</span>
         </div>
       </div>
     </div>
