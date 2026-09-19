@@ -5,14 +5,15 @@ import {
   Receipt,
   Save,
   RefreshCw,
-  CheckCircle2,
-  AlertCircle,
-  TrendingUp,
-  CreditCard,
-  Building,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { AdminFinanceView } from "@/components/AdminFinanceView";
+
+async function getSessionToken(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
 
 interface DonationConfig {
   id: string;
@@ -76,9 +77,9 @@ export function AdminFinanceHub() {
   async function fetchConfig() {
     setConfigLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/donation-config", { headers });
       if (res.ok) {
@@ -96,9 +97,9 @@ export function AdminFinanceHub() {
     e.preventDefault();
     setSavingConfig(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/donation-config", {
         method: "POST",

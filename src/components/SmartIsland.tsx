@@ -91,7 +91,7 @@ export function SmartIsland() {
             </a>
           ) : (
             <a href="/member" className="button yellow island-action-btn" style={{ fontWeight: 600 }}>
-              Member Portal
+              My Nagrik
             </a>
           )}
         </div>
@@ -117,7 +117,7 @@ export function SmartIsland() {
               <User size={18} />
             </button>
             <div className="island-dropdown-menu island-user-menu">
-              <a href="/member">Member Portal</a>
+              <a href="/member">My Nagrik Dashboard</a>
               <a href="/member/induction">Digital Induction</a>
               <a href="/member/membership-card">Membership Card</a>
               {isAdminOrStaff && (

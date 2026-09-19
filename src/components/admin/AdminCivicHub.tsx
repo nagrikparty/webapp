@@ -7,13 +7,18 @@ import {
   Trash2,
   ExternalLink,
   CheckCircle2,
-  Clock,
   RefreshCw,
   Search,
   Filter,
   Play,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+
+async function getSessionToken(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
 
 interface CrimeRow {
   id: string;
@@ -103,10 +108,10 @@ export function AdminCivicHub() {
       return;
     }
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
 
       const res = await fetch("/api/v1/crimes", {
@@ -138,10 +143,10 @@ export function AdminCivicHub() {
   async function handleDeleteCrime(id: string) {
     if (!confirm("Are you sure you want to delete this crime citation?")) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch(`/api/v1/crimes?id=${id}`, { method: "DELETE", headers });
       if (res.ok) fetchCrimes();
@@ -160,10 +165,10 @@ export function AdminCivicHub() {
   async function fetchIssues() {
     setIssuesLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const url = issueStatusFilter === "all"
         ? "/api/v1/admin/issues"
@@ -182,10 +187,10 @@ export function AdminCivicHub() {
 
   async function handleUpdateIssueStatus(id: string, newStatus: string) {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch("/api/v1/admin/issues", {
         method: "POST",
@@ -205,10 +210,10 @@ export function AdminCivicHub() {
   async function handleDeleteIssue(id: string) {
     if (!confirm("Are you sure you want to permanently delete this issue report?")) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch(`/api/v1/admin/issues?id=${id}`, { method: "DELETE", headers });
       if (res.ok) fetchIssues();
@@ -230,10 +235,10 @@ export function AdminCivicHub() {
   async function fetchManifesto() {
     setManifestoLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch("/api/v1/admin/manifesto-items", { headers });
       if (res.ok) {
@@ -251,10 +256,10 @@ export function AdminCivicHub() {
     e.preventDefault();
     if (!newProposalTitle.trim()) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch("/api/v1/admin/manifesto-items", {
         method: "POST",
@@ -282,10 +287,10 @@ export function AdminCivicHub() {
   async function handleDeleteProposal(id: string) {
     if (!confirm("Are you sure you want to delete this manifesto proposal?")) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch(`/api/v1/admin/manifesto-items?id=${id}`, { method: "DELETE", headers });
       if (res.ok) fetchManifesto();
@@ -297,10 +302,10 @@ export function AdminCivicHub() {
   async function triggerTopicPipeline() {
     setRunningPipeline(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch("/api/v1/admin/run-topic-pipeline", { method: "POST", headers });
       if (res.ok) {

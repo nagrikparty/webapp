@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
   Settings,
-  Shield,
   Clock,
   Search,
   UserCog,
   RefreshCw,
-  Save,
-  CheckCircle2,
-  AlertTriangle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { AdminSettingsView } from "@/components/AdminSettingsView";
 import { AdminAuditView } from "@/components/AdminAuditView";
+
+async function getSessionToken(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
 
 interface UserProfile {
   id: string;
@@ -69,9 +71,9 @@ export function AdminSettingsHub() {
   async function handleRoleChange(userId: string, newRole: string) {
     setUpdatingId(userId);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/change-role", {
         method: "POST",

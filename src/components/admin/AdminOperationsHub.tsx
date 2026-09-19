@@ -5,9 +5,6 @@ import {
   Megaphone,
   Plus,
   Trash2,
-  CheckCircle2,
-  Clock,
-  Filter,
   RefreshCw,
   Send,
   MapPin,
@@ -15,6 +12,12 @@ import {
   UserCheck,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+
+async function getSessionToken(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
 
 interface VolunteerApplication {
   id: string;
@@ -75,9 +78,9 @@ export function AdminOperationsHub() {
   async function fetchVolunteers() {
     setVolunteersLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const url = volStatusFilter === "all"
         ? "/api/v1/admin/volunteers"
@@ -96,9 +99,9 @@ export function AdminOperationsHub() {
 
   async function handleVolunteerAction(id: string, status: "approved" | "rejected") {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/volunteers", {
         method: "POST",
@@ -127,9 +130,9 @@ export function AdminOperationsHub() {
   async function fetchTasks() {
     setTasksLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/tasks", { headers });
       if (res.ok) {
@@ -147,9 +150,9 @@ export function AdminOperationsHub() {
     e.preventDefault();
     if (!taskTitle.trim()) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/tasks", {
         method: "POST",
@@ -173,9 +176,9 @@ export function AdminOperationsHub() {
   async function handleDeleteTask(id: string) {
     if (!confirm("Are you sure you want to delete this task?")) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch(`/api/v1/admin/tasks?id=${id}`, { method: "DELETE", headers });
       if (res.ok) fetchTasks();
@@ -195,9 +198,9 @@ export function AdminOperationsHub() {
   async function fetchAnnouncements() {
     setAnnouncementsLoading(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/announcements", { headers });
       if (res.ok) {
@@ -215,9 +218,9 @@ export function AdminOperationsHub() {
     e.preventDefault();
     if (!annTitle.trim() || !annContent.trim()) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch("/api/v1/admin/announcements", {
         method: "POST",
@@ -240,9 +243,9 @@ export function AdminOperationsHub() {
   async function handleDeleteAnnouncement(id: string) {
     if (!confirm("Are you sure you want to delete this announcement?")) return;
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = {};
-      if (session?.access_token) headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
       const res = await fetch(`/api/v1/admin/announcements?id=${id}`, { method: "DELETE", headers });
       if (res.ok) fetchAnnouncements();

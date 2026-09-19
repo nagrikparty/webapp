@@ -3,17 +3,19 @@ import {
   Layers,
   FileCheck2,
   Milestone,
-  CheckCircle2,
-  Clock,
-  AlertCircle,
   Save,
   RefreshCw,
-  ExternalLink,
   Shield,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { AdminExportsView } from "@/components/AdminExportsView";
 import { PublicDocumentsLibrary } from "@/components/PublicDocumentsLibrary";
+
+async function getSessionToken(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
 
 interface FoundingMilestone {
   id: string;
@@ -84,10 +86,10 @@ export function AdminComplianceHub() {
   async function handleSaveMilestone(milestone: FoundingMilestone) {
     setSavingId(milestone.id);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const token = await getSessionToken();
       const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
       }
 
       const res = await fetch("/api/v1/admin/milestones", {
