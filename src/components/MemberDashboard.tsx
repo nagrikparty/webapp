@@ -1025,6 +1025,18 @@ export function MemberDashboard() {
             </div>
           </div>
         </div>
+
+        <div style={{ marginTop: "18px", paddingTop: "14px", borderTop: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+          <div style={{ fontSize: "12px", color: "var(--muted)" }}>
+            Stored securely with SHA-256 cryptographic hashes for Section 29A regulatory filing.
+          </div>
+          <a
+            href="/member/documents"
+            style={{ fontSize: "12.5px", fontWeight: 600, color: "var(--saffron)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}
+          >
+            Access Encrypted Document Vault &rarr;
+          </a>
+        </div>
       </div>
 
       {/* 6. EDIT PROFILE & PARTICIPATION MODAL / DRAWER */}

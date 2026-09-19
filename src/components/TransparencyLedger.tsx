@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ShieldCheck, QrCode, AlertCircle, FileText, ArrowRight, DollarSign } from "lucide-react";
+import { ShieldCheck, FileText } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 interface Statement {
@@ -113,6 +113,14 @@ export function TransparencyLedger() {
     ? transactions
     : transactions.filter((t) => t.statement_id === selectedPeriod);
 
+  if (loading) {
+    return (
+      <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--muted)", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line)" }}>
+        Loading published financial accounts and audit records...
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: "grid", gap: "28px" }}>
       
@@ -222,6 +230,18 @@ export function TransparencyLedger() {
                   <div>
                     <strong style={{ fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "11px" }}>BANK / BRANCH: </strong>
                     <span>{donationConfig.bank_name}</span>
+                  </div>
+                )}
+                {donationConfig.account_number && (
+                  <div>
+                    <strong style={{ fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "11px" }}>ACCOUNT NUMBER: </strong>
+                    <span style={{ fontFamily: "var(--font-mono)", fontWeight: 600 }}>{donationConfig.account_number}</span>
+                  </div>
+                )}
+                {donationConfig.ifsc_code && (
+                  <div>
+                    <strong style={{ fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "11px" }}>IFSC CODE: </strong>
+                    <span style={{ fontFamily: "var(--font-mono)", fontWeight: 600 }}>{donationConfig.ifsc_code}</span>
                   </div>
                 )}
               </div>
@@ -339,9 +359,25 @@ export function TransparencyLedger() {
             boxShadow: "var(--shadow)",
           }}
         >
-          <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "0 0 14px", color: "var(--ink)" }}>
-            Published Transaction Records
-          </h3>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
+            <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: 0, color: "var(--ink)" }}>
+              Published Transaction Records
+            </h3>
+            {statements.length > 1 && (
+              <select
+                value={selectedPeriod}
+                onChange={(e) => setSelectedPeriod(e.target.value)}
+                style={{ padding: "6px 10px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "12px", fontFamily: "var(--font-mono)" }}
+              >
+                <option value="ALL">All Reporting Periods</option>
+                {statements.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.reporting_period || s.period_name || s.fiscal_year || s.id}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
 
           <div className="table-responsive">
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>

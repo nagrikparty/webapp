@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Database not configured" }), { status: 500 });
     }
 
-    const { type, lok_sabha, vidhan_sabha, ward, email, full_name, skills, availability, referred_by } = await request.json();
+    const { type, lok_sabha, vidhan_sabha, ward, email, full_name, phone, skills, availability, referred_by } = await request.json();
     
     if (type === "volunteer") {
       const record: Record<string, unknown> = {
@@ -17,6 +17,7 @@ export const POST: APIRoute = async ({ request }) => {
         ward,
         email,
         full_name,
+        phone: phone || null,
         skills: skills || null,
         availability: availability || null,
         status: "pending"

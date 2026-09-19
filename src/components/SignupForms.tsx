@@ -40,6 +40,7 @@ export function VolunteerForm() {
         type: "volunteer",
         full_name: form.get("name"),
         email: form.get("email"),
+        phone: form.get("phone"),
         lok_sabha: form.get("lok_sabha"),
         vidhan_sabha: form.get("vidhan_sabha"),
         ward: form.get("ward"),
@@ -98,6 +99,10 @@ export function VolunteerForm() {
         <div className="field">
           <label htmlFor="vol-email">Email Address</label>
           <input id="vol-email" name="email" required type="email" autoComplete="email" placeholder="name@example.com" />
+        </div>
+        <div className="field">
+          <label htmlFor="vol-phone">Phone Number (Optional)</label>
+          <input id="vol-phone" name="phone" type="tel" autoComplete="tel" placeholder="10-digit mobile number" />
         </div>
         <div className="field">
           <label htmlFor="vol-loksabha">Lok Sabha (Parliament)</label>

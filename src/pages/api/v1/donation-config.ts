@@ -20,7 +20,7 @@ export const GET: APIRoute = async () => {
 
     const { data, error } = await supabase
       .from("donation_configuration")
-      .select("is_enabled, legal_status_label, upi_id, account_name, bank_name, qr_image_url, payment_instructions, disclosure_text")
+      .select("is_enabled, legal_status_label, upi_id, account_name, bank_name, account_number, ifsc_code, qr_image_url, payment_instructions, disclosure_text")
       .eq("id", "default")
       .maybeSingle();
 

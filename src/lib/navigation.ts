@@ -38,6 +38,7 @@ export const footerSections: NavSection[] = [
     items: [
       { label: "Become a Member", href: "/membership" },
       { label: "Become a Volunteer", href: "/volunteer" },
+      { label: "My Nagrik Dashboard", href: "/member" },
     ],
   },
   {
@@ -53,6 +54,7 @@ export const footerSections: NavSection[] = [
     items: [
       { label: "Constitution", href: "/legal/constitution" },
       { label: "Financial Transparency", href: "/transparency" },
+      { label: "Formation Roadmap", href: "/formation-progress" },
       { label: "Public Documents", href: "/documents" },
     ],
   },

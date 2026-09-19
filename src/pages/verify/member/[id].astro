@@ -21,17 +21,60 @@ let isFound = false;
 
 if (id && supabase) {
   try {
+    const cleanId = id.trim();
+    // 1. Try RPC first
     const rpcPromise = supabase.rpc("verify_membership_card", {
-      p_card_number: id.toUpperCase().trim(),
+      p_card_number: cleanId.toUpperCase(),
     });
     const timeoutPromise = new Promise<{ data: null; error: Error }>((resolve) =>
-      setTimeout(() => resolve({ data: null, error: new Error("RPC timeout") }), 3000)
+      setTimeout(() => resolve({ data: null, error: new Error("RPC timeout") }), 2500)
     );
     const { data, error } = await Promise.race([rpcPromise, timeoutPromise]);
 
     if (!error && data && data.length > 0) {
       verificationRecord = data[0];
       isFound = true;
+    } else {
+      // 2. Direct lookup in membership_cards
+      const { data: cardRow } = await supabase
+        .from("membership_cards")
+        .select("card_number, card_status, issue_date, revoked_at, revocation_reason, member_id, members:member_id(membership_id, full_name, category)")
+        .or(`card_number.ilike.${cleanId},verification_slug.ilike.${cleanId}`)
+        .maybeSingle();
+
+      if (cardRow) {
+        const m = Array.isArray(cardRow.members) ? cardRow.members[0] : cardRow.members;
+        verificationRecord = {
+          card_number: cardRow.card_number || (m as { membership_id?: string })?.membership_id || cleanId,
+          member_name: (m as { full_name?: string })?.full_name || "Verified Member",
+          category: (m as { category?: string })?.category || "Founding Member",
+          card_status: cardRow.card_status || "ACTIVE",
+          issue_date: cardRow.issue_date ? new Date(cardRow.issue_date).toLocaleDateString("en-IN") : "Recent",
+          revoked_at: cardRow.revoked_at,
+          revocation_reason: cardRow.revocation_reason,
+        };
+        isFound = true;
+      } else {
+        // 3. Direct lookup in members table
+        const { data: memberRow } = await supabase
+          .from("members")
+          .select("id, membership_id, full_name, category, created_at, status")
+          .or(`membership_id.ilike.${cleanId},id.eq.${cleanId}`)
+          .maybeSingle();
+
+        if (memberRow && memberRow.status === "APPROVED") {
+          verificationRecord = {
+            card_number: memberRow.membership_id || cleanId,
+            member_name: memberRow.full_name,
+            category: memberRow.category || "Founding Member",
+            card_status: "ACTIVE",
+            issue_date: new Date(memberRow.created_at).toLocaleDateString("en-IN"),
+            revoked_at: null,
+            revocation_reason: null,
+          };
+          isFound = true;
+        }
+      }
     }
   } catch {
     // Graceful fallback to not-found
