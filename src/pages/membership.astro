@@ -1,26 +1,20 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react";
 ---
 
 <BaseLayout
-  title="Membership Induction - Nagrik Party"
-  description="Apply for legal party membership. Members accept the constitution and complete verified digital induction."
+  title="Nagrik Party | Membership Induction"
+  description="Apply for party membership. Members accept the constitution and complete verified digital induction."
 >
   <section class="page-hero">
     <div class="container">
       <div class="mini-label" style="background: rgba(245, 130, 32, 0.1); color: var(--saffron);">
         PHASE 1 · FORMATION PHASE
       </div>
-      <h1>
-        <Bilingual en="Digital Membership Induction" hi="डिजिटल सदस्यता प्रेरण" />
-      </h1>
+      <h1>Digital Membership Induction</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Join the founding member network across Delhi. Complete the verified digital induction, upload statutory electoral proof, and receive your digital CR80 membership card record."
-          hi="दिल्ली के संस्थापक सदस्य नेटवर्क में शामिल हों। सत्यापित डिजिटल प्रेरण पूरा करें, वैधानिक मतदाता प्रमाण अपलोड करें और अपना डिजिटल CR80 सदस्यता कार्ड रिकॉर्ड प्राप्त करें।"
-        />
+        Join the founding member network across Delhi. Complete the verified digital induction, upload statutory electoral proof, and receive your digital CR80 membership card record.
       </p>
     </div>
   </section>
@@ -31,7 +25,7 @@ import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react
       <div class="card" style="background: var(--paper-card); border: 1px solid var(--line); border-left: 4px solid var(--saffron); padding: 20px 24px; border-radius: 4px; margin-bottom: 32px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow);">
         <AlertCircle size={22} style={{ color: "var(--saffron)", flexShrink: 0, marginTop: "2px" }} />
         <div>
-          <strong style="font-size: 15px; color: var(--ink); font-family: var(--font-serif);">Formation Phase Statutory Disclosure / वैधानिक प्रकटीकरण</strong>
+          <strong style="font-size: 15px; color: var(--ink); font-family: var(--font-serif);">Formation Phase Statutory Disclosure</strong>
           <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0; line-height: 1.5;">
             Nagrik Party is currently in the Formation Phase (independent political initiative working toward registration under Section 29A RPA 1951). Membership induction establishes the founding general body required for statutory party registration.
           </p>
@@ -46,13 +40,10 @@ import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react
               <ShieldCheck size={14} /> OFFICIAL 10-STEP PROCESS
             </div>
             <h2 style="font-size: 22px; font-weight: 700; margin: 0 0 12px; font-family: var(--font-serif);">
-              <Bilingual en="Begin Digital Induction" hi="डिजिटल प्रेरण शुरू करें" />
+              Begin Digital Induction
             </h2>
             <p style="font-size: 14px; color: var(--muted); line-height: 1.6; margin: 0 0 20px;">
-              <Bilingual
-                en="Step through identity verification, Delhi constituency selection, statutory declarations under Section 29A, and document uploads into your encrypted private vault."
-                hi="पहचान सत्यापन, दिल्ली निर्वाचन क्षेत्र चयन, धारा 29A के तहत वैधानिक घोषणाओं और अपने एन्क्रिप्टेड निजी वॉल्ट में दस्तावेज़ अपलोड के माध्यम से आगे बढ़ें।"
-              />
+              Step through identity verification, Delhi constituency selection, statutory declarations under Section 29A RPA 1951, and document uploads into your encrypted private vault.
             </p>
 
             <div style="display: grid; gap: 12px; font-size: 13px; margin-bottom: 24px;">
@@ -66,7 +57,7 @@ import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <CheckCircle2 size={16} style={{ color: "var(--green)", flexShrink: 0 }} />
-                <span>Statutory inner-party democracy & allegiance declaration</span>
+                <span>Statutory inner-party democracy and allegiance declaration</span>
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <CheckCircle2 size={16} style={{ color: "var(--green)", flexShrink: 0 }} />
@@ -89,7 +80,7 @@ import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react
         <div style="display: grid; gap: 20px;">
           <div class="card" style="background: var(--paper-card); padding: 24px; border-radius: 4px; border: 1px solid var(--line); box-shadow: var(--shadow);">
             <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 14px; font-family: var(--font-serif);">
-              <Bilingual en="Statutory Qualifications" hi="वैधानिक योग्यताएं" />
+              Statutory Qualifications
             </h3>
             <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.8;">
               <li>Adult Indian citizen (18+ years of age).</li>
@@ -102,17 +93,17 @@ import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from "lucide-react
 
           <div class="card" style="background: var(--paper-card); padding: 24px; border-radius: 4px; border: 1px solid var(--line); box-shadow: var(--shadow);">
             <h3 style="font-size: 16px; font-weight: 700; margin: 0 0 14px; font-family: var(--font-serif);">
-              <Bilingual en="Membership Categories" hi="सदस्यता श्रेणियां" />
+              Membership Categories
             </h3>
             <div style="display: grid; gap: 10px; font-size: 13px;">
               <div style="padding: 10px 12px; background: var(--paper-subtle); border-radius: 3px; border: 1px solid var(--line);">
-                <strong>Primary Member / प्राथमिक सदस्य:</strong> General supporter enrolled upon digital declaration.
+                <strong>Primary Member:</strong> General supporter enrolled upon digital declaration.
               </div>
               <div style="padding: 10px 12px; background: var(--paper-subtle); border-radius: 3px; border: 1px solid var(--line);">
-                <strong>Active Member / सक्रिय सदस्य:</strong> Participates in ward committees and local public issue escalation.
+                <strong>Active Member:</strong> Participates in ward committees and local public issue escalation.
               </div>
               <div style="padding: 10px 12px; background: var(--paper-subtle); border-radius: 3px; border: 1px solid var(--line); border-left: 3px solid var(--saffron);">
-                <strong>Founding Member / संस्थापक सदस्य:</strong> Submits verified electoral affidavit for ECI Section 29A filing.
+                <strong>Founding Member:</strong> Submits verified electoral affidavit for Section 29A RPA 1951 filing.
               </div>
             </div>
           </div>

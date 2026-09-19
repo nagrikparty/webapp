@@ -4,7 +4,7 @@ export const navItems = [
   { href: "/issues", en: "Issues", hi: "मुद्दे" },
   { href: "/volunteer", en: "Volunteer", hi: "स्वयंसेवक" },
   { href: "/membership", en: "Membership", hi: "सदस्यता" },
-  { href: "/president", en: "Party President", hi: "पार्टी अध्यक्ष" },
+  { href: "/founder", en: "Founder", hi: "संस्थापक" },
   { href: "/about", en: "About", hi: "परिचय" },
 ];
 

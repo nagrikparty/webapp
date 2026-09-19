@@ -30,7 +30,7 @@ export function FoundingProgressBar({ initialData }: FoundingProgressBarProps) {
     };
   }, [data]);
 
-  const percentage = data ? data.percentage : 24;
+  const percentage = data ? data.percentage : 0;
   const phaseLabel = data ? data.phaseLabel : "PHASE 1 · FORMATION PHASE";
   const phaseName = data ? data.currentPhaseName : "Building the foundation";
 

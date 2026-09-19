@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { AdminOverview } from "@/components/AdminOverview";
 ---
 
 <BaseLayout
-  title="Admin Console - Nagrik Party"
+  title="Nagrik Party | Admin Console"
   description="Nagrik Party Executive Administration & Scrutiny Portal"
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -21,14 +20,9 @@ import { AdminOverview } from "@/components/AdminOverview";
         <a href="/admin/audit" class="mini-label">Audit Trail</a>
         <a href="/admin/settings" class="mini-label">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Party Administration" hi="पार्टी प्रशासन" />
-      </h1>
+      <h1>Party Administration</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Central governance portal for Phase 1 formation oversight, document scrutiny, and statutory compliance."
-          hi="चरण 1 गठन निगरानी, दस्तावेज़ जांच और वैधानिक अनुपालन के लिए केंद्रीय शासन पोर्टल।"
-        />
+        Central governance portal for Phase 1 formation oversight, document scrutiny, and statutory compliance.
       </p>
     </div>
   </section>

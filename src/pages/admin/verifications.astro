@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { VerifierDashboard } from "@/components/VerifierDashboard";
 ---
 
 <BaseLayout
-  title="Verification Desk - Nagrik Party"
+  title="Nagrik Party | Verification Desk"
   description="Audit and verify membership applications and documents."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -21,14 +20,9 @@ import { VerifierDashboard } from "@/components/VerifierDashboard";
         <a href="/admin/audit" class="mini-label">Audit Trail</a>
         <a href="/admin/settings" class="mini-label">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Verification Desk" hi="सत्यापन डेस्क" />
-      </h1>
+      <h1>Verification Desk</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Review submitted identity documents, verify declarations, and approve verified members."
-          hi="जमा किए गए पहचान दस्तावेजों की समीक्षा करें, घोषणाओं का सत्यापन करें और सत्यापित सदस्यों को स्वीकृति दें।"
-        />
+        Review submitted identity documents, verify declarations, and approve verified members.
       </p>
     </div>
   </section>

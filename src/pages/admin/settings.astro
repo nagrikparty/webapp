@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { AdminSettingsView } from "@/components/AdminSettingsView";
 ---
 
 <BaseLayout
-  title="Settings - Nagrik Party Admin"
+  title="Nagrik Party | Settings"
   description="Configure organization phase, system settings, and operational parameters."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -21,14 +20,9 @@ import { AdminSettingsView } from "@/components/AdminSettingsView";
         <a href="/admin/audit" class="mini-label">Audit Trail</a>
         <a href="/admin/settings" class="mini-label" style="background: var(--ink); color: #fff;">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Organisation Settings" hi="संगठन सेटिंग्स" />
-      </h1>
+      <h1>Organisation Settings</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Configure organization phase, operational parameters, and system-wide settings."
-          hi="संगठन चरण, परिचालन मापदंड और सिस्टम-व्यापी सेटिंग्स कॉन्फ़िगर करें।"
-        />
+        Configure organization phase, operational parameters, and system-wide settings.
       </p>
     </div>
   </section>

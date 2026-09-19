@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { MemberProfileView } from "@/components/MemberProfileView";
 ---
 
 <BaseLayout
-  title="My Profile - Nagrik Party"
+  title="Nagrik Party | My Profile"
   description="Manage your verified member profile."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -16,14 +15,9 @@ import { MemberProfileView } from "@/components/MemberProfileView";
         <a href="/member/membership-card" class="mini-label">Membership Card</a>
         <a href="/member/documents" class="mini-label">Document Vault</a>
       </div>
-      <h1>
-        <Bilingual en="Member Profile" hi="सदस्य प्रोफाइल" />
-      </h1>
+      <h1>Member Profile</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Verified organizational member record details."
-          hi="सत्यापित संगठनात्मक सदस्य रिकॉर्ड विवरण।"
-        />
+        Verified organizational member record details.
       </p>
     </div>
   </section>

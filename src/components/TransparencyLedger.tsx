@@ -75,6 +75,7 @@ export function TransparencyLedger() {
         const { data: stmts } = await supabase
           .from("financial_statements")
           .select("*")
+          .eq("is_published", true)
           .order("published_at", { ascending: false });
 
         if (stmts && stmts.length > 0) {
@@ -87,6 +88,7 @@ export function TransparencyLedger() {
         const { data: txs } = await supabase
           .from("financial_transactions")
           .select("*")
+          .eq("is_public", true)
           .order("transaction_date", { ascending: false })
           .limit(100);
 

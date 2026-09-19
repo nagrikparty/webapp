@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { AdminAuditView } from "@/components/AdminAuditView";
 ---
 
 <BaseLayout
-  title="Audit Trail - Nagrik Party"
+  title="Nagrik Party | Audit Trail"
   description="Immutable administrative and statutory audit trail"
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -21,14 +20,9 @@ import { AdminAuditView } from "@/components/AdminAuditView";
         <a href="/admin/audit" class="mini-label" style="background: var(--ink); color: #fff;">Audit Trail</a>
         <a href="/admin/settings" class="mini-label">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Administrative Audit Log" hi="प्रशासनिक ऑडिट लॉग" />
-      </h1>
+      <h1>Administrative Audit Log</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Cryptographic audit log recording every membership approval, rejection, and submission export generation."
-          hi="प्रत्येक सदस्यता स्वीकृति, अस्वीकृति और प्रस्तुति निर्यात उत्पादन को रिकॉर्ड करने वाला क्रिप्टोग्राफ़िक ऑडिट लॉग।"
-        />
+        Cryptographic audit log recording every membership approval, rejection, and submission export generation.
       </p>
     </div>
   </section>

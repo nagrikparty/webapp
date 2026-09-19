@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { AdminCardsView } from "@/components/AdminCardsView";
 ---
 
 <BaseLayout
-  title="Card Issuance Console - Nagrik Party"
+  title="Nagrik Party | Card Issuance Console"
   description="Manage membership card issuance, revocation, and reissuance."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -21,14 +20,9 @@ import { AdminCardsView } from "@/components/AdminCardsView";
         <a href="/admin/audit" class="mini-label">Audit Trail</a>
         <a href="/admin/settings" class="mini-label">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Card Issuance Console" hi="कार्ड जारी करने का कंसोल" />
-      </h1>
+      <h1>Card Issuance Console</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Manage CR80 membership card generation, issuance, revocation, and reissuance for all approved members."
-          hi="सभी अनुमोदित सदस्यों के लिए CR80 सदस्यता कार्ड जारी करने, निरस्तीकरण और पुनः जारी करने का प्रबंधन करें।"
-        />
+        Manage CR80 membership card generation, issuance, revocation, and reissuance for all approved members.
       </p>
     </div>
   </section>

@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import Logo from "@/components/Logo.astro";
 import { supabase } from "@/lib/supabase";
 import { BRAND } from "@/lib/brand";
@@ -41,7 +40,7 @@ if (id && supabase) {
 ---
 
 <BaseLayout
-  title={`Membership Verification - ${id || "Nagrik Party"}`}
+  title={`Nagrik Party | Membership Verification - ${id || ""}`}
   description="Public verification portal for Nagrik Party membership cards."
 >
   <div class="page-offset" style="min-height: 75vh; display: flex; align-items: center; justify-content: center; padding-bottom: 48px; padding-left: 16px; padding-right: 16px;">
@@ -79,13 +78,10 @@ if (id && supabase) {
       </div>
 
       <h1 style="font-size: 22px; font-weight: 800; margin: 0 0 4px;">
-        <Bilingual en="Membership Verification" hi="सदस्यता सत्यापन" />
+        Membership Verification
       </h1>
       <p style="font-size: 13px; color: var(--muted); margin: 0 0 24px;">
-        <Bilingual
-          en="Official digital registry record verification."
-          hi="आधिकारिक डिजिटल रजिस्टर रिकॉर्ड सत्यापन।"
-        />
+        Official digital registry record verification.
       </p>
 
       {isFound && verificationRecord ? (

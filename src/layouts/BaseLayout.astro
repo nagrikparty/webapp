@@ -5,12 +5,15 @@ import Logo from "@/components/Logo.astro";
 import { SmartIsland } from "@/components/SmartIsland";
 import { FoundingProgressBar } from "@/components/FoundingProgressBar";
 import { footerSections } from "@/lib/navigation";
+import { getFormationProgress } from "@/lib/progress-service";
 
 const {
   title = "Nagrik Party | Formation Phase",
   description = "An independent political initiative working toward the formation and registration of a political party under Section 29A RPA 1951.",
   bodyClass = "",
 } = Astro.props;
+
+const progressData = await getFormationProgress();
 ---
 
 <!doctype html>
@@ -66,7 +69,7 @@ const {
             <SmartIsland client:load />
           </div>
         </header>
-        <FoundingProgressBar client:load />
+        <FoundingProgressBar client:load initialData={progressData} />
       </div>
       <main>
         <slot />

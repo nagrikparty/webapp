@@ -25,7 +25,7 @@ const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
 ---
 
 <BaseLayout
-  title={`${dbType} Citations - Nagrik Party`}
+  title={`Nagrik Party | ${dbType} Citations`}
   description={`Verified news citations for reported ${dbType} incidents in Delhi.`}
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -41,12 +41,12 @@ const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
           {dbType}
         </h1>
         <span class="badge-verified" style="border-radius: 2px; border: 1px dashed var(--red);">
-          {incidents.length} Verified Citations / सत्यापित उद्धरण
+          {incidents.length} Verified Citations
         </span>
       </div>
 
       <p class="page-copy" style="margin: 0;">
-        Every incident listed below is verified and directly linked to a public news article or official report. Zero statistical estimates. / नीचे सूचीबद्ध प्रत्येक घटना सत्यापित है और सार्वजनिक समाचार लेख से जुड़ी है।
+        Every incident listed below is verified and directly linked to a public news article or official report. Zero statistical estimates.
       </p>
     </div>
   </section>
@@ -56,7 +56,7 @@ const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
       <div style="display: flex; flex-direction: column; gap: 12px;">
         {incidents.length === 0 ? (
           <div class="card" style="text-align: center; padding: 48px 24px; background: var(--paper-card); border-radius: 4px; border: 1px dashed var(--line); box-shadow: var(--shadow);">
-            <p style="color: var(--muted); margin: 0; font-size: 14px;">No verified citations found for this category yet. / इस श्रेणी के लिए अभी तक कोई सत्यापित उद्धरण नहीं मिला।</p>
+            <p style="color: var(--muted); margin: 0; font-size: 14px;">No verified citations found for this category yet.</p>
           </div>
         ) : (
           incidents.map((incident: { id: string; title: string; source_url: string; incident_date: string }) => {

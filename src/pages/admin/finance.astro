@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { AdminFinanceView } from "@/components/AdminFinanceView";
 ---
 
 <BaseLayout
-  title="Financial Transparency Management - Nagrik Party"
+  title="Nagrik Party | Financial Transparency Management"
   description="Manage audited statements and financial disclosures for Phase 1 formation"
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -21,14 +20,9 @@ import { AdminFinanceView } from "@/components/AdminFinanceView";
         <a href="/admin/audit" class="mini-label">Audit Trail</a>
         <a href="/admin/settings" class="mini-label">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Financial Statements Management" hi="वित्तीय विवरण प्रबंधन" />
-      </h1>
+      <h1>Financial Statements Management</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Maintain audited records of formation expenditure, receipts, and public transparency disclosures."
-          hi="गठन व्यय, प्राप्तियों और सार्वजनिक पारदर्शिता प्रकटीकरण का लेखापरीक्षित रिकॉर्ड बनाए रखें।"
-        />
+        Maintain audited records of formation expenditure, receipts, and public transparency disclosures.
       </p>
     </div>
   </section>

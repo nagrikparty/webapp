@@ -101,6 +101,7 @@ export function BuildWithUsView() {
   const [user, setUser] = useState<any>(null);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -140,20 +141,41 @@ export function BuildWithUsView() {
   async function handleRegisterInterests(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       if (supabase && user) {
-        // Save to member_participation or profiles
+        // Save to profiles
         await supabase.from("profiles").update({
           full_name: name || undefined,
           phone: phone || undefined,
           vidhan_sabha: area || undefined,
         }).eq("id", user.id);
       }
+
+      // Record volunteer application with selected skills
+      const res = await fetch("/api/v1/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "volunteer",
+          full_name: name,
+          email,
+          vidhan_sabha: area,
+          skills: selectedSkills.join(", "),
+          referred_by: user?.id || null,
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Failed to record participation. Please try again.");
+      }
+
       setSubmitted(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error saving skills:", err);
-      setSubmitted(true);
+      setError(err?.message || "Something went wrong while recording your participation. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -409,6 +431,24 @@ export function BuildWithUsView() {
               <span>We strictly protect your contact details. They are never published on the public website.</span>
             </div>
           </div>
+
+          {error && (
+            <div
+              role="alert"
+              style={{
+                background: "var(--paper-subtle)",
+                border: "1px solid var(--crimson, #b91c1c)",
+                color: "var(--crimson, #b91c1c)",
+                padding: "12px 16px",
+                borderRadius: "4px",
+                fontSize: "14px",
+                marginBottom: "20px",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </div>
+          )}
 
           <div style={{ textAlign: "center" }}>
             <button

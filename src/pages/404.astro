@@ -1,11 +1,10 @@
 ---
 export const prerender = false;
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 ---
 
 <BaseLayout
-  title="404 - Document Not Found | Nagrik Party"
+  title="Nagrik Party | 404 - Document Not Found"
   description="The requested page, petition, or archival record could not be found."
 >
   <section class="section page-offset" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding-bottom: 48px; padding-left: 16px; padding-right: 16px;">
@@ -34,7 +33,7 @@ import Bilingual from "@/components/Bilingual.astro";
         margin-bottom: 24px;
         transform: rotate(-2deg);
       ">
-        ARCHIVAL RECORD NOT FOUND / अभिलेख अप्राप्य
+        ARCHIVAL RECORD NOT FOUND
       </div>
 
       <h1 style="
@@ -53,10 +52,7 @@ import Bilingual from "@/components/Bilingual.astro";
         font-weight: 600;
         margin: 0 0 16px;
       ">
-        <Bilingual
-          en="This dossier or page does not exist in the public record."
-          hi="यह दस्तावेज़ या पृष्ठ सार्वजनिक अभिलेख में मौजूद नहीं है।"
-        />
+        This dossier or page does not exist in the public record.
       </p>
 
       <p style="
@@ -65,24 +61,21 @@ import Bilingual from "@/components/Bilingual.astro";
         line-height: 1.6;
         margin: 0 0 32px;
       ">
-        <Bilingual
-          en="The URL may be misspelled, the draft petition may have been re-indexed, or the record has moved to another section of the Formation Phase portal."
-          hi="हो सकता है कि यूआरएल गलत टाइप किया गया हो, मसौदा याचिका पुन: अनुक्रमित की गई हो, या रिकॉर्ड पोर्टल के किसी अन्य भाग में स्थानांतरित हो गया हो।"
-        />
+        The URL may be misspelled, the draft petition may have been re-indexed, or the record has moved to another section of the Formation Phase portal.
       </p>
 
       <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
         <a href="/" class="button primary" style="min-height: 44px; border-radius: 3px; padding: 0 20px;">
-          <Bilingual en="Central Desk" hi="मुख्य पृष्ठ" />
+          Central Desk
         </a>
         <a href="/crime" class="button yellow" style="min-height: 44px; border-radius: 3px; padding: 0 20px; font-weight: 700;">
-          <Bilingual en="Verified Crime Tracker" hi="अपराध ट्रैकर" />
+          Verified Crime Tracker
         </a>
         <a href="/documents" class="button" style="min-height: 44px; border-radius: 3px; padding: 0 20px;">
-          <Bilingual en="Document Vault" hi="दस्तावेज़ लाइब्रेरी" />
+          Document Vault
         </a>
         <a href="/membership" class="button" style="min-height: 44px; border-radius: 3px; padding: 0 20px;">
-          <Bilingual en="Membership Induction" hi="सदस्यता लें" />
+          Membership Induction
         </a>
       </div>
     </div>

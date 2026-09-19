@@ -1,21 +1,20 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { AuthFlow } from "@/components/AuthFlow";
 ---
 
 <BaseLayout
-  title="Log In | Nagrik Party"
+  title="Nagrik Party | Log In"
   description="Sign in to your Nagrik Party account."
   bodyClass="auth-page"
 >
   <section class="page-hero" style="padding-bottom: 12px; text-align: center; position: relative; z-index: 10;">
     <div class="container">
       <h1 style="margin: 0 auto; font-family: var(--font-serif); font-weight: 700; font-size: clamp(28px, 5vw, 38px); letter-spacing: -0.02em; color: var(--ink);">
-        <Bilingual en="Log In" hi="लॉग इन करें" />
+        Log In
       </h1>
       <p style="color: var(--muted); font-size: 14.5px; margin: 8px auto 0; max-width: 480px;">
-        <Bilingual en="Sign in to your Nagrik Party member portal and digital induction." hi="अपने नागरिक पार्टी सदस्य पोर्टल और डिजिटल इंडक्शन में प्रवेश करें।" />
+        Sign in to your Nagrik Party member portal and digital induction.
       </p>
     </div>
   </section>

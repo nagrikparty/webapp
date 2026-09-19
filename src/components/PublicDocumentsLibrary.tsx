@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FileText, ShieldCheck, Eye, Search } from "lucide-react";
+import { FileText, ShieldCheck, Eye, Search, X, Copy, Check, ExternalLink } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { BRAND } from "@/lib/brand";
 
@@ -77,7 +77,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     title: "Office Bearers & Leadership Structure Declaration",
     slug: "leadership-structure",
     category: "GOVERNANCE",
-    description: "Certified list of current formation-stage leadership, including Party President Arsalan Azad and executive coordinators.",
+    description: "Certified list of current formation-stage leadership, including Founding Convener Arsalan Azad and executive coordinators.",
     file_storage_path: "public-documents/leadership-structure-v1.pdf",
     file_sha256: "98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e3b0c442",
     published_at: "2025-01-12T00:00:00Z",
@@ -291,10 +291,24 @@ const OFFICIAL_DOCS: PublicDoc[] = [
   },
 ];
 
+const LEGAL_SLUG_MAP: Record<string, string> = {
+  "draft-constitution": "/legal/constitution",
+  "party-constitution": "/legal/constitution",
+  "internal-rulebook": "/legal/rulebook",
+  "code-of-conduct": "/legal/ethics",
+  "data-protection-privacy": "/legal/digital-governance",
+  "financial-transparency-framework": "/legal/financial-transparency",
+  "candidate-selection-policy": "/legal/candidate-selection",
+  "internal-election-framework": "/legal/internal-democracy",
+  "official-communication-policy": "/legal/official-communication",
+};
+
 export function PublicDocumentsLibrary() {
   const [docs, setDocs] = useState<PublicDoc[]>(OFFICIAL_DOCS);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [inspectDoc, setInspectDoc] = useState<PublicDoc | null>(null);
+  const [copiedHash, setCopiedHash] = useState(false);
 
   useEffect(() => {
     async function loadFromDB() {
@@ -527,30 +541,174 @@ export function PublicDocumentsLibrary() {
                 <span style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
                   Published: {new Date(doc.published_at).toLocaleDateString("en-IN")}
                 </span>
-                <a
-                  href={`#${doc.slug}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert(`Document "${doc.title}" is archived in the official Nagrik Party Formation Repository.\nSHA-256: ${doc.file_sha256}`);
-                  }}
-                  className="button"
-                  style={{
-                    padding: "4px 10px",
-                    fontSize: "11.5px",
-                    minHeight: "32px",
-                    borderRadius: "2px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                  }}
-                >
-                  <Eye size={13} /> Inspect Record
-                </a>
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  {LEGAL_SLUG_MAP[doc.slug] && (
+                    <a
+                      href={LEGAL_SLUG_MAP[doc.slug]}
+                      className="button button-primary"
+                      style={{
+                        padding: "4px 10px",
+                        fontSize: "11.5px",
+                        minHeight: "32px",
+                        borderRadius: "2px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <ExternalLink size={12} /> Read Charter
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setInspectDoc(doc);
+                      setCopiedHash(false);
+                    }}
+                    className="button"
+                    style={{
+                      padding: "4px 10px",
+                      fontSize: "11.5px",
+                      minHeight: "32px",
+                      borderRadius: "2px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Eye size={13} /> Inspect
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Document Inspection Modal */}
+      {inspectDoc && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="doc-inspect-title"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+            zIndex: 1000,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setInspectDoc(null);
+          }}
+        >
+          <div
+            className="card"
+            style={{
+              background: "var(--paper-card)",
+              border: "1px solid var(--line-strong)",
+              borderRadius: "4px",
+              padding: "28px",
+              maxWidth: "580px",
+              width: "100%",
+              boxShadow: "var(--shadow-elevated)",
+              position: "relative",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+              <div>
+                <span
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    padding: "3px 8px",
+                    borderRadius: "4px",
+                    background: "rgba(245, 130, 32, 0.1)",
+                    color: "var(--saffron)",
+                    fontFamily: "var(--font-mono)",
+                  }}
+                >
+                  {inspectDoc.category} · v{inspectDoc.version}
+                </span>
+                <h3 id="doc-inspect-title" style={{ fontSize: "18px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "10px 0 4px", color: "var(--ink)" }}>
+                  {inspectDoc.title}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setInspectDoc(null)}
+                aria-label="Close"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "var(--muted)",
+                  padding: "4px",
+                }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: "14px", color: "var(--muted)", lineHeight: 1.55, margin: "0 0 20px" }}>
+              {inspectDoc.description}
+            </p>
+
+            <div style={{ background: "var(--paper-subtle)", border: "1px solid var(--line)", borderRadius: "3px", padding: "16px", marginBottom: "20px" }}>
+              <div style={{ fontSize: "11.5px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "6px", textTransform: "uppercase" }}>
+                Cryptographic Integrity Record
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--muted)", marginBottom: "10px", wordBreak: "break-all", fontFamily: "var(--font-mono)" }}>
+                SHA-256: <strong>{inspectDoc.file_sha256}</strong>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard?.writeText(inspectDoc.file_sha256);
+                  setCopiedHash(true);
+                  setTimeout(() => setCopiedHash(false), 2000);
+                }}
+                className="button"
+                style={{ fontSize: "12px", padding: "4px 12px", minHeight: "32px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+              >
+                {copiedHash ? <Check size={14} style={{ color: "var(--green)" }} /> : <Copy size={14} />}
+                <span>{copiedHash ? "Checksum Copied" : "Copy Full SHA-256"}</span>
+              </button>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+              <span style={{ fontSize: "12px", color: "var(--muted)" }}>
+                Published: {new Date(inspectDoc.published_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
+              </span>
+              <div style={{ display: "flex", gap: "8px" }}>
+                {LEGAL_SLUG_MAP[inspectDoc.slug] && (
+                  <a
+                    href={LEGAL_SLUG_MAP[inspectDoc.slug]}
+                    className="button button-primary"
+                    style={{ fontSize: "13px", padding: "8px 16px" }}
+                  >
+                    Open Full Charter &rarr;
+                  </a>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setInspectDoc(null)}
+                  className="button"
+                  style={{ fontSize: "13px", padding: "8px 16px" }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

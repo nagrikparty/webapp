@@ -1,11 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { MemberProfileView } from "@/components/MemberProfileView";
 ---
 
 <BaseLayout
-  title="Verification Status - Nagrik Party"
+  title="Nagrik Party | Verification Status"
   description="Live tracking of your membership verification and application progress."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -16,14 +15,9 @@ import { MemberProfileView } from "@/components/MemberProfileView";
         <a href="/member/status" class="mini-label" style="background: var(--ink); color: #fff;">Status</a>
         <a href="/member/membership-card" class="mini-label">Membership Card</a>
       </div>
-      <h1>
-        <Bilingual en="Verification Status" hi="सत्यापन स्थिति" />
-      </h1>
+      <h1>Verification Status</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Live status of your application, verification stages, and membership review."
-          hi="आपके आवेदन, सत्यापन चरणों और सदस्यता समीक्षा की लाइव स्थिति।"
-        />
+        Live status of your application, verification stages, and membership review.
       </p>
     </div>
   </section>

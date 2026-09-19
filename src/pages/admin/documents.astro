@@ -1,11 +1,10 @@
-﻿---
+---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Bilingual from "@/components/Bilingual.astro";
 import { VerifierDashboard } from "@/components/VerifierDashboard";
 ---
 
 <BaseLayout
-  title="Document Scrutiny - Nagrik Party"
+  title="Nagrik Party | Document Scrutiny"
   description="Audit and inspect member documents and verification records."
 >
   <section class="page-hero" style="padding-bottom: 24px;">
@@ -23,14 +22,9 @@ import { VerifierDashboard } from "@/components/VerifierDashboard";
         <a href="/admin/audit" class="mini-label">Audit Trail</a>
         <a href="/admin/settings" class="mini-label">Settings</a>
       </div>
-      <h1>
-        <Bilingual en="Member Document Scrutiny" hi="सदस्य दस्तावेज़ जांच" />
-      </h1>
+      <h1>Member Document Scrutiny</h1>
       <p class="page-copy">
-        <Bilingual
-          en="Inspect private identity documents, SHA-256 hashes, and version history."
-          hi="निजी पहचान दस्तावेजों, SHA-256 हैश और संस्करण इतिहास की जांच करें।"
-        />
+        Inspect private identity documents, SHA-256 hashes, and version history.
       </p>
     </div>
   </section>
