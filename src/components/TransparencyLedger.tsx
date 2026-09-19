@@ -50,6 +50,14 @@ interface TransparencyDataResponse {
     other_income_formatted: string;
     closing_balance: string;
     closing_balance_formatted: string;
+    total_inflow: string;
+    total_inflow_formatted: string;
+    total_outflow: string;
+    total_outflow_formatted: string;
+    net_position: string;
+    net_position_formatted: string;
+    latest_balance_date: string;
+    latest_period_title: string;
     verified_transactions_count: number;
   };
   transactions: PublicTransaction[];
@@ -124,6 +132,14 @@ export function TransparencyLedger() {
     other_income_formatted: "₹0.00",
     closing_balance: "0.00",
     closing_balance_formatted: "₹0.00",
+    total_inflow: "0.00",
+    total_inflow_formatted: "₹0.00",
+    total_outflow: "0.00",
+    total_outflow_formatted: "₹0.00",
+    net_position: "0.00",
+    net_position_formatted: "₹0.00",
+    latest_balance_date: "",
+    latest_period_title: "",
     verified_transactions_count: 0,
   };
   const transactions = data?.transactions || [];
@@ -171,15 +187,26 @@ export function TransparencyLedger() {
               borderRadius: "4px",
               border: "1px solid var(--line)",
               textAlign: "right",
-              minWidth: "180px",
+              minWidth: "200px",
             }}
           >
             <div style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-              NET VERIFIED CLOSING BALANCE
+              CURRENT VERIFIED BALANCE
             </div>
-            <div style={{ fontSize: "22px", fontWeight: 800, color: "var(--green)", fontFamily: "var(--font-mono)", marginTop: "2px" }}>
+            <div style={{
+              fontSize: "24px",
+              fontWeight: 800,
+              color: Number(totals.closing_balance) >= 0 ? "var(--green)" : "var(--red)",
+              fontFamily: "var(--font-mono)",
+              marginTop: "2px",
+            }}>
               {totals.closing_balance_formatted}
             </div>
+            {totals.latest_balance_date && (
+              <div style={{ fontSize: "10.5px", color: "var(--ink-faint)", marginTop: "4px", fontFamily: "var(--font-mono)" }}>
+                As of {new Date(totals.latest_balance_date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+              </div>
+            )}
             <small style={{ fontSize: "11px", color: "var(--muted)" }}>
               {hasData ? `${totals.verified_transactions_count} Verified Transactions` : "Awaiting Published Audit"}
             </small>
@@ -188,7 +215,25 @@ export function TransparencyLedger() {
 
         {/* Aggregate Summary Pillars */}
         {hasData && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "14px", marginTop: "8px", paddingTop: "16px", borderTop: "1px solid var(--line)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "14px", marginTop: "8px", paddingTop: "16px", borderTop: "1px solid var(--line)" }}>
+            <div>
+              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+                TOTAL INFLOW (CREDITS)
+              </small>
+              <strong style={{ fontSize: "17px", color: "var(--green)", fontFamily: "var(--font-mono)" }}>
+                {totals.total_inflow_formatted}
+              </strong>
+            </div>
+
+            <div>
+              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+                TOTAL OUTFLOW (DEBITS)
+              </small>
+              <strong style={{ fontSize: "17px", color: "var(--red)", fontFamily: "var(--font-mono)" }}>
+                {totals.total_outflow_formatted}
+              </strong>
+            </div>
+
             <div>
               <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
                 VERIFIED DONATIONS
@@ -204,15 +249,6 @@ export function TransparencyLedger() {
               </small>
               <strong style={{ fontSize: "17px", color: "var(--red)", fontFamily: "var(--font-mono)" }}>
                 {totals.total_expenses_formatted}
-              </strong>
-            </div>
-
-            <div>
-              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
-                OTHER INCOME / INTEREST
-              </small>
-              <strong style={{ fontSize: "17px", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
-                {totals.other_income_formatted}
               </strong>
             </div>
 
@@ -395,6 +431,22 @@ export function TransparencyLedger() {
                     </div>
 
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", margin: "12px 0", background: "var(--paper-subtle)", padding: "10px 12px", borderRadius: "3px" }}>
+                      <div>
+                        <small style={{ color: "var(--muted)", fontSize: "10px", display: "block" }}>OPENING BALANCE</small>
+                        <strong style={{ fontSize: "14px", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
+                          ₹{Number(p.opening_balance).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                        </strong>
+                      </div>
+                      <div>
+                        <small style={{ color: "var(--muted)", fontSize: "10px", display: "block" }}>CLOSING BALANCE</small>
+                        <strong style={{
+                          fontSize: "14px",
+                          color: Number(p.closing_balance) >= 0 ? "var(--ink)" : "var(--red)",
+                          fontFamily: "var(--font-mono)",
+                        }}>
+                          ₹{Number(p.closing_balance).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                        </strong>
+                      </div>
                       <div>
                         <small style={{ color: "var(--muted)", fontSize: "10px", display: "block" }}>CREDITS (INFLOW)</small>
                         <strong style={{ fontSize: "14px", color: "var(--green)", fontFamily: "var(--font-mono)" }}>

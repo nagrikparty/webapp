@@ -99,13 +99,29 @@ export const GET: APIRoute = async ({ request }) => {
 
     // Closing balance determination
     let currentClosingPaise = 0n;
+    let latestBalanceDate = "";
+    let latestPeriodTitle = "";
     if (selectedPeriodId && selectedPeriodId !== "ALL") {
       const matchPeriod = publishedPeriods.find((p) => p.id === selectedPeriodId);
       currentClosingPaise = matchPeriod ? toPaise(matchPeriod.closing_balance) : 0n;
+      latestPeriodTitle = matchPeriod?.title || "";
+      latestBalanceDate = matchPeriod?.end_date || "";
     } else {
       // Latest published period's closing balance
-      currentClosingPaise = publishedPeriods.length > 0 ? toPaise(publishedPeriods[0].closing_balance) : 0n;
+      const latestPeriod = publishedPeriods.length > 0 ? publishedPeriods[0] : null;
+      currentClosingPaise = latestPeriod ? toPaise(latestPeriod.closing_balance) : 0n;
+      latestPeriodTitle = latestPeriod?.title || "";
+      latestBalanceDate = latestPeriod?.end_date || "";
     }
+
+    // Net position = total inflows - total outflows (regardless of classification)
+    let totalInflowPaise = 0n;
+    let totalOutflowPaise = 0n;
+    for (const t of txs || []) {
+      totalInflowPaise += toPaise(t.credit);
+      totalOutflowPaise += toPaise(t.debit);
+    }
+    const netPositionPaise = totalInflowPaise - totalOutflowPaise;
 
     // 4. Privacy Sanitization: Sanitize description & mask reference
     const sanitizedTxs = (txs || []).map((t) => {
@@ -148,6 +164,14 @@ export const GET: APIRoute = async ({ request }) => {
         other_income_formatted: formatPaiseInr(otherIncomePaise),
         closing_balance: fromPaise(currentClosingPaise),
         closing_balance_formatted: formatPaiseInr(currentClosingPaise),
+        total_inflow: fromPaise(totalInflowPaise),
+        total_inflow_formatted: formatPaiseInr(totalInflowPaise),
+        total_outflow: fromPaise(totalOutflowPaise),
+        total_outflow_formatted: formatPaiseInr(totalOutflowPaise),
+        net_position: fromPaise(netPositionPaise),
+        net_position_formatted: formatPaiseInr(netPositionPaise),
+        latest_balance_date: latestBalanceDate,
+        latest_period_title: latestPeriodTitle,
         verified_transactions_count: txs?.length || 0,
       },
       transactions: sanitizedTxs,
