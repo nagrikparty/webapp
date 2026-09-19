@@ -52,6 +52,7 @@ export const POST: APIRoute = async ({ request }) => {
       bank_name: body.bank_name || null,
       account_number: body.account_number || null,
       ifsc_code: body.ifsc_code || null,
+      account_type: body.account_type || null,
       qr_image_url: body.qr_image_url || null,
       payment_instructions: body.payment_instructions || "Scan the UPI QR code or transfer directly to the formation account. Retain reference UTR for audit receipting.",
       disclosure_text: body.disclosure_text || "Nagrik Party is in its Formation Phase. All contributions are recorded in our public transparency ledger with complete donor provenance.",

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { createApiSupabase } from "@/lib/supabase";
+import { reportError } from "@/lib/monitoring";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -47,7 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
 
     if (insertError) {
-      console.error("Insert transaction error:", insertError);
+      reportError(insertError, { route: "donations", userId, transactionId });
       return new Response(JSON.stringify({ error: "Failed to save transaction" }), { status: 500 });
     }
 
@@ -56,7 +57,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" } 
     });
   } catch (err: unknown) {
-    console.error("Donation API error:", err);
+    reportError(err, { route: "donations" });
     const message = err instanceof Error ? err.message : "Internal Server Error";
     return new Response(JSON.stringify({ error: message }), { status: 500 });
   }

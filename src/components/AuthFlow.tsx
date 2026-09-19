@@ -24,7 +24,9 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
     const storedReferrer = typeof window !== "undefined" ? localStorage.getItem("referrer_id") : null;
 
     if (typeof document !== "undefined") {
-      document.cookie = `sb-access-token=${encodeURIComponent(session.access_token)}; path=/; max-age=86400; SameSite=Lax`;
+      // Domain-wide cookie so the session works on nagrik.party AND
+      // administration.nagrik.party (dedicated admin host).
+      document.cookie = `sb-access-token=${encodeURIComponent(session.access_token)}; path=/; domain=.nagrik.party; max-age=86400; Secure; SameSite=Lax`;
     }
 
     try {

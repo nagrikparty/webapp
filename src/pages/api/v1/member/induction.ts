@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { requireAuth, logAuditEvent } from "@/lib/auth";
 import { createApiSupabase } from "@/lib/supabase";
 import { CONSTITUTIONAL_DECLARATION_V1, DATA_CONSENT_V1 } from "@/lib/declarations";
+import { reportError } from "@/lib/monitoring";
 
 export const POST: APIRoute = async ({ request }) => {
   const authResult = await requireAuth(request);
@@ -365,7 +366,7 @@ export const POST: APIRoute = async ({ request }) => {
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err: unknown) {
-    console.error("Induction processing error:", err);
+    reportError(err, { route: "member/induction" });
     return new Response(
       JSON.stringify({ error: err instanceof Error ? err.message : "Internal error" }),
       { status: 500 }

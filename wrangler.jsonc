@@ -1,0 +1,30 @@
+{
+  // Base Cloudflare Worker config. @astrojs/cloudflare merges this into
+  // dist/server/wrangler.json at build time.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "webapp",
+  "compatibility_date": "2026-04-15",
+  // Required by @sentry/cloudflare (worker bundle statically imports node:async_hooks)
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "redact_query_string": false,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  },
+  "vars": {
+    // Server-side Sentry DSN is read from the Worker env by @sentry/cloudflare.
+    // Set it as a secret in production:  npx wrangler secret put SENTRY_DSN
+    "SENTRY_DSN": ""
+  }
+}

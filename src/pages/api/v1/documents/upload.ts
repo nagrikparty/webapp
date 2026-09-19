@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { requireAuth, logAuditEvent } from "@/lib/auth";
 import { createApiSupabase } from "@/lib/supabase";
 import { GoogleGenAI } from "@google/genai";
+import { reportError } from "@/lib/monitoring";
 
 async function sha256Hex(buffer: ArrayBuffer): Promise<string> {
   const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
@@ -337,7 +338,7 @@ Return ONLY a valid JSON object:
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err: unknown) {
-    console.error("Document upload route error:", err);
+    reportError(err, { route: "documents/upload" });
     return new Response(
       JSON.stringify({ error: err instanceof Error ? err.message : "Internal Server Error" }),
       { status: 500 }

@@ -10,6 +10,7 @@ interface DonationConfig {
   bank_name?: string;
   account_number?: string;
   ifsc_code?: string;
+  account_type?: string;
   qr_image_url?: string;
   payment_instructions?: string;
   disclosure_text?: string;
@@ -26,12 +27,16 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [copiedAccount, setCopiedAccount] = useState(false);
   const [copiedIfsc, setCopiedIfsc] = useState(false);
+  const [qrImgBroken, setQrImgBroken] = useState(false);
 
   useEffect(() => {
     fetch("/api/v1/donation-config")
       .then((res) => res.json())
-      .then((data) => setConfig(data))
-      .catch(() => setConfig({ is_enabled: true, upi_id: "nagrikparty@axis" }));
+      .then((data) => {
+        setConfig(data);
+        setQrImgBroken(false);
+      })
+      .catch(() => setConfig({ is_enabled: true, upi_id: "areynetaji@ybl", qr_image_url: "/images/qrnagrikparty.jpeg" }));
   }, []);
 
   useEffect(() => {
@@ -45,12 +50,15 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
   if (!isOpen) return null;
 
-  const upiId = config?.upi_id || "nagrikparty@axis";
-  const accountName = config?.account_name || "Nagrik Party (Formation Account)";
-  const bankName = config?.bank_name || "Axis Bank";
-  const accountNumber = config?.account_number || "924020035537387";
-  const ifscCode = config?.ifsc_code || "UTIB0000007";
-  const upiUri = config?.upi_payload || `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(accountName)}&cu=INR`;
+  const upiId = config?.upi_id || "areynetaji@ybl";
+  const qrImageUrl = config?.qr_image_url || "/images/qrnagrikparty.jpeg";
+  const accountName = config?.account_name || "";
+  const bankName = config?.bank_name || "";
+  const accountNumber = config?.account_number || "";
+  const ifscCode = config?.ifsc_code || "";
+  const accountType = config?.account_type || "";
+  const hasBankDetails = Boolean(accountName || bankName || accountNumber || ifscCode || accountType);
+  const upiUri = config?.upi_payload || `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(accountName || "Nagrik Party")}&cu=INR`;
 
   function copyText(text: string, type: "upi" | "account" | "ifsc") {
     navigator.clipboard.writeText(text);
@@ -185,11 +193,12 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               alignItems: "center",
             }}
           >
-            {config?.qr_image_url ? (
+            {qrImageUrl && !qrImgBroken ? (
               <img
-                src={config.qr_image_url}
+                src={qrImageUrl}
                 alt="UPI Donation QR Code"
                 style={{ width: "170px", height: "170px", objectFit: "contain" }}
+                onError={() => setQrImgBroken(true)}
               />
             ) : (
               <QRCode value={upiUri} size={170} level="M" />
@@ -258,7 +267,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
           </a>
         </div>
 
-        {/* Direct Bank Account Details (IMPS / NEFT) */}
+        {/* Direct Bank Account Details (IMPS / NEFT) — only when admin has saved verified details */}
+        {hasBankDetails && (
         <div
           style={{
             background: "var(--paper-subtle)",
@@ -274,14 +284,19 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
           </div>
 
           <div style={{ display: "grid", gap: "6px" }}>
+            {bankName && (
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "var(--muted)" }}>Bank Name:</span>
               <span style={{ fontWeight: 600, color: "var(--ink)" }}>{bankName}</span>
             </div>
+            )}
+            {accountName && (
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "var(--muted)" }}>A/c Name:</span>
               <span style={{ fontWeight: 600, color: "var(--ink)" }}>{accountName}</span>
             </div>
+            )}
+            {accountNumber && (
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "var(--muted)" }}>A/c Number:</span>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -296,6 +311,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 </button>
               </div>
             </div>
+            )}
+            {ifscCode && (
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "var(--muted)" }}>IFSC Code:</span>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
@@ -310,8 +327,16 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 </button>
               </div>
             </div>
+            )}
+            {accountType && (
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ color: "var(--muted)" }}>A/c Type:</span>
+              <span style={{ fontWeight: 600, color: "var(--ink)" }}>{accountType}</span>
+            </div>
+            )}
           </div>
         </div>
+        )}
 
         {/* Reassurance Footer */}
         <div style={{ fontSize: "11px", color: "var(--ink-faint)", lineHeight: "1.45", textAlign: "center" }}>

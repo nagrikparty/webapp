@@ -80,6 +80,8 @@ export function SmartIsland() {
   async function handleLogout() {
     if (supabase) {
       await supabase.auth.signOut();
+      // Clear the domain-wide session cookie used by the admin host middleware.
+      document.cookie = "sb-access-token=; path=/; domain=.nagrik.party; max-age=0; Secure; SameSite=Lax";
       window.location.href = "/";
     }
   }
@@ -160,7 +162,7 @@ export function SmartIsland() {
               <a href="/member/induction">Digital Induction</a>
               <a href="/member/membership-card">Membership Card</a>
               {isAdminOrStaff && (
-                <a href="/admin" style={{ color: "var(--saffron)", fontWeight: 600 }}>
+                <a href="https://administration.nagrik.party/admin" style={{ color: "var(--saffron)", fontWeight: 600 }}>
                   <Shield size={14} style={{ marginRight: 6 }} />
                   Admin Console
                 </a>
@@ -288,7 +290,7 @@ export function SmartIsland() {
                       <ChevronRight size={16} style={{ color: "var(--muted)" }} />
                     </a>
                     {isAdminOrStaff && (
-                      <a href="/admin" className="mobile-drawer-link" onClick={() => setOpen(false)} style={{ color: "var(--saffron)", fontWeight: 600 }}>
+                      <a href="https://administration.nagrik.party/admin" className="mobile-drawer-link" onClick={() => setOpen(false)} style={{ color: "var(--saffron)", fontWeight: 600 }}>
                         <span>Admin Console</span>
                         <ChevronRight size={16} style={{ color: "var(--saffron)" }} />
                       </a>

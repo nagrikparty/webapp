@@ -17,6 +17,7 @@ const {
   bodyClass = "",
 } = Astro.props;
 
+const isAdminHost = Astro.url.hostname.replace(/^www\./, "").toLowerCase() === "administration.nagrik.party";
 const progressData = await getFormationProgress();
 ---
 
@@ -56,6 +57,7 @@ const progressData = await getFormationProgress();
     <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/Mukta-Devanagari-400.woff2" as="font" type="font/woff2" crossorigin>
     <title>{title}</title>
+    {isAdminHost && <meta name="robots" content="noindex, nofollow" />}
     <ClientRouter />
     <script is:inline>
       // Theme: apply saved preference before paint (no flash)

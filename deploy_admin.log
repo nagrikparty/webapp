@@ -1,0 +1,412 @@
+
+ ⛅️ wrangler 4.98.0 (update available 4.135.0)
+──────────────────────────────────────────────
+Using redirected Wrangler configuration.
+ - Configuration being used: "dist\server\wrangler.json"
+ - Original user's configuration: "wrangler.jsonc"
+ - Deploy configuration file: ".wrangler\deploy\config.json"
+Attaching additional modules:
+┌───────────────────────────────────────────────────────────┬──────┬─────────────┐
+│ Name                                                      │ Type │ Size        │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/404_CkV79Hue.mjs                                   │ esm  │ 3.80 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/about_DwqYNP7_.mjs                                 │ esm  │ 1.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/about_LQtMuWG0.mjs                                 │ esm  │ 6.32 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/account_Dz_-atuN.mjs                               │ esm  │ 1.36 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/admin-crimes_Db7ASksk.mjs                          │ esm  │ 1.44 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/AdminNav_DQ4G_vij.mjs                              │ esm  │ 2.83 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/admin_ni6YZmYb.mjs                                 │ esm  │ 1.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/announcements_9nfX0GmA.mjs                         │ esm  │ 1.70 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/announcements_BlD_Z-sL.mjs                         │ esm  │ 4.47 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/applications_CzCGl_s3.mjs                          │ esm  │ 1.43 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/arrow-right_BP1_QPNg.mjs                           │ esm  │ 0.86 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/astro-component_Bx5HicIt.mjs                       │ esm  │ 1.71 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/audit_DnAAuKLE.mjs                                 │ esm  │ 1.39 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/AuthFlow_OAUDZLfh.mjs                              │ esm  │ 17.68 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/auth_Cp4U2O4s.mjs                                  │ esm  │ 6.00 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/auth_CpypQ6vZ.mjs                                  │ esm  │ 2.35 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/bank-status_DdT25TaX.mjs                           │ esm  │ 4.11 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/BaseLayout_CSHiFm2i.mjs                            │ esm  │ 119.37 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/build-with-us_Bmex9ff3.mjs                         │ esm  │ 22.22 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/card-pdf_BYUgphv2.mjs                              │ esm  │ 10.17 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/cards_Bz2U9Uj5.mjs                                 │ esm  │ 1.39 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/cards_C0GBltnh.mjs                                 │ esm  │ 8.32 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/change-role_BHq3spNl.mjs                           │ esm  │ 3.62 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/circle-alert_wQjDLIip.mjs                          │ esm  │ 0.97 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/circle-check_8LAFdJrj.mjs                          │ esm  │ 0.88 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/civic_CYVlfepq.mjs                                 │ esm  │ 2.50 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/compliance_DmANdEOO.mjs                            │ esm  │ 2.57 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/constitution_DUreqsuM.mjs                          │ esm  │ 1.41 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/contributions_T-hbCuDw.mjs                         │ esm  │ 2.75 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/corrections_CPVHK_Ol.mjs                           │ esm  │ 3.73 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/crimes_YDkNdy7b.mjs                                │ esm  │ 5.85 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/crime_ByBvqgnE.mjs                                 │ esm  │ 12.56 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/data_QOvpzjMr.mjs                                  │ esm  │ 8.35 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/delhi-2025_BT1R6aFa.mjs                            │ esm  │ 4.56 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/delhi_data_BUffC05d.mjs                            │ esm  │ 83.86 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/dev-set-role_CTr9y05Z.mjs                          │ esm  │ 0.95 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/documents-library_CcWPSfl7.mjs                     │ esm  │ 1.46 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/documents_C8YHC8Th.mjs                             │ esm  │ 2.61 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/documents_CgkiKbAN.mjs                             │ esm  │ 2.49 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/documents_ohRabzVk.mjs                             │ esm  │ 1.41 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/donation-config_BRmxXWC3.mjs                       │ esm  │ 3.91 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/donation-config_CZp4XltW.mjs                       │ esm  │ 4.10 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/donations_DOgaExIa.mjs                             │ esm  │ 3.03 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/download_ViwKbkh2.mjs                              │ esm  │ 1.55 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/exports_Cp2A7l_F.mjs                               │ esm  │ 1.40 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/exports_fDON7yU_.mjs                               │ esm  │ 12.89 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/fetch_Knc_7VFn.mjs                                 │ esm  │ 105.47 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/finance-engine_quuk_RRb.mjs                        │ esm  │ 16.02 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/finance_C37m3H8e.mjs                               │ esm  │ 2.54 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/forgot-password_DZrfZEqJ.mjs                       │ esm  │ 2.64 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/formation-progress_CbAdwctC.mjs                    │ esm  │ 1.35 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/formation-progress_CfYeeuJP.mjs                    │ esm  │ 9.06 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/founder_By9VFvgL.mjs                               │ esm  │ 7.34 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/founder_DTHFEQlw.mjs                               │ esm  │ 1.77 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/image-service-workerd_XDsRyNhd.mjs                 │ esm  │ 0.90 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/image-transform-endpoint_Bhd6I-T7.mjs              │ esm  │ 74.94 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_BDlrRCdB.mjs                                 │ esm  │ 1.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_BP0koIhu.mjs                                 │ esm  │ 1.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_BptWeF4P.mjs                                 │ esm  │ 12.69 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_C-YnHyLH.mjs                                 │ esm  │ 3.02 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_CD-cQfez.mjs                                 │ esm  │ 2.42 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_Clv4cjCW.mjs                                 │ esm  │ 713.41 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_CMIX1gEc.mjs                                 │ esm  │ 10.86 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_CXnc4hIf.mjs                                 │ esm  │ 32.12 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/index_C_MxL6CF.mjs                                 │ esm  │ 322.41 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/induction_BNYJcVt8.mjs                             │ esm  │ 16.10 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/induction_CT9jZfDq.mjs                             │ esm  │ 2.63 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/info_Rov7b43l.mjs                                  │ esm  │ 1.19 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/issues_B6Z00qzZ.mjs                                │ esm  │ 15.84 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/issues_BMkYxYKh.mjs                                │ esm  │ 4.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/issues_ClGrnLWB.mjs                                │ esm  │ 2.45 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/loader-circle_Db7tuBRF.mjs                         │ esm  │ 0.83 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/login_CBX5ggTT.mjs                                 │ esm  │ 2.55 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/logout_D4iUAJ9P.mjs                                │ esm  │ 2.66 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/manifesto-items_BShAB0hS.mjs                       │ esm  │ 4.54 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/manifesto_CJ895zA3.mjs                             │ esm  │ 2.37 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/manifesto_rGwwswWO.mjs                             │ esm  │ 8.27 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/membership-card_BePAMtFW.mjs                       │ esm  │ 2.61 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/membership_-gBvQuZB.mjs                            │ esm  │ 8.19 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/members_Bhpy6Yi6.mjs                               │ esm  │ 2.56 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/members_BRKs5p2C.mjs                               │ esm  │ 1.07 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/member_n1_BHJ-p.mjs                                │ esm  │ 1.39 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/milestones_DJN6WmmH.mjs                            │ esm  │ 2.95 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/monitoring_RhdTVzGm.mjs                            │ esm  │ 1.34 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/my-nagrik_CENvpxWy.mjs                             │ esm  │ 1.37 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/noop-entrypoint_DEvJxhCz.mjs                       │ esm  │ 0.62 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/okhla_DgxsaTwD.mjs                                 │ esm  │ 4.67 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/operations_BgUmju8G.mjs                            │ esm  │ 2.53 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/page-ssr_Bv413nTL.mjs                              │ esm  │ 161.32 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/parse-id_BZ_lR2hE.mjs                              │ esm  │ 2.60 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/parse-proposer_B92BiFwA.mjs                        │ esm  │ 2.57 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/PDFButton_CeQ08Ppu.mjs                             │ esm  │ 768.33 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/pdfjs_Co-qqF5F.mjs                                 │ esm  │ 2171.92 KiB │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/periods_BMYaE4u-.mjs                               │ esm  │ 6.15 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/profile_DgqvSvJ7.mjs                               │ esm  │ 1.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/progress-service_ipRf4StT.mjs                      │ esm  │ 6.27 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/proposers_C3HWfCuJ.mjs                             │ esm  │ 2.13 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/publish_D5PML_Wu.mjs                               │ esm  │ 6.69 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/queries_GKeeG7su.mjs                               │ esm  │ 2.10 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/razorpay-webhook_B0Xn-XTx.mjs                      │ esm  │ 1.15 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/reconcile_BcKhkOip.mjs                             │ esm  │ 5.45 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/register-member_9CuxTZ7t.mjs                       │ esm  │ 5.18 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/request_8I6yEKiv.mjs                               │ esm  │ 8.30 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/reset-password_Ba-99ymk.mjs                        │ esm  │ 2.50 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/run-topic-pipeline_7hUhzKbK.mjs                    │ esm  │ 1.91 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/sequence_DhroUvX-.mjs                              │ esm  │ 172.93 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/settings_BZrTFT5Q.mjs                              │ esm  │ 2.48 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/signed-url_ChRx3wV6.mjs                            │ esm  │ 2.78 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/signup_B4lRmI2f.mjs                                │ esm  │ 2.56 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/signup_BfnNtJ-i.mjs                                │ esm  │ 2.10 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/sitemap_Bq0GB8Vd.mjs                               │ esm  │ 3.91 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/stats_Df35xpTU.mjs                                 │ esm  │ 2.16 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/status_bu7acQb9.mjs                                │ esm  │ 3.55 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/status_CPvL64p7.mjs                                │ esm  │ 1.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/supabase_BhjJiWcV.mjs                              │ esm  │ 706.00 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/sync-profile_CvVbOkgv.mjs                          │ esm  │ 3.91 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/tasks_Cv8-6OBr.mjs                                 │ esm  │ 4.33 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/topic-service_BavxKhLH.mjs                         │ esm  │ 10.06 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/topics_C8UJnATu.mjs                                │ esm  │ 1.37 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/traceData_DS_azGMy.mjs                             │ esm  │ 140.59 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/transactions_Dqn3wsg3.mjs                          │ esm  │ 6.00 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/transparency_D0hpqM5u.mjs                          │ esm  │ 3.46 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/trending-up_DAnsXif2.mjs                           │ esm  │ 0.87 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/update-profile_DZGcEJN3.mjs                        │ esm  │ 5.38 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/upload-statement_CBiJCUgF.mjs                      │ esm  │ 10.27 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/upload_DtRkc95c.mjs                                │ esm  │ 11.65 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/verifications_CD27mUBW.mjs                         │ esm  │ 1.44 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/verifications_jPNzUjto.mjs                         │ esm  │ 18.70 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/verify_BHiOZM7A.mjs                                │ esm  │ 3.93 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/volunteers_DezZXzL_.mjs                            │ esm  │ 3.96 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/volunteer_CA69H-9a.mjs                             │ esm  │ 3.70 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/volunteer_D3sNJCMw.mjs                             │ esm  │ 12.96 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/volunteer_DG0mmbM7.mjs                             │ esm  │ 2.23 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/why-nagrik_Bd9PZ9iU.mjs                            │ esm  │ 7.82 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/worker-entry_D4lwE_8q.mjs                          │ esm  │ 983.86 KiB  │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/_id__DgD4bW4_.mjs                                  │ esm  │ 11.29 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/_slug__MoWDhCjI.mjs                                │ esm  │ 11.71 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/_type__CErvR2_M.mjs                                │ esm  │ 5.32 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/_virtual_astro_server-island-manifest_DfDy3yjy.mjs │ esm  │ 0.74 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ chunks/_virtual_astro_session-driver_CeJVXO_n.mjs         │ esm  │ 3.45 KiB    │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ virtual_astro_middleware.mjs                              │ esm  │ 14.95 KiB   │
+├───────────────────────────────────────────────────────────┼──────┼─────────────┤
+│ Total (141 modules)                                       │      │ 7145.60 KiB │
+└───────────────────────────────────────────────────────────┴──────┴─────────────┘
+🌀 Building list of assets...
+✨ Read 169 files from the assets directory C:\Users\hudav\Documents\GitHub\webapp\dist\client
+🌀 Starting asset upload...
+🌀 Found 95 new or modified static assets to upload. Proceeding with upload...
++ /_astro/check.HMYUEE87.js
++ /_astro/plus.DP02nBdB.js
++ /_astro/clock.D49vvAuj.js
++ /_astro/user.BGG2HZC1.js
++ /_astro/mail.Bi_XX5Sm.js
++ /_astro/copy.LWBDxpEr.js
++ /_astro/compass.BoIegZxR.js
++ /_astro/funnel.B67ICA91.js
++ /_astro/triangle-alert.josat1g2.js
++ /_astro/users.BYk8rl7o.js
++ /_astro/refresh-cw.C-Kr8biD.js
++ /_astro/megaphone.CTI1x1-2.js
++ /_astro/layers.BHkCz6eX.js
++ /_astro/settings.LTg-OPEQ.js
++ /_astro/qr-code.DUs0QUar.js
++ /offline.html
++ /_astro/HelpButton.Ca8PDc6u.js
++ /_astro/FoundingProgressBar.CLC8piL8.js
++ /_astro/ManifestoVoting.BK4YqZSr.js
++ /_astro/MemberContributions.Kw9YRPLq.js
++ /_astro/MemberDocumentVault.Cfjlewbz.js
++ /_astro/VolunteerDashboard.14siD3Uq.js
++ /_astro/ClientRouter.astro_astro_type_script_index_0_lang.B787nT7a.js
++ /_astro/AdminComplianceHub.9t_1BZGA.js
++ /_astro/TransparencyLedger.CDyDulTG.js
++ /_astro/AdminCivicHub.VrWBrVCr.js
++ /legal/internal-democracy/index.html
++ /legal/ethics/index.html
++ /legal/constitution/index.html
++ /_astro/InductionWizard.HaDUWYPT.js
++ /_astro/delhi_data.DYfdTP7m.js
++ /_astro/client.BeZ6Cf-D.js
++ /_astro/chevron-right.D3IVXnKe.js
++ /_astro/x.CZrmfCIk.js
++ /_astro/circle-check.BozINmsi.js
++ /_astro/circle-check-big.D8gRnvHf.js
++ /_astro/upload.3SxnvllC.js
++ /_astro/user-check.D7HAgQUw.js
++ /_astro/external-link.nubyUEiY.js
++ /_astro/logout.astro_astro_type_script_index_0_lang.D0iBXkuA.js
++ /_astro/shield.D-V-MfEs.js
++ /_astro/file-check-corner.DcLdtY_E.js
++ /_astro/save.B40oRpBp.js
++ /_astro/shield-alert.BFsLCx2e.js
++ /_astro/file-spreadsheet.Wk-C9Yyf.js
++ /_astro/brand.Bw0KEUQQ.js
++ /_astro/queries.HbKjX361.js
++ /_astro/ListenButton.bpU5c6xd.js
++ /_astro/InstallPrompt.CTu3ei6_.js
++ /_astro/BottomNav.CM7jgvVR.js
++ /sw.js
++ /_astro/index.DI6tR9OI.js
++ /_astro/SignupForms.DjHAGy3K.js
++ /_astro/MemberCardView.Ct-TPKcm.js
++ /_astro/SmartIsland.DppP9tO7.js
++ /_astro/PublicDocumentsLibrary.CT6Ax9iS.js
++ /nagrikpartylogo.svg
++ /_astro/index.BNG60CY7.js
++ /legal/financial-transparency/index.html
++ /legal/candidate-selection/index.html
++ /legal/privacy/index.html
++ /_astro/AdminMembersHub.CTz4sK0F.js
++ /images/qrnagrikparty.jpeg
++ /_astro/supabase.vmoJkqeS.js
++ /_astro/loader-circle.BN58anOJ.js
++ /_astro/arrow-right.j1tGj2-B.js
++ /_astro/search.Do-1NJ8A.js
++ /_astro/credit-card.7RdWmaO8.js
++ /_astro/download.B56s3IhD.js
++ /_astro/circle-alert.dnULHtcI.js
++ /_astro/eye.tWdj__5b.js
++ /_astro/map-pin.COFVp6CQ.js
++ /_astro/send.DX6Lu1vM.js
++ /_astro/shield-check.Dc3P9fBL.js
++ /_astro/trash-2.C35UyNwo.js
++ /_astro/file-text.D3FKtHqK.js
++ /_astro/jsx-runtime.BlE25aXf.js
++ /_astro/receipt.BSPfo4fO.js
++ /_astro/ShareButton.O5cgZ3NB.js
++ /_astro/createLucideIcon.DPxLEh-o.js
++ /_astro/OnboardingCarousel.BxwBEOJf.js
++ /_astro/IssuesList.DRghjbXi.js
++ /_astro/IssueReporter.CbOMb8VL.js
++ /_astro/AuthFlow.CTOo1fHH.js
++ /_astro/BuildWithUsView.BWQ6JEzJ.js
++ /_astro/AdminOverview.B4YL4mxy.js
++ /_astro/AdminOperationsHub.COvWeGff.js
++ /_astro/AdminSettingsHub.ZNrMcGs9.js
++ /nagrikpartylogo.original.svg
++ /legal/official-communication/index.html
++ /legal/digital-governance/index.html
++ /legal/rulebook/index.html
++ /_astro/MemberDashboard.Cz4wBNDz.js
++ /_astro/AdminFinanceHub.By1xxshW.js
++ /_astro/page.BBhvxx1h.js
+Uploaded 32 of 95 assets
+Uploaded 63 of 95 assets
+Uploaded 95 of 95 assets
+✨ Success! Uploaded 95 files (55 already uploaded) (3.33 sec)
+
+Total Upload: 7146.29 KiB / gzip: 1553.84 KiB
+Worker Startup Time: 28 ms
+Your Worker has access to the following bindings:
+Binding                         Resource                  
+env.SESSION (inherited)         KV Namespace              
+env.IMAGES                      Images                    
+env.ASSETS                      Assets                    
+env.SENTRY_DSN ("")             Environment Variable      
+
+Uploaded nagrikparty (22.26 sec)
+Deployed nagrikparty triggers (3.18 sec)
+  https://nagrikparty.thenagrikparty.workers.dev
+Current Version ID: 38055187-3da1-412c-bffa-ed6044a62336

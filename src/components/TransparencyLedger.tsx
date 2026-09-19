@@ -85,6 +85,7 @@ interface DonationConfig {
   bank_name?: string;
   account_number?: string;
   ifsc_code?: string;
+  account_type?: string;
   qr_image_url?: string;
   payment_instructions?: string;
   disclosure_text?: string;
@@ -95,13 +96,29 @@ export function TransparencyLedger() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>("ALL");
   const [loading, setLoading] = useState(true);
   const [donationConfig, setDonationConfig] = useState<DonationConfig | null>(null);
+  const [qrImgBroken, setQrImgBroken] = useState(false);
 
   useEffect(() => {
     // Load donation configuration
     fetch("/api/v1/donation-config")
       .then((res) => res.json())
-      .then((cfg) => setDonationConfig(cfg))
-      .catch(() => setDonationConfig({ is_enabled: false }));
+      .then((cfg) => {
+        // Hard fallback so the live ECI-verified UPI + QR always render
+        // even if the API row is stale or the fetch returns defaults.
+        setDonationConfig({
+          ...cfg,
+          qr_image_url: cfg?.qr_image_url || "/images/qrnagrikparty.jpeg",
+          upi_id: cfg?.upi_id || "areynetaji@ybl",
+        });
+        setQrImgBroken(false);
+      })
+      .catch(() =>
+        setDonationConfig({
+          is_enabled: false,
+          upi_id: "areynetaji@ybl",
+          qr_image_url: "/images/qrnagrikparty.jpeg",
+        })
+      );
   }, []);
 
   useEffect(() => {
@@ -478,6 +495,12 @@ export function TransparencyLedger() {
                     <span style={{ fontFamily: "var(--font-mono)", fontWeight: 600 }}>{donationConfig.ifsc_code}</span>
                   </div>
                 )}
+                {donationConfig.account_type && (
+                  <div>
+                    <strong style={{ fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "11px" }}>ACCOUNT TYPE: </strong>
+                    <span>{donationConfig.account_type}</span>
+                  </div>
+                )}
               </div>
 
               {donationConfig.disclosure_text && (
@@ -487,18 +510,34 @@ export function TransparencyLedger() {
               )}
             </div>
 
-            {donationConfig.qr_image_url && (
-              <div style={{ width: "140px", textAlign: "center" }}>
-                <img
-                  src={donationConfig.qr_image_url}
-                  alt="UPI QR Code"
-                  style={{ width: "100%", height: "auto", borderRadius: "3px", border: "1px solid var(--line)" }}
-                />
+            {(donationConfig.qr_image_url && !qrImgBroken) || donationConfig.upi_id ? (
+              <div style={{ width: "200px", textAlign: "center", flexShrink: 0 }}>
+                {donationConfig.qr_image_url && !qrImgBroken ? (
+                  <img
+                    src={donationConfig.qr_image_url}
+                    alt="UPI QR Code — scan to donate to Nagrik Party"
+                    style={{ width: "100%", height: "auto", borderRadius: "3px", border: "1px solid var(--line)", background: "#fff", padding: "6px" }}
+                    onError={() => setQrImgBroken(true)}
+                  />
+                ) : null}
+                {(!donationConfig.qr_image_url || qrImgBroken) && donationConfig.upi_id ? (
+                  <div style={{ width: "100%", background: "#fff", borderRadius: "3px", border: "1px solid var(--line)", padding: "10px", fontFamily: "var(--font-mono)", fontSize: "11px", color: "var(--ink)", wordBreak: "break-all" }}>
+                    UPI ID: <strong>{donationConfig.upi_id}</strong>
+                    <div style={{ marginTop: "6px" }}>
+                      <a
+                        href={`upi://pay?pa=${encodeURIComponent(donationConfig.upi_id)}&pn=${encodeURIComponent(donationConfig.account_name || "Nagrik Party")}&cu=INR`}
+                        style={{ color: "var(--saffron)", fontWeight: 700 }}
+                      >
+                        Open UPI App &rarr;
+                      </a>
+                    </div>
+                  </div>
+                ) : null}
                 <small style={{ display: "block", fontSize: "11px", color: "var(--muted)", marginTop: "6px" }}>
-                  Instant UPI Scan
+                  Instant UPI Scan · {donationConfig.upi_id}
                 </small>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { supabase, hasSupabaseConfig } from "@/lib/supabase";
+import { reportError } from "@/lib/monitoring";
 
 
 export const prerender = false;
@@ -7,7 +8,7 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   const webhookSecret = import.meta.env.RAZORPAY_WEBHOOK_SECRET;
   if (!webhookSecret) {
-    console.error("RAZORPAY_WEBHOOK_SECRET not configured");
+    reportError(new Error("RAZORPAY_WEBHOOK_SECRET not configured"), { route: "razorpay-webhook" });
     return new Response(JSON.stringify({ error: "Webhook not configured" }), { status: 500 });
   }
 
@@ -54,7 +55,7 @@ export const POST: APIRoute = async ({ request }) => {
       .eq("transaction_id", paymentId);
 
     if (error) {
-      console.error("Webhook update error:", error);
+      reportError(error, { route: "razorpay-webhook", event: event.event, paymentId });
     }
   }
 

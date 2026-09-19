@@ -45,6 +45,7 @@ interface DonationConfig {
   bank_name: string;
   account_number: string;
   ifsc_code: string;
+  account_type: string;
   qr_image_url: string;
   payment_instructions: string;
   disclosure_text: string;
@@ -82,14 +83,15 @@ export function AdminFinanceHub() {
   // --- CONFIG TAB STATE ---
   const [config, setConfig] = useState<DonationConfig>({
     id: "default",
-    is_enabled: false,
+    is_enabled: true,
     legal_status_label: "Contributions currently accepted under the Formation Phase",
-    upi_id: "",
-    account_name: "Nagrik Party (Formation Account)",
-    bank_name: "",
-    account_number: "",
-    ifsc_code: "",
-    qr_image_url: "",
+    upi_id: "areynetaji@ybl",
+    account_name: "SHEIKH ARSALAN ULLAH CHISHTI",
+    bank_name: "Axis Bank",
+    account_number: "924020035537387",
+    ifsc_code: "UTIB0002912",
+    account_type: "Current Account — Election & Donation Account (MLA 2025, ECI affidavit verified; interim party account till registration)",
+    qr_image_url: "/images/qrnagrikparty.jpeg",
     payment_instructions: "Scan the UPI QR code or transfer directly to the formation account. Retain reference UTR for audit receipting.",
     disclosure_text: "Nagrik Party operates on a strictly digital, zero-cash basis. Every receipt is auditable under RPA 1951.",
   });
@@ -668,7 +670,7 @@ export function AdminFinanceHub() {
                         </label>
                         <input
                           type="text"
-                          placeholder="e.g. nagrikparty@axis"
+                          placeholder="e.g. areynetaji@ybl"
                           value={config.upi_id || ""}
                           onChange={(e) => setConfig((prev) => ({ ...prev, upi_id: e.target.value }))}
                           style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
@@ -681,6 +683,7 @@ export function AdminFinanceHub() {
                         </label>
                         <input
                           type="text"
+                          placeholder="e.g. SHEIKH ARSALAN ULLAH CHISHTI"
                           value={config.account_name || ""}
                           onChange={(e) => setConfig((prev) => ({ ...prev, account_name: e.target.value }))}
                           style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
@@ -708,9 +711,10 @@ export function AdminFinanceHub() {
                         </label>
                         <input
                           type="text"
+                          placeholder="e.g. 924020035537387"
                           value={config.account_number || ""}
                           onChange={(e) => setConfig((prev) => ({ ...prev, account_number: e.target.value }))}
-                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px", fontFamily: "var(--font-mono)" }}
                         />
                       </div>
 
@@ -720,8 +724,22 @@ export function AdminFinanceHub() {
                         </label>
                         <input
                           type="text"
+                          placeholder="e.g. UTIB0002912"
                           value={config.ifsc_code || ""}
                           onChange={(e) => setConfig((prev) => ({ ...prev, ifsc_code: e.target.value }))}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px", fontFamily: "var(--font-mono)" }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                          Account Type
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Political Current Account"
+                          value={config.account_type || ""}
+                          onChange={(e) => setConfig((prev) => ({ ...prev, account_type: e.target.value }))}
                           style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
                         />
                       </div>
@@ -733,7 +751,8 @@ export function AdminFinanceHub() {
                         Custom QR Code Image (Optional)
                       </label>
                       <p style={{ fontSize: "11.5px", color: "var(--muted)", margin: "0 0 10px", lineHeight: "1.4" }}>
-                        If left blank, a crisp scannable QR is automatically generated from your UPI ID. You can also upload a bank-provided QR image.
+                        Live file: <code style={{ fontFamily: "var(--font-mono)" }}>/images/qrnagrikparty.jpeg</code> (app folder me bundled).
+                        Isko khaali chhodne par bhi wahi bundled QR dikhega. Bank ka naya QR aaye to yahan upload/URL update kar dein.
                       </p>
                       
                       <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>

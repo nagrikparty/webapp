@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { GoogleGenAI } from "@google/genai";
+import { reportError } from "@/lib/monitoring";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -38,7 +39,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" }
     });
   } catch (err: unknown) {
-    console.error("parse-id error:", err instanceof Error ? err.message : err);
+    reportError(err, { route: "vision/parse-id" });
     return new Response(JSON.stringify({ error: "Failed to parse identity document" }), { status: 500 });
   }
 };
