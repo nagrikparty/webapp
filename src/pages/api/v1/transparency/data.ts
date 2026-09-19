@@ -25,6 +25,14 @@ export const GET: APIRoute = async ({ request }) => {
     const url = new URL(request.url);
     const selectedPeriodId = url.searchParams.get("period_id");
 
+    // Fetch live bank account position & unrecovered charges disclosure
+    const { data: bankStatus } = await supabase
+      .from("bank_account_status")
+      .select("*")
+      .eq("id", "primary")
+      .eq("is_public_visible", true)
+      .maybeSingle();
+
     // 1. Fetch all published reporting periods
     const { data: publishedPeriods, error: pErr } = await supabase
       .from("reporting_periods")
@@ -44,6 +52,18 @@ export const GET: APIRoute = async ({ request }) => {
     if (!publishedPeriods || publishedPeriods.length === 0) {
       return new Response(JSON.stringify({
         has_data: false,
+        bank_status: bankStatus ? {
+          bank_name: bankStatus.bank_name,
+          account_number_masked: bankStatus.account_number_masked,
+          branch_name: bankStatus.branch_name,
+          statement_closing_balance: bankStatus.statement_closing_balance,
+          live_bank_balance: bankStatus.live_bank_balance,
+          live_bank_balance_formatted: formatPaiseInr(toPaise(bankStatus.live_bank_balance)),
+          balance_type: bankStatus.balance_type,
+          as_of_date: bankStatus.as_of_date,
+          disclosure_title: bankStatus.disclosure_title,
+          disclosure_explanation: bankStatus.disclosure_explanation,
+        } : null,
         periods: [],
         totals: {
           total_donations: "0.00",
@@ -153,6 +173,18 @@ export const GET: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       has_data: true,
+      bank_status: bankStatus ? {
+        bank_name: bankStatus.bank_name,
+        account_number_masked: bankStatus.account_number_masked,
+        branch_name: bankStatus.branch_name,
+        statement_closing_balance: bankStatus.statement_closing_balance,
+        live_bank_balance: bankStatus.live_bank_balance,
+        live_bank_balance_formatted: formatPaiseInr(toPaise(bankStatus.live_bank_balance)),
+        balance_type: bankStatus.balance_type,
+        as_of_date: bankStatus.as_of_date,
+        disclosure_title: bankStatus.disclosure_title,
+        disclosure_explanation: bankStatus.disclosure_explanation,
+      } : null,
       periods: publishedPeriods,
       selected_period_id: selectedPeriodId || "ALL",
       totals: {

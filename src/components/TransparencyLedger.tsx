@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ShieldCheck, FileText, CheckCircle2, Hash, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import { ShieldCheck, FileText, CheckCircle2, Hash, ArrowUpRight, ArrowDownLeft, AlertTriangle, Landmark } from "lucide-react";
 
 interface PublishedPeriod {
   id: string;
@@ -23,6 +23,19 @@ interface PublishedPeriod {
   }>;
 }
 
+interface BankStatus {
+  bank_name: string;
+  account_number_masked: string;
+  branch_name: string;
+  statement_closing_balance: number | string;
+  live_bank_balance: number | string;
+  live_bank_balance_formatted: string;
+  balance_type: string;
+  as_of_date: string;
+  disclosure_title: string;
+  disclosure_explanation: string;
+}
+
 interface PublicTransaction {
   id: string;
   period_id: string;
@@ -39,6 +52,7 @@ interface PublicTransaction {
 
 interface TransparencyDataResponse {
   has_data: boolean;
+  bank_status?: BankStatus | null;
   periods: PublishedPeriod[];
   selected_period_id: string;
   totals: {
@@ -187,29 +201,46 @@ export function TransparencyLedger() {
               borderRadius: "4px",
               border: "1px solid var(--line)",
               textAlign: "right",
-              minWidth: "200px",
+              minWidth: "220px",
             }}
           >
             <div style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-              CURRENT VERIFIED BALANCE
+              STATEMENT AUDITED CLOSING
             </div>
             <div style={{
-              fontSize: "24px",
+              fontSize: "22px",
               fontWeight: 800,
-              color: Number(totals.closing_balance) >= 0 ? "var(--green)" : "var(--red)",
+              color: "var(--ink)",
               fontFamily: "var(--font-mono)",
               marginTop: "2px",
             }}>
               {totals.closing_balance_formatted}
             </div>
             {totals.latest_balance_date && (
-              <div style={{ fontSize: "10.5px", color: "var(--ink-faint)", marginTop: "4px", fontFamily: "var(--font-mono)" }}>
-                As of {new Date(totals.latest_balance_date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+              <div style={{ fontSize: "10.5px", color: "var(--ink-faint)", marginTop: "2px", fontFamily: "var(--font-mono)" }}>
+                Audited to {new Date(totals.latest_balance_date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
               </div>
             )}
-            <small style={{ fontSize: "11px", color: "var(--muted)" }}>
-              {hasData ? `${totals.verified_transactions_count} Verified Transactions` : "Awaiting Published Audit"}
-            </small>
+
+            {data?.bank_status && Number(data.bank_status.live_bank_balance) !== 0 && (
+              <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px dashed var(--line)" }}>
+                <div style={{ fontSize: "10.5px", color: "var(--red)", fontFamily: "var(--font-mono)", textTransform: "uppercase", fontWeight: 700 }}>
+                  LIVE BANK POSITION (DEFICIT)
+                </div>
+                <div style={{ fontSize: "18px", fontWeight: 800, color: "var(--red)", fontFamily: "var(--font-mono)" }}>
+                  {data.bank_status.live_bank_balance_formatted}
+                </div>
+                <div style={{ fontSize: "10px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+                  Axis Bank Net Banking · {data.bank_status.as_of_date}
+                </div>
+              </div>
+            )}
+            
+            <div style={{ marginTop: "6px" }}>
+              <small style={{ fontSize: "11px", color: "var(--muted)" }}>
+                {hasData ? `${totals.verified_transactions_count} Verified Transactions` : "Awaiting Published Audit"}
+              </small>
+            </div>
           </div>
         </div>
 
@@ -264,7 +295,126 @@ export function TransparencyLedger() {
         )}
       </div>
 
-      {/* 2. OPTIONAL CONFIGURABLE DONATION BOX */}
+      {/* 2. OPTION A: LIVE BANK ACCOUNT STATUS & UNRECOVERED CHARGES DISCLOSURE */}
+      {data?.bank_status && Number(data.bank_status.live_bank_balance) !== 0 && (
+        <div
+          className="card"
+          style={{
+            background: "var(--paper-card)",
+            border: "1px solid var(--line-strong)",
+            borderLeft: "5px solid var(--red)",
+            borderRadius: "4px",
+            padding: "24px 28px",
+            boxShadow: "var(--shadow)",
+            display: "grid",
+            gap: "18px",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "16px" }}>
+            <div style={{ flex: 1, minWidth: "min(100%, 320px)" }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-mono)",
+                  color: "var(--red)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  marginBottom: "6px",
+                }}
+              >
+                <AlertTriangle size={13} /> STATUTORY DISCLOSURE · LIVE BANK DEFICIT NOTICE
+              </div>
+              <h3 style={{ fontSize: "19px", fontWeight: 700, fontFamily: "var(--font-serif)", color: "var(--ink)", margin: "0 0 6px" }}>
+                {data.bank_status.disclosure_title}
+              </h3>
+              <p style={{ fontSize: "13px", color: "var(--muted)", margin: 0, fontFamily: "var(--font-mono)" }}>
+                {data.bank_status.bank_name} Current Account ({data.bank_status.account_number_masked}) · {data.bank_status.branch_name}
+              </p>
+            </div>
+
+            {/* Dual Balance Pill Comparison */}
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <div
+                style={{
+                  padding: "12px 18px",
+                  background: "var(--paper-subtle)",
+                  borderRadius: "4px",
+                  border: "1px solid var(--line)",
+                  textAlign: "right",
+                  minWidth: "150px",
+                }}
+              >
+                <small style={{ fontSize: "10.5px", color: "var(--muted)", display: "block", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
+                  AUDITED STATEMENT CLOSING
+                </small>
+                <strong style={{ fontSize: "18px", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
+                  ₹{Number(data.bank_status.statement_closing_balance || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                </strong>
+                <div style={{ fontSize: "10px", color: "var(--ink-faint)", marginTop: "2px" }}>
+                  Verified settled ledger
+                </div>
+              </div>
+
+              <div
+                style={{
+                  padding: "12px 18px",
+                  background: "var(--paper-subtle)",
+                  borderRadius: "4px",
+                  border: "1px solid var(--line-strong)",
+                  textAlign: "right",
+                  minWidth: "160px",
+                }}
+              >
+                <small style={{ fontSize: "10.5px", color: "var(--muted)", display: "block", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
+                  LIVE NET BANKING POSITION
+                </small>
+                <strong style={{ fontSize: "20px", color: "var(--red)", fontFamily: "var(--font-mono)" }}>
+                  {data.bank_status.live_bank_balance_formatted}
+                </strong>
+                <div style={{ fontSize: "10px", color: "var(--red)", marginTop: "2px", fontWeight: 600 }}>
+                  As of {new Date(data.bank_status.as_of_date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              padding: "16px 20px",
+              background: "var(--paper-subtle)",
+              borderRadius: "4px",
+              border: "1px solid var(--line)",
+              fontSize: "13.5px",
+              color: "var(--ink)",
+              lineHeight: 1.6,
+            }}
+          >
+            <p style={{ margin: "0 0 12px", fontWeight: 500 }}>
+              {data.bank_status.disclosure_explanation}
+            </p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px", paddingTop: "12px", borderTop: "1px dashed var(--line)", fontSize: "12px", color: "var(--muted)" }}>
+              <div>
+                <strong style={{ color: "var(--ink)", display: "block", marginBottom: "3px" }}>1. Nature of Deficit</strong>
+                Institutional Monthly Average Balance (MAB) non-maintenance charges and 18% GST debited by Axis Bank during the pre-registration formation phase.
+              </div>
+              <div>
+                <strong style={{ color: "var(--ink)", display: "block", marginBottom: "3px" }}>2. Zero Commercial Debt</strong>
+                Not a personal borrowing, credit line, or commercial loan from any individual, corporation, or bank.
+              </div>
+              <div>
+                <strong style={{ color: "var(--ink)", display: "block", marginBottom: "3px" }}>3. 100% Cashless Discipline</strong>
+                Nagrik Party holds zero unaccounted cash. Every rupee received from citizen donors is digitally recorded and verified.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3. OPTIONAL CONFIGURABLE DONATION BOX */}
       {donationConfig?.is_enabled && (
         <div
           className="card"

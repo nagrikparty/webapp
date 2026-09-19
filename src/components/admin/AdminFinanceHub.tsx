@@ -5,6 +5,8 @@ import {
   Receipt,
   Save,
   RefreshCw,
+  Landmark,
+  AlertTriangle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { AdminStatementManager } from "@/components/admin/AdminStatementManager";
@@ -13,6 +15,20 @@ async function getSessionToken(): Promise<string | null> {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   return session?.access_token || null;
+}
+
+interface BankAccountStatusRecord {
+  id: string;
+  bank_name: string;
+  account_number_masked: string;
+  branch_name: string;
+  statement_closing_balance: number;
+  live_bank_balance: number;
+  balance_type: string;
+  as_of_date: string;
+  disclosure_title: string;
+  disclosure_explanation: string;
+  is_public_visible: boolean;
 }
 
 interface DonationConfig {
@@ -39,19 +55,19 @@ interface TransactionRow {
 }
 
 export function AdminFinanceHub() {
-  const [activeTab, setActiveTab] = useState<"statements" | "config" | "transactions">("statements");
+  const [activeTab, setActiveTab] = useState<"statements" | "bank-status" | "config" | "transactions">("statements");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get("tab");
     if (tabParam === "statements" || tabParam === "periods") {
       setActiveTab("statements");
-    } else if (tabParam === "config" || tabParam === "transactions") {
-      setActiveTab(tabParam as "config" | "transactions");
+    } else if (tabParam === "bank-status" || tabParam === "config" || tabParam === "transactions") {
+      setActiveTab(tabParam as "bank-status" | "config" | "transactions");
     }
   }, []);
 
-  function switchTab(tab: "statements" | "config" | "transactions") {
+  function switchTab(tab: "statements" | "bank-status" | "config" | "transactions") {
     setActiveTab(tab);
     const url = new URL(window.location.href);
     url.searchParams.set("tab", tab);
@@ -123,6 +139,71 @@ export function AdminFinanceHub() {
     }
   }
 
+  // --- BANK STATUS TAB STATE ---
+  const [bankStatus, setBankStatus] = useState<BankAccountStatusRecord>({
+    id: "primary",
+    bank_name: "Axis Bank",
+    account_number_masked: "XXXXXX7387",
+    branch_name: "Sarojini Nagar Branch, New Delhi",
+    statement_closing_balance: 0.00,
+    live_bank_balance: -22202.53,
+    balance_type: "ACCUMULATED_BANK_MAB_CHARGES",
+    as_of_date: new Date().toISOString().split("T")[0],
+    disclosure_title: "Live Bank Account Status & Unrecovered Bank Charges",
+    disclosure_explanation: "The current account reflects a negative balance of -₹22,202.53 in net banking due to institutional Monthly Average Balance (MAB) non-maintenance penalties and statutory 18% GST accumulated during the pre-registration formation phase. This is an institutional bank ledger liability, not personal or third-party debt. Zero unaccounted funds exist.",
+    is_public_visible: true,
+  });
+  const [bankStatusLoading, setBankStatusLoading] = useState(false);
+  const [savingBankStatus, setSavingBankStatus] = useState(false);
+  const [bankStatusMsg, setBankStatusMsg] = useState("");
+
+  async function fetchBankStatus() {
+    setBankStatusLoading(true);
+    try {
+      const token = await getSessionToken();
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch("/api/v1/admin/finance/bank-status", { headers });
+      if (res.ok) {
+        const json = await res.json();
+        if (json.status) setBankStatus(json.status);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setBankStatusLoading(false);
+    }
+  }
+
+  async function handleSaveBankStatus(e: React.FormEvent) {
+    e.preventDefault();
+    setSavingBankStatus(true);
+    setBankStatusMsg("");
+    try {
+      const token = await getSessionToken();
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch("/api/v1/admin/finance/bank-status", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(bankStatus),
+      });
+      if (res.ok) {
+        setBankStatusMsg("Bank status and statutory deficit disclosure saved successfully.");
+        setTimeout(() => setBankStatusMsg(""), 3500);
+      } else {
+        const errData = await res.json();
+        alert(errData.error || "Failed to save bank status.");
+      }
+    } catch {
+      alert("Network error updating bank status.");
+    } finally {
+      setSavingBankStatus(false);
+    }
+  }
+
   // --- TRANSACTIONS TAB STATE ---
   const [transactions, setTransactions] = useState<TransactionRow[]>([]);
   const [txLoading, setTxLoading] = useState(false);
@@ -147,6 +228,7 @@ export function AdminFinanceHub() {
   }
 
   useEffect(() => {
+    if (activeTab === "bank-status") fetchBankStatus();
     if (activeTab === "config") fetchConfig();
     if (activeTab === "transactions") fetchTransactions();
   }, [activeTab]);
@@ -182,6 +264,25 @@ export function AdminFinanceHub() {
         >
           <FileSpreadsheet size={16} />
           6-Month Statements & Upload Engine
+        </button>
+
+        <button
+          type="button"
+          onClick={() => switchTab("bank-status")}
+          className="button"
+          style={{
+            background: activeTab === "bank-status" ? "var(--ink)" : "var(--paper-card)",
+            color: activeTab === "bank-status" ? "#fff" : "var(--ink)",
+            borderColor: activeTab === "bank-status" ? "var(--ink)" : "var(--line)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            fontSize: "13px",
+            fontWeight: 700,
+          }}
+        >
+          <Landmark size={16} />
+          Live Bank Position & Deficit Notice
         </button>
 
         <button
@@ -227,6 +328,231 @@ export function AdminFinanceHub() {
       {activeTab === "statements" && (
         <div>
           <AdminStatementManager />
+        </div>
+      )}
+
+      {/* --- TAB: LIVE BANK STATUS & DEFICIT NOTICE --- */}
+      {activeTab === "bank-status" && (
+        <div style={{ display: "grid", gap: "20px" }}>
+          {bankStatusMsg && (
+            <div
+              style={{
+                padding: "10px 14px",
+                background: "rgba(29, 86, 53, 0.08)",
+                border: "1px solid rgba(29, 86, 53, 0.25)",
+                color: "var(--green)",
+                borderRadius: "3px",
+                fontSize: "13px",
+                fontWeight: 600,
+              }}
+            >
+              {bankStatusMsg}
+            </div>
+          )}
+
+          <div
+            className="card"
+            style={{
+              background: "var(--paper-card)",
+              border: "1px solid var(--line)",
+              borderRadius: "4px",
+              padding: "24px 28px",
+            }}
+          >
+            <div style={{ marginBottom: "20px" }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-mono)",
+                  color: "var(--saffron)",
+                  textTransform: "uppercase",
+                  marginBottom: "4px",
+                }}
+              >
+                <Landmark size={14} /> LIVE BANK POSITION & STATUTORY DEFICIT DESK
+              </div>
+              <h3 style={{ fontSize: "18px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "0 0 6px", color: "var(--ink)" }}>
+                Core Banking Snapshot & Unrecovered Bank Charges
+              </h3>
+              <p style={{ fontSize: "13px", color: "var(--muted)", margin: 0, lineHeight: 1.55 }}>
+                When bank statement CSVs end at ₹0.00 settled ledger but net banking reflects unrecovered Monthly Average Balance (MAB) charges or penalties, manage the official public disclosure and live numbers here.
+              </p>
+            </div>
+
+            {bankStatusLoading ? (
+              <div style={{ padding: "30px", textAlign: "center", color: "var(--muted)" }}>
+                Loading bank status records...
+              </div>
+            ) : (
+              <form onSubmit={handleSaveBankStatus} style={{ display: "grid", gap: "18px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                      BANK NAME
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      value={bankStatus.bank_name}
+                      onChange={(e) => setBankStatus({ ...bankStatus, bank_name: e.target.value })}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                      MASKED ACCOUNT NUMBER
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      value={bankStatus.account_number_masked}
+                      onChange={(e) => setBankStatus({ ...bankStatus, account_number_masked: e.target.value })}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                      BRANCH DETAILS
+                    </label>
+                    <input
+                      type="text"
+                      className="input"
+                      value={bankStatus.branch_name}
+                      onChange={(e) => setBankStatus({ ...bankStatus, branch_name: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                      AUDITED STATEMENT CLOSING (₹)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      className="input"
+                      value={bankStatus.statement_closing_balance}
+                      onChange={(e) => setBankStatus({ ...bankStatus, statement_closing_balance: parseFloat(e.target.value) || 0 })}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--red)", marginBottom: "4px" }}>
+                      LIVE NET BANKING BALANCE (₹)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      className="input"
+                      style={{ color: "var(--red)", fontWeight: 700, fontFamily: "var(--font-mono)" }}
+                      value={bankStatus.live_bank_balance}
+                      onChange={(e) => setBankStatus({ ...bankStatus, live_bank_balance: parseFloat(e.target.value) || 0 })}
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                      AS OF DATE
+                    </label>
+                    <input
+                      type="date"
+                      className="input"
+                      value={bankStatus.as_of_date}
+                      onChange={(e) => setBankStatus({ ...bankStatus, as_of_date: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                    DISCLOSURE HEADING
+                  </label>
+                  <input
+                    type="text"
+                    className="input"
+                    value={bankStatus.disclosure_title}
+                    onChange={(e) => setBankStatus({ ...bankStatus, disclosure_title: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", fontSize: "12px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--ink)", marginBottom: "4px" }}>
+                    STATUTORY EXPLANATION FOR PUBLIC TRANSPARENCY
+                  </label>
+                  <textarea
+                    className="input"
+                    rows={4}
+                    value={bankStatus.disclosure_explanation}
+                    onChange={(e) => setBankStatus({ ...bankStatus, disclosure_explanation: e.target.value })}
+                    required
+                    style={{ width: "100%", resize: "vertical", fontFamily: "inherit" }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <input
+                    type="checkbox"
+                    id="is_public_visible"
+                    checked={bankStatus.is_public_visible}
+                    onChange={(e) => setBankStatus({ ...bankStatus, is_public_visible: e.target.checked })}
+                  />
+                  <label htmlFor="is_public_visible" style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)", cursor: "pointer" }}>
+                    Publish live bank deficit & statutory notice on the public /transparency page
+                  </label>
+                </div>
+
+                <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
+                  <button
+                    type="submit"
+                    className="button"
+                    disabled={savingBankStatus}
+                    style={{
+                      background: "var(--ink)",
+                      color: "#fff",
+                      borderColor: "var(--ink)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    <Save size={15} />
+                    {savingBankStatus ? "Saving..." : "Save Bank Disclosure"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={fetchBankStatus}
+                    className="button"
+                    disabled={bankStatusLoading}
+                    style={{
+                      background: "var(--paper-card)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      fontSize: "13px",
+                    }}
+                  >
+                    <RefreshCw size={15} />
+                    Reload
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       )}
 
