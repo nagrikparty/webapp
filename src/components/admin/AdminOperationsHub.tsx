@@ -337,8 +337,8 @@ export function AdminOperationsHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -439,10 +439,10 @@ export function AdminOperationsHub() {
                             textTransform: "uppercase",
                             background:
                               vol.status === "approved"
-                                ? "rgba(29, 86, 53, 0.1)"
+                                ? "rgba(4, 106, 56, 0.1)"
                                 : vol.status === "rejected"
                                 ? "rgba(220, 38, 38, 0.1)"
-                                : "rgba(179, 74, 21, 0.1)",
+                                : "rgba(232, 87, 26, 0.1)",
                             color:
                               vol.status === "approved"
                                 ? "var(--green)"
@@ -512,8 +512,8 @@ export function AdminOperationsHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -694,8 +694,8 @@ export function AdminOperationsHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -837,7 +837,7 @@ export function AdminOperationsHub() {
                             fontWeight: 700,
                             padding: "2px 6px",
                             borderRadius: "2px",
-                            background: "rgba(179, 74, 21, 0.08)",
+                            background: "rgba(232, 87, 26, 0.08)",
                             color: "var(--saffron)",
                             textTransform: "uppercase",
                             border: "1px solid var(--line)",

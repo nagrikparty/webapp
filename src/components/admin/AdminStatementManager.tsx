@@ -420,8 +420,8 @@ export function AdminStatementManager() {
             borderRadius: "3px",
             fontSize: "13px",
             fontWeight: 600,
-            background: actionMsg.type === "success" ? "rgba(29, 86, 53, 0.08)" : "rgba(179, 74, 21, 0.08)",
-            border: `1px solid ${actionMsg.type === "success" ? "rgba(29, 86, 53, 0.3)" : "rgba(179, 74, 21, 0.3)"}`,
+            background: actionMsg.type === "success" ? "rgba(4, 106, 56, 0.08)" : "rgba(232, 87, 26, 0.08)",
+            border: `1px solid ${actionMsg.type === "success" ? "rgba(4, 106, 56, 0.3)" : "rgba(232, 87, 26, 0.3)"}`,
             color: actionMsg.type === "success" ? "var(--green)" : "var(--saffron)",
             display: "flex",
             justifyContent: "space-between",
@@ -672,7 +672,7 @@ export function AdminStatementManager() {
                         padding: "3px 8px",
                         fontSize: "11px",
                         fontWeight: 700,
-                        background: "rgba(29, 86, 53, 0.1)",
+                        background: "rgba(4, 106, 56, 0.1)",
                         color: "var(--green)",
                         borderRadius: "2px",
                       }}
@@ -712,7 +712,7 @@ export function AdminStatementManager() {
                 marginTop: "18px",
                 padding: "24px",
                 border: isDragging ? "2px dashed var(--saffron)" : "2px dashed var(--line-strong)",
-                background: isDragging ? "rgba(179, 74, 21, 0.04)" : "var(--paper)",
+                background: isDragging ? "rgba(232, 87, 26, 0.04)" : "var(--paper)",
                 borderRadius: "6px",
                 display: "flex",
                 flexDirection: "column",
@@ -896,7 +896,7 @@ export function AdminStatementManager() {
                       alignItems: "center",
                       gap: "6px",
                       padding: "6px 14px",
-                      background: "rgba(29, 86, 53, 0.12)",
+                      background: "rgba(4, 106, 56, 0.12)",
                       color: "var(--green)",
                       fontSize: "13px",
                       fontWeight: 700,
@@ -998,7 +998,7 @@ export function AdminStatementManager() {
                         key={tx.id}
                         style={{
                           borderBottom: "1px solid var(--line)",
-                          background: tx.is_duplicate_flag ? "rgba(179, 74, 21, 0.04)" : "transparent",
+                          background: tx.is_duplicate_flag ? "rgba(232, 87, 26, 0.04)" : "transparent",
                         }}
                       >
                         <td style={{ padding: "8px 6px", whiteSpace: "nowrap", fontFamily: "var(--font-mono)" }}>
@@ -1063,7 +1063,7 @@ export function AdminStatementManager() {
                             type="button"
                             onClick={() => handleUpdateTransaction(tx.id, { verification_status: tx.verification_status === "VERIFIED" ? "UNVERIFIED" : "VERIFIED" })}
                             style={{
-                              background: tx.verification_status === "VERIFIED" ? "rgba(29, 86, 53, 0.1)" : "var(--paper)",
+                              background: tx.verification_status === "VERIFIED" ? "rgba(4, 106, 56, 0.1)" : "var(--paper)",
                               border: "1px solid var(--line)",
                               borderRadius: "2px",
                               padding: "2px 6px",

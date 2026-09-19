@@ -2,6 +2,8 @@ import { AlertCircle, Loader2, Inbox } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { PublicIssue } from "@/lib/queries";
 import { fetchPublicIssues } from "@/lib/queries";
+import { EmptyState } from "@/components/EmptyState";
+import { SkeletonBlock } from "@/components/SkeletonBlock";
 
 type LoadState = "loading" | "ready" | "error" | "empty";
 
@@ -34,32 +36,28 @@ export function IssuesList() {
   }, []);
 
   if (state === "loading") {
-    return (
-      <div className="list-panel list-panel-state">
-        <Loader2 size={28} className="spin" />
-        <p className="list-panel-msg">Loading reported issues...</p>
-      </div>
-    );
+    return <SkeletonBlock rows={4} height={64} />;
   }
 
   if (state === "error") {
     return (
-      <div className="list-panel list-panel-state">
-        <AlertCircle size={28} className="icon-danger" />
-        <p className="list-panel-msg">Could not load issues. Please try again later.</p>
-        <button className="button" onClick={() => window.location.reload()} type="button">
-          Retry
-        </button>
-      </div>
+      <EmptyState
+        icon="⚠️"
+        title="Issues load nahi ho paye"
+        message="Connection ki dikkat lag rahi hai. Dobara try karein — aapka data safe hai."
+        actionLabel="Dobara Try Karein"
+        onAction={() => window.location.reload()}
+      />
     );
   }
 
   if (state === "empty") {
     return (
-      <div className="list-panel list-panel-state">
-        <Inbox size={28} className="icon-muted" />
-        <p className="list-panel-msg">No issues reported yet. Use the form above to report the first civic issue in your area.</p>
-      </div>
+      <EmptyState
+        icon="📮"
+        title="Abhi koi issue report nahi hua"
+        message="Aapke area ki pehli civic problem aap report kar sakte hain — upar diya form use karein."
+      />
     );
   }
 

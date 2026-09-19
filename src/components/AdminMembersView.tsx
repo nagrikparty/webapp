@@ -253,8 +253,8 @@ export function AdminMembersView() {
                               fontWeight: 700,
                               fontFamily: "var(--font-mono)",
                               letterSpacing: "0.03em",
-                              background: "rgba(29, 86, 53, 0.08)",
-                              border: "1px solid rgba(29, 86, 53, 0.25)",
+                              background: "rgba(4, 106, 56, 0.08)",
+                              border: "1px solid rgba(4, 106, 56, 0.25)",
                               color: "var(--green)",
                             }}
                           >

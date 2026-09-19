@@ -76,8 +76,8 @@ export function MemberContributions() {
         className="card"
         style={{
           padding: "16px 20px",
-          backgroundColor: "rgba(179, 74, 21, 0.06)",
-          border: "1px solid rgba(179, 74, 21, 0.25)",
+          backgroundColor: "rgba(232, 87, 26, 0.06)",
+          border: "1px solid rgba(232, 87, 26, 0.25)",
           borderRadius: "4px",
           marginBottom: "24px",
           display: "flex",
@@ -238,8 +238,8 @@ export function MemberContributions() {
                     fontWeight: 700,
                     fontFamily: "var(--font-mono)",
                     textTransform: "uppercase",
-                    backgroundColor: c.status === "confirmed" ? "rgba(29, 86, 53, 0.08)" : "rgba(179, 74, 21, 0.08)",
-                    border: c.status === "confirmed" ? "1px solid rgba(29, 86, 53, 0.25)" : "1px solid rgba(179, 74, 21, 0.25)",
+                    backgroundColor: c.status === "confirmed" ? "rgba(4, 106, 56, 0.08)" : "rgba(232, 87, 26, 0.08)",
+                    border: c.status === "confirmed" ? "1px solid rgba(4, 106, 56, 0.25)" : "1px solid rgba(232, 87, 26, 0.25)",
                     color: c.status === "confirmed" ? "var(--green)" : "var(--saffron)",
                   }}
                 >

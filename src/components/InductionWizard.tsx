@@ -17,13 +17,13 @@ import {
 } from "@/lib/declarations";
 
 const STEPS = [
-  { step: 1, title: "Participation", label: "Participation" },
-  { step: 2, title: "Personal Details", label: "About You" },
-  { step: 3, title: "Location", label: "Where You Live" },
-  { step: 4, title: "Participation Interests", label: "How You Can Help" },
-  { step: 5, title: "Category", label: "Category" },
-  { step: 6, title: "Declaration", label: "Declarations" },
-  { step: 7, title: "Consent", label: "Privacy" },
+  { step: 1, title: "Participation", label: "Bhagidaari" },
+  { step: 2, title: "Personal Details", label: "Aapki Jaankari" },
+  { step: 3, title: "Location", label: "Aapka Pata" },
+  { step: 4, title: "Participation Interests", label: "Kaise Madad Karenge" },
+  { step: 5, title: "Category", label: "Shreni" },
+  { step: 6, title: "Declaration", label: "Ghoshna" },
+  { step: 7, title: "Consent", label: "Privacy Sahamati" },
   { step: 8, title: "Verification & Review", label: "Review & Sign" },
 ];
 
@@ -243,7 +243,7 @@ export function InductionWizard() {
       });
 
       if (res.ok && !silent) {
-        setDraftSavedMsg("Draft saved. You can resume anytime.");
+        setDraftSavedMsg("✓ Aapka jawab save ho gaya — kabhi bhi wapas aa sakte hain.");
         setTimeout(() => setDraftSavedMsg(""), 3500);
       }
     } catch {
@@ -448,7 +448,7 @@ export function InductionWizard() {
             display: "inline-block",
             padding: "3px 10px",
             borderRadius: "2px",
-            backgroundColor: "rgba(29, 86, 53, 0.1)",
+            backgroundColor: "rgba(4, 106, 56, 0.1)",
             color: "var(--green)",
             fontWeight: 700,
             fontSize: "11px",
@@ -525,7 +525,7 @@ export function InductionWizard() {
               padding: 0,
             }}
           >
-            {savingDraft ? "Saving..." : "Save draft & continue later"}
+            {savingDraft ? "Save ho raha hai..." : "Draft save karein — baad me poora karein"}
           </button>
         </div>
 
@@ -1034,7 +1034,7 @@ export function InductionWizard() {
                 gap: "12px",
                 padding: "14px 16px",
                 borderRadius: "4px",
-                background: declarationAgreed ? "rgba(29, 86, 53, 0.06)" : "var(--paper-card)",
+                background: declarationAgreed ? "rgba(4, 106, 56, 0.06)" : "var(--paper-card)",
                 border: declarationAgreed ? "1.5px solid var(--green)" : "1px solid var(--line)",
                 cursor: "pointer",
                 marginBottom: "28px",
@@ -1177,23 +1177,45 @@ export function InductionWizard() {
             >
               <Upload size={32} style={{ color: "var(--saffron)", margin: "0 auto 10px" }} />
               <strong style={{ display: "block", fontSize: "15px", color: "var(--ink)", marginBottom: "4px" }}>
-                {uploadedDoc ? "Document Uploaded Successfully" : "Upload Voter ID / Identity Proof"}
+                {uploadedDoc ? "Document Upload Ho Gaya ✓" : "Voter ID / Pehchaan Patra Upload Karein"}
               </strong>
               <p style={{ fontSize: "12.5px", color: "var(--muted)", margin: "0 0 14px" }}>
-                Accepted: JPG, PNG, PDF (Max 5MB). File will be verified and hashed with SHA-256.
+                JPG, PNG ya PDF chalega (Max 5MB). File verify hogi aur SHA-256 se hash hogi.
               </p>
 
               {uploadedDoc ? (
-                <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(29, 86, 53, 0.1)", color: "var(--green)", padding: "6px 14px", borderRadius: "3px", fontSize: "13px", fontWeight: 600 }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(4, 106, 56, 0.1)", color: "var(--green)", padding: "6px 14px", borderRadius: "8px", fontSize: "13px", fontWeight: 600 }}>
                   <CheckCircle2 size={16} /> {uploadedDoc.filename}
                 </div>
               ) : (
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,application/pdf"
-                  onChange={handleFileUpload}
-                  style={{ display: "block", margin: "0 auto", fontSize: "13px" }}
-                />
+                <div style={{ display: "grid", gap: "10px" }}>
+                  {/* Camera-first: on mobile opens camera directly */}
+                  <label
+                    className="button button-primary"
+                    style={{ minHeight: "52px", cursor: "pointer", fontSize: "15px", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
+                  >
+                    📷 Photo Kheenchein
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png"
+                      capture="environment"
+                      onChange={handleFileUpload}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                  <label
+                    className="button"
+                    style={{ minHeight: "52px", cursor: "pointer", fontSize: "14px", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
+                  >
+                    📁 Gallery / PDF se Chunein
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,application/pdf"
+                      onChange={handleFileUpload}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                </div>
               )}
             </div>
 
@@ -1215,12 +1237,12 @@ export function InductionWizard() {
                 required
                 value={typedSignature}
                 onChange={(e) => setTypedSignature(e.target.value)}
-                placeholder="Type your exact legal name"
+                placeholder="Apna poora kanooni naam likhein"
                 className="input"
-                style={{ fontFamily: "var(--font-serif)", fontSize: "16px" }}
+                style={{ fontFamily: "var(--font-sans)", fontSize: "17px", minHeight: "52px" }}
               />
-              <small style={{ color: "var(--muted)", fontSize: "11.5px" }}>
-                Typing your name constitutes your lawful digital signature for this application.
+              <small style={{ color: "var(--muted)", fontSize: "12px" }}>
+                Naam likhna aapka kanooni digital signature maana jayega.
               </small>
             </div>
 

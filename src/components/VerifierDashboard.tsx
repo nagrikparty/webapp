@@ -252,8 +252,8 @@ export function VerifierDashboard() {
                 fontWeight: 700,
                 padding: "2px 6px",
                 borderRadius: "2px",
-                background: "rgba(179, 74, 21, 0.08)",
-                border: "1px solid rgba(179, 74, 21, 0.25)",
+                background: "rgba(232, 87, 26, 0.08)",
+                border: "1px solid rgba(232, 87, 26, 0.25)",
                 color: "var(--saffron)",
                 textTransform: "uppercase",
               }}
@@ -295,8 +295,8 @@ export function VerifierDashboard() {
             padding: "12px 16px",
             borderRadius: "3px",
             marginBottom: "20px",
-            background: feedback.type === "success" ? "rgba(29, 86, 53, 0.08)" : "rgba(142, 38, 23, 0.08)",
-            border: feedback.type === "success" ? "1px solid rgba(29, 86, 53, 0.3)" : "1px solid rgba(142, 38, 23, 0.3)",
+            background: feedback.type === "success" ? "rgba(4, 106, 56, 0.08)" : "rgba(220, 38, 38, 0.08)",
+            border: feedback.type === "success" ? "1px solid rgba(4, 106, 56, 0.3)" : "1px solid rgba(220, 38, 38, 0.3)",
             color: feedback.type === "success" ? "var(--green)" : "var(--red)",
             fontSize: "13.5px",
             display: "flex",
@@ -349,7 +349,7 @@ export function VerifierDashboard() {
                       padding: "12px 14px",
                       borderRadius: "3px",
                       border: isSelected ? "2px solid var(--saffron)" : "1px solid var(--line)",
-                      background: isSelected ? "rgba(179, 74, 21, 0.05)" : "var(--paper)",
+                      background: isSelected ? "rgba(232, 87, 26, 0.05)" : "var(--paper)",
                       cursor: "pointer",
                       transition: "border-color 0.15s ease",
                     }}
@@ -365,18 +365,18 @@ export function VerifierDashboard() {
                           borderRadius: "2px",
                           background:
                             app.status === "APPROVED"
-                              ? "rgba(29, 86, 53, 0.08)"
+                              ? "rgba(4, 106, 56, 0.08)"
                               : app.status === "REJECTED"
-                              ? "rgba(142, 38, 23, 0.08)"
+                              ? "rgba(220, 38, 38, 0.08)"
                               : app.status === "NEEDS_CORRECTION"
-                              ? "rgba(179, 74, 21, 0.12)"
-                              : "rgba(179, 74, 21, 0.08)",
+                              ? "rgba(232, 87, 26, 0.12)"
+                              : "rgba(232, 87, 26, 0.08)",
                           border:
                             app.status === "APPROVED"
-                              ? "1px solid rgba(29, 86, 53, 0.25)"
+                              ? "1px solid rgba(4, 106, 56, 0.25)"
                               : app.status === "REJECTED"
-                              ? "1px solid rgba(142, 38, 23, 0.25)"
-                              : "1px solid rgba(179, 74, 21, 0.25)",
+                              ? "1px solid rgba(220, 38, 38, 0.25)"
+                              : "1px solid rgba(232, 87, 26, 0.25)",
                           color:
                             app.status === "APPROVED"
                               ? "var(--green)"
@@ -438,8 +438,8 @@ export function VerifierDashboard() {
                   padding: "12px 16px",
                   borderRadius: "3px",
                   marginBottom: "20px",
-                  background: "rgba(142, 38, 23, 0.08)",
-                  border: "1px solid rgba(142, 38, 23, 0.3)",
+                  background: "rgba(220, 38, 38, 0.08)",
+                  border: "1px solid rgba(220, 38, 38, 0.3)",
                   color: "var(--red)",
                   fontSize: "13px",
                   display: "flex",
@@ -468,8 +468,8 @@ export function VerifierDashboard() {
                     fontWeight: 700,
                     padding: "2px 8px",
                     borderRadius: "3px",
-                    background: allChecksPassed ? "rgba(29, 86, 53, 0.08)" : "rgba(179, 74, 21, 0.08)",
-                    border: allChecksPassed ? "1px solid rgba(29, 86, 53, 0.3)" : "1px solid rgba(179, 74, 21, 0.3)",
+                    background: allChecksPassed ? "rgba(4, 106, 56, 0.08)" : "rgba(232, 87, 26, 0.08)",
+                    border: allChecksPassed ? "1px solid rgba(4, 106, 56, 0.3)" : "1px solid rgba(232, 87, 26, 0.3)",
                     color: allChecksPassed ? "var(--green)" : "var(--saffron)",
                   }}
                 >
@@ -484,8 +484,8 @@ export function VerifierDashboard() {
                     style={{
                       padding: "10px 12px",
                       borderRadius: "3px",
-                      border: item.pass ? "1px solid rgba(29, 86, 53, 0.2)" : "1px solid rgba(179, 74, 21, 0.25)",
-                      background: item.pass ? "rgba(29, 86, 53, 0.03)" : "rgba(179, 74, 21, 0.03)",
+                      border: item.pass ? "1px solid rgba(4, 106, 56, 0.2)" : "1px solid rgba(232, 87, 26, 0.25)",
+                      background: item.pass ? "rgba(4, 106, 56, 0.03)" : "rgba(232, 87, 26, 0.03)",
                       display: "flex",
                       alignItems: "flex-start",
                       gap: "8px",
@@ -587,8 +587,8 @@ export function VerifierDashboard() {
                               fontFamily: "var(--font-mono)",
                               padding: "1px 6px",
                               borderRadius: "2px",
-                              background: "rgba(29, 86, 53, 0.08)",
-                              border: "1px solid rgba(29, 86, 53, 0.25)",
+                              background: "rgba(4, 106, 56, 0.08)",
+                              border: "1px solid rgba(4, 106, 56, 0.25)",
                               color: "var(--green)",
                             }}
                           >
@@ -600,7 +600,7 @@ export function VerifierDashboard() {
                               fontFamily: "var(--font-mono)",
                               padding: "1px 6px",
                               borderRadius: "2px",
-                              background: doc.ocr_status === "EXTRACTED" || doc.ocr_status === "CONFIRMED_BY_MEMBER" ? "rgba(29, 86, 53, 0.08)" : "rgba(179, 74, 21, 0.08)",
+                              background: doc.ocr_status === "EXTRACTED" || doc.ocr_status === "CONFIRMED_BY_MEMBER" ? "rgba(4, 106, 56, 0.08)" : "rgba(232, 87, 26, 0.08)",
                               border: "1px solid var(--line)",
                               color: doc.ocr_status === "EXTRACTED" || doc.ocr_status === "CONFIRMED_BY_MEMBER" ? "var(--green)" : "var(--saffron)",
                             }}
@@ -753,7 +753,7 @@ export function VerifierDashboard() {
                   disabled={actionLoading || isSelf}
                   onClick={() => handleAction("REJECT")}
                   className="button"
-                  style={{ minHeight: "42px", padding: "8px 16px", color: "var(--red)", borderColor: "rgba(142, 38, 23, 0.3)", background: "var(--paper-card)", borderRadius: "3px", fontSize: "13px", fontWeight: 700, cursor: isSelf ? "not-allowed" : "pointer" }}
+                  style={{ minHeight: "42px", padding: "8px 16px", color: "var(--red)", borderColor: "rgba(220, 38, 38, 0.3)", background: "var(--paper-card)", borderRadius: "3px", fontSize: "13px", fontWeight: 700, cursor: isSelf ? "not-allowed" : "pointer" }}
                 >
                   <XCircle size={15} /> Reject
                 </button>
@@ -763,7 +763,7 @@ export function VerifierDashboard() {
                   disabled={actionLoading || isSelf}
                   onClick={() => handleAction("REQUEST_CORRECTION")}
                   className="button"
-                  style={{ minHeight: "42px", padding: "8px 16px", color: "var(--saffron)", borderColor: "rgba(179, 74, 21, 0.3)", background: "var(--paper-card)", borderRadius: "3px", fontSize: "13px", fontWeight: 700, cursor: isSelf ? "not-allowed" : "pointer" }}
+                  style={{ minHeight: "42px", padding: "8px 16px", color: "var(--saffron)", borderColor: "rgba(232, 87, 26, 0.3)", background: "var(--paper-card)", borderRadius: "3px", fontSize: "13px", fontWeight: 700, cursor: isSelf ? "not-allowed" : "pointer" }}
                 >
                   <AlertCircle size={15} /> Request Correction
                 </button>

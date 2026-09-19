@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { FOUNDER_DATA } from "@/lib/founder";
 import { getFormationProgress } from "@/lib/progress-service";
+import { OnboardingCarousel } from "@/components/OnboardingCarousel";
+import { ShareButton } from "@/components/ShareButton";
 import {
   CheckCircle2,
   ArrowRight,
@@ -25,6 +27,9 @@ const progressData = await getFormationProgress();
   <section class="page-hero" style="padding-bottom: 48px; border-bottom: 1px solid var(--line-strong); background: var(--paper-card);">
     <div class="container">
       
+      <!-- Onboarding (first visit only) -->
+      <OnboardingCarousel client:load />
+
       <!-- Small Phase Label -->
       <div style="margin-bottom: 14px;">
         <span class="founding-progress-badge" style="font-size: 11px; padding: 4px 10px;">
@@ -35,7 +40,7 @@ const progressData = await getFormationProgress();
       <div class="hero-layout">
         <div>
           <h1 class="hero-title">
-            A political party is being built.
+            Delhi ki apni party ban rahi hai.
           </h1>
 
           <div class="hero-subtitle">
@@ -52,19 +57,19 @@ const progressData = await getFormationProgress();
           </div>
 
           <p class="hero-body">
-            Nagrik Party (Formation Phase): An independent political initiative working toward the formation and registration of a political party under Section 29A RPA 1951. Built on real evidence, 100% cashless accounts policy, and direct citizen participation.
+            Nagrik Party (Formation Phase): Section 29A RPA 1951 ke tahat registration ki taraf badhta hua ek swatantra rajneetik abhiyaan. Asli saboot, 100% cashless hisaab, aur seedhi nagrik bhagidaari — sab kuch khula, sab kuch verified.
           </p>
 
           <!-- Primary, Secondary, Tertiary Actions -->
           <div class="hero-cta-group">
-            <a href="/membership" class="button button-primary">
-              Become a Member &rarr;
+            <a href="/membership" class="button button-primary" style="min-height: 56px; font-size: 17px;">
+              Member Banein &rarr;
             </a>
-            <a href="/volunteer" class="button">
-              Become a Volunteer
+            <a href="/verify/member" class="button" style="min-height: 56px;">
+              Card Verify Karein
             </a>
-            <a href="#explore" class="button" style="color: var(--muted);">
-              Explore
+            <a href="#explore" class="button" style="color: var(--muted); min-height: 56px;">
+              Aur Dekhein
             </a>
           </div>
         </div>
@@ -112,6 +117,8 @@ const progressData = await getFormationProgress();
             src={FOUNDER_DATA.imageSlot}
             alt="Sheikh Arsalanullah Chishti"
             class="founder-card-image"
+            loading="lazy"
+            decoding="async"
             onerror="this.onerror=null; this.src='/nagrikpartylogo.svg'; this.style.padding='18px';"
           />
         </div>

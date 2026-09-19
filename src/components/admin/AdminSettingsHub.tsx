@@ -196,8 +196,8 @@ export function AdminSettingsHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -294,7 +294,7 @@ export function AdminSettingsHub() {
                                 p.role === "SUPER_ADMIN"
                                   ? "rgba(220, 38, 38, 0.1)"
                                   : p.role === "ADMIN"
-                                  ? "rgba(179, 74, 21, 0.1)"
+                                  ? "rgba(232, 87, 26, 0.1)"
                                   : p.role === "VERIFIER"
                                   ? "rgba(22, 53, 92, 0.1)"
                                   : "var(--paper-subtle)",

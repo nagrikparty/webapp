@@ -194,8 +194,8 @@ export function MemberDocumentVault() {
         <div
           style={{
             padding: "12px 16px",
-            backgroundColor: "rgba(142, 38, 23, 0.06)",
-            border: "1px solid rgba(142, 38, 23, 0.3)",
+            backgroundColor: "rgba(220, 38, 38, 0.06)",
+            border: "1px solid rgba(220, 38, 38, 0.3)",
             borderRadius: "3px",
             color: "var(--red)",
             fontSize: "13.5px",
@@ -290,16 +290,16 @@ export function MemberDocumentVault() {
                           letterSpacing: "0.03em",
                           backgroundColor:
                             doc.verification_status === "VERIFIED"
-                              ? "rgba(29, 86, 53, 0.08)"
+                              ? "rgba(4, 106, 56, 0.08)"
                               : doc.verification_status === "REJECTED"
-                              ? "rgba(142, 38, 23, 0.08)"
-                              : "rgba(179, 74, 21, 0.08)",
+                              ? "rgba(220, 38, 38, 0.08)"
+                              : "rgba(232, 87, 26, 0.08)",
                           border:
                             doc.verification_status === "VERIFIED"
-                              ? "1px solid rgba(29, 86, 53, 0.25)"
+                              ? "1px solid rgba(4, 106, 56, 0.25)"
                               : doc.verification_status === "REJECTED"
-                              ? "1px solid rgba(142, 38, 23, 0.25)"
-                              : "1px solid rgba(179, 74, 21, 0.25)",
+                              ? "1px solid rgba(220, 38, 38, 0.25)"
+                              : "1px solid rgba(232, 87, 26, 0.25)",
                           color:
                             doc.verification_status === "VERIFIED"
                               ? "var(--green)"

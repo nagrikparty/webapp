@@ -7,7 +7,12 @@ import {
   RefreshCw,
   Landmark,
   AlertTriangle,
+  Check,
+  Copy,
+  Upload,
+  ExternalLink,
 } from "lucide-react";
+import QRCode from "react-qr-code";
 import { supabase } from "@/lib/supabase";
 import { AdminStatementManager } from "@/components/admin/AdminStatementManager";
 
@@ -136,6 +141,31 @@ export function AdminFinanceHub() {
       alert("Network error updating configuration.");
     } finally {
       setSavingConfig(false);
+    }
+  }
+
+  const [uploadingQr, setUploadingQr] = useState(false);
+  const [copiedTestUpi, setCopiedTestUpi] = useState(false);
+
+  async function handleQrImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !supabase) return;
+    setUploadingQr(true);
+    try {
+      const ext = file.name.split(".").pop() || "png";
+      const path = `donation-qr-${Date.now()}.${ext}`;
+      const { data: uploadData, error: uploadErr } = await supabase.storage
+        .from("public-assets")
+        .upload(path, file, { upsert: true });
+      if (uploadErr) throw uploadErr;
+      const { data: publicUrlData } = supabase.storage
+        .from("public-assets")
+        .getPublicUrl(uploadData.path);
+      setConfig((prev) => ({ ...prev, qr_image_url: publicUrlData.publicUrl }));
+    } catch (err: unknown) {
+      alert("Failed to upload image: " + (err instanceof Error ? err.message : String(err)));
+    } finally {
+      setUploadingQr(false);
     }
   }
 
@@ -338,8 +368,8 @@ export function AdminFinanceHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -563,8 +593,8 @@ export function AdminFinanceHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -602,7 +632,7 @@ export function AdminFinanceHub() {
                   fontWeight: 700,
                   padding: "4px 10px",
                   borderRadius: "2px",
-                  background: config.is_enabled ? "rgba(29, 86, 53, 0.1)" : "rgba(179, 74, 21, 0.1)",
+                  background: config.is_enabled ? "rgba(4, 106, 56, 0.1)" : "rgba(232, 87, 26, 0.1)",
                   color: config.is_enabled ? "var(--green)" : "var(--saffron)",
                   border: "1px solid var(--line)",
                 }}
@@ -614,7 +644,7 @@ export function AdminFinanceHub() {
             {configLoading ? (
               <div style={{ padding: "40px", textAlign: "center", color: "var(--muted)" }}>Loading configuration...</div>
             ) : (
-              <form onSubmit={handleSaveConfig} style={{ display: "grid", gap: "16px" }}>
+              <form onSubmit={handleSaveConfig} style={{ display: "grid", gap: "20px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "14px 18px", background: "var(--paper)", borderRadius: "3px", border: "1px solid var(--line)" }}>
                   <input
                     type="checkbox"
@@ -624,131 +654,286 @@ export function AdminFinanceHub() {
                     style={{ width: "18px", height: "18px", cursor: "pointer" }}
                   />
                   <label htmlFor="enable_donations" style={{ cursor: "pointer", fontSize: "13.5px", fontWeight: 700, color: "var(--ink)" }}>
-                    Enable Public Contribution Acceptance (Show UPI Gateway Widget on website)
+                    Enable Public Contribution Acceptance (Show UPI QR and Contribution Widget across public website for logged-in and logged-out users)
                   </label>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "14px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                      UPI ID (VPA)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. nagrikparty@bank"
-                      value={config.upi_id || ""}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, upi_id: e.target.value }))}
-                      style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                    />
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px", alignItems: "start" }}>
+                  {/* Left Column: Form Fields */}
+                  <div style={{ display: "grid", gap: "14px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                          UPI ID (VPA) <span style={{ color: "var(--saffron)" }}>*</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. nagrikparty@axis"
+                          value={config.upi_id || ""}
+                          onChange={(e) => setConfig((prev) => ({ ...prev, upi_id: e.target.value }))}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                          Account Holder Name
+                        </label>
+                        <input
+                          type="text"
+                          value={config.account_name || ""}
+                          onChange={(e) => setConfig((prev) => ({ ...prev, account_name: e.target.value }))}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "12px" }}>
+                      <div>
+                        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                          Bank Name
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Axis Bank"
+                          value={config.bank_name || ""}
+                          onChange={(e) => setConfig((prev) => ({ ...prev, bank_name: e.target.value }))}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                          Account Number
+                        </label>
+                        <input
+                          type="text"
+                          value={config.account_number || ""}
+                          onChange={(e) => setConfig((prev) => ({ ...prev, account_number: e.target.value }))}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                          IFSC Code
+                        </label>
+                        <input
+                          type="text"
+                          value={config.ifsc_code || ""}
+                          onChange={(e) => setConfig((prev) => ({ ...prev, ifsc_code: e.target.value }))}
+                          style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* QR Code Upload / URL option */}
+                    <div style={{ padding: "12px 14px", background: "var(--paper-subtle)", borderRadius: "4px", border: "1px solid var(--line)" }}>
+                      <label style={{ display: "block", fontSize: "11.5px", fontWeight: 700, textTransform: "uppercase", marginBottom: "6px" }}>
+                        Custom QR Code Image (Optional)
+                      </label>
+                      <p style={{ fontSize: "11.5px", color: "var(--muted)", margin: "0 0 10px", lineHeight: "1.4" }}>
+                        If left blank, a crisp scannable QR is automatically generated from your UPI ID. You can also upload a bank-provided QR image.
+                      </p>
+                      
+                      <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                        <label
+                          className="button"
+                          style={{
+                            cursor: uploadingQr ? "wait" : "pointer",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            padding: "6px 14px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            background: "var(--paper)",
+                          }}
+                        >
+                          <Upload size={14} /> {uploadingQr ? "Uploading..." : "Upload QR Image"}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleQrImageUpload}
+                            disabled={uploadingQr}
+                            style={{ display: "none" }}
+                          />
+                        </label>
+                        {config.qr_image_url && (
+                          <button
+                            type="button"
+                            onClick={() => setConfig((prev) => ({ ...prev, qr_image_url: "" }))}
+                            style={{ fontSize: "11px", color: "var(--red)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
+                          >
+                            Remove custom image (use auto QR)
+                          </button>
+                        )}
+                      </div>
+
+                      {config.qr_image_url && (
+                        <div style={{ marginTop: "8px" }}>
+                          <input
+                            type="text"
+                            value={config.qr_image_url}
+                            onChange={(e) => setConfig((prev) => ({ ...prev, qr_image_url: e.target.value }))}
+                            style={{ width: "100%", padding: "6px 10px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "11.5px", fontFamily: "var(--font-mono)" }}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                        Legal Status Label
+                      </label>
+                      <input
+                        type="text"
+                        value={config.legal_status_label || ""}
+                        onChange={(e) => setConfig((prev) => ({ ...prev, legal_status_label: e.target.value }))}
+                        style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                        Payment Instructions for Citizens
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={config.payment_instructions || ""}
+                        onChange={(e) => setConfig((prev) => ({ ...prev, payment_instructions: e.target.value }))}
+                        style={{ width: "100%", padding: "8px 12px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
+                        Statutory Transparency Disclosure
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={config.disclosure_text || ""}
+                        onChange={(e) => setConfig((prev) => ({ ...prev, disclosure_text: e.target.value }))}
+                        style={{ width: "100%", padding: "8px 12px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                      Account Holder Name
-                    </label>
-                    <input
-                      type="text"
-                      value={config.account_name || ""}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, account_name: e.target.value }))}
-                      style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                    />
-                  </div>
+                  {/* Right Column: Live Interactive QR & Widget Preview */}
+                  <div
+                    style={{
+                      background: "var(--paper-subtle)",
+                      border: "1.5px solid var(--saffron)",
+                      borderRadius: "6px",
+                      padding: "20px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      textAlign: "center",
+                      gap: "12px",
+                      position: "sticky",
+                      top: "20px",
+                    }}
+                  >
+                    <div style={{ fontSize: "10.5px", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--saffron)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                      LIVE PUBLIC WIDGET PREVIEW
+                    </div>
 
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                      Bank Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. State Bank of India"
-                      value={config.bank_name || ""}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, bank_name: e.target.value }))}
-                      style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                    />
-                  </div>
+                    <div
+                      style={{
+                        padding: "16px",
+                        background: "#fff",
+                        borderRadius: "8px",
+                        border: "1px solid var(--line)",
+                        boxShadow: "var(--shadow)",
+                        display: "inline-flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: "170px",
+                        minHeight: "170px",
+                      }}
+                    >
+                      {config.qr_image_url ? (
+                        <img
+                          src={config.qr_image_url}
+                          alt="Custom UPI QR"
+                          style={{ width: "160px", height: "160px", objectFit: "contain" }}
+                        />
+                      ) : config.upi_id ? (
+                        <QRCode
+                          value={`upi://pay?pa=${encodeURIComponent(config.upi_id)}&pn=${encodeURIComponent(config.account_name || "Nagrik Party")}&cu=INR`}
+                          size={160}
+                          level="M"
+                        />
+                      ) : (
+                        <div style={{ color: "var(--muted)", fontSize: "12px", width: "160px" }}>
+                          Enter a UPI ID to preview QR code
+                        </div>
+                      )}
+                    </div>
 
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                      Account Number
-                    </label>
-                    <input
-                      type="text"
-                      value={config.account_number || ""}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, account_number: e.target.value }))}
-                      style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                    />
-                  </div>
+                    <div>
+                      <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
+                        {config.upi_id || "No UPI ID set"}
+                      </div>
+                      <div style={{ fontSize: "12px", color: "var(--muted)", marginTop: "2px" }}>
+                        {config.account_name || "Nagrik Party"}
+                      </div>
+                      {config.bank_name && (
+                        <div style={{ fontSize: "11px", color: "var(--ink-faint)", marginTop: "1px" }}>
+                          {config.bank_name} {config.ifsc_code ? `· ${config.ifsc_code}` : ""}
+                        </div>
+                      )}
+                    </div>
 
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                      IFSC Code
-                    </label>
-                    <input
-                      type="text"
-                      value={config.ifsc_code || ""}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, ifsc_code: e.target.value }))}
-                      style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                    />
-                  </div>
+                    {config.upi_id && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const uri = `upi://pay?pa=${encodeURIComponent(config.upi_id)}&pn=${encodeURIComponent(config.account_name || "Nagrik Party")}&cu=INR`;
+                          navigator.clipboard.writeText(uri);
+                          setCopiedTestUpi(true);
+                          setTimeout(() => setCopiedTestUpi(false), 2000);
+                        }}
+                        className="button"
+                        style={{
+                          fontSize: "11.5px",
+                          padding: "5px 12px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          background: "#fff",
+                        }}
+                      >
+                        {copiedTestUpi ? <Check size={13} style={{ color: "var(--green)" }} /> : <Copy size={13} />}
+                        {copiedTestUpi ? "UPI URI Copied!" : "Copy Test UPI URI"}
+                      </button>
+                    )}
 
-                  <div>
-                    <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                      QR Code Image URL (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. /images/donation-qr.png"
-                      value={config.qr_image_url || ""}
-                      onChange={(e) => setConfig((prev) => ({ ...prev, qr_image_url: e.target.value }))}
-                      style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                    />
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        color: config.is_enabled ? "var(--green)" : "var(--muted)",
+                        background: config.is_enabled ? "rgba(4, 106, 56, 0.08)" : "var(--paper)",
+                        padding: "6px 12px",
+                        borderRadius: "20px",
+                        fontWeight: 600,
+                        marginTop: "4px",
+                      }}
+                    >
+                      {config.is_enabled ? "● Currently visible to all public visitors" : "○ Currently hidden from public website"}
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                    Legal Status Label
-                  </label>
-                  <input
-                    type="text"
-                    value={config.legal_status_label || ""}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, legal_status_label: e.target.value }))}
-                    style={{ width: "100%", padding: "8px 12px", minHeight: "40px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                    Payment Instructions for Citizens
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={config.payment_instructions || ""}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, payment_instructions: e.target.value }))}
-                    style={{ width: "100%", padding: "8px 12px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", marginBottom: "4px" }}>
-                    Statutory Transparency Disclosure
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={config.disclosure_text || ""}
-                    onChange={(e) => setConfig((prev) => ({ ...prev, disclosure_text: e.target.value }))}
-                    style={{ width: "100%", padding: "8px 12px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "13px" }}
-                  />
-                </div>
-
-                <div style={{ marginTop: "8px" }}>
+                <div style={{ marginTop: "12px", borderTop: "1px solid var(--line)", paddingTop: "16px" }}>
                   <button
                     type="submit"
                     disabled={savingConfig}
                     className="button primary"
-                    style={{ padding: "10px 22px", minHeight: "42px", borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 700 }}
+                    style={{ padding: "10px 24px", minHeight: "44px", borderRadius: "3px", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "14px", fontWeight: 700 }}
                   >
-                    <Save size={15} /> {savingConfig ? "Saving Settings..." : "Save Donation Configuration"}
+                    <Save size={16} /> {savingConfig ? "Saving Settings..." : "Save Donation Configuration"}
                   </button>
                 </div>
               </form>

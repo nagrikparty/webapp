@@ -271,7 +271,7 @@ export function BuildWithUsView() {
               width: "48px",
               height: "48px",
               borderRadius: "50%",
-              background: "rgba(29, 86, 53, 0.1)",
+              background: "rgba(4, 106, 56, 0.1)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

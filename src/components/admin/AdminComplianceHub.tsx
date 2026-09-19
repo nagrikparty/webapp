@@ -241,8 +241,8 @@ export function AdminComplianceHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -280,10 +280,10 @@ export function AdminComplianceHub() {
                     fontSize: "12px",
                     fontWeight: 800,
                     color: "var(--green)",
-                    background: "rgba(29, 86, 53, 0.08)",
+                    background: "rgba(4, 106, 56, 0.08)",
                     padding: "2px 8px",
                     borderRadius: "2px",
-                    border: "1px solid rgba(29, 86, 53, 0.2)",
+                    border: "1px solid rgba(4, 106, 56, 0.2)",
                   }}
                 >
                   {progressPercent}% COMPLETE

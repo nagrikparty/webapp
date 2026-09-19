@@ -2,6 +2,8 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { supabase } from "@/lib/supabase";
 import { ShieldAlert, ExternalLink, Calendar, CheckCircle2, ChevronRight, Info } from "lucide-react";
+import { ListenButton } from "@/components/ListenButton";
+import { ShareButton } from "@/components/ShareButton";
 
 export const prerender = false;
 
@@ -58,9 +60,9 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
       </div>
       <h1>Verified Crime Tracker</h1>
       <p class="page-copy" style="max-width: 760px;">
-        Publicly documented information, organised for civic understanding. Every incident count is verified and directly linked to public news citations and official reports. We do not use statistical estimates.
+        Delhi NCR ki publicly documented crime jaankari — har incident verified aur seedha news source se juda hua. Koi andaza nahi, sirf saboot.
       </p>
-      
+
       <div style="display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; align-items: center;">
         <span class="badge-verified">
           <CheckCircle2 size={13} /> {totalCitations} Verified Citations Active
@@ -71,6 +73,14 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
         <span class="badge-citation">
           Source: Verified News & Police Reports
         </span>
+      </div>
+
+      <!-- Category filter chips (large touch targets) -->
+      <div class="filter-chips" style="margin-top: 20px;">
+        <a href="/crime" class="filter-chip is-active">Sab</a>
+        {defaultCategories.map((t) => (
+          <a href={`/crimes/${t.toLowerCase()}`} class="filter-chip">{t}</a>
+        ))}
       </div>
     </div>
   </section>
@@ -138,11 +148,13 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
         </div>
 
         {recentCrimes.length === 0 ? (
-          <div class="card" style="padding: 40px; text-align: center; color: var(--muted);">
-            No verified citations available at this moment.
+          <div class="empty-state">
+            <div class="empty-state-icon" aria-hidden="true">🛡️</div>
+            <h3 class="empty-state-title">Abhi koi verified citation nahi hai</h3>
+            <p class="empty-state-msg">Jaise hi verified records aayenge, yahan live feed dikhegi. Har record ka news source link hota hai.</p>
           </div>
         ) : (
-          <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="crime-feed">
             {recentCrimes.map((c) => {
               let domain = "";
               try {
@@ -151,42 +163,48 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
                 domain = "news source";
               }
 
-              return (
-                <a
-                  href={c.source_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="citation-card"
-                >
-                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="flex: 1;">
-                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
-                        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; background: rgba(220, 38, 38, 0.1); color: #dc2626; padding: 2px 8px; border-radius: 4px;">
-                          {c.crime_type}
-                        </span>
-                        <span class="badge-citation">
-                          {domain}
-                        </span>
-                        <span style="font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 4px;">
-                          <Calendar size={12} />
-                          Incident Date: {new Date(c.incident_date).toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      
-                      <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4;">
-                        {c.title}
-                      </h4>
-                    </div>
+              const dateStr = new Date(c.incident_date).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              });
 
-                    <div style="color: #dc2626; flex-shrink: 0; padding-top: 4px;">
-                      <ExternalLink size={16} />
-                    </div>
+              return (
+                <div class="crime-feed-card">
+                  <div class="crime-feed-top">
+                    <span class="crime-feed-chip">{c.crime_type}</span>
+                    <span class="crime-feed-date">
+                      {domain} · {dateStr}
+                    </span>
                   </div>
-                </a>
+
+                  <h4 class="crime-feed-title">
+                    <a href={c.source_url} target="_blank" rel="noopener noreferrer">
+                      {c.title}
+                    </a>
+                  </h4>
+
+                  <div class="crime-feed-actions">
+                    <ListenButton client:visible text={`${c.crime_type}. ${c.title}. Date: ${dateStr}`} label="Suniye" />
+                    <ShareButton
+                      client:visible
+                      title={`Delhi Crime Report: ${c.crime_type}`}
+                      text={c.title}
+                      url={c.source_url}
+                      label="Share"
+                    />
+                    <a
+                      href={c.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="listen-btn"
+                      style="text-decoration: none;"
+                    >
+                      <ExternalLink size={14} />
+                      <span>Source</span>
+                    </a>
+                  </div>
+                </div>
               );
             })}
           </div>

@@ -203,8 +203,8 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
           <div
             style={{
               padding: "12px 14px",
-              backgroundColor: "rgba(142, 38, 23, 0.06)",
-              border: "1px solid rgba(142, 38, 23, 0.25)",
+              backgroundColor: "rgba(220, 38, 38, 0.06)",
+              border: "1px solid rgba(220, 38, 38, 0.25)",
               borderRadius: "3px",
               color: "var(--red)",
               fontSize: "13px",
@@ -223,8 +223,8 @@ export function AuthFlow({ initialMode = "login" }: AuthFlowProps) {
           <div
             style={{
               padding: "12px 14px",
-              backgroundColor: "rgba(29, 86, 53, 0.06)",
-              border: "1px solid rgba(29, 86, 53, 0.25)",
+              backgroundColor: "rgba(4, 106, 56, 0.06)",
+              border: "1px solid rgba(4, 106, 56, 0.25)",
               borderRadius: "3px",
               color: "var(--green)",
               fontSize: "13px",

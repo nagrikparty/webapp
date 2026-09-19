@@ -372,7 +372,7 @@ export function PublicDocumentsLibrary() {
             fontWeight: 700,
             background: "var(--paper-subtle)",
             color: "var(--saffron)",
-            borderColor: "rgba(179, 74, 21, 0.3)",
+            borderColor: "rgba(232, 87, 26, 0.3)",
           }}
         >
           {docs.length} OFFICIAL CHARTERS PUBLISHED

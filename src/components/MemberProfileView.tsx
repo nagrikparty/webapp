@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Profile, Member, MembershipApplication, MembershipCard } from "@/lib/types";
+import { StatusTracker } from "@/components/StatusTracker";
+import { PushOptIn } from "@/components/PushOptIn";
 
 export function MemberProfileView() {
   const [loading, setLoading] = useState(true);
@@ -159,8 +161,8 @@ export function MemberProfileView() {
                 gap: "6px",
                 padding: "6px 14px",
                 borderRadius: "2px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 fontWeight: 700,
                 fontSize: "12px",
@@ -180,14 +182,14 @@ export function MemberProfileView() {
                 borderRadius: "2px",
                 background:
                   appStatus === "NEEDS_CORRECTION"
-                    ? "rgba(179, 74, 21, 0.12)"
+                    ? "rgba(232, 87, 26, 0.12)"
                     : appStatus === "REJECTED"
-                    ? "rgba(142, 38, 23, 0.08)"
-                    : "rgba(179, 74, 21, 0.08)",
+                    ? "rgba(220, 38, 38, 0.08)"
+                    : "rgba(232, 87, 26, 0.08)",
                 border:
                   appStatus === "NEEDS_CORRECTION"
-                    ? "1px solid rgba(179, 74, 21, 0.3)"
-                    : "1px solid rgba(179, 74, 21, 0.25)",
+                    ? "1px solid rgba(232, 87, 26, 0.3)"
+                    : "1px solid rgba(232, 87, 26, 0.25)",
                 color: "var(--saffron)",
                 fontWeight: 700,
                 fontSize: "12px",
@@ -202,6 +204,24 @@ export function MemberProfileView() {
       </div>
 
       {/* Next Step / Guidance Banner */}
+      {appStatus !== "APPROVED" && appStatus !== "NO_APPLICATION" && (
+        <div
+          className="card"
+          style={{
+            background: "var(--paper-card)",
+            borderRadius: "12px",
+            padding: "18px 22px 8px",
+            border: "1px solid var(--line-strong)",
+            boxShadow: "var(--shadow)",
+          }}
+        >
+          <strong style={{ fontSize: "14px", color: "var(--ink)" }}>Aapka Aavedan Kahan Hai</strong>
+          <StatusTracker status={appStatus} />
+          <div style={{ padding: "4px 0 10px" }}>
+            <PushOptIn />
+          </div>
+        </div>
+      )}
       <div>
         {appStatus === "NO_APPLICATION" && (
           <div
@@ -263,10 +283,10 @@ export function MemberProfileView() {
           <div
             className="card"
             style={{
-              background: "rgba(179, 74, 21, 0.04)",
+              background: "rgba(232, 87, 26, 0.04)",
               borderRadius: "4px",
               padding: "20px 24px",
-              border: "1px solid rgba(179, 74, 21, 0.3)",
+              border: "1px solid rgba(232, 87, 26, 0.3)",
               borderLeft: "4px solid var(--saffron)",
             }}
           >
@@ -321,10 +341,10 @@ export function MemberProfileView() {
           <div
             className="card"
             style={{
-              background: "rgba(29, 86, 53, 0.04)",
+              background: "rgba(4, 106, 56, 0.04)",
               borderRadius: "4px",
               padding: "20px 24px",
-              border: "1px solid rgba(29, 86, 53, 0.25)",
+              border: "1px solid rgba(4, 106, 56, 0.25)",
               borderLeft: "4px solid var(--green)",
               display: "flex",
               justifyContent: "space-between",

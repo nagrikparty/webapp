@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Menu, X, User, LogOut, ChevronRight, Shield } from "lucide-react";
+import { Menu, X, User, LogOut, ChevronRight, Shield, QrCode } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { publicNavLinks, memberNavLinks } from "@/lib/navigation";
+import { DonationModal } from "@/components/DonationModal";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function SmartIsland() {
   const [open, setOpen] = useState(false);
@@ -65,6 +67,16 @@ export function SmartIsland() {
     };
   }, [open]);
 
+  const [donationModalOpen, setDonationModalOpen] = useState(false);
+
+  useEffect(() => {
+    function handleOpenDonation() {
+      setDonationModalOpen(true);
+    }
+    window.addEventListener("open-donation-modal", handleOpenDonation);
+    return () => window.removeEventListener("open-donation-modal", handleOpenDonation);
+  }, []);
+
   async function handleLogout() {
     if (supabase) {
       await supabase.auth.signOut();
@@ -85,9 +97,27 @@ export function SmartIsland() {
         ))}
 
         <div className="island-action-buttons">
+          <button
+            type="button"
+            onClick={() => setDonationModalOpen(true)}
+            className="button island-action-btn"
+            style={{
+              fontWeight: 600,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "rgba(232, 87, 26, 0.08)",
+              color: "var(--saffron)",
+              borderColor: "var(--saffron)",
+              cursor: "pointer",
+            }}
+          >
+            <QrCode size={14} />
+            <span>Contribute</span>
+          </button>
           {!user ? (
             <a href="/membership" className="button button-primary island-action-btn" style={{ fontWeight: 600 }}>
-              Become a Member
+              Member Banein
             </a>
           ) : (
             <a href="/member" className="button yellow island-action-btn" style={{ fontWeight: 600 }}>
@@ -98,6 +128,7 @@ export function SmartIsland() {
       </nav>
 
       <div className="nav-actions">
+        <ThemeToggle />
         {!user ? (
           <a
             href="/login"
@@ -214,6 +245,33 @@ export function SmartIsland() {
 
                 <div style={{ height: 1, background: "var(--line)", margin: "8px 0" }} />
 
+                <button
+                  type="button"
+                  className="mobile-drawer-link"
+                  onClick={() => {
+                    setOpen(false);
+                    setDonationModalOpen(true);
+                  }}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    background: "none",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    color: "var(--saffron)",
+                    fontWeight: 600,
+                    padding: "10px 0",
+                  }}
+                >
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                    <QrCode size={16} /> Contribute via UPI
+                  </span>
+                  <ChevronRight size={16} style={{ color: "var(--saffron)" }} />
+                </button>
+
                 <a href="/crime" className="mobile-drawer-link" onClick={() => setOpen(false)}>
                   <span>Verified Crime Tracker</span>
                   <ChevronRight size={16} style={{ color: "var(--muted)" }} />
@@ -292,6 +350,11 @@ export function SmartIsland() {
           </div>
         </div>
       )}
+
+      <DonationModal
+        isOpen={donationModalOpen}
+        onClose={() => setDonationModalOpen(false)}
+      />
     </>
   );
 }

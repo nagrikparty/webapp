@@ -415,8 +415,8 @@ export function AdminCivicHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -568,7 +568,7 @@ export function AdminCivicHub() {
                               borderRadius: "2px",
                               fontSize: "11px",
                               fontFamily: "var(--font-mono)",
-                              background: c.crime_type === "Rape" ? "rgba(220, 38, 38, 0.1)" : "rgba(179, 74, 21, 0.08)",
+                              background: c.crime_type === "Rape" ? "rgba(220, 38, 38, 0.1)" : "rgba(232, 87, 26, 0.08)",
                               color: c.crime_type === "Rape" ? "#dc2626" : "var(--saffron)",
                               border: "1px solid var(--line)",
                             }}
@@ -617,8 +617,8 @@ export function AdminCivicHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",
@@ -723,7 +723,7 @@ export function AdminCivicHub() {
                             fontWeight: 700,
                             padding: "2px 6px",
                             borderRadius: "2px",
-                            background: item.status === "resolved" ? "rgba(29, 86, 53, 0.1)" : "rgba(179, 74, 21, 0.1)",
+                            background: item.status === "resolved" ? "rgba(4, 106, 56, 0.1)" : "rgba(232, 87, 26, 0.1)",
                             color: item.status === "resolved" ? "var(--green)" : "var(--saffron)",
                             textTransform: "uppercase",
                           }}
@@ -798,8 +798,8 @@ export function AdminCivicHub() {
             <div
               style={{
                 padding: "10px 14px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 borderRadius: "3px",
                 fontSize: "13px",

@@ -14,51 +14,214 @@
   src: url('/fonts/Inter-Bold.woff2') format('woff2');
 }
 
+/* Self-hosted Mukta — Devanagari + Latin (no Google Fonts blocking) */
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Mukta-Devanagari-400.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Mukta-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Mukta-Devanagari-500.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Mukta-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Mukta-Devanagari-600.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Mukta-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Mukta-Devanagari-700.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Mukta-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/Mukta-Devanagari-800.woff2') format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+
+@font-face {
+  font-family: 'Mukta';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/Mukta-800.woff2') format('woff2');
+}
+
 :root {
   /* ==========================================================================
-     MILKY-WHITE OLD PAPER & PRINTED LETTERPRESS INK PALETTE
+     NAYA DILLI — NATIVE CIVIC APP PALETTE (Clean, Solid, High-Contrast)
+     No paper texture, no glassmorphism, no AI-template gradients.
      ========================================================================== */
-  --paper: #faf8f5;            /* Milky warm off-white woven paper canvas */
-  --paper-subtle: #f4f0e6;     /* Secondary warm rag parchment */
-  --paper-card: #ffffff;       /* Crisp pressed paper card stock */
-  --paper-hover: #f6f3eb;      /* Tactile hover tone */
+  --paper: #ffffff;            /* Clean app background */
+  --paper-subtle: #f7f9fa;     /* Light neutral surface (cards/sections) */
+  --paper-card: #ffffff;       /* Card stock */
+  --paper-hover: #f1f5f9;      /* Hover tone */
   --white: #ffffff;
-  
-  /* Printed Letterpress Ink */
-  --ink: #181614;              /* Deep archival printed carbon ink */
-  --ink-body: #34302a;         /* Editorial body text ink */
-  --muted: #686156;            /* Warm charcoal printed caption / metadata */
-  --ink-faint: #968e82;        /* Faint printed registration markings */
-  
-  /* Hairline Gazette Rules & Dividing Lines */
-  --line: rgba(36, 30, 22, 0.12);
-  --line-strong: rgba(36, 30, 22, 0.24);
-  --line-dashed: rgba(36, 30, 22, 0.18);
 
-  /* Official Statutory & Civic Stamp Inks */
-  --saffron: #b34a15;          /* Civic terracotta saffron stamp */
-  --green: #1d5635;            /* Statutory verified green stamp */
-  --red: #8e2617;              /* Priority warning / crime alert stamp */
-  --blue: #16355c;             /* Gazette notification navy */
-  --gold: #966914;             /* Constitutional seal gold */
+  /* Ink — High contrast for low-quality screens & sunlight readability */
+  --ink: #0f172a;              /* Near-black, softer than pure black */
+  --ink-body: #1e293b;         /* Body text */
+  --muted: #475569;            /* Captions / metadata (4.5:1 on white) */
+  --ink-faint: #94a3b8;        /* Faint markings */
+
+  /* Hairline Rules & Dividers */
+  --line: rgba(15, 23, 42, 0.10);
+  --line-strong: rgba(15, 23, 42, 0.20);
+  --line-dashed: rgba(15, 23, 42, 0.16);
+
+  /* Tiranga Civic Colors — vibrant, culturally resonant */
+  --saffron: #e8571a;          /* Tiranga saffron (accessible on white) */
+  --green: #046a38;            /* Tiranga green */
+  --red: #dc2626;              /* Alert red */
+  --blue: #1d4ed8;             /* Info blue */
+  --gold: #b45309;             /* Seal amber */
   --soft: #ffffff;
 
-  /* Pressed Paper Stationery Shadows (Retires glassmorphism & cold shadows) */
-  --shadow: 0 1px 3px rgba(35, 30, 20, 0.05), 0 3px 8px rgba(35, 30, 20, 0.03);
-  --shadow-elevated: 0 2px 4px rgba(35, 30, 20, 0.06), 0 8px 24px rgba(35, 30, 20, 0.05);
-  --island-shadow: 0 2px 8px rgba(35, 30, 20, 0.08), 0 12px 36px rgba(35, 30, 20, 0.06);
+  /* Native Surfaces — flat, subtle, no floating islands */
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-elevated: 0 1px 3px rgba(15, 23, 42, 0.08), 0 6px 16px rgba(15, 23, 42, 0.06);
+  --island-shadow: 0 1px 2px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.08);
 
-  /* Typography Systems */
-  --font-serif: 'Lora', 'Noto Serif Devanagari', 'Yantramanav', Georgia, serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Typography Systems — Sans-first for app readability */
+  --font-serif: 'Inter', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Inter', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Courier Prime', 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
-  --font-hindi: 'Noto Serif Devanagari', 'Yantramanav', sans-serif;
+  --font-hindi: 'Mukta', 'Inter', 'Noto Sans Devanagari', sans-serif;
 
   color-scheme: light;
   font-family: var(--font-sans);
 
   /* Fixed Navigation Stack Clearance Offset */
   --header-offset: 156px;
+}
+
+/* ==========================================================================
+   DARK MODE — Same solid approach, no glow, no glass.
+   ========================================================================== */
+:root[data-theme="dark"] {
+  --paper: #0b1120;
+  --paper-subtle: #111a2e;
+  --paper-card: #141f36;
+  --paper-hover: #1b2947;
+  --white: #141f36;
+  --ink: #f1f5f9;
+  --ink-body: #e2e8f0;
+  --muted: #94a3b8;
+  --ink-faint: #64748b;
+  --line: rgba(241, 245, 249, 0.12);
+  --line-strong: rgba(241, 245, 249, 0.24);
+  --line-dashed: rgba(241, 245, 249, 0.18);
+  --saffron: #ff7a33;
+  --green: #22c55e;
+  --red: #ef4444;
+  --blue: #60a5fa;
+  --gold: #fbbf24;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 1px 3px rgba(0, 0, 0, 0.5), 0 6px 16px rgba(0, 0, 0, 0.4);
+  --island-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b1120;
+    --paper-subtle: #111a2e;
+    --paper-card: #141f36;
+    --paper-hover: #1b2947;
+    --white: #141f36;
+    --ink: #f1f5f9;
+    --ink-body: #e2e8f0;
+    --muted: #94a3b8;
+    --ink-faint: #64748b;
+    --line: rgba(241, 245, 249, 0.12);
+    --line-strong: rgba(241, 245, 249, 0.24);
+    --line-dashed: rgba(241, 245, 249, 0.18);
+    --saffron: #ff7a33;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #60a5fa;
+    --gold: #fbbf24;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-elevated: 0 1px 3px rgba(0, 0, 0, 0.5), 0 6px 16px rgba(0, 0, 0, 0.4);
+    --island-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+/* ==========================================================================
+   NATIVE UI PRIMITIVES — shared across components
+   ========================================================================== */
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 12px;
+  z-index: 999;
+  background: var(--saffron);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 12px; }
+
+:focus-visible {
+  outline: 2px solid var(--saffron);
+  outline-offset: 2px;
 }
 
 * {
@@ -89,19 +252,7 @@ button, a, input, select, textarea {
   touch-action: manipulation;
 }
 
-/* Authentic Featherweight SVG Paper Texture Overlay */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.028;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
+/* Paper texture overlay removed — native app uses clean solid surfaces. */
 
 body.nav-open {
   overflow: hidden;
@@ -235,8 +386,8 @@ html[data-lang="en"] .lang-en {
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--saffron);
-  background: rgba(179, 74, 21, 0.08);
-  border: 1px solid rgba(179, 74, 21, 0.22);
+  background: rgba(232, 87, 26, 0.08);
+  border: 1px solid rgba(232, 87, 26, 0.25);
   padding: 2px 8px;
   border-radius: 2px;
   text-transform: uppercase;
@@ -575,23 +726,23 @@ html[data-lang="en"] .lang-en {
 /* ==========================================================================
    BUTTONS (PRINTED TACTILE CONTROLS)
    ========================================================================== */
-.button, 
+.button,
 a.button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px; /* Mobile touch standard */
+  min-height: 48px; /* Native touch target (WCAG 2.5.5) */
   gap: 8px;
-  border-radius: 3px;
+  border-radius: 8px;
   background: var(--paper-card);
   color: var(--ink);
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  padding: 0 20px;
+  padding: 0 22px;
   border: 1px solid var(--line-strong);
-  box-shadow: var(--shadow);
-  transition: all 0.15s ease;
+  box-shadow: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
   font-family: var(--font-sans);
   text-decoration: none;
   text-align: center;
@@ -601,7 +752,6 @@ a.button {
 a.button:hover {
   background: var(--paper-hover);
   border-color: var(--ink);
-  box-shadow: var(--shadow-elevated);
 }
 
 .button:active,
@@ -626,12 +776,11 @@ button:disabled {
   background: var(--ink);
   color: #ffffff;
   border-color: var(--ink);
-  box-shadow: 0 2px 6px rgba(24, 22, 20, 0.2);
 }
 
 .button.primary:hover {
-  background: #2b2824;
-  border-color: #2b2824;
+  background: #334155;
+  border-color: #334155;
 }
 
 .button.green {
@@ -646,14 +795,13 @@ button:disabled {
   background: var(--saffron);
   color: #ffffff !important;
   border-color: var(--saffron);
-  box-shadow: 0 2px 6px rgba(179, 74, 21, 0.25);
 }
 
 .button.yellow:hover,
 .button.button-primary:hover,
 .button-primary:hover {
-  background: #9d3f10;
-  border-color: #9d3f10;
+  background: #c2410c;
+  border-color: #c2410c;
   color: #ffffff !important;
 }
 
@@ -1158,15 +1306,15 @@ button:disabled {
 }
 
 .tag.red {
-  background: rgba(142, 38, 23, 0.08);
+  background: rgba(220, 38, 38, 0.08);
   color: var(--red);
-  border-color: rgba(142, 38, 23, 0.25);
+  border-color: rgba(220, 38, 38, 0.25);
 }
 
 .tag.green {
-  background: rgba(29, 86, 53, 0.08);
+  background: rgba(4, 106, 56, 0.08);
   color: var(--green);
-  border-color: rgba(29, 86, 53, 0.25);
+  border-color: rgba(4, 106, 56, 0.25);
 }
 
 .map-strip {
@@ -1368,7 +1516,7 @@ button:disabled {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border: 1px solid rgba(179, 74, 21, 0.3);
+  border: 1px solid rgba(232, 87, 26, 0.3);
   font-family: var(--font-mono);
   margin-bottom: 14px;
 }
@@ -1390,9 +1538,9 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(29, 86, 53, 0.08);
+  background: rgba(4, 106, 56, 0.08);
   color: var(--green);
-  border: 1px solid rgba(29, 86, 53, 0.25);
+  border: 1px solid rgba(4, 106, 56, 0.25);
   padding: 2px 8px;
   border-radius: 2px;
   font-size: 11.5px;
@@ -1442,7 +1590,7 @@ button:disabled {
 .crime-hero-stat-card:hover {
   background: var(--paper-card);
   border-color: var(--red);
-  box-shadow: 0 2px 8px rgba(142, 38, 23, 0.1);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
   transform: translateY(-1px);
 }
 
@@ -1475,12 +1623,12 @@ button:disabled {
   gap: 6px;
   font-size: 11.5px;
   color: var(--red);
-  background: rgba(142, 38, 23, 0.08);
+  background: rgba(220, 38, 38, 0.08);
   padding: 3px 10px;
   border-radius: 2px;
   font-weight: 600;
   font-family: var(--font-mono);
-  border: 1px solid rgba(142, 38, 23, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
 .crime-dashboard-grid {
@@ -1512,7 +1660,7 @@ button:disabled {
 }
 
 .crime-stat-card.critical {
-  border-color: rgba(142, 38, 23, 0.3);
+  border-color: rgba(220, 38, 38, 0.3);
 }
 
 .crime-stat-card.critical:hover {
@@ -1895,8 +2043,7 @@ body.auth-page {
 .mobile-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(24, 22, 20, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.5);
   z-index: 150;
   display: flex;
   justify-content: flex-end;
@@ -1971,3 +2118,75 @@ body.auth-page {
   border-top: 1px solid var(--line);
 }
 
+
+
+/* ==========================================================================
+   BOTTOM TAB BAR — Native app navigation (mobile only, < 920px)
+   ========================================================================== */
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 920px) {
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 120;
+    background: var(--paper-card);
+    border-top: 1px solid var(--line-strong);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .bottom-nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 56px;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bottom-nav-tab:active {
+    background: var(--paper-hover);
+  }
+
+  .bottom-nav-tab.is-active {
+    color: var(--saffron);
+  }
+
+  .bottom-nav-tab.is-active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background: var(--saffron);
+    border-radius: 0 0 3px 3px;
+  }
+
+  .bottom-nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* Content clearance above the fixed tab bar */
+  main {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .footer {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+}

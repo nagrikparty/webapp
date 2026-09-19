@@ -1,14 +1,14 @@
 {
   "id": "/",
   "name": "Nagrik Party",
-  "short_name": "Nagrik Party",
+  "short_name": "Nagrik",
   "description": "Delhi-first proposed political party under registration. Kaam dikhna chahiye.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#faf8f5",
-  "background_color": "#faf8f5",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "lang": "en-IN",
   "dir": "ltr",
   "categories": ["government", "politics"],
@@ -17,7 +17,45 @@
       "src": "/nagrikpartylogo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/nagrikpartylogo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Member Bano",
+      "short_name": "Join",
+      "description": "Nayi membership ke liye apply karein",
+      "url": "/membership",
+      "icons": [{ "src": "/nagrikpartylogo.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Card Verify Karein",
+      "short_name": "Verify",
+      "description": "Membership card ki authenticity check karein",
+      "url": "/verify/member",
+      "icons": [{ "src": "/nagrikpartylogo.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Hisaab Dekhein",
+      "short_name": "Hisaab",
+      "description": "Financial transparency ledger",
+      "url": "/transparency",
+      "icons": [{ "src": "/nagrikpartylogo.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
+  "share_target": {
+    "action": "/issues",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

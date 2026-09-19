@@ -39,7 +39,11 @@ export const GET: APIRoute = async () => {
       );
     }
 
-    return new Response(JSON.stringify(data), {
+    const upi_payload = data.upi_id
+      ? `upi://pay?pa=${encodeURIComponent(data.upi_id)}&pn=${encodeURIComponent(data.account_name || "Nagrik Party")}&cu=INR`
+      : null;
+
+    return new Response(JSON.stringify({ ...data, upi_payload }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

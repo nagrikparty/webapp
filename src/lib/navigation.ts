@@ -15,20 +15,20 @@ export interface NavSection {
 
 // Logged out public primary navigation
 export const publicNavLinks: NavLink[] = [
-  { label: "Explore", href: "/explore", description: "Civic data, verified crime tracker, and topic monitors" },
-  { label: "Why Nagrik", href: "/why-nagrik", description: "The story and principles behind building Nagrik Party" },
-  { label: "Formation", href: "/formation-progress", description: "Phase 1 formation roadmap and progress" },
-  { label: "Constitution", href: "/legal/constitution", description: "Our foundational democratic by-laws" },
-  { label: "Transparency", href: "/transparency", description: "Cashless formation ledger and audit reports" },
+  { label: "Explore", href: "/explore", description: "Civic data, verified crime tracker, aur topic monitors" },
+  { label: "Kyun Nagrik", href: "/why-nagrik", description: "Nagrik Party banane ki kahani aur siddhant" },
+  { label: "Formation", href: "/formation-progress", description: "Phase 1 formation roadmap aur progress" },
+  { label: "Constitution", href: "/legal/constitution", description: "Hamare foundational democratic by-laws" },
+  { label: "Hisaab", href: "/transparency", description: "Cashless formation ledger aur audit reports" },
 ];
 
 // Logged in authenticated primary navigation
 export const memberNavLinks: NavLink[] = [
-  { label: "Explore", href: "/explore", description: "Civic data and crime monitors" },
+  { label: "Explore", href: "/explore", description: "Civic data aur crime monitors" },
   { label: "Participate", href: "/build-with-us", description: "Skill-based participation tasks" },
-  { label: "Issues", href: "/issues", description: "Report and monitor local issues" },
-  { label: "Formation", href: "/formation-progress", description: "Phase 1 progress and statutory status" },
-  { label: "Transparency", href: "/transparency", description: "Verified financial disclosures" },
+  { label: "Issues", href: "/issues", description: "Local issues report aur monitor karein" },
+  { label: "Formation", href: "/formation-progress", description: "Phase 1 progress aur statutory status" },
+  { label: "Hisaab", href: "/transparency", description: "Verified financial disclosures" },
 ];
 
 // Streamlined Public Footer

@@ -6,7 +6,8 @@ export function LanguageToggle() {
 
   useEffect(() => {
     const saved = window.localStorage.getItem("nagrik-lang");
-    const next = saved === "hi" ? "hi" : "en";
+    const browserHindi = typeof navigator !== "undefined" && (navigator.language || "").toLowerCase().startsWith("hi");
+    const next = saved === "hi" || saved === "en" ? saved : browserHindi ? "hi" : "en";
     setLang(next);
     document.documentElement.dataset.lang = next;
   }, []);

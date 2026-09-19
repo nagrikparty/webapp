@@ -17,12 +17,10 @@
 
 .nav {
   pointer-events: auto;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 12px;
+  background: var(--paper-card);
   box-shadow: var(--island-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--line-strong);
 }
 
 .nav-inner {
@@ -141,16 +139,14 @@
   opacity: 0;
   visibility: hidden;
   min-width: 220px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  box-shadow: var(--island-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  background: var(--paper-card);
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--line-strong);
   padding: 8px;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.2s ease;
   z-index: 200;
 }
 

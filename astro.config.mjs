@@ -14,4 +14,9 @@ export default defineConfig({
   adapter: cloudflare({
     platformProxy: { enabled: false }
   }),
+  redirects: {
+    // Hinglish-friendly slugs (donon kaam karte hain)
+    "/hisaab": "/transparency",
+    "/member-bano": "/membership",
+  },
 });

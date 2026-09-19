@@ -181,8 +181,8 @@ export function MemberCardView() {
                 fontWeight: 700,
                 padding: "2px 6px",
                 borderRadius: "2px",
-                background: "rgba(29, 86, 53, 0.08)",
-                border: "1px solid rgba(29, 86, 53, 0.25)",
+                background: "rgba(4, 106, 56, 0.08)",
+                border: "1px solid rgba(4, 106, 56, 0.25)",
                 color: "var(--green)",
                 textTransform: "uppercase",
               }}
@@ -220,8 +220,8 @@ export function MemberCardView() {
         <div
           style={{
             padding: "14px 18px",
-            background: "rgba(142, 38, 23, 0.06)",
-            border: "1px solid rgba(142, 38, 23, 0.3)",
+            background: "rgba(220, 38, 38, 0.06)",
+            border: "1px solid rgba(220, 38, 38, 0.3)",
             borderRadius: "3px",
             color: "var(--red)",
             marginBottom: "24px",
