@@ -1,39 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { ShieldCheck, FileText } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { ShieldCheck, FileText, CheckCircle2, Hash, ArrowUpRight, ArrowDownLeft } from "lucide-react";
 
-interface Statement {
+interface PublishedPeriod {
   id: string;
-  reporting_period?: string;
-  period_name?: string;
-  fiscal_year?: string;
-  period_start?: string;
-  period_end?: string;
-  total_receipts?: number;
-  total_expenditure?: number;
-  closing_balance?: number;
-  opening_balance?: number;
-  total_contributions?: number;
-  total_expenses?: number;
-  is_audited?: boolean;
-  is_published?: boolean;
-  statement_document_url?: string | null;
-  notes?: string | null;
+  title: string;
+  fiscal_year: string;
+  period_type: string;
+  start_date: string;
+  end_date: string;
+  opening_balance: string;
+  closing_balance: string;
+  total_credits: string;
+  total_debits: string;
   published_at?: string;
+  notes?: string;
+  statements?: Array<{
+    id: string;
+    original_filename: string;
+    file_sha256: string;
+    file_size_bytes: number;
+    bank_name: string;
+  }>;
 }
 
-interface Transaction {
+interface PublicTransaction {
   id: string;
-  statement_id?: string | null;
-  transaction_date: string;
-  transaction_type: "RECEIPT" | "EXPENDITURE" | "CONTRIBUTION" | "EXPENSE";
-  amount: number;
-  category: string;
-  source_or_payee?: string;
-  description?: string;
-  status?: "EXTRACTED" | "VERIFIED";
-  receipt_voucher_number?: string | null;
-  is_public?: boolean;
+  period_id: string;
+  date: string;
+  type: string;
+  classification: string;
+  description: string;
+  reference_masked: string | null;
+  amount: string;
+  debit: string;
+  credit: string;
+  balance_after?: string | null;
+}
+
+interface TransparencyDataResponse {
+  has_data: boolean;
+  periods: PublishedPeriod[];
+  selected_period_id: string;
+  totals: {
+    total_donations: string;
+    total_donations_formatted: string;
+    total_expenses: string;
+    total_expenses_formatted: string;
+    other_income: string;
+    other_income_formatted: string;
+    closing_balance: string;
+    closing_balance_formatted: string;
+    verified_transactions_count: number;
+  };
+  transactions: PublicTransaction[];
 }
 
 interface DonationConfig {
@@ -50,81 +69,69 @@ interface DonationConfig {
 }
 
 export function TransparencyLedger() {
-  const [statements, setStatements] = useState<Statement[]>([]);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [data, setData] = useState<TransparencyDataResponse | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<string>("ALL");
   const [loading, setLoading] = useState(true);
   const [donationConfig, setDonationConfig] = useState<DonationConfig | null>(null);
 
   useEffect(() => {
-    async function loadData() {
+    // Load donation configuration
+    fetch("/api/v1/donation-config")
+      .then((res) => res.json())
+      .then((cfg) => setDonationConfig(cfg))
+      .catch(() => setDonationConfig({ is_enabled: false }));
+  }, []);
+
+  useEffect(() => {
+    async function fetchTransparencyData() {
       setLoading(true);
       try {
-        // 1. Fetch donation config
-        fetch("/api/v1/donation-config")
-          .then((res) => res.json())
-          .then((cfg) => setDonationConfig(cfg))
-          .catch(() => setDonationConfig({ is_enabled: false }));
+        const url = selectedPeriod === "ALL"
+          ? "/api/v1/transparency/data"
+          : `/api/v1/transparency/data?period_id=${encodeURIComponent(selectedPeriod)}`;
 
-        if (!supabase) {
-          setLoading(false);
-          return;
-        }
-
-        // 2. Fetch published statements
-        const { data: stmts } = await supabase
-          .from("financial_statements")
-          .select("*")
-          .eq("is_published", true)
-          .order("published_at", { ascending: false });
-
-        if (stmts && stmts.length > 0) {
-          setStatements(stmts);
-        } else {
-          setStatements([]);
-        }
-
-        // 3. Fetch public transactions
-        const { data: txs } = await supabase
-          .from("financial_transactions")
-          .select("*")
-          .eq("is_public", true)
-          .order("transaction_date", { ascending: false })
-          .limit(100);
-
-        if (txs) {
-          setTransactions(txs);
+        const res = await fetch(url);
+        if (res.ok) {
+          const json = await res.json();
+          setData(json);
         }
       } catch (err) {
-        console.error("Error loading financial transparency data:", err);
+        console.error("Failed to load transparency data:", err);
       } finally {
         setLoading(false);
       }
     }
 
-    loadData();
-  }, []);
+    fetchTransparencyData();
+  }, [selectedPeriod]);
 
-  const totalReceipts = statements.reduce((acc, s) => acc + Number(s.total_receipts || s.total_contributions || 0), 0);
-  const totalExp = statements.reduce((acc, s) => acc + Number(s.total_expenditure || s.total_expenses || 0), 0);
-  const netBalance = totalReceipts - totalExp;
-
-  const filteredTxs = selectedPeriod === "ALL"
-    ? transactions
-    : transactions.filter((t) => t.statement_id === selectedPeriod);
-
-  if (loading) {
+  if (loading && !data) {
     return (
       <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--muted)", background: "var(--paper-card)", borderRadius: "4px", border: "1px solid var(--line)" }}>
-        Loading published financial accounts and audit records...
+        Loading audited financial records and verification ledger...
       </div>
     );
   }
 
+  const hasData = data && data.has_data && data.periods.length > 0;
+  const periods = data?.periods || [];
+  const totals = data?.totals || {
+    total_donations: "0.00",
+    total_donations_formatted: "₹0.00",
+    total_expenses: "0.00",
+    total_expenses_formatted: "₹0.00",
+    other_income: "0.00",
+    other_income_formatted: "₹0.00",
+    closing_balance: "0.00",
+    closing_balance_formatted: "₹0.00",
+    verified_transactions_count: 0,
+  };
+  const transactions = data?.transactions || [];
+
   return (
     <div style={{ display: "grid", gap: "28px" }}>
       
-      {/* Transparency Doctrine Banner */}
+      {/* 1. TOP STATUTORY DOCTRINE BANNER */}
       <div
         className="card"
         style={{
@@ -137,8 +144,8 @@ export function TransparencyLedger() {
           boxShadow: "var(--shadow)",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "14px" }}>
-          <div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "16px" }}>
+          <div style={{ flex: 1, minWidth: "min(100%, 320px)" }}>
             <div
               className="badge-verified"
               style={{
@@ -153,34 +160,75 @@ export function TransparencyLedger() {
             </h2>
             <p style={{ fontSize: "13.5px", color: "var(--muted)", margin: 0, maxWidth: "700px", lineHeight: "1.6" }}>
               Political clean-up begins at the bank account. Nagrik Party operates on a strictly cashless,
-              100% digital audit policy. Pre-registration formation funds and expenditures are recorded with complete source provenance.
+              100% digital audit policy. Pre-registration formation funds and expenditures are recorded with complete source provenance and published bank statements.
             </p>
           </div>
 
           <div
             style={{
-              padding: "14px 18px",
+              padding: "16px 20px",
               background: "var(--paper-subtle)",
               borderRadius: "4px",
               border: "1px solid var(--line)",
               textAlign: "right",
-              minWidth: "160px",
+              minWidth: "180px",
             }}
           >
-            <div style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
-              NET FORMATION BALANCE
+            <div style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
+              NET VERIFIED CLOSING BALANCE
             </div>
-            <div style={{ fontSize: "20px", fontWeight: 800, color: "var(--green)", fontFamily: "var(--font-mono)" }}>
-              ₹{netBalance.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+            <div style={{ fontSize: "22px", fontWeight: 800, color: "var(--green)", fontFamily: "var(--font-mono)", marginTop: "2px" }}>
+              {totals.closing_balance_formatted}
             </div>
-            <small style={{ fontSize: "10.5px", color: "var(--muted)" }}>
-              {statements.length > 0 ? "Verified Audited Ledger" : "Pre-registration Accounts"}
+            <small style={{ fontSize: "11px", color: "var(--muted)" }}>
+              {hasData ? `${totals.verified_transactions_count} Verified Transactions` : "Awaiting Published Audit"}
             </small>
           </div>
         </div>
+
+        {/* Aggregate Summary Pillars */}
+        {hasData && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "14px", marginTop: "8px", paddingTop: "16px", borderTop: "1px solid var(--line)" }}>
+            <div>
+              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+                VERIFIED DONATIONS
+              </small>
+              <strong style={{ fontSize: "17px", color: "var(--green)", fontFamily: "var(--font-mono)" }}>
+                {totals.total_donations_formatted}
+              </strong>
+            </div>
+
+            <div>
+              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+                VERIFIED EXPENDITURE
+              </small>
+              <strong style={{ fontSize: "17px", color: "var(--red)", fontFamily: "var(--font-mono)" }}>
+                {totals.total_expenses_formatted}
+              </strong>
+            </div>
+
+            <div>
+              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+                OTHER INCOME / INTEREST
+              </small>
+              <strong style={{ fontSize: "17px", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
+                {totals.other_income_formatted}
+              </strong>
+            </div>
+
+            <div>
+              <small style={{ color: "var(--muted)", fontSize: "11px", display: "block", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+                ACTIVE REPORTING CYCLES
+              </small>
+              <strong style={{ fontSize: "17px", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>
+                {periods.length} Half-Yearly Periods
+              </strong>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Optional Configurable Donation Box (Cleanly hidden if disabled) */}
+      {/* 2. OPTIONAL CONFIGURABLE DONATION BOX */}
       {donationConfig?.is_enabled && (
         <div
           className="card"
@@ -269,160 +317,219 @@ export function TransparencyLedger() {
         </div>
       )}
 
-      {/* Reporting Period Statements Summary */}
-      {statements.length > 0 ? (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
-          {statements.map((st) => (
-            <div
-              key={st.id}
-              className="card"
-              style={{
-                background: "var(--paper-card)",
-                border: "1px solid var(--line)",
-                borderRadius: "4px",
-                padding: "20px",
-                boxShadow: "var(--shadow)",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                <span style={{ fontSize: "11px", fontWeight: 700, color: "var(--saffron)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-                  {st.reporting_period || st.period_name || "Reporting Period"}
-                </span>
-                <span className="badge-citation">Verified</span>
-              </div>
+      {/* 3. PERIOD SELECTOR TABS */}
+      {hasData ? (
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
+            <h3 style={{ fontSize: "17px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: 0, color: "var(--ink)" }}>
+              6-Month Audited Reporting Periods
+            </h3>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", margin: "14px 0" }}>
-                <div>
-                  <small style={{ color: "var(--muted)", fontSize: "11px", display: "block" }}>TOTAL RECEIPTS</small>
-                  <strong style={{ fontSize: "15px", color: "var(--green)", fontFamily: "var(--font-mono)" }}>
-                    ₹{Number(st.total_receipts || st.total_contributions || 0).toLocaleString("en-IN")}
-                  </strong>
-                </div>
-                <div>
-                  <small style={{ color: "var(--muted)", fontSize: "11px", display: "block" }}>TOTAL EXPENSES</small>
-                  <strong style={{ fontSize: "15px", color: "var(--red)", fontFamily: "var(--font-mono)" }}>
-                    ₹{Number(st.total_expenditure || st.total_expenses || 0).toLocaleString("en-IN")}
-                  </strong>
-                </div>
-              </div>
-
-              {st.notes && (
-                <p style={{ fontSize: "12px", color: "var(--muted)", margin: "0 0 10px", lineHeight: 1.45 }}>
-                  {st.notes}
-                </p>
-              )}
-
-              {st.statement_document_url && (
-                <a
-                  href={st.statement_document_url}
-                  style={{ fontSize: "12px", fontWeight: 600, color: "var(--saffron)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}
+            {/* Filter buttons */}
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                onClick={() => setSelectedPeriod("ALL")}
+                className="button"
+                style={{
+                  padding: "5px 12px",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  background: selectedPeriod === "ALL" ? "var(--ink)" : "var(--paper-card)",
+                  color: selectedPeriod === "ALL" ? "#fff" : "var(--ink)",
+                  borderColor: selectedPeriod === "ALL" ? "var(--ink)" : "var(--line)",
+                }}
+              >
+                All Periods
+              </button>
+              {periods.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setSelectedPeriod(p.id)}
+                  className="button"
+                  style={{
+                    padding: "5px 12px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    background: selectedPeriod === p.id ? "var(--ink)" : "var(--paper-card)",
+                    color: selectedPeriod === p.id ? "#fff" : "var(--ink)",
+                    borderColor: selectedPeriod === p.id ? "var(--ink)" : "var(--line)",
+                  }}
                 >
-                  <FileText size={13} /> View Certified Statement PDF
-                </a>
-              )}
+                  {p.title}
+                </button>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Cards for reporting periods */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "16px" }}>
+            {periods
+              .filter((p) => selectedPeriod === "ALL" || p.id === selectedPeriod)
+              .map((p) => {
+                const stmt = p.statements && p.statements.length > 0 ? p.statements[0] : null;
+                return (
+                  <div
+                    key={p.id}
+                    className="card"
+                    style={{
+                      background: "var(--paper-card)",
+                      border: "1px solid var(--line)",
+                      borderRadius: "4px",
+                      padding: "20px 22px",
+                      boxShadow: "var(--shadow)",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                      <span style={{ fontSize: "12px", fontWeight: 800, color: "var(--saffron)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
+                        {p.title}
+                      </span>
+                      <span className="badge-citation" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                        <CheckCircle2 size={12} /> Published
+                      </span>
+                    </div>
+
+                    <div style={{ fontSize: "11px", color: "var(--muted)", fontFamily: "var(--font-mono)", marginBottom: "12px" }}>
+                      {p.start_date} to {p.end_date} · {p.fiscal_year}
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", margin: "12px 0", background: "var(--paper-subtle)", padding: "10px 12px", borderRadius: "3px" }}>
+                      <div>
+                        <small style={{ color: "var(--muted)", fontSize: "10px", display: "block" }}>CREDITS (INFLOW)</small>
+                        <strong style={{ fontSize: "14px", color: "var(--green)", fontFamily: "var(--font-mono)" }}>
+                          ₹{Number(p.total_credits).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                        </strong>
+                      </div>
+                      <div>
+                        <small style={{ color: "var(--muted)", fontSize: "10px", display: "block" }}>DEBITS (OUTFLOW)</small>
+                        <strong style={{ fontSize: "14px", color: "var(--red)", fontFamily: "var(--font-mono)" }}>
+                          ₹{Number(p.total_debits).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                        </strong>
+                      </div>
+                    </div>
+
+                    {p.notes && (
+                      <p style={{ fontSize: "12px", color: "var(--muted)", margin: "0 0 10px", lineHeight: 1.45 }}>
+                        {p.notes}
+                      </p>
+                    )}
+
+                    {stmt && (
+                      <div style={{ borderTop: "1px dashed var(--line)", paddingTop: "8px", marginTop: "8px" }}>
+                        <div style={{ fontSize: "10.5px", color: "var(--muted)", display: "flex", alignItems: "center", gap: "4px", fontFamily: "var(--font-mono)" }}>
+                          <Hash size={11} /> SHA-256: {stmt.file_sha256.slice(0, 16)}...
+                        </div>
+                        <div style={{ fontSize: "10px", color: "var(--ink-faint)", marginTop: "2px" }}>
+                          Source: {stmt.bank_name} statement ({stmt.original_filename})
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
         </div>
       ) : (
-        /* Honest Pending / Empty State */
+        /* TRUTHFUL EMPTY STATE */
         <div
           className="card"
           style={{
             background: "var(--paper-card)",
             border: "1px dashed var(--line-strong)",
             borderRadius: "4px",
-            padding: "36px 24px",
+            padding: "44px 24px",
             textAlign: "center",
           }}
         >
-          <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "var(--paper-subtle)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", color: "var(--muted)" }}>
-            <FileText size={20} />
+          <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "var(--paper-subtle)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", color: "var(--muted)" }}>
+            <FileText size={24} />
           </div>
-          <h3 style={{ fontSize: "17px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "0 0 6px", color: "var(--ink)" }}>
-            Formation-Stage Financial Records Under Compilation
+          <h3 style={{ fontSize: "18px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: "0 0 8px", color: "var(--ink)" }}>
+            Formation-Stage Financial Records Under Verification
           </h3>
-          <p style={{ fontSize: "13.5px", color: "var(--muted)", maxWidth: "520px", margin: "0 auto", lineHeight: 1.55 }}>
-            Nagrik Party does not publish fabricated or estimated accounts. Pre-registration formation receipts and expenditures are currently undergoing internal audit committee certification and will be published here with document hashes.
+          <p style={{ fontSize: "14px", color: "var(--muted)", maxWidth: "560px", margin: "0 auto 16px", lineHeight: 1.6 }}>
+            Nagrik Party never publishes estimated or fabricated financial statistics. Pre-registration accounts and bank statements are undergoing formal administrative verification and reconciliation before being published here.
           </p>
+          <small style={{ color: "var(--ink-faint)", fontSize: "12px" }}>
+            100% digital bank records · Section 29A RPA 1951 Pre-Registration Disclosure
+          </small>
         </div>
       )}
 
-      {/* Transaction Records Table */}
-      {filteredTxs.length > 0 && (
+      {/* 4. VERIFIED TRANSACTION LEDGER */}
+      {transactions.length > 0 && (
         <div
           className="card"
           style={{
             background: "var(--paper-card)",
             border: "1px solid var(--line)",
             borderRadius: "4px",
-            padding: "22px",
+            padding: "22px 24px",
             boxShadow: "var(--shadow)",
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
-            <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: 0, color: "var(--ink)" }}>
-              Published Transaction Records
-            </h3>
-            {statements.length > 1 && (
-              <select
-                value={selectedPeriod}
-                onChange={(e) => setSelectedPeriod(e.target.value)}
-                style={{ padding: "6px 10px", borderRadius: "3px", border: "1px solid var(--line)", background: "var(--paper)", fontSize: "12px", fontFamily: "var(--font-mono)" }}
-              >
-                <option value="ALL">All Reporting Periods</option>
-                {statements.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.reporting_period || s.period_name || s.fiscal_year || s.id}
-                  </option>
-                ))}
-              </select>
-            )}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
+            <div>
+              <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: 0, color: "var(--ink)" }}>
+                Verified Public Transaction Ledger ({transactions.length})
+              </h3>
+              <small style={{ color: "var(--muted)", fontSize: "12px" }}>
+                Individual transaction entries derived directly from published bank statements. Complainant and donor private identifiers are redacted.
+              </small>
+            </div>
           </div>
 
-          <div className="table-responsive">
+          <div className="table-responsive" style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px", textAlign: "left" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--line-strong)", color: "var(--muted)", fontSize: "11px", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
-                  <th style={{ padding: "8px 10px" }}>Date</th>
-                  <th style={{ padding: "8px 10px" }}>Type</th>
-                  <th style={{ padding: "8px 10px" }}>Category</th>
-                  <th style={{ padding: "8px 10px" }}>Description</th>
-                  <th style={{ padding: "8px 10px", textAlign: "right" }}>Amount</th>
-                  <th style={{ padding: "8px 10px", textAlign: "center" }}>Status</th>
+                  <th style={{ padding: "10px 12px" }}>Date</th>
+                  <th style={{ padding: "10px 12px" }}>Direction</th>
+                  <th style={{ padding: "10px 12px" }}>Classification</th>
+                  <th style={{ padding: "10px 12px" }}>Particulars</th>
+                  <th style={{ padding: "10px 12px" }}>Reference</th>
+                  <th style={{ padding: "10px 12px", textAlign: "right" }}>Amount (INR)</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredTxs.map((tx) => {
-                  const isReceipt = tx.transaction_type === "RECEIPT" || tx.transaction_type === "CONTRIBUTION";
+                {transactions.map((tx) => {
+                  const isCredit = tx.type === "CONTRIBUTION" || Number(tx.credit || 0) > 0;
                   return (
                     <tr key={tx.id} style={{ borderBottom: "1px solid var(--line)" }}>
-                      <td style={{ padding: "10px", fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "12px" }}>
-                        {tx.transaction_date}
+                      <td style={{ padding: "10px 12px", fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "12px", whiteSpace: "nowrap" }}>
+                        {tx.date}
                       </td>
-                      <td style={{ padding: "10px" }}>
+                      <td style={{ padding: "10px 12px" }}>
                         <span
                           style={{
                             fontSize: "10.5px",
                             fontFamily: "var(--font-mono)",
                             fontWeight: 700,
-                            padding: "2px 6px",
+                            padding: "2px 8px",
                             borderRadius: "2px",
-                            background: isReceipt ? "rgba(29, 86, 53, 0.1)" : "rgba(142, 38, 23, 0.1)",
-                            color: isReceipt ? "var(--green)" : "var(--red)",
+                            background: isCredit ? "rgba(29, 86, 53, 0.1)" : "rgba(142, 38, 23, 0.1)",
+                            color: isCredit ? "var(--green)" : "var(--red)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "4px",
                           }}
                         >
-                          {isReceipt ? "RECEIPT" : "EXPENSE"}
+                          {isCredit ? <ArrowDownLeft size={11} /> : <ArrowUpRight size={11} />}
+                          {isCredit ? "CR" : "DR"}
                         </span>
                       </td>
-                      <td style={{ padding: "10px", color: "var(--ink)" }}>{tx.category}</td>
-                      <td style={{ padding: "10px", color: "var(--muted)" }}>{tx.description || tx.source_or_payee || "–"}</td>
-                      <td style={{ padding: "10px", textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 700, color: isReceipt ? "var(--green)" : "var(--ink)" }}>
-                        {isReceipt ? "+" : "-"}₹{Number(tx.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                      <td style={{ padding: "10px 12px", color: "var(--ink)", fontWeight: 600, fontSize: "12px" }}>
+                        {tx.classification.replace(/_/g, " ")}
                       </td>
-                      <td style={{ padding: "10px", textAlign: "center" }}>
-                        <span style={{ fontSize: "10.5px", color: "var(--green)", fontWeight: 600 }}>
-                          {tx.status || "VERIFIED"}
-                        </span>
+                      <td style={{ padding: "10px 12px", color: "var(--ink-body)", fontSize: "12.5px" }}>
+                        {tx.description}
+                      </td>
+                      <td style={{ padding: "10px 12px", fontFamily: "var(--font-mono)", color: "var(--muted)", fontSize: "11.5px", whiteSpace: "nowrap" }}>
+                        {tx.reference_masked || "–"}
+                      </td>
+                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 700, color: isCredit ? "var(--green)" : "var(--ink)", whiteSpace: "nowrap" }}>
+                        {isCredit ? "+" : "-"}₹{Number(tx.amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                       </td>
                     </tr>
                   );

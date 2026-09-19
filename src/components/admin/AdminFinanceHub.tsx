@@ -7,7 +7,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { AdminFinanceView } from "@/components/AdminFinanceView";
+import { AdminStatementManager } from "@/components/admin/AdminStatementManager";
 
 async function getSessionToken(): Promise<string | null> {
   if (!supabase) return null;
@@ -44,8 +44,10 @@ export function AdminFinanceHub() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get("tab");
-    if (tabParam === "config" || tabParam === "transactions" || tabParam === "statements") {
-      setActiveTab(tabParam);
+    if (tabParam === "statements" || tabParam === "periods") {
+      setActiveTab("statements");
+    } else if (tabParam === "config" || tabParam === "transactions") {
+      setActiveTab(tabParam as "config" | "transactions");
     }
   }, []);
 
@@ -179,7 +181,7 @@ export function AdminFinanceHub() {
           }}
         >
           <FileSpreadsheet size={16} />
-          Published Transparency Statements
+          6-Month Statements & Upload Engine
         </button>
 
         <button
@@ -221,10 +223,10 @@ export function AdminFinanceHub() {
         </button>
       </div>
 
-      {/* --- TAB 1: STATEMENTS --- */}
+      {/* --- TAB 0: 6-MONTH STATEMENT ENGINE --- */}
       {activeTab === "statements" && (
         <div>
-          <AdminFinanceView />
+          <AdminStatementManager />
         </div>
       )}
 

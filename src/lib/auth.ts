@@ -115,17 +115,63 @@ export async function requireRole(
 }
 
 export async function logAuditEvent(
-  actorUserId: string | null,
-  actorRole: string,
-  action: string,
-  entityType: string,
-  entityId: string,
+  actorUserIdOrParams:
+    | string
+    | null
+    | {
+        actorUserId?: string | null;
+        actor_user_id?: string | null;
+        actorRole?: string;
+        actor_role?: string;
+        action: string;
+        entityType?: string;
+        entity_type?: string;
+        entityId?: string;
+        entity_id?: string;
+        metadata?: Record<string, unknown>;
+        request?: Request;
+        customClient?: unknown;
+      },
+  actorRole?: string,
+  action?: string,
+  entityType?: string,
+  entityId?: string,
   metadata: Record<string, unknown> = {},
   request?: Request,
   customClient?: unknown
 ): Promise<{ success: boolean; logId?: string }> {
+  let finalActorUserId: string | null = null;
+  let finalActorRole = "SYSTEM";
+  let finalAction = "";
+  let finalEntityType = "";
+  let finalEntityId = "";
+  let finalMetadata: Record<string, unknown> = {};
+  let finalRequest: Request | undefined = request;
+  let finalCustomClient: unknown = customClient;
+
+  if (typeof actorUserIdOrParams === "object" && actorUserIdOrParams !== null && "action" in actorUserIdOrParams) {
+    const p = actorUserIdOrParams;
+    finalActorUserId = p.actorUserId ?? p.actor_user_id ?? null;
+    finalActorRole = p.actorRole ?? p.actor_role ?? "SYSTEM";
+    finalAction = p.action;
+    finalEntityType = p.entityType ?? p.entity_type ?? "";
+    finalEntityId = p.entityId ?? p.entity_id ?? "";
+    finalMetadata = p.metadata || {};
+    finalRequest = p.request;
+    finalCustomClient = p.customClient;
+  } else {
+    finalActorUserId = actorUserIdOrParams as string | null;
+    finalActorRole = actorRole || "SYSTEM";
+    finalAction = action || "";
+    finalEntityType = entityType || "";
+    finalEntityId = entityId || "";
+    finalMetadata = metadata;
+    finalRequest = request;
+    finalCustomClient = customClient;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const client = (customClient as any) || supabase;
+  const client = (finalCustomClient as any) || supabase;
   if (!client) {
     throw new Error("Audit logging failed: Database client unavailable");
   }
@@ -133,18 +179,18 @@ export async function logAuditEvent(
   let ipAddress: string | null = null;
   let userAgent: string | null = null;
 
-  if (request) {
-    ipAddress = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for");
-    userAgent = request.headers.get("user-agent");
+  if (finalRequest) {
+    ipAddress = finalRequest.headers.get("cf-connecting-ip") || finalRequest.headers.get("x-forwarded-for");
+    userAgent = finalRequest.headers.get("user-agent");
   }
 
   const { data: rpcData, error: rpcError } = await client.rpc("record_audit_log", {
-    p_actor_user_id: actorUserId,
-    p_actor_role: actorRole,
-    p_action: action,
-    p_entity_type: entityType,
-    p_entity_id: entityId,
-    p_metadata: metadata,
+    p_actor_user_id: finalActorUserId,
+    p_actor_role: finalActorRole,
+    p_action: finalAction,
+    p_entity_type: finalEntityType,
+    p_entity_id: finalEntityId,
+    p_metadata: finalMetadata,
     p_ip_address: ipAddress,
     p_user_agent: userAgent,
   });
@@ -157,12 +203,12 @@ export async function logAuditEvent(
   const { data: insertData, error: insertError } = await client
     .from("audit_logs")
     .insert({
-      actor_user_id: actorUserId,
-      actor_role: actorRole,
-      action,
-      entity_type: entityType,
-      entity_id: entityId,
-      metadata,
+      actor_user_id: finalActorUserId,
+      actor_role: finalActorRole,
+      action: finalAction,
+      entity_type: finalEntityType,
+      entity_id: finalEntityId,
+      metadata: finalMetadata,
       ip_address: ipAddress,
       user_agent: userAgent,
     })
