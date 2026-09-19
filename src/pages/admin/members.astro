@@ -1,35 +1,28 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AdminMembersView } from "@/components/AdminMembersView";
+import AdminNav from "@/components/admin/AdminNav.astro";
+import { AdminMembersHub } from "@/components/admin/AdminMembersHub";
+
+export const prerender = false;
 ---
 
 <BaseLayout
-  title="Nagrik Party | Founding Members Register"
-  description="Master register of approved members of Nagrik Party"
+  title="Nagrik Party | Membership & Verification Hub"
+  description="Manage member intake applications, statutory document scrutiny, verified member register, and ID cards."
 >
-  <section class="page-hero" style="padding-bottom: 24px;">
+  <section class="page-hero" style="padding-bottom: 16px;">
     <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-        <a href="/admin" class="mini-label">Overview</a>
-        <a href="/admin/applications" class="mini-label">Applications</a>
-        <a href="/admin/verifications" class="mini-label">Verifications Desk</a>
-        <a href="/admin/members" class="mini-label" style="background: var(--ink); color: #fff;">Members</a>
-        <a href="/admin/cards" class="mini-label">Card Console</a>
-        <a href="/admin/exports" class="mini-label">Submission Exports</a>
-        <a href="/admin/finance" class="mini-label">Finance</a>
-        <a href="/admin/audit" class="mini-label">Audit Trail</a>
-        <a href="/admin/settings" class="mini-label">Settings</a>
-      </div>
-      <h1>Master Member Register</h1>
+      <AdminNav activeSection="members" />
+      <h1>Membership & Verification Hub</h1>
       <p class="page-copy">
-        Verified founding membership register with statutory traceability and digital card references.
+        Central register of founding members, applicant scrutiny desk, and authoritative sequential ID card management across Delhi's 70 assembly constituencies.
       </p>
     </div>
   </section>
 
-  <section class="section" style="padding-top: 12px;">
+  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
     <div class="container">
-      <AdminMembersView client:only="react" />
+      <AdminMembersHub client:only="react" />
     </div>
   </section>
 </BaseLayout>

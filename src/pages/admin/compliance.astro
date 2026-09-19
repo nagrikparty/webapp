@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AdminNav from "@/components/admin/AdminNav.astro";
+import { AdminComplianceHub } from "@/components/admin/AdminComplianceHub";
+
+export const prerender = false;
+---
+
+<BaseLayout
+  title="Nagrik Party | Statutory Compliance & Vault"
+  description="Manage continuous ECI submission exports, statutory charters vault, and official formation milestones."
+>
+  <section class="page-hero" style="padding-bottom: 16px;">
+    <div class="container">
+      <AdminNav activeSection="compliance" />
+      <h1>Statutory Compliance & Vault</h1>
+      <p class="page-copy">
+        Executive compilation desk for Section 29A RPA 1951 registration dossiers, permanent statutory charters, and verified formation milestones.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
+    <div class="container">
+      <AdminComplianceHub client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

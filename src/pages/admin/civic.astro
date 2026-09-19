@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AdminNav from "@/components/admin/AdminNav.astro";
+import { AdminCivicHub } from "@/components/admin/AdminCivicHub";
+
+export const prerender = false;
+---
+
+<BaseLayout
+  title="Nagrik Party | Civic & Governance Engine"
+  description="Manage verified crime citations, citizen reported grievances, and manifesto policy proposals."
+>
+  <section class="page-hero" style="padding-bottom: 16px;">
+    <div class="container">
+      <AdminNav activeSection="civic" />
+      <h1>Civic & Governance Engine</h1>
+      <p class="page-copy">
+        Coordinate grassroots civic accountability, verified crime citations, citizen grievance redressal, and manifesto policy deliberations.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
+    <div class="container">
+      <AdminCivicHub client:only="react" />
+    </div>
+  </section>
+</BaseLayout>

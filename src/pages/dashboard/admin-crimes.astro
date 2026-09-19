@@ -1,17 +1,4 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AdminCrimesManager } from "@/components/AdminCrimesManager";
-
 export const prerender = false;
+return Astro.redirect("/admin/civic?tab=crimes", 302);
 ---
-
-<BaseLayout
-  title="Nagrik Party | Admin Crime Citations"
-  description="Manage verified crime citations."
->
-  <section class="section page-offset" style="padding-bottom: 48px; min-height: 80vh;">
-    <div class="container">
-      <AdminCrimesManager client:only="react" />
-    </div>
-  </section>
-</BaseLayout>

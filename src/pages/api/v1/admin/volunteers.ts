@@ -1,57 +1,49 @@
 import type { APIRoute } from "astro";
+import { requireRole, logAuditEvent } from "@/lib/auth";
 import { createApiSupabase } from "@/lib/supabase";
 
 export const GET: APIRoute = async ({ request }) => {
+  const authResult = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
+  if ("response" in authResult) return authResult.response;
+  const { ctx } = authResult;
+
   try {
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-    const token = authHeader.replace(/^Bearer\s+/i, "");
-
-    const scopedSupabase = createApiSupabase(token);
-    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Server config error" }), { status: 500 });
-
-    const { data: { user }, error: authError } = await scopedSupabase.auth.getUser(token);
-    if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-
-    const { data: adminProfile } = await scopedSupabase.from("profiles").select("role").eq("id", user.id).single();
-    if (!adminProfile || adminProfile.role !== "admin") {
-      return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403 });
-    }
+    const scopedSupabase = createApiSupabase(ctx.token);
+    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
 
     const url = new URL(request.url);
     const statusFilter = url.searchParams.get("status");
 
-    let query = scopedSupabase.from("volunteer_applications").select("*").order("created_at", { ascending: false });
-    if (statusFilter) {
+    let query = scopedSupabase
+      .from("volunteer_applications")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (statusFilter && statusFilter !== "all") {
       query = query.eq("status", statusFilter);
     }
 
     const { data, error } = await query;
     if (error) throw error;
 
-    return new Response(JSON.stringify(data || []), { status: 200 });
+    return new Response(JSON.stringify(data || []), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err: unknown) {
-    console.error("list volunteer applications error:", err instanceof Error ? err.message : err);
-    return new Response(JSON.stringify({ error: "Failed to fetch volunteer applications" }), { status: 500 });
+    const msg = err instanceof Error ? err.message : "Failed to fetch volunteer applications";
+    return new Response(JSON.stringify({ error: msg }), { status: 500 });
   }
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const authResult = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
+  if ("response" in authResult) return authResult.response;
+  const { ctx } = authResult;
+
   try {
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-    const token = authHeader.replace(/^Bearer\s+/i, "");
-
-    const scopedSupabase = createApiSupabase(token);
-    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Server config error" }), { status: 500 });
-
-    const { data: { user }, error: authError } = await scopedSupabase.auth.getUser(token);
-    if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-
-    const { data: adminProfile } = await scopedSupabase.from("profiles").select("role").eq("id", user.id).single();
-    if (!adminProfile || adminProfile.role !== "admin") {
-      return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403 });
-    }
+    const scopedSupabase = createApiSupabase(ctx.token);
+    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
 
     const { applicationId, status } = await request.json();
     if (!applicationId || !status) {
@@ -63,39 +55,50 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Invalid status" }), { status: 400 });
     }
 
-    const { error: updateError } = await scopedSupabase
+    const { data: updatedApp, error: updateError } = await scopedSupabase
       .from("volunteer_applications")
       .update({ status })
-      .eq("id", applicationId);
+      .eq("id", applicationId)
+      .select()
+      .single();
 
     if (updateError) throw updateError;
 
-    if (status === "approved") {
-      const { data: app } = await scopedSupabase
-        .from("volunteer_applications")
-        .select("email, full_name, ward, vidhan_sabha, lok_sabha")
-        .eq("id", applicationId)
-        .single();
+    if (status === "approved" && updatedApp) {
+      const { data: existingProfile } = await scopedSupabase
+        .from("profiles")
+        .select("id, role")
+        .eq("email", updatedApp.email)
+        .maybeSingle();
 
-      if (app) {
-        const { data: existingProfile } = await scopedSupabase
+      if (existingProfile && existingProfile.role === "PUBLIC") {
+        await scopedSupabase
           .from("profiles")
-          .select("id")
-          .eq("email", app.email)
-          .maybeSingle();
-
-        if (existingProfile) {
-          await scopedSupabase
-            .from("profiles")
-            .update({ role: "volunteer", full_name: app.full_name, ward: app.ward })
-            .eq("id", existingProfile.id);
-        }
+          .update({
+            full_name: updatedApp.full_name,
+            ward: updatedApp.ward,
+          })
+          .eq("id", existingProfile.id);
       }
     }
 
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    await logAuditEvent(
+      ctx.user.id,
+      ctx.profile.role,
+      "VOLUNTEER_STATUS_UPDATED",
+      "volunteer_applications",
+      applicationId,
+      { status },
+      request,
+      scopedSupabase
+    );
+
+    return new Response(JSON.stringify({ success: true, application: updatedApp }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err: unknown) {
-    console.error("update volunteer application error:", err instanceof Error ? err.message : err);
-    return new Response(JSON.stringify({ error: "Failed to update volunteer application" }), { status: 500 });
+    const msg = err instanceof Error ? err.message : "Failed to update volunteer application";
+    return new Response(JSON.stringify({ error: msg }), { status: 500 });
   }
 };

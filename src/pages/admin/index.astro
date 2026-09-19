@@ -1,25 +1,18 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import AdminNav from "@/components/admin/AdminNav.astro";
 import { AdminOverview } from "@/components/AdminOverview";
+
+export const prerender = false;
 ---
 
 <BaseLayout
-  title="Nagrik Party | Admin Console"
+  title="Nagrik Party | Executive Command Hub"
   description="Nagrik Party Executive Administration & Scrutiny Portal"
 >
-  <section class="page-hero" style="padding-bottom: 24px;">
+  <section class="page-hero" style="padding-bottom: 16px;">
     <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-        <a href="/admin" class="mini-label" style="background: var(--ink); color: #fff;">Overview</a>
-        <a href="/admin/applications" class="mini-label">Applications</a>
-        <a href="/admin/verifications" class="mini-label">Verifications Desk</a>
-        <a href="/admin/members" class="mini-label">Members</a>
-        <a href="/admin/cards" class="mini-label">Card Console</a>
-        <a href="/admin/exports" class="mini-label">Submission Exports</a>
-        <a href="/admin/finance" class="mini-label">Finance</a>
-        <a href="/admin/audit" class="mini-label">Audit Trail</a>
-        <a href="/admin/settings" class="mini-label">Settings</a>
-      </div>
+      <AdminNav activeSection="overview" />
       <h1>Party Administration</h1>
       <p class="page-copy">
         Central governance portal for Phase 1 formation oversight, document scrutiny, and statutory compliance.
@@ -27,7 +20,7 @@ import { AdminOverview } from "@/components/AdminOverview";
     </div>
   </section>
 
-  <section class="section" style="padding-top: 12px;">
+  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
     <div class="container">
       <AdminOverview client:only="react" />
     </div>

@@ -1,35 +1,28 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AdminSettingsView } from "@/components/AdminSettingsView";
+import AdminNav from "@/components/admin/AdminNav.astro";
+import { AdminSettingsHub } from "@/components/admin/AdminSettingsHub";
+
+export const prerender = false;
 ---
 
 <BaseLayout
-  title="Nagrik Party | Settings"
-  description="Configure organization phase, system settings, and operational parameters."
+  title="Nagrik Party | System & Security Hub"
+  description="System configuration, staff role management, and statutory audit trail."
 >
-  <section class="page-hero" style="padding-bottom: 24px;">
+  <section class="page-hero" style="padding-bottom: 16px;">
     <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-        <a href="/admin" class="mini-label">Overview</a>
-        <a href="/admin/applications" class="mini-label">Applications</a>
-        <a href="/admin/verifications" class="mini-label">Verifications Desk</a>
-        <a href="/admin/members" class="mini-label">Members</a>
-        <a href="/admin/cards" class="mini-label">Card Console</a>
-        <a href="/admin/exports" class="mini-label">Submission Exports</a>
-        <a href="/admin/finance" class="mini-label">Finance</a>
-        <a href="/admin/audit" class="mini-label">Audit Trail</a>
-        <a href="/admin/settings" class="mini-label" style="background: var(--ink); color: #fff;">Settings</a>
-      </div>
-      <h1>Organisation Settings</h1>
+      <AdminNav activeSection="settings" />
+      <h1>System & Security Hub</h1>
       <p class="page-copy">
-        Configure organization phase, operational parameters, and system-wide settings.
+        Administrative parameters, formation phase controls, staff security privileges, and chronological statutory audit logs.
       </p>
     </div>
   </section>
 
-  <section class="section" style="padding-top: 12px;">
+  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
     <div class="container">
-      <AdminSettingsView client:only="react" />
+      <AdminSettingsHub client:only="react" />
     </div>
   </section>
 </BaseLayout>

@@ -1,35 +1,28 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { AdminFinanceView } from "@/components/AdminFinanceView";
+import AdminNav from "@/components/admin/AdminNav.astro";
+import { AdminFinanceHub } from "@/components/admin/AdminFinanceHub";
+
+export const prerender = false;
 ---
 
 <BaseLayout
-  title="Nagrik Party | Financial Transparency Management"
-  description="Manage audited statements and financial disclosures for Phase 1 formation"
+  title="Nagrik Party | Financial Transparency & Donation Hub"
+  description="Manage audited statements, balance sheets, UPI acceptance configuration, and contribution records."
 >
-  <section class="page-hero" style="padding-bottom: 24px;">
+  <section class="page-hero" style="padding-bottom: 16px;">
     <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-        <a href="/admin" class="mini-label">Overview</a>
-        <a href="/admin/applications" class="mini-label">Applications</a>
-        <a href="/admin/verifications" class="mini-label">Verifications Desk</a>
-        <a href="/admin/members" class="mini-label">Members</a>
-        <a href="/admin/cards" class="mini-label">Card Console</a>
-        <a href="/admin/exports" class="mini-label">Submission Exports</a>
-        <a href="/admin/finance" class="mini-label" style="background: var(--ink); color: #fff;">Finance</a>
-        <a href="/admin/audit" class="mini-label">Audit Trail</a>
-        <a href="/admin/settings" class="mini-label">Settings</a>
-      </div>
-      <h1>Financial Statements Management</h1>
+      <AdminNav activeSection="finance" />
+      <h1>Financial Transparency & Donation Hub</h1>
       <p class="page-copy">
-        Maintain audited records of formation expenditure, receipts, and public transparency disclosures.
+        Executive control desk for audited receipts, expenditure statements, cashless donation gateways, and RPA 1951 transparency.
       </p>
     </div>
   </section>
 
-  <section class="section" style="padding-top: 12px;">
+  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
     <div class="container">
-      <AdminFinanceView client:only="react" />
+      <AdminFinanceHub client:only="react" />
     </div>
   </section>
 </BaseLayout>

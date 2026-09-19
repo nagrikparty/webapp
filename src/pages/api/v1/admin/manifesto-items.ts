@@ -9,12 +9,14 @@ export const GET: APIRoute = async ({ request }) => {
 
   try {
     const scopedSupabase = createApiSupabase(ctx.token);
-    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
+    if (!scopedSupabase) {
+      return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
+    }
 
     const { data, error } = await scopedSupabase
-      .from("announcements")
+      .from("manifesto_items")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("vote_count", { ascending: false });
 
     if (error) throw error;
 
@@ -23,7 +25,7 @@ export const GET: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : "Failed to load announcements";
+    const msg = err instanceof Error ? err.message : "Failed to load manifesto items";
     return new Response(JSON.stringify({ error: msg }), { status: 500 });
   }
 };
@@ -35,46 +37,50 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const scopedSupabase = createApiSupabase(ctx.token);
-    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
-
-    const { title, content, target_audience } = await request.json();
-    if (!title || !content) {
-      return new Response(JSON.stringify({ error: "Title and content are required" }), { status: 400 });
+    if (!scopedSupabase) {
+      return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
     }
 
-    const validTargets = ["all", "members", "volunteers"];
-    const audience = validTargets.includes(target_audience) ? target_audience : "all";
+    const body = await request.json();
+    const { title, title_hi, category, lok_sabha, vidhan_sabha, ward } = body;
 
-    const { data, error: insertError } = await scopedSupabase
-      .from("announcements")
+    if (!title || !title.trim()) {
+      return new Response(JSON.stringify({ error: "Title is required" }), { status: 400 });
+    }
+
+    const { data, error } = await scopedSupabase
+      .from("manifesto_items")
       .insert({
-        title,
-        content,
-        target_audience: audience,
-        author_id: ctx.user.id,
+        title: title.trim(),
+        title_hi: title_hi?.trim() || null,
+        category: category || "Civic Governance",
+        lok_sabha: lok_sabha || null,
+        vidhan_sabha: vidhan_sabha || null,
+        ward: ward || null,
+        vote_count: 0,
       })
       .select()
       .single();
 
-    if (insertError) throw insertError;
+    if (error) throw error;
 
     await logAuditEvent(
       ctx.user.id,
       ctx.profile.role,
-      "ANNOUNCEMENT_CREATED",
-      "announcements",
+      "MANIFESTO_ITEM_CREATED",
+      "manifesto_items",
       data.id,
-      { title, target_audience: audience },
+      { title: data.title, category: data.category },
       request,
       scopedSupabase
     );
 
-    return new Response(JSON.stringify({ success: true, announcement: data }), {
+    return new Response(JSON.stringify({ success: true, item: data }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : "Failed to create announcement";
+    const msg = err instanceof Error ? err.message : "Failed to create manifesto item";
     return new Response(JSON.stringify({ error: msg }), { status: 500 });
   }
 };
@@ -86,20 +92,26 @@ export const DELETE: APIRoute = async ({ request }) => {
 
   try {
     const scopedSupabase = createApiSupabase(ctx.token);
-    if (!scopedSupabase) return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
+    if (!scopedSupabase) {
+      return new Response(JSON.stringify({ error: "Database unavailable" }), { status: 500 });
+    }
 
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
-    if (!id) return new Response(JSON.stringify({ error: "Missing id" }), { status: 400 });
+    if (!id) return new Response(JSON.stringify({ error: "Missing item id" }), { status: 400 });
 
-    const { error: deleteError } = await scopedSupabase.from("announcements").delete().eq("id", id);
-    if (deleteError) throw deleteError;
+    const { error } = await scopedSupabase
+      .from("manifesto_items")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
 
     await logAuditEvent(
       ctx.user.id,
       ctx.profile.role,
-      "ANNOUNCEMENT_DELETED",
-      "announcements",
+      "MANIFESTO_ITEM_DELETED",
+      "manifesto_items",
       id,
       { id },
       request,
@@ -111,7 +123,7 @@ export const DELETE: APIRoute = async ({ request }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : "Failed to delete announcement";
+    const msg = err instanceof Error ? err.message : "Failed to delete manifesto item";
     return new Response(JSON.stringify({ error: msg }), { status: 500 });
   }
 };

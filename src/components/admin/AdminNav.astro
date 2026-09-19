@@ -1,0 +1,155 @@
+---
+interface Props {
+  activeSection?: "overview" | "members" | "civic" | "compliance" | "finance" | "operations" | "settings";
+}
+
+const { activeSection = "overview" } = Astro.props;
+
+const NAV_ITEMS = [
+  { id: "overview", label: "Command Hub", href: "/admin", description: "Metrics & Status" },
+  { id: "members", label: "Membership", href: "/admin/members", description: "Intake & Scrutiny" },
+  { id: "civic", label: "Civic Engine", href: "/admin/civic", description: "Crimes, Issues & Policies" },
+  { id: "compliance", label: "Compliance", href: "/admin/compliance", description: "Exports, Charters & Roadmap" },
+  { id: "finance", label: "Finance", href: "/admin/finance", description: "Ledger & Donation Config" },
+  { id: "operations", label: "Operations", href: "/admin/operations", description: "Volunteers & Tasks" },
+  { id: "settings", label: "System & Audit", href: "/admin/settings", description: "Roles & Audit Trail" },
+];
+---
+
+<nav class="admin-parent-nav" aria-label="Executive Administration Navigation">
+  <div class="admin-nav-header">
+    <div class="admin-brand-tag">
+      <span class="pulse-indicator"></span>
+      <span class="phase-badge">PHASE 1 · FORMATION PHASE</span>
+    </div>
+    <span class="admin-system-label">Central Executive Engine</span>
+  </div>
+
+  <div class="admin-nav-bar">
+    {NAV_ITEMS.map((item) => {
+      const isActive = item.id === activeSection;
+      return (
+        <a
+          href={item.href}
+          class={`admin-nav-item ${isActive ? "active" : ""}`}
+          aria-current={isActive ? "page" : undefined}
+        >
+          <span class="item-title">{item.label}</span>
+          <span class="item-desc">{item.description}</span>
+        </a>
+      );
+    })}
+  </div>
+</nav>
+
+<style>
+  .admin-parent-nav {
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--line-strong);
+    padding-bottom: 12px;
+  }
+
+  .admin-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .admin-brand-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pulse-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--saffron);
+    box-shadow: 0 0 0 2px rgba(179, 74, 21, 0.2);
+  }
+
+  .phase-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--saffron);
+    letter-spacing: 0.05em;
+    background: rgba(179, 74, 21, 0.06);
+    padding: 3px 8px;
+    border: 1px solid rgba(179, 74, 21, 0.2);
+    border-radius: 2px;
+  }
+
+  .admin-system-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .admin-nav-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+  }
+
+  .admin-nav-item {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 14px;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    background: var(--paper-card);
+    border-radius: 3px;
+    transition: all 0.15s ease-in-out;
+    white-space: nowrap;
+    min-width: 120px;
+  }
+
+  .admin-nav-item:hover {
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+
+  .admin-nav-item.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+
+  .admin-nav-item .item-title {
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-serif);
+    color: var(--ink);
+  }
+
+  .admin-nav-item.active .item-title {
+    color: #ffffff;
+  }
+
+  .admin-nav-item .item-desc {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .admin-nav-item.active .item-desc {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  @media (max-width: 768px) {
+    .admin-nav-item {
+      padding: 6px 10px;
+      min-width: 105px;
+    }
+  }
+</style>
