@@ -117,7 +117,15 @@ export function SmartIsland() {
               <User size={18} />
             </button>
             <div className="island-dropdown-menu island-user-menu">
-              <a href="/member">My Nagrik Dashboard</a>
+              <div style={{ padding: "8px 14px 6px", borderBottom: "1px solid var(--line)", background: "var(--paper)" }}>
+                <span style={{ fontSize: "11px", fontFamily: "var(--font-mono)", color: "var(--muted)", display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {user.email}
+                </span>
+                <span style={{ fontSize: "10.5px", fontWeight: 700, color: "var(--saffron)", fontFamily: "var(--font-mono)", textTransform: "uppercase" }}>
+                  {userRole}
+                </span>
+              </div>
+              <a href="/member">Member Dashboard</a>
               <a href="/member/induction">Digital Induction</a>
               <a href="/member/membership-card">Membership Card</a>
               {isAdminOrStaff && (
@@ -126,6 +134,7 @@ export function SmartIsland() {
                   Admin Console
                 </a>
               )}
+              <div style={{ height: 1, background: "var(--line)", margin: "4px 0" }} />
               <a
                 data-testid="logout-button"
                 href="#"
@@ -179,6 +188,17 @@ export function SmartIsland() {
             </div>
 
             <div className="mobile-drawer-body">
+              {user && (
+                <div style={{ padding: "8px 12px 10px", background: "var(--paper)", border: "1px solid var(--line)", borderRadius: 4, marginBottom: 12 }}>
+                  <span style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--muted)", display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {user.email}
+                  </span>
+                  <span style={{ fontSize: 10.5, fontWeight: 700, color: "var(--saffron)", fontFamily: "var(--font-mono)" }}>
+                    ROLE: {userRole}
+                  </span>
+                </div>
+              )}
+
               <div className="mobile-drawer-links">
                 {navLinks.map((item) => (
                   <a
@@ -192,17 +212,36 @@ export function SmartIsland() {
                   </a>
                 ))}
 
-                {/* Additional Explore links on mobile */}
                 <div style={{ height: 1, background: "var(--line)", margin: "8px 0" }} />
 
                 <a href="/crime" className="mobile-drawer-link" onClick={() => setOpen(false)}>
                   <span>Verified Crime Tracker</span>
                   <ChevronRight size={16} style={{ color: "var(--muted)" }} />
                 </a>
-                <a href="/volunteer" className="mobile-drawer-link" onClick={() => setOpen(false)}>
-                  <span>Become a Volunteer</span>
-                  <ChevronRight size={16} style={{ color: "var(--muted)" }} />
-                </a>
+
+                {user ? (
+                  <>
+                    <a href="/member/induction" className="mobile-drawer-link" onClick={() => setOpen(false)}>
+                      <span>Digital Induction</span>
+                      <ChevronRight size={16} style={{ color: "var(--muted)" }} />
+                    </a>
+                    <a href="/member/membership-card" className="mobile-drawer-link" onClick={() => setOpen(false)}>
+                      <span>Membership Card</span>
+                      <ChevronRight size={16} style={{ color: "var(--muted)" }} />
+                    </a>
+                    {isAdminOrStaff && (
+                      <a href="/admin" className="mobile-drawer-link" onClick={() => setOpen(false)} style={{ color: "var(--saffron)", fontWeight: 600 }}>
+                        <span>Admin Console</span>
+                        <ChevronRight size={16} style={{ color: "var(--saffron)" }} />
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  <a href="/volunteer" className="mobile-drawer-link" onClick={() => setOpen(false)}>
+                    <span>Become a Volunteer</span>
+                    <ChevronRight size={16} style={{ color: "var(--muted)" }} />
+                  </a>
+                )}
               </div>
 
               <div className="mobile-drawer-footer">
@@ -211,15 +250,15 @@ export function SmartIsland() {
                     <a
                       href="/membership"
                       className="button button-primary"
-                      style={{ width: "100%", justifyContent: "center", padding: "12px" }}
+                      style={{ width: "100%", justifyContent: "center", padding: "12px", fontWeight: 700 }}
                       onClick={() => setOpen(false)}
                     >
-                      Join Nagrik Party
+                      Become a Member
                     </a>
                     <a
                       href="/login"
                       className="button"
-                      style={{ width: "100%", justifyContent: "center", padding: "10px" }}
+                      style={{ width: "100%", justifyContent: "center", padding: "10px", fontWeight: 600 }}
                       onClick={() => setOpen(false)}
                     >
                       Sign In
@@ -230,7 +269,7 @@ export function SmartIsland() {
                     <a
                       href="/member"
                       className="button yellow"
-                      style={{ width: "100%", justifyContent: "center", padding: "12px" }}
+                      style={{ width: "100%", justifyContent: "center", padding: "12px", fontWeight: 700 }}
                       onClick={() => setOpen(false)}
                     >
                       My Nagrik Dashboard

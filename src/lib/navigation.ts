@@ -17,18 +17,18 @@ export interface NavSection {
 export const publicNavLinks: NavLink[] = [
   { label: "Explore", href: "/explore", description: "Civic data, verified crime tracker, and topic monitors" },
   { label: "Why Nagrik", href: "/why-nagrik", description: "The story and principles behind building Nagrik Party" },
-  { label: "Join", href: "/membership", description: "Become a founding member or volunteer" },
+  { label: "Formation", href: "/formation-progress", description: "Phase 1 formation roadmap and progress" },
   { label: "Constitution", href: "/legal/constitution", description: "Our foundational democratic by-laws" },
   { label: "Transparency", href: "/transparency", description: "Cashless formation ledger and audit reports" },
 ];
 
 // Logged in authenticated primary navigation
 export const memberNavLinks: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "My Nagrik", href: "/member" },
-  { label: "Participate", href: "/build-with-us" },
-  { label: "Issues", href: "/issues" },
-  { label: "Formation", href: "/formation-progress" },
+  { label: "Explore", href: "/explore", description: "Civic data and crime monitors" },
+  { label: "Participate", href: "/build-with-us", description: "Skill-based participation tasks" },
+  { label: "Issues", href: "/issues", description: "Report and monitor local issues" },
+  { label: "Formation", href: "/formation-progress", description: "Phase 1 progress and statutory status" },
+  { label: "Transparency", href: "/transparency", description: "Verified financial disclosures" },
 ];
 
 // Streamlined Public Footer
@@ -38,7 +38,8 @@ export const footerSections: NavSection[] = [
     items: [
       { label: "Become a Member", href: "/membership" },
       { label: "Become a Volunteer", href: "/volunteer" },
-      { label: "My Nagrik Dashboard", href: "/member" },
+      { label: "Build With Us", href: "/build-with-us" },
+      { label: "Member Dashboard", href: "/member" },
     ],
   },
   {
