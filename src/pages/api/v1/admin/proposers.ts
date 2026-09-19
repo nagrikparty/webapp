@@ -1,22 +1,15 @@
 import type { APIRoute } from "astro";
+import { requireRole } from "@/lib/auth";
 import { createApiSupabase } from "@/lib/supabase";
 
 export const POST: APIRoute = async ({ request }) => {
+  const authResult = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
+  if ("response" in authResult) return authResult.response;
+  const { ctx } = authResult;
+
   try {
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-    const token = authHeader.replace(/^Bearer\s+/i, "");
-
-    const scopedSupabase = createApiSupabase(token);
+    const scopedSupabase = createApiSupabase(ctx.token);
     if (!scopedSupabase) return new Response(JSON.stringify({ error: "Server config error" }), { status: 500 });
-
-    const { data: { user }, error: authError } = await scopedSupabase.auth.getUser(token);
-    if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-
-    const { data: adminProfile } = await scopedSupabase.from("profiles").select("role").eq("id", user.id).single();
-    if (!adminProfile || adminProfile.role !== "admin") {
-      return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403 });
-    }
 
     const { full_name, epic_number, ward, vidhan_sabha, contact_number, address } = await request.json();
     if (!full_name || !epic_number) {
@@ -30,7 +23,7 @@ export const POST: APIRoute = async ({ request }) => {
       vidhan_sabha: vidhan_sabha || null,
       contact_number: contact_number || null,
       address: address || null,
-      added_by: user.id
+      added_by: ctx.user.id
     });
 
     if (insertError) throw insertError;

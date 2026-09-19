@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { CheckCircle2, UserCheck, ShieldCheck } from "lucide-react";
+import { ASSEMBLY_CONSTITUENCIES } from "@/lib/delhi_data";
 
 interface SkillCategory {
   id: string;
@@ -413,16 +414,22 @@ export function BuildWithUsView() {
               </div>
 
               <div className="field">
-                <label style={{ fontSize: "13px", fontWeight: 600 }}>Constituency / Area</label>
-                <input
-                  type="text"
+                <label htmlFor="constituency-select" style={{ fontSize: "13px", fontWeight: 600 }}>Constituency / Area</label>
+                <select
+                  id="constituency-select"
                   required
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
-                  placeholder="e.g. Okhla, Rohini, Jangpura"
                   className="input"
-                  style={{ width: "100%" }}
-                />
+                  style={{ width: "100%", background: "#ffffff", minHeight: "42px" }}
+                >
+                  <option value="">Select your Assembly Constituency</option>
+                  {ASSEMBLY_CONSTITUENCIES.map((ac) => (
+                    <option key={ac.ac_number} value={ac.name}>
+                      AC {ac.ac_number.toString().padStart(2, "0")} · {ac.name} ({ac.lok_sabha})
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 

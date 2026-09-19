@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FileText, ShieldCheck, Eye, Search, X, Copy, Check, ExternalLink } from "lucide-react";
+import { FileText, ShieldCheck, Eye, Search, X, Copy, Check, ExternalLink, Download } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { BRAND } from "@/lib/brand";
 
@@ -16,7 +16,6 @@ interface PublicDoc {
 }
 
 const OFFICIAL_DOCS: PublicDoc[] = [
-  // GOVERNANCE
   {
     id: "doc-1",
     title: "Draft Constitution of Nagrik Party (Phase 1)",
@@ -24,7 +23,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Fundamental constitutional charter outlining inner-party democracy, periodic presidential elections, national council, executive committees, and non-violence allegiance.",
     file_storage_path: "public-documents/draft-constitution-v1.pdf",
-    file_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    file_sha256: "ee10e4b7da1ef761013fe9c0063db2500df79b75cd9c349d573c3adca899818d",
     published_at: "2025-01-01T00:00:00Z",
     version: "1.0",
   },
@@ -35,7 +34,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Summary companion handbook defining member rights, disciplinary tribunals, delegate election rules, and primary unit structures.",
     file_storage_path: "public-documents/concise-constitution-v1.pdf",
-    file_sha256: "3b9a1298c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7821",
+    file_sha256: "fefa23ab695c719a057b55a65d01b742ead32512889d07fe6b1d060274db06a0",
     published_at: "2025-01-01T00:00:00Z",
     version: "1.0",
   },
@@ -46,7 +45,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Foundational declaration of intent, grassroots civic mandate, and Delhi 2025 systemic transformation vision.",
     file_storage_path: "public-documents/founding-declaration-v1.pdf",
-    file_sha256: "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce",
+    file_sha256: "17f8e7bd5993847c407946abcf8998ea7d43035d2957e7f89a46b7ef633e1b9d",
     published_at: "2025-01-01T00:00:00Z",
     version: "1.0",
   },
@@ -57,7 +56,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Certified record of the inaugural convention adopting the party constitution and confirming founding office bearers.",
     file_storage_path: "public-documents/founding-minutes-v1.pdf",
-    file_sha256: "a1c4e78298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852f412",
+    file_sha256: "e0a2d315c9419ce9fe06cab10abde7050306b3182a6348fbf60dd4f70f06734e",
     published_at: "2025-01-05T00:00:00Z",
     version: "1.0",
   },
@@ -67,8 +66,8 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     slug: "peaceful-functioning-declaration",
     category: "GOVERNANCE",
     description: "Affidavit of strict adherence to democratic principles, constitutional supremacy, and non-violent civic advocacy.",
-    file_storage_path: "public-documents/peaceful-functioning-v1.pdf",
-    file_sha256: "d5e8f44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b991",
+    file_storage_path: "public-documents/peaceful-functioning-declaration-v1.pdf",
+    file_sha256: "4446325ef9e5865d5bc87b345a06c76eda84656df7a0b16e4d0b7d837c35f7e8",
     published_at: "2025-01-10T00:00:00Z",
     version: "1.0",
   },
@@ -79,7 +78,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Certified list of current formation-stage leadership, including Founding Convener Arsalan Azad and executive coordinators.",
     file_storage_path: "public-documents/leadership-structure-v1.pdf",
-    file_sha256: "98fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e3b0c442",
+    file_sha256: "d5de0a9cb4c3c2d44715054f4e19b5fcbe65ade682f0f2dbc3dab8b83d8c10b9",
     published_at: "2025-01-12T00:00:00Z",
     version: "1.0",
   },
@@ -90,7 +89,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Executive resolution establishing formation committees, digital membership verification rules, and financial scrutiny.",
     file_storage_path: "public-documents/nec-resolution-v1.pdf",
-    file_sha256: "f4c8996fb92427ae41e4649b934ca495991b7852b855e3b0c44298fc1c149afb",
+    file_sha256: "382eb8ab2acd8587f8610539b74f81980d5cc5752a31c2789daef825084a52f8",
     published_at: "2025-01-15T00:00:00Z",
     version: "1.0",
   },
@@ -101,7 +100,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Mandatory four-year internal election rules, secret ballot procedures, delegate verification, and Returning Officer authority.",
     file_storage_path: "public-documents/internal-election-framework-v1.pdf",
-    file_sha256: "7ae41e4649b934ca495991b7852b855e3b0c44298fc1c149afbf4c8996fb9242",
+    file_sha256: "de2406c25967508f77cc4a891480d553c7be1af96dd1d17646b2153a26b38ccb",
     published_at: "2025-01-20T00:00:00Z",
     version: "1.0",
   },
@@ -112,12 +111,10 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "GOVERNANCE",
     description: "Merit-based primary vetting policy for independent civic candidates, anti-nepotism rules, and public declaration of assets.",
     file_storage_path: "public-documents/candidate-selection-policy-v1.pdf",
-    file_sha256: "1b7852b855e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca49599",
+    file_sha256: "11b0c839616aef725e1ac527ff23890ac7e8cf75ddc846b2755fa9687f751ebf",
     published_at: "2025-01-25T00:00:00Z",
     version: "1.0",
   },
-
-  // STATUTORY
   {
     id: "doc-10",
     title: "Mandatory Declarations under Section 29A RPA 1951",
@@ -125,7 +122,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "STATUTORY",
     description: "Statutory sworn declarations under the Representation of the People Act, 1951 for registration of political associations.",
     file_storage_path: "public-documents/rpa-declarations-v1.pdf",
-    file_sha256: "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+    file_sha256: "816d6fb31e82e09adac3916092c55e5edf0893ed50f18adef91e91f653c19546",
     published_at: "2025-02-01T00:00:00Z",
     version: "1.0",
   },
@@ -135,8 +132,8 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     slug: "symbol-preference-declaration",
     category: "STATUTORY",
     description: "Formal statement of preferred symbols from free symbol list with cultural/civic rationale as per Election Symbols Order 1968.",
-    file_storage_path: "public-documents/symbol-preference-v1.pdf",
-    file_sha256: "c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855e3b0",
+    file_storage_path: "public-documents/symbol-preference-declaration-v1.pdf",
+    file_sha256: "d891588b79429022a519251ac17938f1df0d1f10e9381dceb58dadd4abfb1fc3",
     published_at: "2025-02-05T00:00:00Z",
     version: "1.0",
   },
@@ -147,12 +144,10 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "STATUTORY",
     description: "The verbatim 10-step induction oath, allegiance statement, and prohibited conduct commitments signed by all applicants.",
     file_storage_path: "public-documents/membership-form-declaration-v1.pdf",
-    file_sha256: "8b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb0",
+    file_sha256: "e53d4700eb52457e252b48906c7bff45d8819df3dc38e6379a3572cdba751774",
     published_at: "2025-02-10T00:00:00Z",
     version: "1.0",
   },
-
-  // FINANCE
   {
     id: "doc-13",
     title: "Financial Transparency & Public Funding Framework",
@@ -160,7 +155,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "FINANCE",
     description: "The zero-cash pledge, 100% digital bank accounts, real-time donation ledger, and open public transparency commitments.",
     file_storage_path: "public-documents/financial-transparency-framework-v1.pdf",
-    file_sha256: "d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777",
+    file_sha256: "4b2013f8330cef87fb181de4f47eda40ddbe6ad302ce01904373a8ffd4bffac3",
     published_at: "2025-02-15T00:00:00Z",
     version: "1.0",
   },
@@ -170,13 +165,11 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     slug: "treasury-governance-resolution",
     category: "FINANCE",
     description: "Rules governing operational expenditures, two-tier signing authority, and mandatory annual external chartered accounting.",
-    file_storage_path: "public-documents/treasury-governance-v1.pdf",
-    file_sha256: "48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f",
+    file_storage_path: "public-documents/treasury-governance-resolution-v1.pdf",
+    file_sha256: "79e71f4b5566f097104072229f2bf4e683ad7523a5ef328ac4a74678705e0603",
     published_at: "2025-02-20T00:00:00Z",
     version: "1.0",
   },
-
-  // POLICY & CIVIC FRAMEWORKS
   {
     id: "doc-15",
     title: "National Manifesto & Delhi 2025 Transformation Agenda",
@@ -184,7 +177,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "POLICY",
     description: "Comprehensive policy programme covering clean water, broken roads, sanitation, electricity rights, and public accountability.",
     file_storage_path: "public-documents/national-manifesto-v1.pdf",
-    file_sha256: "1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd",
+    file_sha256: "71aea6bda85497167b76b1b38800b2d9d598036a79807581596844251b8b3155",
     published_at: "2025-03-01T00:00:00Z",
     version: "1.0",
   },
@@ -195,7 +188,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "POLICY",
     description: "Universal primary healthcare access, community clinics, ambulance response standards, and psychiatric support systems.",
     file_storage_path: "public-documents/healthcare-framework-v1.pdf",
-    file_sha256: "b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02",
+    file_sha256: "f44ba5026399a74782d9b89272f2f1a910bb18f358fbac87d85c7f702453904f",
     published_at: "2025-03-05T00:00:00Z",
     version: "1.0",
   },
@@ -206,7 +199,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "POLICY",
     description: "Yamuna clean water remediation, Yamuna floodplains preservation, anti-smog enforcement, and decentralized solar initiatives.",
     file_storage_path: "public-documents/environment-water-framework-v1.pdf",
-    file_sha256: "fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3",
+    file_sha256: "cbb5a7a65cedc2e3a9826a5b84631c40c44fb3c968893bda5292c12b5c597f41",
     published_at: "2025-03-10T00:00:00Z",
     version: "1.0",
   },
@@ -217,7 +210,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "POLICY",
     description: "Pro bono citizen legal clinics, police accountability monitors, undertrial assistance, and consumer redressal reform.",
     file_storage_path: "public-documents/legal-aid-framework-v1.pdf",
-    file_sha256: "8b5531fcacdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb0",
+    file_sha256: "60a9e86e95194ceebe09a77f70d0252aa1fde77b267f571811e9e1932f17d3e5",
     published_at: "2025-03-12T00:00:00Z",
     version: "1.0",
   },
@@ -228,7 +221,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "POLICY",
     description: "Open-source citizen service architecture, zero-PII public reporting, cryptographic document hashing, and digital rights.",
     file_storage_path: "public-documents/digital-governance-framework-v1.pdf",
-    file_sha256: "acdabf8a4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fc",
+    file_sha256: "95b875229545dd28c28ba380159873d82c67bf37895eeb3db7fe5d1322e38407",
     published_at: "2025-03-15T00:00:00Z",
     version: "1.0",
   },
@@ -239,7 +232,7 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "POLICY",
     description: "24/7 public air-conditioned study libraries across every Delhi ward, school infrastructure audit, and vocational centers.",
     file_storage_path: "public-documents/education-libraries-framework-v1.pdf",
-    file_sha256: "7777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b22",
+    file_sha256: "1a92c4abe3d85d61afdfec5513c87eb6c41d19324367795d28a3d8dbd7a47aa1",
     published_at: "2025-03-18T00:00:00Z",
     version: "1.0",
   },
@@ -248,36 +241,34 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     title: "Nasha Mukti & Substance Recovery Framework",
     slug: "nasha-mukti-framework",
     category: "POLICY",
-    description: "Community de-addiction centers, rehabilitation pathways, mental health support, and youth sports infrastructure.",
+    description: "Community de-addiction centers, rehabilitation pathways, illegal narcotics crackdown, and youth counseling programs.",
     file_storage_path: "public-documents/nasha-mukti-framework-v1.pdf",
-    file_sha256: "d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777",
+    file_sha256: "567c6959e7f0307957f3134e0539cdf8f83974e90d97906b11601a8f10768def",
     published_at: "2025-03-20T00:00:00Z",
     version: "1.0",
   },
   {
     id: "doc-22",
-    title: "Homeless Support & Urban Dignity Framework",
-    slug: "homeless-support-framework",
+    title: "Senior Citizens Dignity & Social Security Framework",
+    slug: "senior-citizens-pension-framework",
     category: "POLICY",
-    description: "Winter shelter standards, public hygiene complexes, nutritious meal initiatives, and identity documentation support.",
-    file_storage_path: "public-documents/homeless-support-framework-v1.pdf",
-    file_sha256: "6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c",
+    description: "Universal monthly dignity pensions, doorstep medicine delivery, senior civic recreation clubs, and protection committees.",
+    file_storage_path: "public-documents/senior-citizens-pension-framework-v1.pdf",
+    file_sha256: "cd1620384b8b912466bbf558fd1028a94dbe806fed22de5d734c3c510a3f92e3",
     published_at: "2025-03-22T00:00:00Z",
     version: "1.0",
   },
   {
     id: "doc-23",
-    title: "Elder Care & Social Dignity Framework",
-    slug: "elder-care-framework",
+    title: "Traders, Small Businesses & Street Vendors Protection Policy",
+    slug: "traders-msme-revival-framework",
     category: "POLICY",
-    description: "Senior citizen recreation centers, doorstep medicine delivery, pension grievance cells, and elder legal safety.",
-    file_storage_path: "public-documents/elder-care-framework-v1.pdf",
-    file_sha256: "1d02b4d121d3fd328cb08b5531fcacdabf8a4b227777d4dd1fc61c6f884f4864",
+    description: "Single-window civic licensing, ending corruption and sealing distress, vendor vending zones, and market infrastructure upgrades.",
+    file_storage_path: "public-documents/traders-msme-revival-framework-v1.pdf",
+    file_sha256: "1f508cad71840ab31f7cdc8a0e548545d3833303986fe9847c8a95e3ee0cf1ab",
     published_at: "2025-03-25T00:00:00Z",
     version: "1.0",
   },
-
-  // ETHICS
   {
     id: "doc-24",
     title: "Code of Ethics, Member Conduct & Anti-Corruption Compact",
@@ -285,10 +276,10 @@ const OFFICIAL_DOCS: PublicDoc[] = [
     category: "ETHICS",
     description: "Ethical guidelines, zero criminal tolerance pledge, conflict of interest disclosures, and digital conduct rules for all members.",
     file_storage_path: "public-documents/code-of-conduct-v1.pdf",
-    file_sha256: "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+    file_sha256: "43459523ae04d720e45f08b810aad688bfaaa8aa61c053f63a0368640849faa0",
     published_at: "2025-01-01T00:00:00Z",
     version: "1.0",
-  },
+  }
 ];
 
 const LEGAL_SLUG_MAP: Record<string, string> = {
@@ -559,6 +550,24 @@ export function PublicDocumentsLibrary() {
                       <ExternalLink size={12} /> Read Charter
                     </a>
                   )}
+                  <a
+                    href={`/public-documents/${doc.slug}-v1.pdf`}
+                    download={`${doc.slug}-v1.pdf`}
+                    className="button"
+                    style={{
+                      padding: "4px 10px",
+                      fontSize: "11.5px",
+                      minHeight: "32px",
+                      borderRadius: "2px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      textDecoration: "none",
+                    }}
+                    title="Download Official PDF Charter"
+                  >
+                    <Download size={12} /> PDF
+                  </a>
                   <button
                     type="button"
                     onClick={() => {
@@ -686,7 +695,22 @@ export function PublicDocumentsLibrary() {
               <span style={{ fontSize: "12px", color: "var(--muted)" }}>
                 Published: {new Date(inspectDoc.published_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
               </span>
-              <div style={{ display: "flex", gap: "8px" }}>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                <a
+                  href={`/public-documents/${inspectDoc.slug}-v1.pdf`}
+                  download={`${inspectDoc.slug}-v1.pdf`}
+                  className="button"
+                  style={{
+                    fontSize: "13px",
+                    padding: "8px 16px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    textDecoration: "none",
+                  }}
+                >
+                  <Download size={14} /> Download Verified PDF
+                </a>
                 {LEGAL_SLUG_MAP[inspectDoc.slug] && (
                   <a
                     href={LEGAL_SLUG_MAP[inspectDoc.slug]}

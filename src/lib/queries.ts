@@ -99,17 +99,18 @@ export async function fetchPublicStats(origin?: string): Promise<PublicStats> {
     return empty;
   }
 
-  const [issueRes, volRes, memRes] = await Promise.all([
+  const [issueRes, volRes, memRes, acRes] = await Promise.all([
     supabase.from("issues").select("id", { count: "exact", head: true }),
     supabase.from("volunteer_applications").select("id", { count: "exact", head: true }),
     supabase.from("membership_applications").select("id", { count: "exact", head: true }),
+    supabase.from("assembly_constituencies").select("ac_number", { count: "exact", head: true }),
   ]);
 
   return {
     issues: issueRes.count ?? 0,
     volunteers: volRes.count ?? 0,
     members: memRes.count ?? 0,
-    areas: 70,
+    areas: acRes.count ?? 70,
   };
 }
 

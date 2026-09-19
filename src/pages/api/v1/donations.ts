@@ -31,14 +31,11 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: "Supabase not configured" }), { status: 500 });
     }
 
-    let userId = "00000000-0000-0000-0000-000000000001";
-    if (token !== "token-123") {
-      const { data: { user }, error: authError } = await scopedSupabase.auth.getUser(token);
-      if (authError || !user) {
-        return new Response(JSON.stringify({ error: "Invalid token or user" }), { status: 401 });
-      }
-      userId = user.id;
+    const { data: { user }, error: authError } = await scopedSupabase.auth.getUser(token);
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: "Invalid token or unauthorized user" }), { status: 401 });
     }
+    const userId = user.id;
 
     const { error: insertError } = await scopedSupabase
       .from("transactions")

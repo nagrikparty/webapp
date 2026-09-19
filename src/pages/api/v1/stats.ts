@@ -6,18 +6,21 @@ export const GET: APIRoute = async () => {
     if (!hasSupabaseConfig || !supabase) {
       return new Response(JSON.stringify({ issues: 0, volunteers: 0, members: 0, areas: 70 }), { status: 200 });
     }
-    const [issueRes, volRes, memRes] = await Promise.all([
+    const [issueRes, volRes, memRes, acRes, wardRes] = await Promise.all([
       supabase.from("issues").select("id", { count: "exact", head: true }),
       supabase.from("volunteer_applications").select("id", { count: "exact", head: true }),
       supabase.from("membership_applications").select("id", { count: "exact", head: true }),
+      supabase.from("assembly_constituencies").select("ac_number", { count: "exact", head: true }),
+      supabase.from("mcd_wards").select("ward_number", { count: "exact", head: true }),
     ]);
 
     return new Response(JSON.stringify({
       issues: issueRes.count ?? 0,
       volunteers: volRes.count ?? 0,
       members: memRes.count ?? 0,
-      areas: 70,
-      errors: [issueRes.error, volRes.error, memRes.error].filter(Boolean)
+      areas: acRes.count ?? 70,
+      wards: wardRes.count ?? 250,
+      errors: [issueRes.error, volRes.error, memRes.error, acRes.error, wardRes.error].filter(Boolean)
     }), {
       status: 200,
       headers: { "Content-Type": "application/json" }

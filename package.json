@@ -9,6 +9,7 @@
     "check": "astro check",
     "test": "playwright test",
     "test:finance": "tsx src/lib/__tests__/finance-engine.test.ts",
+    "test:delimitation": "tsx src/lib/__tests__/delhi-delimitation.test.ts",
     "deploy": "wrangler deploy"
   },
   "repository": {

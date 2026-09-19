@@ -201,6 +201,7 @@ export function AdminStatementManager() {
       });
 
       const json = await res.json();
+      if (res.ok) {
         const parsedCount = json.extracted_count ?? json.parsed_count ?? json.statement?.extracted_count ?? 0;
         const diffText = json.reconciliation?.difference ?? "0.00";
         setActionMsg({

@@ -108,13 +108,16 @@ Return ONLY a valid JSON object with exactly these keys:
     };
 
     if (!hasSupabaseConfig || !supabase) {
-      console.log("No supabase configured, would have inserted:", record);
-    } else {
-      const { error } = await supabase.from("membership_applications").insert(record);
-      if (error) {
-         console.error("Insert error:", error);
-         return new Response(JSON.stringify({ error: "Failed to save application to database" }), { status: 500 });
-      }
+      return new Response(JSON.stringify({ error: "Database service unavailable. Please try again later." }), { 
+        status: 503,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    const { error } = await supabase.from("membership_applications").insert(record);
+    if (error) {
+      console.error("Insert error:", error);
+      return new Response(JSON.stringify({ error: "Failed to save application to database: " + error.message }), { status: 500 });
     }
 
     return new Response(JSON.stringify({ success: true, id: recordId }), {

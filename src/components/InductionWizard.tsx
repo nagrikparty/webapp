@@ -50,7 +50,7 @@ export function InductionWizard() {
     state: "Delhi",
     district: "South East",
     vidhan_sabha: "Okhla",
-    ward: "Zakir Nagar",
+    ward: "Zakir Nagar (W)",
     pincode: "110025",
   });
 
