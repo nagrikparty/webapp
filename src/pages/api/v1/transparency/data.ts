@@ -177,7 +177,7 @@ export const GET: APIRoute = async ({ request }) => {
         bank_name: bankStatus.bank_name,
         account_number_masked: bankStatus.account_number_masked,
         branch_name: bankStatus.branch_name,
-        statement_closing_balance: bankStatus.statement_closing_balance,
+        statement_closing_balance: publishedPeriods.length > 0 ? publishedPeriods[0].closing_balance : bankStatus.statement_closing_balance,
         live_bank_balance: bankStatus.live_bank_balance,
         live_bank_balance_formatted: formatPaiseInr(toPaise(bankStatus.live_bank_balance)),
         balance_type: bankStatus.balance_type,

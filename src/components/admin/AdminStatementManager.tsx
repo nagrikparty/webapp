@@ -201,9 +201,10 @@ export function AdminStatementManager() {
       });
 
       const json = await res.json();
-      if (res.ok) {
+        const parsedCount = json.extracted_count ?? json.parsed_count ?? json.statement?.extracted_count ?? 0;
+        const diffText = json.reconciliation?.difference ?? "0.00";
         setActionMsg({
-          text: `Statement ingested: ${json.parsed_count} transactions parsed. Reconciled diff: Rs. ${json.reconciliation.difference}.`,
+          text: `Statement ingested: ${parsedCount} transactions parsed. Reconciled diff: Rs. ${diffText}.`,
           type: "success",
         });
         setFileToUpload(null);
@@ -220,6 +221,45 @@ export function AdminStatementManager() {
     }
   }
 
+  function openCreatePeriodModal() {
+    if (periods.length > 0) {
+      const sorted = [...periods].sort(
+        (a, b) => new Date(b.end_date).getTime() - new Date(a.end_date).getTime()
+      );
+      const latest = sorted[0];
+      const latestEnd = new Date(latest.end_date);
+      const nextStart = new Date(latestEnd);
+      nextStart.setDate(nextStart.getDate() + 1);
+
+      const nextStartYear = nextStart.getFullYear();
+      const nextStartMonth = nextStart.getMonth() + 1;
+
+      let nextEndDate = "";
+      let cycleName = "";
+
+      if (nextStartMonth <= 6) {
+        nextEndDate = `${nextStartYear}-06-30`;
+        cycleName = `${nextStartYear} H1`;
+      } else {
+        nextEndDate = `${nextStartYear}-12-31`;
+        cycleName = `${nextStartYear} H2`;
+      }
+
+      const startDateStr = nextStart.toISOString().split("T")[0];
+      const prevClosing = Number(latest.closing_balance || 0).toFixed(2);
+
+      setNewPeriod({
+        name: cycleName,
+        cycle_label: `${cycleName} (${new Date(startDateStr).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })} · ${new Date(nextEndDate).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })})`,
+        start_date: startDateStr,
+        end_date: nextEndDate,
+        opening_balance: prevClosing,
+        closing_balance: prevClosing,
+      });
+    }
+    setShowCreateModal(true);
+  }
+
   async function handleCreatePeriod(e: React.FormEvent) {
     e.preventDefault();
     try {
@@ -230,12 +270,19 @@ export function AdminStatementManager() {
       const res = await fetch("/api/v1/admin/finance/periods", {
         method: "POST",
         headers,
-        body: JSON.stringify(newPeriod),
+        body: JSON.stringify({
+          title: newPeriod.name,
+          cycle_label: newPeriod.cycle_label,
+          start_date: newPeriod.start_date,
+          end_date: newPeriod.end_date,
+          opening_balance: newPeriod.opening_balance,
+          closing_balance: newPeriod.closing_balance,
+        }),
       });
 
       const json = await res.json();
-      if (res.ok) {
-        setActionMsg({ text: "Reporting period created successfully", type: "success" });
+      if (res.ok && json.period) {
+        setActionMsg({ text: `Reporting period "${json.period.title}" created successfully`, type: "success" });
         setShowCreateModal(false);
         await fetchPeriods();
         setSelectedPeriodId(json.period.id);
@@ -449,7 +496,7 @@ export function AdminStatementManager() {
 
           <button
             type="button"
-            onClick={() => setShowCreateModal(true)}
+            onClick={openCreatePeriodModal}
             className="button"
             style={{
               fontSize: "12px",

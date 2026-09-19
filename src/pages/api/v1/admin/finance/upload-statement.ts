@@ -259,6 +259,8 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: true,
+        extracted_count: dbTransactions.length,
+        parsed_count: dbTransactions.length,
         statement: {
           id: statementRecord.id,
           filename: fileName,

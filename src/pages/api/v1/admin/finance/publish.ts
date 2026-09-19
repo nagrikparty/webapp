@@ -162,7 +162,16 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // 4. Log audit event
+    // 4. Automatically sync bank_account_status with the newly published statement closing balance
+    await scopedSupabase
+      .from("bank_account_status")
+      .update({
+        statement_closing_balance: period.closing_balance,
+        updated_at: now,
+      })
+      .eq("id", "primary");
+
+    // 5. Log audit event
     await logAuditEvent({
       actorUserId: ctx.user.id,
       actorRole: ctx.profile.role,

@@ -70,26 +70,46 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const body = await request.json();
-    const { id, title, fiscal_year, period_type, start_date, end_date, opening_balance, notes } = body;
+    const id = body.id;
+    const title = (body.title || body.cycle_label || body.name || "").trim();
+    const startDate = body.start_date;
+    const endDate = body.end_date;
 
-    if (!title || !fiscal_year || !start_date || !end_date) {
-      return new Response(JSON.stringify({ error: "Title, fiscal year, start date and end date are required" }), { status: 400 });
+    if (!title || !startDate || !endDate) {
+      return new Response(JSON.stringify({ error: "Title/Name, start date, and end date are required" }), { status: 400 });
     }
 
-    if (new Date(end_date) < new Date(start_date)) {
+    if (new Date(endDate) < new Date(startDate)) {
       return new Response(JSON.stringify({ error: "End date must be greater than or equal to start date" }), { status: 400 });
     }
 
-    const openingPaise = toPaise(opening_balance || 0);
+    // Auto-derive Fiscal Year if not supplied
+    let fiscalYear = (body.fiscal_year || "").trim();
+    if (!fiscalYear) {
+      const sDate = new Date(startDate);
+      const sYear = sDate.getFullYear();
+      const sMonth = sDate.getMonth() + 1;
+      fiscalYear = sMonth >= 4 ? `${sYear}-${sYear + 1}` : `${sYear - 1}-${sYear}`;
+    }
+
+    // Auto-derive Period Type if not supplied
+    let periodType = (body.period_type || "").trim();
+    if (!periodType) {
+      const sMonth = new Date(startDate).getMonth() + 1;
+      periodType = sMonth <= 6 ? "H1" : "H2";
+    }
+
+    const openingPaise = toPaise(body.opening_balance || 0);
+    const closingPaise = toPaise(body.closing_balance || 0);
 
     const record = {
-      title: title.trim(),
-      fiscal_year: fiscal_year.trim(),
-      period_type: period_type || "H1",
-      start_date,
-      end_date,
+      title,
+      fiscal_year: fiscalYear,
+      period_type: periodType,
+      start_date: startDate,
+      end_date: endDate,
       opening_balance: fromPaise(openingPaise),
-      notes: notes || null,
+      notes: body.notes || null,
       updated_at: new Date().toISOString(),
     };
 
@@ -111,7 +131,7 @@ export const POST: APIRoute = async ({ request }) => {
         action: "REPORTING_PERIOD_UPDATED",
         entityType: "REPORTING_PERIOD",
         entityId: id,
-        metadata: { title, fiscal_year, start_date, end_date },
+        metadata: { title, fiscalYear, startDate, endDate },
       });
     } else {
       // Create new
@@ -120,7 +140,7 @@ export const POST: APIRoute = async ({ request }) => {
         .insert({
           ...record,
           status: "DRAFT",
-          closing_balance: "0.00",
+          closing_balance: fromPaise(closingPaise),
           total_credits: "0.00",
           total_debits: "0.00",
           calculated_closing_balance: "0.00",
@@ -138,7 +158,7 @@ export const POST: APIRoute = async ({ request }) => {
         action: "REPORTING_PERIOD_CREATED",
         entityType: "REPORTING_PERIOD",
         entityId: data.id,
-        metadata: { title, fiscal_year, start_date, end_date },
+        metadata: { title, fiscalYear, startDate, endDate },
       });
     }
 
