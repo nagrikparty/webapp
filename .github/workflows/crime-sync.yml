@@ -9,10 +9,22 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ secrets.SITE_URL }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+      PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
     steps:
-      - name: Trigger crime RSS sync endpoint
-        run: |
-          curl -sS -X POST "${{ secrets.SITE_URL }}/api/v1/cron/crime-sync" \
-            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
-            -H "Content-Type: application/json" \
-            --fail --show-error --max-time 120
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install deps (rss-parser + supabase)
+        run: npm ci --omit=dev --ignore-scripts || npm install rss-parser @supabase/supabase-js --no-save
+
+      - name: Fetch feeds and sync citations
+        run: node scripts/fetch-crime-feeds.mjs

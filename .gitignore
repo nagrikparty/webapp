@@ -38,3 +38,7 @@ secret_*.log
 deployments_*.log
 obs_*.log
 *.wrangler-login*.log
+
+sync_result.json
+tail_tmp.log
+*_tmp*.log
