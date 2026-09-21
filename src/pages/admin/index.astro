@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import AdminNav from "@/components/admin/AdminNav.astro";
-import { AdminOverview } from "@/components/AdminOverview";
+import { ControlCentre } from "@/components/ControlCentre";
 
 export const prerender = false;
 ---
@@ -13,16 +13,16 @@ export const prerender = false;
   <section class="page-hero" style="padding-bottom: 16px;">
     <div class="container">
       <AdminNav activeSection="overview" />
-      <h1>Party Administration</h1>
+      <h1>Control Centre</h1>
       <p class="page-copy">
-        Central governance portal for Phase 1 formation oversight, document scrutiny, and statutory compliance.
+        Live operational command centre for Phase 1 formation oversight, membership scrutiny, civic operations, and statutory compliance.
       </p>
     </div>
   </section>
 
   <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
     <div class="container">
-      <AdminOverview client:only="react" />
+      <ControlCentre client:only="react" />
     </div>
   </section>
 </BaseLayout>
