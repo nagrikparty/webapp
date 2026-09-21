@@ -28,8 +28,10 @@
     "BREVO_FROM_EMAIL": "hello@nagrik.party",
     "BREVO_FROM_NAME": "Nagrik Party",
     "EMAIL_LOGO_URL": "https://nagrik.party/brand/logo.png",
-    // Server-side Sentry DSN is read from the Worker env by @sentry/cloudflare.
-    // Set it as a secret in production:  npx wrangler secret put SENTRY_DSN
-    "SENTRY_DSN": ""
+    // Server-side Sentry DSN (public-safe — same value is already embedded in
+    // sentry.client.config.js for browser reporting).
+    // SENTRY_AUTH_TOKEN is NEVER in this file — it is a Worker secret
+    // (npx wrangler secret put SENTRY_AUTH_TOKEN).
+    "SENTRY_DSN": "https://90dc2f322f7eb9661b6d1612bbb8a0d2@o4512114701303808.ingest.de.sentry.io/4512114707202128"
   }
 }
