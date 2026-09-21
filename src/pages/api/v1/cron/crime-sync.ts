@@ -89,41 +89,87 @@ export const POST: APIRoute = async ({ request }) => {
   let skipped = 0;
   const errors: string[] = [];
 
-  for (const { crime_type, feedUrl } of CRIME_FEEDS) {
-    try {
-      const res = await fetch(feedUrl, { headers: { "User-Agent": "NagrikPartyCivicBot/1.0" } });
-      if (!res.ok) {
-        errors.push(`${crime_type}: feed responded ${res.status}`);
-        continue;
+  // Mode 1: pre-parsed items from the scheduled fetcher (GitHub Actions).
+  // Mode 2 (fallback): fetch feeds server-side when the caller sends no body.
+  let payloadItems: Array<{ crime_type: string; title: string; source_url: string; incident_date: string }> = [];
+  let serverFetch = true;
+
+  try {
+    const raw = await request.text();
+    if (raw) {
+      const body = JSON.parse(raw);
+      if (Array.isArray(body?.items) && body.items.length > 0) {
+        payloadItems = body.items;
+        serverFetch = false;
       }
-      const xml = await res.text();
-      for (const item of parseFeedItems(xml)) {
-        const sourceUrl = item.link.trim();
-        // Title fallback chain: kabhi blank save mat karo
-        const title = item.title.trim() || `Verified ${crime_type} incident — Delhi NCR`;
-        const parsed = item.pubDate ? new Date(item.pubDate) : new Date();
-        if (!sourceUrl) {
-          skipped++;
+    }
+  } catch {
+    // empty or invalid body → fall back to server-side fetching
+  }
+
+  if (serverFetch) {
+    for (const { crime_type, feedUrl } of CRIME_FEEDS) {
+      try {
+        const res = await fetch(feedUrl, { headers: { "User-Agent": "NagrikPartyCivicBot/1.0" } });
+        if (!res.ok) {
+          errors.push(`${crime_type}: feed responded ${res.status}`);
           continue;
         }
-        const { error } = await supabase.from("crimes").upsert(
-          {
-            id: stableId(sourceUrl),
+        const xml = await res.text();
+        for (const item of parseFeedItems(xml)) {
+          const sourceUrl = item.link.trim();
+          // Title fallback chain: kabhi blank save mat karo
+          const title = item.title.trim() || `Verified ${crime_type} incident — Delhi NCR`;
+          const parsed = item.pubDate ? new Date(item.pubDate) : new Date();
+          if (!sourceUrl) {
+            skipped++;
+            continue;
+          }
+          payloadItems.push({
             crime_type,
             title,
             source_url: sourceUrl,
             incident_date: isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString(),
-          },
-          { onConflict: "id" }
-        );
-        if (error) {
-          errors.push(`${crime_type}: ${error.message}`);
-        } else {
-          inserted++;
+          });
         }
+      } catch (e) {
+        errors.push(`${crime_type}: ${e instanceof Error ? e.message : String(e)}`);
       }
-    } catch (e) {
-      errors.push(`${crime_type}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
+  // Deduplicate by source_url (both modes can produce overlapping items)
+  const seen = new Set<string>();
+  const uniqueItems = payloadItems.filter((it) => {
+    const key = it.source_url;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  for (const item of uniqueItems) {
+    const sourceUrl = item.source_url.trim();
+    if (!sourceUrl) {
+      skipped++;
+      continue;
+    }
+    // Title fallback chain: kabhi blank save mat karo
+    const title = (item.title || "").trim() || `Verified ${item.crime_type} incident — Delhi NCR`;
+    const parsed = item.incident_date ? new Date(item.incident_date) : new Date();
+    const { error } = await supabase.from("crimes").upsert(
+      {
+        id: stableId(sourceUrl),
+        crime_type: item.crime_type,
+        title,
+        source_url: sourceUrl,
+        incident_date: isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString(),
+      },
+      { onConflict: "id" }
+    );
+    if (error) {
+      errors.push(`${item.crime_type}: ${error.message}`);
+    } else {
+      inserted++;
     }
   }
 
