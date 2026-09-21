@@ -9,14 +9,32 @@ import { MemberContributions } from "@/components/MemberContributions";
 >
   <section class="page-hero" style="padding-bottom: 24px;">
     <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-        <a href="/member" class="mini-label">Overview</a>
-        <a href="/member/profile" class="mini-label">My Profile</a>
-        <a href="/member/membership-card" class="mini-label">Membership Card</a>
-        <a href="/member/documents" class="mini-label">Document Vault</a>
-        <a href="/member/status" class="mini-label">Status</a>
-        <a href="/member/contributions" class="mini-label" style="background: var(--ink); color: #fff;">Contributions</a>
-      </div>
+      <nav class="member-nav" aria-label="Member dashboard sections">
+        <a href="/member" class="member-nav-link" data-section="overview">
+          <span class="member-nav-icon" aria-hidden="true">📋</span>
+          <span>Overview</span>
+        </a>
+        <a href="/member/induction" class="member-nav-link" data-section="induction">
+          <span class="member-nav-icon" aria-hidden="true">🎓</span>
+          <span>Digital Induction</span>
+        </a>
+        <a href="/member/membership-card" class="member-nav-link" data-section="card">
+          <span class="member-nav-icon" aria-hidden="true">🪪</span>
+          <span>Membership Card</span>
+        </a>
+        <a href="/member/documents" class="member-nav-link" data-section="vault">
+          <span class="member-nav-icon" aria-hidden="true">📁</span>
+          <span>Document Vault</span>
+        </a>
+        <a href="/member/contributions" class="member-nav-link is-active" data-section="contributions">
+          <span class="member-nav-icon" aria-hidden="true">💰</span>
+          <span>Contributions</span>
+        </a>
+        <a href="/build-with-us" class="member-nav-link" data-section="build">
+          <span class="member-nav-icon" aria-hidden="true">🛠️</span>
+          <span>Build With Us</span>
+        </a>
+      </nav>
       <h1>Formation Support</h1>
       <p class="page-copy">
         Track your contributions and support to the formation of Nagrik Party.

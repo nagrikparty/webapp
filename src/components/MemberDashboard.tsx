@@ -14,6 +14,8 @@ import {
   Edit3,
   X,
   Loader2,
+  RefreshCw,
+  AlertCircle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Profile, Member } from "@/lib/types";
@@ -91,6 +93,10 @@ export function MemberDashboard() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [formationProgress, setFormationProgress] = useState<FormationProgressSummary | null>(null);
 
+  // Announcements specific states
+  const [announcementsLoading, setAnnouncementsLoading] = useState(false);
+  const [announcementsError, setAnnouncementsError] = useState<string | null>(null);
+
   // Edit Profile & Participation Modal / Drawer State
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editFullName, setEditFullName] = useState("");
@@ -157,6 +163,32 @@ export function MemberDashboard() {
       console.error("Failed to load dashboard data:", err);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function refreshAnnouncements() {
+    if (!supabase) return;
+    setAnnouncementsLoading(true);
+    setAnnouncementsError(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      
+      const res = await fetch("/api/v1/member/status", {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setAnnouncements(data.announcements || []);
+      } else {
+        setAnnouncementsError("Failed to load announcements");
+      }
+    } catch (err) {
+      console.error("Failed to refresh announcements:", err);
+      setAnnouncementsError("Network error. Please try again.");
+    } finally {
+      setAnnouncementsLoading(false);
     }
   }
 
@@ -1229,17 +1261,54 @@ export function MemberDashboard() {
           boxShadow: "var(--shadow)",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
           <h3 style={{ fontSize: "16px", fontWeight: 700, fontFamily: "var(--font-serif)", margin: 0, color: "var(--ink)", display: "flex", alignItems: "center", gap: "8px" }}>
             <Megaphone size={18} style={{ color: "var(--saffron)" }} />
             Party Announcements & Updates
           </h3>
-          <span style={{ fontSize: "11.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
-            PHASE 1 DISPATCHES
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontSize: "11.5px", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+              PHASE 1 DISPATCHES
+            </span>
+            <button
+              type="button"
+              onClick={refreshAnnouncements}
+              disabled={announcementsLoading}
+              className="button"
+              style={{ fontSize: "11px", padding: "4px 10px", display: "inline-flex", alignItems: "center", gap: "4px" }}
+              aria-label="Refresh announcements"
+            >
+              {announcementsLoading ? (
+                <Loader2 size={12} className="animate-spin" style={{ color: "var(--saffron)" }} />
+              ) : (
+                <RefreshCw size={12} style={{ color: "var(--muted)" }} />
+              )}
+              <span style={{ display: "none" }}>Refresh</span>
+            </button>
+          </div>
         </div>
 
-        {announcements.length > 0 ? (
+        {announcementsLoading ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", color: "var(--muted)" }}>
+            <Loader2 size={24} className="animate-spin" style={{ color: "var(--saffron)", marginRight: "10px" }} />
+            <span style={{ fontSize: "13px" }}>Loading announcements...</span>
+          </div>
+        ) : announcementsError ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "24px", textAlign: "center", gap: "12px" }}>
+            <AlertCircle size={32} style={{ color: "var(--red)" }} />
+            <p style={{ fontSize: "13px", color: "var(--ink)", margin: 0, maxWidth: "320px" }}>
+              {announcementsError}
+            </p>
+            <button
+              type="button"
+              onClick={refreshAnnouncements}
+              className="button button-primary"
+              style={{ fontSize: "12px", padding: "8px 16px" }}
+            >
+              Try Again
+            </button>
+          </div>
+        ) : announcements.length > 0 ? (
           <div style={{ display: "grid", gap: "12px" }}>
             {announcements.map((ann) => (
               <div
@@ -1264,8 +1333,22 @@ export function MemberDashboard() {
             ))}
           </div>
         ) : (
-          <div style={{ fontSize: "13px", color: "var(--muted)", padding: "12px 0" }}>
-            No new updates. Check back for official notices regarding the Phase 1 General Body Meeting.
+          <div style={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            alignItems: "center", 
+            padding: "24px", 
+            textAlign: "center", 
+            color: "var(--muted)",
+            gap: "8px"
+          }}>
+            <FileText size={32} style={{ color: "var(--muted)", opacity: 0.5 }} />
+            <p style={{ fontSize: "13px", margin: 0, maxWidth: "360px", lineHeight: 1.5 }}>
+              No announcements yet. Official updates from the Phase 1 coordination team will appear here.
+            </p>
+            <span style={{ fontSize: "11px", fontFamily: "var(--font-mono)", opacity: 0.7 }}>
+              Admins can post announcements from the Operations console
+            </span>
           </div>
         )}
       </div>

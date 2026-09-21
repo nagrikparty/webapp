@@ -1,0 +1,21 @@
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: webapp@1.0.0
+npm error Found: astro@undefined
+npm error node_modules/astro
+npm error   astro@"^7.3.3" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer astro@">=3.x || >=4.0.0-beta || >=7.0.0-beta" from @sentry/astro@10.75.0
+npm error node_modules/@sentry/astro
+npm error   @sentry/astro@"^10.75.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\hudav\AppData\Local\npm-cache\_logs\2026-09-21T04_09_13_820Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\hudav\AppData\Local\npm-cache\_logs\2026-09-21T04_09_13_820Z-debug-0.log

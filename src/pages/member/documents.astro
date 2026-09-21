@@ -9,12 +9,32 @@ import { MemberDocumentVault } from "@/components/MemberDocumentVault";
 >
   <section class="page-hero" style="padding-bottom: 24px;">
     <div class="container">
-      <div style="display: flex; gap: 12px; margin-bottom: 8px;">
-        <a href="/member" class="mini-label">Overview</a>
-        <a href="/member/induction" class="mini-label">Digital Induction</a>
-        <a href="/member/membership-card" class="mini-label">Membership Card</a>
-        <a href="/member/documents" class="mini-label" style="background: var(--ink); color: #fff;">Document Vault</a>
-      </div>
+      <nav class="member-nav" aria-label="Member dashboard sections">
+        <a href="/member" class="member-nav-link" data-section="overview">
+          <span class="member-nav-icon" aria-hidden="true">📋</span>
+          <span>Overview</span>
+        </a>
+        <a href="/member/induction" class="member-nav-link" data-section="induction">
+          <span class="member-nav-icon" aria-hidden="true">🎓</span>
+          <span>Digital Induction</span>
+        </a>
+        <a href="/member/membership-card" class="member-nav-link" data-section="card">
+          <span class="member-nav-icon" aria-hidden="true">🪪</span>
+          <span>Membership Card</span>
+        </a>
+        <a href="/member/documents" class="member-nav-link is-active" data-section="vault">
+          <span class="member-nav-icon" aria-hidden="true">📁</span>
+          <span>Document Vault</span>
+        </a>
+        <a href="/member/contributions" class="member-nav-link" data-section="contributions">
+          <span class="member-nav-icon" aria-hidden="true">💰</span>
+          <span>Contributions</span>
+        </a>
+        <a href="/build-with-us" class="member-nav-link" data-section="build">
+          <span class="member-nav-icon" aria-hidden="true">🛠️</span>
+          <span>Build With Us</span>
+        </a>
+      </nav>
       <h1>Document Vault</h1>
       <p class="page-copy">
         Encrypted digital vault for verified member documents, declarations, and proof records.

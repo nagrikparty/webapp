@@ -2069,6 +2069,95 @@ body.auth-page {
   to { transform: translateX(0); }
 }
 
+/* ==========================================================================
+   MEMBER DASHBOARD NAVIGATION
+   ========================================================================== */
+.member-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.member-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 8px;
+  background: var(--paper-subtle);
+  border: 1px solid var(--line);
+  color: var(--ink-body);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  transition: all 0.15s ease;
+  min-height: 72px;
+  justify-content: center;
+}
+
+.member-nav-link:hover {
+  background: var(--paper-hover);
+  border-color: var(--line-strong);
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.member-nav-link.is-active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.member-nav-link.is-active .member-nav-icon {
+  filter: brightness(0) invert(1);
+}
+
+.member-nav-icon {
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .member-nav {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .member-nav-link {
+    padding: 10px 6px;
+    font-size: 11px;
+    min-height: 64px;
+  }
+  
+  .member-nav-icon {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .member-nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .member-nav-link {
+    padding: 8px 4px;
+    font-size: 10px;
+    min-height: 56px;
+    gap: 4px;
+  }
+  
+  .member-nav-icon {
+    font-size: 16px;
+  }
+}
+
 .mobile-drawer-header {
   padding: 16px 18px;
   border-bottom: 1px solid var(--line);
