@@ -2,12 +2,13 @@ import type { APIRoute } from "astro";
 import { requireRole, logAuditEvent } from "@/lib/auth";
 import { createApiSupabase } from "@/lib/supabase";
 import { brevoSend, buildEmailCarrier } from "@/lib/email";
+import { resolveRuntimeEnv } from "@/lib/worker-env";
 
 // POST /api/v1/admin/email/send — admin-gated single-recipient transactional send.
 // Body: { to, subject, html, text?, tag?, purpose? }
 // Every send is recorded in public.email_events for ledger-grade traceability
 // and in the statutory audit log. Donor PII stays server-side only.
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   const authResult = await requireRole(request, ["ADMIN", "SUPER_ADMIN"]);
   if ("response" in authResult) return authResult.response;
   const { ctx } = authResult;
@@ -35,9 +36,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Worker runtime env (secrets live here — dashboard "Add variable" or
     // `wrangler secret put BREVO_API_KEY --name nagrikparty`).
-    const runtimeEnv = (
-      (locals as unknown as { runtime?: { env?: Record<string, unknown> } }).runtime?.env || {}
-    );
+    // Astro v6: locals.runtime.env removed → use cloudflare:workers env module.
+    const runtimeEnv = await resolveRuntimeEnv();
     const carrier = buildEmailCarrier(runtimeEnv);
 
     const { messageId } = await brevoSend(carrier, {

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { createClient } from "@supabase/supabase-js";
+import { resolveRuntimeEnv, envOf as pickEnv } from "@/lib/worker-env";
 
 export const prerender = false;
 
@@ -66,12 +67,9 @@ function stableId(text: string): string {
   return (h2 >>> 0).toString(16).padStart(8, "0") + (h1 >>> 0).toString(16).padStart(8, "0");
 }
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  const runtimeEnv = (
-    (locals as unknown as { runtime?: { env?: Record<string, unknown> } }).runtime?.env || {}
-  ) as Record<string, string | undefined>;
-  const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
-  const envOf = (k: string) => runtimeEnv[k] ?? importEnv[k];
+export const POST: APIRoute = async ({ request }) => {
+  const runtimeEnv = await resolveRuntimeEnv();
+  const envOf = (k: string) => pickEnv(runtimeEnv, k);
 
   const secret = request.headers.get("x-cron-secret") || new URL(request.url).searchParams.get("secret");
   const expected = envOf("CRON_SECRET");

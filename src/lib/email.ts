@@ -21,10 +21,9 @@ interface BrevoKeyResult {
   fromName: string;
 }
 
-// Cloudflare Workers env access: the Astro Cloudflare adapter exposes
-// Worker bindings/secrets via `locals.runtime.env` inside API routes.
-// We therefore resolve credentials from a carrier that each route builds
-// (see buildEmailCarrier()) — never from client-supplied headers.
+// Cloudflare Workers env access: Astro v6 removed `Astro.locals.runtime.env`.
+// Secrets/bindings are resolved via the `cloudflare:workers` env module
+// (see src/lib/worker-env.ts) — never from client-supplied headers.
 export interface EmailCarrier {
   apiKey: string;
   fromEmail: string;
