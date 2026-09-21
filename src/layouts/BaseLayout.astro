@@ -38,20 +38,24 @@ const progressData = await getFormationProgress();
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="canonical" href={Astro.url.href} />
 
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph / Social Media (official logo PNG = discovery-safe) -->
     <meta property="og:site_name" content="Nagrik Party" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={new URL("/nagrikpartylogo.svg", Astro.url).href} />
+    <meta property="og:image" content={new URL("/brand/logo.png", Astro.url).href} />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:alt" content="Nagrik Party — official logo" />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL("/nagrikpartylogo.svg", Astro.url).href} />
+    <meta name="twitter:image" content={new URL("/brand/logo.png", Astro.url).href} />
+    <meta name="twitter:image:alt" content="Nagrik Party — official logo" />
 
     <!-- Fonts fully self-hosted (see global.css @font-face) -->
     <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>

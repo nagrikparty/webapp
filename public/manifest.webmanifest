@@ -14,16 +14,22 @@
   "categories": ["government", "politics"],
   "icons": [
     {
-      "src": "/nagrikpartylogo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/brand/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/brand/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/nagrikpartylogo.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
   "shortcuts": [

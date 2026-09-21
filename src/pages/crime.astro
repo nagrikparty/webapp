@@ -1,9 +1,8 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { supabase } from "@/lib/supabase";
-import { ShieldAlert, ExternalLink, Calendar, CheckCircle2, ChevronRight, Info } from "lucide-react";
-import { ListenButton } from "@/components/ListenButton";
-import { ShareButton } from "@/components/ShareButton";
+import { ShieldAlert, CheckCircle2, ChevronRight, Info } from "lucide-react";
+import { CrimeFeed } from "@/components/CrimeFeed";
 
 export const prerender = false;
 
@@ -17,7 +16,7 @@ if (supabase) {
   try {
     const { data: allCrimes } = await supabase
       .from("crimes")
-      .select("*")
+      .select("id, crime_type, title, source_url, incident_date")
       .order("incident_date", { ascending: false });
 
     if (allCrimes) {
@@ -38,7 +37,14 @@ if (supabase) {
         }
       });
 
-      recentCrimes = allCrimes.slice(0, 50);
+      // Title guard: blank titles ko readable fallback do taaki feed me kabhi khaali card na dikhe
+      recentCrimes = allCrimes.slice(0, 50).map((c: { id: string; title?: string | null; source_url: string; incident_date: string; crime_type: string }) => ({
+        id: c.id,
+        title: c.title && c.title.trim().length > 0 ? c.title : `Verified ${c.crime_type} incident — Delhi NCR`,
+        source_url: c.source_url,
+        incident_date: c.incident_date,
+        crime_type: c.crime_type,
+      }));
     }
   } catch (e) {
     console.error("Error fetching crime records:", e);
@@ -154,60 +160,7 @@ const totalCitations = stats.reduce((acc, curr) => acc + curr.count, 0);
             <p class="empty-state-msg">Jaise hi verified records aayenge, yahan live feed dikhegi. Har record ka news source link hota hai.</p>
           </div>
         ) : (
-          <div class="crime-feed">
-            {recentCrimes.map((c) => {
-              let domain = "";
-              try {
-                domain = new URL(c.source_url).hostname.replace("www.", "");
-              } catch {
-                domain = "news source";
-              }
-
-              const dateStr = new Date(c.incident_date).toLocaleDateString("en-IN", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              });
-
-              return (
-                <div class="crime-feed-card">
-                  <div class="crime-feed-top">
-                    <span class="crime-feed-chip">{c.crime_type}</span>
-                    <span class="crime-feed-date">
-                      {domain} · {dateStr}
-                    </span>
-                  </div>
-
-                  <h4 class="crime-feed-title">
-                    <a href={c.source_url} target="_blank" rel="noopener noreferrer">
-                      {c.title}
-                    </a>
-                  </h4>
-
-                  <div class="crime-feed-actions">
-                    <ListenButton client:visible text={`${c.crime_type}. ${c.title}. Date: ${dateStr}`} label="Suniye" />
-                    <ShareButton
-                      client:visible
-                      title={`Delhi Crime Report: ${c.crime_type}`}
-                      text={c.title}
-                      url={c.source_url}
-                      label="Share"
-                    />
-                    <a
-                      href={c.source_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="listen-btn"
-                      style="text-decoration: none;"
-                    >
-                      <ExternalLink size={14} />
-                      <span>Source</span>
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <CrimeFeed client:visible items={recentCrimes} />
         )}
       </div>
 

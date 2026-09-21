@@ -22,7 +22,12 @@
       "persist": true
     }
   },
+  // Email sending identity: official logo used in templates. Plain-text
+  // var is the source of truth for discovery consumers too.
   "vars": {
+    "BREVO_FROM_EMAIL": "hello@nagrik.party",
+    "BREVO_FROM_NAME": "Nagrik Party",
+    "EMAIL_LOGO_URL": "https://nagrik.party/brand/logo.png",
     // Server-side Sentry DSN is read from the Worker env by @sentry/cloudflare.
     // Set it as a secret in production:  npx wrangler secret put SENTRY_DSN
     "SENTRY_DSN": ""

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { CrimeFeed } from "@/components/CrimeFeed";
 
 export const prerender = false;
 
@@ -16,11 +17,18 @@ import { supabase } from "@/lib/supabase";
 const { data: rawIncidents } = supabase 
   ? await supabase
       .from('crimes')
-      .select('*')
+      .select('id, crime_type, title, source_url, incident_date')
       .ilike('crime_type', type)
       .order('incident_date', { ascending: false })
   : { data: [] };
-const incidents = rawIncidents ?? [];
+// Title guard: blank title kabhi render mat karo
+const incidents = (rawIncidents ?? []).map((c: { id: string; title?: string | null; source_url: string; incident_date: string; crime_type: string }) => ({
+  id: c.id,
+  title: c.title && c.title.trim().length > 0 ? c.title : `Verified ${c.crime_type} incident — Delhi NCR`,
+  source_url: c.source_url,
+  incident_date: c.incident_date,
+  crime_type: c.crime_type,
+}));
 const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
 ---
 
@@ -59,45 +67,7 @@ const dbType = incidents.length > 0 ? incidents[0].crime_type : fallbackType;
             <p style="color: var(--muted); margin: 0; font-size: 14px;">No verified citations found for this category yet.</p>
           </div>
         ) : (
-          incidents.map((incident: { id: string; title: string; source_url: string; incident_date: string }) => {
-            let domain = "news source";
-            try {
-              domain = new URL(incident.source_url).hostname.replace("www.", "");
-            } catch {}
-
-            return (
-              <a
-                href={incident.source_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="citation-card"
-              >
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                  <div style="flex: 1;">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
-                      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; background: rgba(220, 38, 38, 0.1); color: #dc2626; padding: 2px 8px; border-radius: 4px;">
-                        {dbType}
-                      </span>
-                      <span class="badge-citation">
-                        {domain}
-                      </span>
-                      <span style="color: var(--muted); font-size: 12px;">
-                        Incident Date: {new Date(incident.incident_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </span>
-                    </div>
-
-                    <h3 style="margin: 0; color: var(--ink); font-size: 15px; font-weight: 700; line-height: 1.4;">
-                      {incident.title}
-                    </h3>
-                  </div>
-
-                  <div style="color: #dc2626; padding-top: 4px; flex-shrink: 0;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-                  </div>
-                </div>
-              </a>
-            );
-          })
+          <CrimeFeed client:visible items={incidents} />
         )}
       </div>
     </div>

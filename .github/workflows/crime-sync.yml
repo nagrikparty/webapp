@@ -1,0 +1,18 @@
+name: Daily Crime Citation Sync
+
+on:
+  schedule:
+    # Roz subah 04:30 IST ≈ 23:00 UTC (previous day) — din me ek baar
+    - cron: "0 23 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger crime RSS sync endpoint
+        run: |
+          curl -sS -X POST "${{ secrets.SITE_URL }}/api/v1/cron/crime-sync" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --fail --show-error --max-time 120

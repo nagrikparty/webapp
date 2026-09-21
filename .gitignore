@@ -30,3 +30,11 @@ test_output_utf8.log
 test-results/
 playwright-report/
 .wrangler/
+
+# deploy/build/debug logs (can contain redacted-looking but live secrets)
+deploy_*.log
+build_*.log
+secret_*.log
+deployments_*.log
+obs_*.log
+*.wrangler-login*.log
