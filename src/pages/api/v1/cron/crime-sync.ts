@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
 import { createClient } from "@supabase/supabase-js";
-import Parser from "rss-parser";
 
 export const prerender = false;
 
@@ -12,8 +11,49 @@ const CRIME_FEEDS: Array<{ crime_type: string; feedUrl: string }> = [
   { crime_type: "Extortion", feedUrl: "https://news.google.com/rss/search?q=Delhi%20extortion%20case%20when%3A7d&hl=en-IN&gl=IN&ceid=IN%3Aen" },
 ];
 
-function md5(text: string): string {
-  // Small deterministic hash (no node:crypto dependency in edge runtime)
+interface FeedItem {
+  title: string;
+  link: string;
+  pubDate: string;
+}
+
+function decodeEntities(text: string): string {
+  return text
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/<[^>]+>/g, "")
+    .trim();
+}
+
+function tagValue(block: string, tag: string): string {
+  const match = block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, "i"));
+  return match ? decodeEntities(match[1]) : "";
+}
+
+// Dependency-free RSS/Atom parsing — avoids CJS parser libs that break on Workers.
+function parseFeedItems(xml: string): FeedItem[] {
+  const items: FeedItem[] = [];
+  const blocks = xml.match(/<item[\s\S]*?<\/item>|<entry[\s\S]*?<\/entry>/gi) || [];
+  for (const block of blocks) {
+    const title = tagValue(block, "title");
+    let link = tagValue(block, "link");
+    if (!link) {
+      const href = block.match(/<link[^>]*href="([^"]+)"/i);
+      link = href ? href[1] : "";
+    }
+    const pubDate = tagValue(block, "pubDate") || tagValue(block, "published") || tagValue(block, "updated");
+    if (link) items.push({ title, link, pubDate });
+  }
+  return items;
+}
+
+function stableId(text: string): string {
+  // Deterministic 32-hex hash (no node:crypto dependency in edge runtime)
   let h1 = 0xdeadbeef;
   let h2 = 0x41c6ce57;
   for (let i = 0; i < text.length; i++) {
@@ -30,8 +70,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const runtimeEnv = (
     (locals as unknown as { runtime?: { env?: Record<string, unknown> } }).runtime?.env || {}
   ) as Record<string, string | undefined>;
-  const envOf = (k: string) =>
-    runtimeEnv[k] ?? (import.meta as unknown as { env: Record<string, string | undefined> }).env[k];
+  const importEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
+  const envOf = (k: string) => runtimeEnv[k] ?? importEnv[k];
 
   const secret = request.headers.get("x-cron-secret") || new URL(request.url).searchParams.get("secret");
   const expected = envOf("CRON_SECRET");
@@ -46,7 +86,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
   }
 
   const supabase = createClient(supabaseUrl, serviceKey);
-  const parser: Parser = new Parser({ timeout: 15000 });
 
   let inserted = 0;
   let skipped = 0;
@@ -54,24 +93,28 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   for (const { crime_type, feedUrl } of CRIME_FEEDS) {
     try {
-      const feed = await parser.parseURL(feedUrl);
-      for (const item of feed.items || []) {
-        const sourceUrl = (item.link || "").trim();
+      const res = await fetch(feedUrl, { headers: { "User-Agent": "NagrikPartyCivicBot/1.0" } });
+      if (!res.ok) {
+        errors.push(`${crime_type}: feed responded ${res.status}`);
+        continue;
+      }
+      const xml = await res.text();
+      for (const item of parseFeedItems(xml)) {
+        const sourceUrl = item.link.trim();
         // Title fallback chain: kabhi blank save mat karo
-        const title = (item.title || item.contentSnippet || "").trim() || `Verified ${crime_type} incident — Delhi NCR`;
-        const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
+        const title = item.title.trim() || `Verified ${crime_type} incident — Delhi NCR`;
+        const parsed = item.pubDate ? new Date(item.pubDate) : new Date();
         if (!sourceUrl) {
           skipped++;
           continue;
         }
-        const id = md5(sourceUrl);
         const { error } = await supabase.from("crimes").upsert(
           {
-            id,
+            id: stableId(sourceUrl),
             crime_type,
             title,
             source_url: sourceUrl,
-            incident_date: isNaN(pubDate.getTime()) ? new Date().toISOString() : pubDate.toISOString(),
+            incident_date: isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString(),
           },
           { onConflict: "id" }
         );
