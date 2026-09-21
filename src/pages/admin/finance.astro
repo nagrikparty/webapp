@@ -1,28 +1,16 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import AdminNav from "@/components/admin/AdminNav.astro";
+import AdminLayout from "@/layouts/AdminLayout.astro";
 import { AdminFinanceHub } from "@/components/admin/AdminFinanceHub";
 
 export const prerender = false;
 ---
 
-<BaseLayout
+<AdminLayout
   title="Nagrik Party | Financial Transparency & Donation Hub"
   description="Manage audited statements, balance sheets, UPI acceptance configuration, and contribution records."
+  activeSection="finance"
+  pageTitle="Financial Transparency & Donation Hub"
+  pageSubtitle="Executive control desk for audited receipts, expenditure statements, cashless donation gateways, and RPA 1951 transparency."
 >
-  <section class="page-hero" style="padding-bottom: 16px;">
-    <div class="container">
-      <AdminNav activeSection="finance" />
-      <h1>Financial Transparency & Donation Hub</h1>
-      <p class="page-copy">
-        Executive control desk for audited receipts, expenditure statements, cashless donation gateways, and RPA 1951 transparency.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
-    <div class="container">
-      <AdminFinanceHub client:only="react" />
-    </div>
-  </section>
-</BaseLayout>
+  <AdminFinanceHub client:only="react" />
+</AdminLayout>

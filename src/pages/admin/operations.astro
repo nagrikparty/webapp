@@ -1,28 +1,16 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import AdminNav from "@/components/admin/AdminNav.astro";
+import AdminLayout from "@/layouts/AdminLayout.astro";
 import { AdminOperationsHub } from "@/components/admin/AdminOperationsHub";
 
 export const prerender = false;
 ---
 
-<BaseLayout
+<AdminLayout
   title="Nagrik Party | Operations & Fieldwork Hub"
   description="Manage volunteer applications, ground field tasks, and platform broadcast announcements."
+  activeSection="operations"
+  pageTitle="Operations & Fieldwork Hub"
+  pageSubtitle="Coordinate grassroots volunteers, allocate field campaign tasks across Delhi wards, and broadcast party communications."
 >
-  <section class="page-hero" style="padding-bottom: 16px;">
-    <div class="container">
-      <AdminNav activeSection="operations" />
-      <h1>Operations & Fieldwork Hub</h1>
-      <p class="page-copy">
-        Coordinate grassroots volunteers, allocate field campaign tasks across Delhi wards, and broadcast party communications.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
-    <div class="container">
-      <AdminOperationsHub client:only="react" />
-    </div>
-  </section>
-</BaseLayout>
+  <AdminOperationsHub client:only="react" />
+</AdminLayout>

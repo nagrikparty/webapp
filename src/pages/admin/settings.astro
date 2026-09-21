@@ -1,28 +1,16 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import AdminNav from "@/components/admin/AdminNav.astro";
+import AdminLayout from "@/layouts/AdminLayout.astro";
 import { AdminSettingsHub } from "@/components/admin/AdminSettingsHub";
 
 export const prerender = false;
 ---
 
-<BaseLayout
+<AdminLayout
   title="Nagrik Party | System & Security Hub"
   description="System configuration, staff role management, and statutory audit trail."
+  activeSection="settings"
+  pageTitle="System & Security Hub"
+  pageSubtitle="Administrative parameters, formation phase controls, staff security privileges, and chronological statutory audit logs."
 >
-  <section class="page-hero" style="padding-bottom: 16px;">
-    <div class="container">
-      <AdminNav activeSection="settings" />
-      <h1>System & Security Hub</h1>
-      <p class="page-copy">
-        Administrative parameters, formation phase controls, staff security privileges, and chronological statutory audit logs.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
-    <div class="container">
-      <AdminSettingsHub client:only="react" />
-    </div>
-  </section>
-</BaseLayout>
+  <AdminSettingsHub client:only="react" />
+</AdminLayout>

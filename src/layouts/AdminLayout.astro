@@ -1,0 +1,323 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeSection?: "overview" | "members" | "civic" | "compliance" | "finance" | "operations" | "settings";
+  pageTitle?: string;
+  pageSubtitle?: string;
+}
+
+const {
+  title = "Nagrik Party | Administration Control Centre",
+  description = "Nagrik Party internal administration control centre.",
+  activeSection = "overview",
+  pageTitle = "Control Centre",
+  pageSubtitle = "",
+} = Astro.props;
+
+const NAV_ITEMS = [
+  { id: "overview", label: "Control Centre", href: "/admin", desc: "Live metrics & queues" },
+  { id: "members", label: "Membership", href: "/admin/members", desc: "Intake & scrutiny" },
+  { id: "civic", label: "Civic Engine", href: "/admin/civic", desc: "Crimes, issues & policy" },
+  { id: "compliance", label: "Compliance", href: "/admin/compliance", desc: "Exports, charters & roadmap" },
+  { id: "finance", label: "Finance", href: "/admin/finance", desc: "Ledger & donation config" },
+  { id: "operations", label: "Operations", href: "/admin/operations", desc: "Volunteers & tasks" },
+  { id: "settings", label: "System & Audit", href: "/admin/settings", desc: "Roles & audit trail" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/nagrikpartylogo.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/Mukta-Devanagari-400.woff2" as="font" type="font/woff2" crossorigin>
+    <title>{title}</title>
+    <ClientRouter />
+    <script is:inline>
+      (function () {
+        var t = localStorage.getItem("nagrik-theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.dataset.theme = t;
+        }
+      })();
+    </script>
+  </head>
+  <body class="admin-body">
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <a class="admin-brand" href="/admin">
+          <img src="/nagrikpartylogo.svg" alt="Nagrik Party" width="30" height="30" />
+          <div>
+            <strong>Nagrik Party</strong>
+            <small>Administration</small>
+          </div>
+        </a>
+        <nav class="admin-side-nav" aria-label="Administration">
+          {NAV_ITEMS.map((item) => (
+            <a href={item.href} class:list={["admin-side-item", { active: item.id === activeSection }]} aria-current={item.id === activeSection ? "page" : undefined}>
+              <span class="side-title">{item.label}</span>
+              <span class="side-desc">{item.desc}</span>
+            </a>
+          ))}
+        </nav>
+        <div class="admin-side-footer">
+          <a href="/" target="_blank" rel="noopener">View public site ↗</a>
+          <a href="/logout">Sign out</a>
+        </div>
+      </aside>
+
+      <div class="admin-main">
+        <header class="admin-topbar">
+          <span class="admin-phase-badge">PHASE 1 · FORMATION PHASE</span>
+          <span class="admin-host-label">administration.nagrik.party</span>
+          <button type="button" class="admin-theme-btn" id="admin-theme-toggle" aria-label="Toggle theme">◐</button>
+        </header>
+        <main class="admin-content">
+          <header class="admin-page-head">
+            <h1>{pageTitle}</h1>
+            {pageSubtitle && <p>{pageSubtitle}</p>}
+          </header>
+          <slot />
+        </main>
+      </div>
+    </div>
+    <script is:inline>
+      (function () {
+        var btn = document.getElementById("admin-theme-toggle");
+        if (!btn) return;
+        btn.addEventListener("click", function () {
+          var cur = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+          var next = cur === "dark" ? "light" : "dark";
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem("nagrik-theme", next);
+        });
+      })();
+    </script>
+    </div>
+  </body>
+</html>
+
+<style>
+  .admin-body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  .admin-shell {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .admin-sidebar {
+    width: 232px;
+    flex-shrink: 0;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .admin-brand strong {
+    display: block;
+    font-size: 14.5px;
+    font-family: var(--font-serif, serif);
+  }
+
+  .admin-brand small {
+    display: block;
+    font-size: 10px;
+    font-family: var(--font-mono, monospace);
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .admin-side-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 3px;
+    flex: 1;
+  }
+
+  .admin-side-item {
+    display: flex;
+    flex-direction: column;
+    padding: 9px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.78);
+    transition: background 0.15s ease;
+  }
+
+  .admin-side-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  .admin-side-item.active {
+    background: var(--saffron);
+    color: #fff;
+  }
+
+  .admin-side-item .side-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    font-family: var(--font-serif, serif);
+  }
+
+  .admin-side-item .side-desc {
+    font-size: 10px;
+    font-family: var(--font-mono, monospace);
+    opacity: 0.65;
+    margin-top: 2px;
+  }
+
+  .admin-side-footer {
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .admin-side-footer a {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 12px;
+    text-decoration: none;
+  }
+
+  .admin-side-footer a:hover {
+    color: #fff;
+  }
+
+  .admin-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .admin-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 24px;
+    background: var(--paper-card);
+    border-bottom: 1px solid var(--line-strong);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .admin-phase-badge {
+    font-family: var(--font-mono, monospace);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--saffron);
+    background: rgba(232, 87, 26, 0.08);
+    border: 1px solid rgba(232, 87, 26, 0.25);
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .admin-host-label {
+    margin-left: auto;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .admin-theme-btn {
+    background: none;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    min-width: 32px;
+    min-height: 32px;
+    cursor: pointer;
+    color: var(--ink);
+    font-size: 15px;
+  }
+
+  .admin-content {
+    padding: 26px 28px 56px;
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .admin-page-head h1 {
+    font-family: var(--font-serif, serif);
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+
+  .admin-page-head p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 720px;
+  }
+
+  .admin-page-head {
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--line-strong);
+  }
+
+  @media (max-width: 960px) {
+    .admin-shell {
+      flex-direction: column;
+    }
+
+    .admin-sidebar {
+      width: 100%;
+      height: auto;
+      position: static;
+    }
+
+    .admin-side-nav {
+      flex-direction: row;
+      overflow-x: auto;
+      padding: 8px;
+    }
+
+    .admin-side-item {
+      min-width: 130px;
+      flex-shrink: 0;
+    }
+
+    .admin-content {
+      padding: 20px 16px 48px;
+    }
+  }
+</style>

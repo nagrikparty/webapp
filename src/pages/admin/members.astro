@@ -1,28 +1,16 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import AdminNav from "@/components/admin/AdminNav.astro";
+import AdminLayout from "@/layouts/AdminLayout.astro";
 import { AdminMembersHub } from "@/components/admin/AdminMembersHub";
 
 export const prerender = false;
 ---
 
-<BaseLayout
+<AdminLayout
   title="Nagrik Party | Membership & Verification Hub"
   description="Manage member intake applications, statutory document scrutiny, verified member register, and ID cards."
+  activeSection="members"
+  pageTitle="Membership & Verification Hub"
+  pageSubtitle="Central register of founding members, applicant scrutiny desk, and authoritative sequential ID card management across Delhi's 70 assembly constituencies."
 >
-  <section class="page-hero" style="padding-bottom: 16px;">
-    <div class="container">
-      <AdminNav activeSection="members" />
-      <h1>Membership & Verification Hub</h1>
-      <p class="page-copy">
-        Central register of founding members, applicant scrutiny desk, and authoritative sequential ID card management across Delhi's 70 assembly constituencies.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
-    <div class="container">
-      <AdminMembersHub client:only="react" />
-    </div>
-  </section>
-</BaseLayout>
+  <AdminMembersHub client:only="react" />
+</AdminLayout>

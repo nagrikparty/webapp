@@ -1,28 +1,16 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import AdminNav from "@/components/admin/AdminNav.astro";
+import AdminLayout from "@/layouts/AdminLayout.astro";
 import { ControlCentre } from "@/components/ControlCentre";
 
 export const prerender = false;
 ---
 
-<BaseLayout
-  title="Nagrik Party | Executive Command Hub"
-  description="Nagrik Party Executive Administration & Scrutiny Portal"
+<AdminLayout
+  title="Nagrik Party | Administration Control Centre"
+  description="Nagrik Party internal administration & scrutiny portal."
+  activeSection="overview"
+  pageTitle="Control Centre"
+  pageSubtitle="Live operational command centre for Phase 1 formation oversight, membership scrutiny, civic operations, and statutory compliance."
 >
-  <section class="page-hero" style="padding-bottom: 16px;">
-    <div class="container">
-      <AdminNav activeSection="overview" />
-      <h1>Control Centre</h1>
-      <p class="page-copy">
-        Live operational command centre for Phase 1 formation oversight, membership scrutiny, civic operations, and statutory compliance.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 8px; padding-bottom: 48px;">
-    <div class="container">
-      <ControlCentre client:only="react" />
-    </div>
-  </section>
-</BaseLayout>
+  <ControlCentre client:only="react" />
+</AdminLayout>
