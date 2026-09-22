@@ -173,11 +173,14 @@ export function ControlCentre() {
 
   const modules = [
     { href: "/admin/members", title: "Membership Control", desc: "Intake scrutiny, member registry, card issuance & status history.", color: "var(--saffron)", icon: Users },
+    { href: "/admin/progress", title: "Formation Progress", desc: "Founding member counters, document completeness & ECI readiness meter.", color: "var(--green)", icon: TrendingUp },
+    { href: "/admin/proposers", title: "Proposer Register", desc: "Section 29A proposer records, notarized affidavits & EPIC verification.", color: "var(--blue)", icon: Award },
+    { href: "/admin/eci-filing", title: "ECI Filing Dossier", desc: "Compile & submit the Section 29A registration bundle to Nirvachan Sadan.", color: "var(--green)", icon: Layers },
     { href: "/admin/civic", title: "Civic & Governance", desc: "Crime citations, citizen issue resolution & policy deliberations.", color: "var(--blue)", icon: ShieldCheck },
-    { href: "/admin/compliance", title: "Compliance & Vault", desc: "ECI dossier exports, statutory charters & formation roadmap.", color: "var(--green)", icon: Layers },
+    { href: "/admin/compliance", title: "Compliance & Vault", desc: "ECI dossier exports, statutory charters & formation roadmap.", color: "var(--green)", icon: ScrollText },
     { href: "/admin/finance", title: "Finance & Transparency", desc: "Audited statements, donation configuration & donor provenance.", color: "var(--saffron)", icon: Receipt },
     { href: "/admin/operations", title: "Operations & Fieldwork", desc: "Volunteer pipeline, field task allocation & announcements.", color: "var(--green)", icon: Megaphone },
-    { href: "/admin/settings", title: "System, Roles & Audit", desc: "Staff role management, audit trail & organization settings.", color: "var(--blue)", icon: ScrollText },
+    { href: "/admin/settings", title: "System, Roles & Audit", desc: "Staff role management, audit trail & organization settings.", color: "var(--blue)", icon: UserCog },
   ];
 
   return (

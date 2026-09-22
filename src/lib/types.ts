@@ -427,6 +427,114 @@ export interface Proposer {
   created_at: string;
 }
 
+export interface ProposerRecord {
+  id: string;
+  member_id: string;
+  application_id: string;
+  user_id: string;
+  proposer_serial_number: string;
+  epic_number: string;
+  full_name: string;
+  vidhan_sabha: string;
+  part_number: string | null;
+  serial_number: string | null;
+  polling_station: string | null;
+  ward: string | null;
+  district: string | null;
+  address: string | null;
+  contact_number: string | null;
+  affidavit_document_id: string | null;
+  affidavit_sha256: string | null;
+  affidavit_uploaded_at: string | null;
+  status: "DRAFT" | "NOTARIZED" | "SUBMITTED" | "VERIFIED" | "REJECTED";
+  verified_by: string | null;
+  verified_at: string | null;
+  rejection_reason: string | null;
+  eci_filing_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type EciFilingStatus =
+  | "DRAFT"
+  | "COMPILED"
+  | "SUBMITTED"
+  | "UNDER_SCRUTINY"
+  | "APPROVED"
+  | "REJECTED";
+
+export interface EciFilingDossier {
+  id: string;
+  filing_number: string;
+  status: EciFilingStatus;
+  total_proposers: number;
+  verified_proposers: number;
+  total_pages: number;
+  dossier_sha256: string | null;
+  form_version: string;
+  submitted_at: string | null;
+  approved_at: string | null;
+  gazette_notified_at: string | null;
+  rejection_reason: string | null;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EciComplianceItem {
+  id: string;
+  eci_filing_id: string;
+  item_code: string;
+  item_title: string;
+  item_description: string | null;
+  is_mandatory: boolean;
+  is_satisfied: boolean;
+  satisfied_at: string | null;
+  evidence_document_id: string | null;
+  evidence_notes: string | null;
+  checked_by: string | null;
+  checked_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PartySymbol {
+  id: string;
+  eci_filing_id: string;
+  preference_order: number;
+  symbol_name: string;
+  symbol_description: string | null;
+  status: "REQUESTED" | "ALLOTTED" | "REJECTED";
+  allotted_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GazetteNotification {
+  id: string;
+  eci_filing_id: string;
+  notification_number: string | null;
+  publication_date: string | null;
+  english_newspaper: string | null;
+  hindi_newspaper: string | null;
+  pdf_path: string | null;
+  sha256: string | null;
+  status: "DRAFT" | "PUBLISHED" | "VERIFIED";
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EciReadinessSnapshot {
+  total_proposers: number;
+  verified_proposers: number;
+  declarations_complete: number;
+  consents_complete: number;
+  signatures_complete: number;
+  documents_complete: number;
+  epic_complete: number;
+  eci_ready: boolean;
+}
+
 export interface CrimeStat {
   crime_type: string;
   count: number;

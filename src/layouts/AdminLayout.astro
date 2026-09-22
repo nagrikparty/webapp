@@ -5,7 +5,7 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
-  activeSection?: "overview" | "members" | "civic" | "compliance" | "finance" | "operations" | "settings";
+  activeSection?: "overview" | "members" | "proposers" | "civic" | "compliance" | "progress" | "finance" | "operations" | "settings";
   pageTitle?: string;
   pageSubtitle?: string;
 }
@@ -21,8 +21,10 @@ const {
 const NAV_ITEMS = [
   { id: "overview", label: "Control Centre", href: "/admin", desc: "Live metrics & queues" },
   { id: "members", label: "Membership", href: "/admin/members", desc: "Intake & scrutiny" },
+  { id: "proposers", label: "Proposer Register", href: "/admin/proposers", desc: "Section 29A proposers" },
   { id: "civic", label: "Civic Engine", href: "/admin/civic", desc: "Crimes, issues & policy" },
   { id: "compliance", label: "Compliance", href: "/admin/compliance", desc: "Exports, charters & roadmap" },
+  { id: "progress", label: "Formation Progress", href: "/admin/progress", desc: "ECI readiness & counters" },
   { id: "finance", label: "Finance", href: "/admin/finance", desc: "Ledger & donation config" },
   { id: "operations", label: "Operations", href: "/admin/operations", desc: "Volunteers & tasks" },
   { id: "settings", label: "System & Audit", href: "/admin/settings", desc: "Roles & audit trail" },

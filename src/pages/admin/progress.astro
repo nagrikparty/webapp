@@ -1,0 +1,16 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { AdminProgressDashboard } from "@/components/AdminProgressDashboard";
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Nagrik Party | Formation Progress & ECI Readiness"
+  description="Live tracking of founding member induction, document completeness and Section 29A registration readiness."
+  activeSection="progress"
+  pageTitle="Formation Progress"
+  pageSubtitle="Founding member induction tracking, statutory document completeness, Vidhan Sabha coverage and Section 29A RPA 1951 readiness — all in one place."
+>
+  <AdminProgressDashboard client:only="react" />
+</AdminLayout>

@@ -1,0 +1,16 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { ProposerRegister } from "@/components/ProposerRegister";
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Nagrik Party | Proposer Register"
+  description="Section 29A proposer records: scrutiny, notarized affidavits and verified EPIC records for ECI filing."
+  activeSection="proposers"
+  pageTitle="Proposer Register"
+  pageSubtitle="Every approved founding member is an ECI Section 29A proposer. Advance records from draft to notarized to verified before filing."
+>
+  <ProposerRegister client:only="react" />
+</AdminLayout>

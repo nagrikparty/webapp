@@ -392,6 +392,20 @@ export const POST: APIRoute = async ({ request }) => {
 
         if (appUpdateErr) throw appUpdateErr;
 
+        // Step 4.6b: Auto-create ECI Proposer Record for this founding member.
+        // Every approved member is a Section 29A proposer; failure here is
+        // non-fatal to approval but is surfaced in the audit metadata.
+        let proposerRecordId: string | null = null;
+        try {
+          const { data: proposerId } = await scopedSupabase.rpc("create_proposer_from_member", {
+            p_member_id: memberRecord.id,
+            p_verifier_id: ctx.user.id,
+          });
+          proposerRecordId = (proposerId as string) || null;
+        } catch (proposerErr) {
+          console.error("Proposer record creation failed (non-fatal):", proposerErr);
+        }
+
         // Step 4.7: Mandatory Statutory Audit Log (will throw on failure to persist)
         await logAuditEvent(
           ctx.user.id,
@@ -403,6 +417,7 @@ export const POST: APIRoute = async ({ request }) => {
             membership_id: assignedId,
             application_id: applicationId,
             notes,
+            proposer_record_id: proposerRecordId,
           },
           request,
           scopedSupabase

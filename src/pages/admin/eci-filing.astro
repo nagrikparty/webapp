@@ -1,0 +1,16 @@
+---
+import AdminLayout from "@/layouts/AdminLayout.astro";
+import { EciFilingConsole } from "@/components/EciFilingConsole";
+
+export const prerender = false;
+---
+
+<AdminLayout
+  title="Nagrik Party | Section 29A Filing Dossier"
+  description="Compile, verify and submit the Section 29A RPA 1951 party registration bundle to the Election Commission of India."
+  activeSection="compliance"
+  pageTitle="Section 29A Filing Dossier"
+  pageSubtitle="Proposer register, mandatory ECI compliance checklist, statutory readiness scoring and the submission bundle for Nirvachan Sadan."
+>
+  <EciFilingConsole client:only="react" />
+</AdminLayout>
